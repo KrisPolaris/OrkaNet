@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-color: white; /* Możesz zmienić na black, żeby pasowało do Kotflixa! */
+        }
+
+        header {
+            display: flex;
+            justify-content: flex-end;
+            padding: 15px;
+            gap: 15px;
+            font-size: 13px;
+        }
+
+        header a {
+            text-decoration: none;
+            color: rgba(0,0,0,0.87);
+        }
+
+        header a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: -100px; /* Lekkie podbicie do góry */
+        }
+
+        .logo {
+            width: 272px;
+            margin-bottom: 30px;
+        }
+
+        .search-container {
+            width: 100%;
+            max-width: 584px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .search-input:hover, .search-input:focus {
+            box-shadow: 0 1px 6px rgba(32,33,36,0.28);
+            border-color: rgba(223,225,229,0);
+        }
+
+        .buttons {
+            margin-top: 30px;
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            background-color: #f8f9fa;
+            border: 1px solid #f8f9fa;
+            border-radius: 4px;
+            color: #3c4043;
+            font-size: 14px;
+            padding: 0 16px;
+            line-height: 36px;
+            min-width: 54px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+            border: 1px solid #dadce0;
+            color: #202124;
+        }
+
+        footer {
+            background: #f2f2f2;
+            padding: 15px;
+            font-size: 14px;
+            color: rgba(0,0,0,0.54);
+            border-top: 1px solid #dadce0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#">Gmail</a>
+        <a href="#">Grafika</a>
+        <a href="#">Zaloguj się</a>
+    </header>
+
+    <main>
+        <img class="logo" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Google">
+        
+        <div class="search-container">
+            <input type="text" class="search-input">
+        </div>
+
+        <div class="buttons">
+            <button>Szukaj w Google</button>
+            <button>Szczęśliwy traf</button>
+        </div>
+    </main>
+
+    <footer>
+        Polska
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OrkaRadio</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: #05060a;
+    color: #fff;
+  }
+
+  .header {
+    text-align: center;
+    padding: 22px 10px;
+    font-size: 26px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #8ab4ff, #ff8acb);
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .list {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .station {
+    background: #151823;
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+  }
+
+  .name {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  audio {
+    width: 100%;
+    margin-top: 6px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">OrkaRadio</div>
+
+<div class="list">
+
+  <div class="station">
+    <div class="name">🎵 Radio ESKA</div>
+    <audio controls src="https://stream.open.fm/eskamp3"></audio>
+  </div>
+
+  <div class="station">
+    <div class="name">🎶 Radio ZET</div>
+    <audio controls src="https://stream.open.fm/zetmp3"></audio>
+  </div>
+
+  <div class="station">
+    <div class="name">🎧 Meloradio</div>
+    <audio controls src="https://stream.open.fm/meloradiomp3"></audio>
+  </div>
+
+</div>
+
+</body>
+</html>

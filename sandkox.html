@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pixel Sandbox Rozszerzony</title>
+<style>
+  body {
+    margin: 0;
+    background: #222;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    font-family: sans-serif;
+    user-select: none;
+    touch-action: none;
+  }
+  canvas {
+    image-rendering: pixelated;
+    background: black;
+    margin-top: 10px;
+  }
+  #toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  button {
+    background: #444;
+    border: none;
+    color: white;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  button.active {
+    background: #00bfff;
+  }
+</style>
+</head>
+<body>
+<h2>Pixel Sandbox Rozszerzony</h2>
+<canvas id="game" width="100" height="100"></canvas>
+<div id="toolbar">
+  <button id="sand" class="active">Piasek</button>
+  <button id="water">Woda</button>
+  <button id="wall">Ściana</button>
+  <button id="fire">Ogień</button>
+  <button id="lava">Lawa</button>
+  <button id="steam">Para</button>
+  <button id="ice">Lód</button>
+  <button id="earth">Ziemia</button>
+  <button id="explode">Wybuch</button>
+  <button id="erase">Gumka</button>
+</div>
+
+<script>
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+const scale = 4; 
+canvas.style.width = canvas.width * scale + 'px';
+canvas.style.height = canvas.height * scale + 'px';
+
+const W = canvas.width, H = canvas.height;
+const grid = Array(H).fill().map(()=>Array(W).fill('empty'));
+
+let currentTool = 'sand';
+const colors = {
+  sand: '#e0c060',
+  water: '#2070ff',
+  wall: '#666666',
+  fire: '#ff4000',
+  lava: '#ff8000',
+  steam: '#aaaaaa',
+  ice: '#80dfff',
+  earth: '#885522',
+  explode: '#ff00ff'
+};
+
+document.querySelectorAll('#toolbar button').forEach(btn=>{
+  btn.onclick = ()=>{
+    document.querySelectorAll('#toolbar button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTool = btn.id;
+  };
+});
+
+let mouseDown = false;
+canvas.addEventListener('mousedown', ()=>mouseDown=true);
+canvas.addEventListener('mouseup', ()=>mouseDown=false);
+canvas.addEventListener('touchstart', ()=>mouseDown=true);
+canvas.addEventListener('touchend', ()=>mouseDown=false);
+
+canvas.addEventListener('mousemove', e=>drawPixel(e));
+canvas.addEventListener('touchmove', e=>drawPixel(e.touches[0]));
+
+function drawPixel(e){
+  if(!mouseDown) return;
+  const rect = canvas.getBoundingClientRect();
+  const x = Math.floor((e.clientX - rect.left) / scale);
+  const y = Math.floor((e.clientY - rect.top) / scale);
+  if(x<0||y<0||x>=W||y>=H) return;
+
+  if(currentTool==='erase') grid[y][x]='empty';
+  else if(currentTool==='explode'){
+    explode(x,y);
+  }
+  else grid[y][x]=currentTool;
+}
+
+function explode(cx,cy){
+  for(let y=cy-2;y<=cy+2;y++){
+    for(let x=cx-2;x<=cx+2;x++){
+      if(x>=0 && y>=0 && x<W && y<H){
+        grid[y][x]='empty';
+      }
+    }
+  }
+}
+
+function update(){
+  for(let y=H-2;y>=0;y--){
+    for(let x=0;x<W;x++){
+      const cell = grid[y][x];
+      if(cell==='sand'){
+        if(grid[y+1][x]==='empty'){grid[y+1][x]='sand';grid[y][x]='empty';}
+        else if(grid[y+1][x-1]==='empty'){grid[y+1][x-1]='sand';grid[y][x]='empty';}
+        else if(grid[y+1][x+1]==='empty'){grid[y+1][x+1]='sand';grid[y][x]='empty';}
+      }
+      if(cell==='water'){
+        if(grid[y+1][x]==='empty'){grid[y+1][x]='water';grid[y][x]='empty';}
+        else if(Math.random()<0.5 && grid[y][x-1]==='empty'){grid[y][x-1]='water';grid[y][x]='empty';}
+        else if(grid[y][x+1]==='empty'){grid[y][x+1]='water';grid[y][x]='empty';}
+      }
+      if(cell==='lava'){
+        if(grid[y+1][x]==='empty'){grid[y+1][x]='lava';grid[y][x]='empty';}
+        if(grid[y+1][x]==='water'){grid[y+1][x]='steam'; grid[y][x]='lava'; grid[y+1][x]='steam';}
+        if(grid[y][x-1]==='water'){grid[y][x-1]='steam';}
+        if(grid[y][x+1]==='water'){grid[y][x+1]='steam';}
+      }
+      if(cell==='ice'){
+        if(grid[y+1][x]==='empty'){grid[y+1][x]='ice'; grid[y][x]='empty';}
+      }
+      if(cell==='earth'){
+        if(grid[y+1][x]==='empty'){grid[y+1][x]='earth';grid[y][x]='empty';}
+      }
+    }
+  }
+}
+
+function draw(){
+  for(let y=0;y<H;y++){
+    for(let x=0;x<W;x++){
+      const cell = grid[y][x];
+      if(cell==='empty') ctx.fillStyle='black';
+      else ctx.fillStyle=colors[cell];
+      ctx.fillRect(x,y,1,1);
+    }
+  }
+}
+
+function loop(){
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+loop();
+</script>
+</body>
+</html>

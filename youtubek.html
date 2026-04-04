@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube</title>
+    <style>
+        /* CSS WYCIĄGNIĘTY Z PLIKU MHT */
+        body {
+            background-color: #0f0f0f;
+            color: #ffffff;
+            font-family: "Roboto", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            padding-bottom: 50px; /* Miejsce na dolny pasek */
+        }
+
+        header {
+            height: 48px;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            background-color: #0f0f0f;
+            z-index: 1000;
+            border-bottom: 1px solid #222;
+        }
+
+        .yt-logo-img {
+            height: 20px; /* Wysokość logo dopasowana do paska */
+            vertical-align: middle;
+        }
+
+        .search-icon {
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* Styl miniaturki i kontenera wideo */
+        .video-item {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .thumbnail-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: #2a2a2a;
+        }
+
+        .thumbnail-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-details {
+            display: flex;
+            padding: 10px 12px;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            background-color: #333;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .meta {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-title {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 18px;
+            margin-bottom: 4px;
+            color: #f1f1f1;
+            /* Przycinanie tekstu po 2 liniach */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .video-info {
+            font-size: 12px;
+            color: #aaaaaa;
+        }
+
+        /* Dolny pasek nawigacji */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 48px;
+            background-color: #0f0f0f;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #2a2a2a;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 10px;
+            color: #f1f1f1;
+            text-decoration: none;
+            flex: 1;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="left">
+            <img src="youtubelogo.jpg" alt="YouTube Logo" class="yt-logo-img">
+        </div>
+        <div class="right">
+            <span class="search-icon">🔍</span>
+        </div>
+    </header>
+
+    <main>
+        <div class="video-item">
+            <div class="thumbnail-container">
+                <img src="miniatura1.jpg" alt="thumbnail">
+            </div>
+            <div class="video-details">
+                <div class="avatar"></div>
+                <div class="meta">
+                    <div class="video-title">Avicii - Levels</div>
+                    <div class="video-info">Avicii • 772 mln. wyświetleń • 13 lat temu</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <div class="thumbnail-container">
+                <img src="mini2.jpg" alt="thumbnail">
+            </div>
+            <div class="video-details">
+                <div class="avatar"></div>
+                <div class="meta">
+                    <div class="video-title">Tytuł filmu 2 - Twoje wideo mp4</div>
+                    <div class="video-info">Nazwa kanału • 50 tys. wyświetleń • 5 godzin temu</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <div class="nav-item">🏠<br>Główna</div>
+        <div class="nav-item">🩳<br>Shorts</div>
+        <div class="nav-item">➕<br>Dodaj</div>
+        <div class="nav-item">🔔<br>Subskrypcje</div>
+        <div class="nav-item">👤<br>Ty</div>
+    </nav>
+
+</body>
+</html>

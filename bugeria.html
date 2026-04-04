@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORKANET - GAME ROOM</title>
+    <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+    <style>
+        body { background-color: #000; color: #0000ff; font-family: sans-serif; text-align: center; margin: 0; padding: 10px; }
+        
+        h1 { 
+            text-transform: uppercase; 
+            text-shadow: 0 0 15px #0000ff, 0 0 30px #0000ff; 
+            margin-bottom: 10px;
+        }
+
+        .menu { 
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 20px; 
+            padding-bottom: 10px; border-bottom: 2px solid #0000ff;
+        }
+
+        button { 
+            background: #000; color: #0000ff; border: 1px solid #0000ff; padding: 6px 12px; 
+            cursor: pointer; font-weight: bold; text-transform: uppercase;
+            box-shadow: 0 0 5px #0000ff; transition: 0.2s;
+        }
+
+        button:hover { background: #0000ff; color: #000; box-shadow: 0 0 15px #0000ff; }
+
+        /* KONTENER 4:3 */
+        #game-box { 
+            width: 95%; 
+            max-width: 800px; /* Żeby na Lenovo nie było gigantyczne */
+            aspect-ratio: 4 / 3; /* WYMUSZENIE 4:3 */
+            margin: 0 auto; 
+            border: 2px solid #0000ff; 
+            box-shadow: 0 0 20px #0000ff; 
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        iframe, ruffle-player { width: 100%; height: 100%; border: none; }
+    </style>
+</head>
+<body>
+
+    <h1>Game Room</h1>
+
+    <div class="menu">
+        <button onclick="loadSWF('papasburgeria.swf')">Burgeria</button>
+        <button onclick="loadSWF('papasfreezeria.swf')">Freezeria</button>
+        <button onclick="loadSWF('papaspizzeria.swf')">Pizzeria</button>
+        <button onclick="loadSWF('papastacomia.swf')">Taco Mia</button>
+        <button onclick="loadSWF('papashotdoggeria.swf')">HotDoggeria</button>
+        <button onclick="loadIframe('https://uploads.ungrounded.net/ruffle_wrapper/ruffleembed.html?v=1.2.3&browsermode=default&props=%7B%22ruffle%22%3A%22%2Fruffle_wrapper%2Flib%2Fruffle.js%3F1773980332%22%2C%22public_path%22%3A%22%2Fruffle_wrapper%2Flib%2F%22%2C%22swf%22%3A%22https%3A%2F%2Fuploads.ungrounded.net%2F574000%2F574241_DiamondNGSP.swf%3F1310193827%22%2C%22width%22%3A650%2C%22height%22%3A410%7D')">Stealing The Diamond</button>
+        <button onclick="loadIframe('https://uploads.ungrounded.net/ruffle_wrapper/ruffleembed.html?v=1.2.3&browsermode=default&props=%7B%22ruffle%22%3A%22%2Fruffle_wrapper%2Flib%2Fruffle.js%3F1773980332%22%2C%22public_path%22%3A%22%2Fruffle_wrapper%2Flib%2F%22%2C%22swf%22%3A%22https%3A%2F%2Fuploads.ungrounded.net%2F533000%2F533001_PrisonNG.swf%3F1271259449%22%2C%22width%22%3A650%2C%22height%22%3A450%7D')">Escaping the Prison</button>
+        <button onclick="loadIframe('https://uploads.ungrounded.net/ruffle_wrapper/ruffleembed.html?v=1.2.3&browsermode=default&props=%7B%22ruffle%22%3A%22%2Fruffle_wrapper%2Flib%2Fruffle.js%3F1773980332%22%2C%22public_path%22%3A%22%2Fruffle_wrapper%2Flib%2F%22%2C%22swf%22%3A%22https%3A%2F%2Fuploads.ungrounded.net%2F457000%2F457209_Bank_NG.swf%3F1240646960%22%2C%22width%22%3A550%2C%22height%22%3A400%7D')">Breaking the Bank</button>
+        <button onclick="loadIframe('GeometryDash.html')">GeometryDash</button>
+        <button onclick="loadIframe('getoverit.html')">Getting Over It</button>
+    </div>
+
+    <div id="game-box">
+        <h2 style="font-size: 1.2rem;">Wybierz grę</h2>
+    </div>
+
+    <script>
+        const container = document.getElementById("game-box");
+
+        function loadSWF(file) {
+            container.innerHTML = "";
+            const ruffle = window.RufflePlayer.newest();
+            const player = ruffle.createPlayer();
+            container.appendChild(player);
+            player.load(file);
+        }
+
+        function loadIframe(url) {
+            container.innerHTML = `<iframe src="${url}" allowfullscreen></iframe>`;
+        }
+    </script>
+
+</body>
+</html>

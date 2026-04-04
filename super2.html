@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OrkaNet</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+body {
+  margin: 0;
+  background-color: #018281; /* klasyczne tło Windows 95 */
+  font-family: 'Press Start 2P', monospace;
+  color: black;
+  text-align: center;
+}
+
+header {
+  padding: 10px;
+  background-color: #000080; /* niebieski pasek */
+  color: white;
+  font-size: 16px;
+  text-align: left;
+  display: flex;         /* tekst i obrazek w jednej linii */
+  align-items: center;   /* wyrównanie pionowe */
+  gap: 10px;             /* odstęp między ikoną a napisem */
+}
+
+#headerIcon {
+  width: 50px;   /* szerokość ikonki */
+  height: 50px;  /* wysokość ikonki */
+}
+
+#username {
+  font-size: 12px;
+  margin: 10px 0 20px 0;
+  display: block;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+  padding: 0 10px 30px 10px;
+}
+
+.tile {
+  background-color: #C0C0C0; /* klasyczny szary guzik */
+  color: black;
+  border: 2px solid #808080;
+  box-shadow: 2px 2px #fff inset, -2px -2px #808080 inset;
+  border-radius: 0;
+  width: 180px;
+  padding: 10px 0;
+  font-size: 10px;
+  text-decoration: none;
+  display: inline-block;
+  margin: 5px;
+  cursor: pointer;
+  transition: none;
+}
+
+.tile:hover {
+  background-color: #808080;
+  color: white;
+  box-shadow: inset 2px 2px #808080, inset -2px -2px #fff;
+}
+
+a#whatsapp {
+  width: 180px;
+  height: 30px;
+  line-height: 30px;
+  display: block;
+}
+
+h4 {
+  font-size: 10px;
+  margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="win95.png" alt="WiFi od bebzuna" id="headerIcon">
+  OrkaNet
+</header>
+<span id="username"></span>
+<div class="grid">
+  <a class="tile" href="boxes!.html">Pudełka</a>
+  <a class="tile" href="burga.html">Burger</a>
+  <a class="tile" href="clicker.html">Creeper Clicker</a>
+  <a class="tile" href="czas.html">Zegar</a>
+  <a class="tile" href="GeometryDash.html">Geometry Dash</a>
+  <a class="tile" href="getoverit.html">Fajna gra jak Minecraft</a>
+  <a class="tile" href="laptopy.html">Kup Laptopy</a>
+  <a class="tile" href="kalendar.html">Kalendarz</a>
+  <a class="tile" href="kalkulator.html">Kalkulator</a>
+  <a class="tile" href="kolorowanki.html">Kolorowanki</a>
+  <a class="tile" href="notes.html">Notatnik</a>
+  <a class="tile" href="ppogoda.html">Pogoda</a>
+  <a class="tile" href="rysowniczek.html">Paint</a>
+  <a class="tile" href="tudududu.html">Efekty dźwiękowe</a>
+  <a class="tile" href="wszysko.html">O stronie</a>
+  <a class="tile" href="Windows XP.html">Windows XP</a>
+  <a class="tile" href="netia.pdf">NETIA</a>
+  <a class="tile" href="bebzun.html">Poznaj Bebzuna!</a>
+  <a class="tile" href="MinecraftXO.mp4">Poziom Minecraft w Geometry Dash</a>
+  <a class="tile" href="spotifa.html">Spotifa</a>
+  <a class="tile" href="https://youtube.com">YouTube</a>
+</div>
+
+<script>
+  // Pobieranie username z URL ?username=nazwa
+  const params = new URLSearchParams(window.location.search);
+  const user = params.get('username') || 'ty busiku';
+  document.getElementById('username').textContent = 'Twoje konto: ' + user;
+</script>
+
+<h4>bebzun zjadł ESPUMISAN</h4>
+    <a class="tile" href="super.html">Wróć do klasycznej strony</a>
+
+<a class="tile" href="#" onclick="document.body.style.backgroundColor='#C0C0C0'; return false;">Zmień tło na szare</a>
+<a class="tile" href="#" onclick="document.body.style.backgroundColor='#018281'; return false;">Przywróć tło</a>
+
+<audio id="monsterMusic" src="PressStart.mp3"></audio>
+<a class="tile" href="javascript:void(0)" onclick="document.getElementById('monsterMusic').play()">Włącz muzykę!</a>
+<a class="tile" href="javascript:void(0)" onclick="document.getElementById('monsterMusic').pause(); document.getElementById('monsterMusic').currentTime = 0;">Stop muzyka</a>
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body {
+    background-color: #222;
+    color: #eee;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  .calc-box {
+    background: #333;
+    padding: 25px;
+    border-radius: 15px;
+    border: 3px solid #444;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    text-align: center;
+  }
+
+  .section { margin: 15px 0; }
+  
+  h2 { color: #00ff00; text-shadow: 0 0 5px #00ff00; }
+
+  /* Ukrywamy radia */
+  input { display: none; }
+
+  /* Wygląd przycisków */
+  label {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background: #444;
+    margin: 3px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: 0.2s;
+  }
+
+  label:hover { background: #555; }
+
+  /* Zaznaczony przycisk */
+  input:checked + label {
+    background: #00ff00;
+    color: #000;
+    font-weight: bold;
+    box-shadow: 0 0 10px #00ff00;
+  }
+
+  /* --- LOGIKA LICZENIA --- */
+  .result-area {
+    margin-top: 20px;
+    padding: 15px;
+    background: #000;
+    border-radius: 8px;
+    font-size: 24px;
+    color: #00ff00;
+  }
+
+  /* Inicjalizacja licznika */
+  body { counter-reset: suma; }
+
+  /* Dodawanie wartości na podstawie zaznaczonych ID */
+  #a1:checked { counter-increment: suma 1; }
+  #a2:checked { counter-increment: suma 2; }
+  #a3:checked { counter-increment: suma 3; }
+  #a4:checked { counter-increment: suma 4; }
+  #a5:checked { counter-increment: suma 5; }
+
+  #b1:checked { counter-increment: suma 1; }
+  #b2:checked { counter-increment: suma 2; }
+  #b3:checked { counter-increment: suma 3; }
+  #b4:checked { counter-increment: suma 4; }
+  #b5:checked { counter-increment: suma 5; }
+
+  /* Wyświetlenie wyniku */
+  .result::after {
+    content: counter(suma);
+  }
+</style>
+</head>
+<body>
+
+  <div class="calc-box">
+    <h2>KALKULATOR CSS 🧮</h2>
+
+    <div class="section">
+      <p>Wybierz pierwszą liczbę:</p>
+      <input type="radio" name="numA" id="a1"><label for="a1">1</label>
+      <input type="radio" name="numA" id="a2"><label for="a2">2</label>
+      <input type="radio" name="numA" id="a3"><label for="a3">3</label>
+      <input type="radio" name="numA" id="a4"><label for="a4">4</label>
+      <input type="radio" name="numA" id="a5"><label for="a5">5</label>
+    </div>
+
+    <div style="font-size: 30px;">+</div>
+
+    <div class="section">
+      <p>Wybierz drugą liczbę:</p>
+      <input type="radio" name="numB" id="b1"><label for="b1">1</label>
+      <input type="radio" name="numB" id="b2"><label for="b2">2</label>
+      <input type="radio" name="numB" id="b3"><label for="b3">3</label>
+      <input type="radio" name="numB" id="b4"><label for="b4">4</label>
+      <input type="radio" name="numB" id="b5"><label for="b5">5</label>
+    </div>
+
+    <div class="result-area">
+      WYNIK: <span class="result"></span>
+    </div>
+  </div>
+
+  <p style="margin-top: 20px; font-size: 10px; opacity: 0.5;">Logic: CSS Counter-Increment (No JS)</p>
+
+</body>
+</html>

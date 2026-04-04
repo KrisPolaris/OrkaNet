@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalendarz OrkaNet</title>
+<style>
+  body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: #05060a;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+  .wrap {
+    max-width: 420px;
+    width: 100%;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  button {
+    background: #1a1d27;
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  input {
+    width: 60px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    border: 1px solid #2a2e3c;
+    background: #10121a;
+    color: #fff;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  th, td {
+    text-align: center;
+    padding: 6px 0;
+    width: 14.28%;
+    cursor: pointer;
+  }
+  th {
+    font-size: 12px;
+    opacity: 0.7;
+  }
+  td {
+    height: 40px;
+    border-radius: 50%;
+    transition: 0.2s;
+  }
+  td:hover {
+    background: #0b3c70;
+  }
+  .today {
+    background: #1e90ff;
+    color: #fff;
+  }
+  .selected {
+    background: #00bfff;
+    color: #000;
+  }
+  .empty {
+    opacity: 0.15;
+  }
+  .info {
+    margin-top: 10px;
+    font-size: 13px;
+    text-align: center;
+    min-height: 1.4em;
+    opacity: 0.8;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Kalendarz OrkaNet</h1>
+
+  <div class="controls">
+    <button id="prev">&lt;</button>
+    <div>
+      <input type="number" id="monthInput" min="1" max="12">
+      <input type="number" id="yearInput" min="1970" max="6767">
+    </div>
+    <button id="next">&gt;</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Pn</th><th>Wt</th><th>Śr</th><th>Cz</th><th>Pt</th><th>So</th><th>Nd</th>
+      </tr>
+    </thead>
+    <tbody id="calendarBody"></tbody>
+  </table>
+
+  <div class="info" id="info"></div>
+</div>
+
+<script>
+  const calendarBody = document.getElementById('calendarBody');
+  const monthInput = document.getElementById('monthInput');
+  const yearInput = document.getElementById('yearInput');
+  const info = document.getElementById('info');
+
+  let current = new Date();
+  let selectedCell = null;
+
+  function isSameDay(a, b) {
+    return a.getFullYear() === b.getFullYear() &&
+           a.getMonth() === b.getMonth() &&
+           a.getDate() === b.getDate();
+  }
+
+  function render() {
+    const year = current.getFullYear();
+    const month = current.getMonth();
+
+    monthInput.value = month + 1;
+    yearInput.value = year;
+
+    calendarBody.innerHTML = '';
+
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const startWeekday = (firstDay.getDay() + 6) % 7; // Pn = 0
+    const daysInMonth = lastDay.getDate();
+
+    let row = document.createElement('tr');
+
+    // Puste komórki przed pierwszym dniem miesiąca
+    for (let i = 0; i < startWeekday; i++) {
+      const td = document.createElement('td');
+      td.className = 'empty';
+      td.textContent = '';
+      row.appendChild(td);
+    }
+
+    const today = new Date();
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      if (row.children.length === 7) {
+        calendarBody.appendChild(row);
+        row = document.createElement('tr');
+      }
+
+      const td = document.createElement('td');
+      td.textContent = day;
+
+      const thisDate = new Date(year, month, day);
+
+      if (isSameDay(thisDate, today)) {
+        td.classList.add('today');
+      }
+
+      td.addEventListener('click', () => {
+        if (selectedCell) selectedCell.classList.remove('selected');
+        td.classList.add('selected');
+        selectedCell = td;
+        info.textContent = `Wybrana data: ${thisDate.toLocaleDateString()}`;
+      });
+
+      row.appendChild(td);
+    }
+
+    // Puste komórki po ostatnim dniu miesiąca
+    while (row.children.length < 7) {
+      const td = document.createElement('td');
+      td.className = 'empty';
+      td.textContent = '';
+      row.appendChild(td);
+    }
+
+    calendarBody.appendChild(row);
+    info.textContent = '';
+  }
+
+  document.getElementById('prev').addEventListener('click', () => {
+    current.setMonth(current.getMonth() - 1);
+    render();
+  });
+
+  document.getElementById('next').addEventListener('click', () => {
+    current.setMonth(current.getMonth() + 1);
+    render();
+  });
+
+  monthInput.addEventListener('change', () => {
+    let m = parseInt(monthInput.value, 10);
+    if (m >= 1 && m <= 12) {
+      current.setMonth(m - 1);
+      render();
+    }
+  });
+
+  yearInput.addEventListener('change', () => {
+    let y = parseInt(yearInput.value, 10);
+    if (y >= 1970 && y <= 6767) {
+      current.setFullYear(y);
+      render();
+    }
+  });
+
+  render();
+</script>
+</body>
+</html>

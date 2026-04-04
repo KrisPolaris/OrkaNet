@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OrkaNet</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+body {
+  margin: 0;
+  background: url('123.jpg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Bebas Neue', sans-serif;
+  color: #00ffff;
+  text-align: center;
+}
+
+header {
+  padding: 30px 0 10px 0;
+  font-size: 3em;
+  font-weight: bold;
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+}
+
+#username {
+  font-size: 1.5em;
+  margin-bottom: 30px;
+  display: block;
+  text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  padding: 0 10px 30px 10px;
+}
+
+.tile {
+  background-color: rgba(17,17,17,0.8);
+  color: #00ffff;
+  border: 2px solid #00ffff;
+  border-radius: 10px;
+  width: 45%;
+  min-width: 120px;
+  padding: 20px 10px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.tile:hover {
+  background-color: #00ffff;
+  color: #000;
+  box-shadow: 0 0 15px #00ffff;
+  transform: scale(1.05);
+}
+
+@media(min-width: 600px) {
+  .tile {
+    width: 30%;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>OrkaNet</header>
+<span id="username"></span>
+
+<a href="https://wa.me/48889360670" class="tile" style="background-color: #25D366; color: white; text-decoration: none; display: flex; align-items: center; justify-content: center; margin: 10px auto; width: 50px; height: 20px; border-radius: 10px; font-weight: bold;">
+    Napisz do mnie
+</a>
+
+
+
+
+
+<div class="grid">
+  <a class="tile" href="czat.html">BebzunChat (polecane)</a>
+  <a class="tile" href="burga.html">Burger</a>
+  <a class="tile" href="clicker.html">Creeper Clicker</a>
+  <a class="tile" href="czas.html">Zegar</a>
+  <a class="tile" href="GeometryDash.html">Geometry Dash</a>
+  <a class="tile" href="getoverit.html">Fajna gra jak Minecraft</a>
+  <a class="tile" href="laptopy.html">Kup Laptopy</a>
+  <a class="tile" href="kalendar.html">Kalendarz</a>
+  <a class="tile" href="kalkulator.html">Kalkulator</a>
+  <a class="tile" href="kolorowanki.html">Kolorowanki</a>
+  <a class="tile" href="notes.html">Notatnik</a>
+  <a class="tile" href="ppogoda.html">Pogoda</a>
+  <a class="tile" href="rysowniczek.html">Paint</a>
+  <a class="tile" href="tudududu.html">Efekty dźwiękowe</a>
+  <a class="tile" href="wszysko.html">O stronie</a>
+  <a class="tile" href="Windows XP.html">Windows XP</a>
+  <a class="tile" href="netia.pdf">NETIA</a>
+  <a class="tile" href="bebzun.html">Poznaj Bebzuna!</a>
+  <a class="tile" href="MinecraftXO.mp4">Poziom Minecraft w Geometry Dash</a>
+  <a class="tile" href="spotifa.html">Spotifa</a>
+  <a class="tile" href="404.html">nic</a>
+  <a class="tile" href="super2.html">Windows 95</a>
+  <a class="tile" href="aparacik.html">Aparat</a>
+  <a class="tile" href="boxes!.html">pudełka</a>
+</div>
+
+<script>
+  // Pobieranie username z URL ?username=nazwa
+  const params = new URLSearchParams(window.location.search);
+  const user = params.get('username') || '( ͡° ͜ʖ ͡°)';
+  document.getElementById('username').textContent = 'Twoje konto: ' + user;
+</script>
+
+<h4>bebzun zjadł ESPUMISAN</h4>
+<a class="tile" href="#" onclick="document.body.style.backgroundImage='url(\'456.jpg\')'; return false;">Zmień tło</a>
+<a class="tile" href="#" onclick="document.body.style.backgroundImage='url(\'123.jpg\')'; return false;">Przywróć tło</a>
+<audio id="monsterMusic" src="Monster.mp3"></audio>
+
+<a class="tile" href="javascript:void(0)" onclick="document.getElementById('monsterMusic').play()">Włącz muzykę!</a>
+
+<a class="tile" href="javascript:void(0)" onclick="document.getElementById('monsterMusic').pause(); document.getElementById('monsterMusic').currentTime = 0;">Stop muzyka</a>
+
+</body>
+</html>
+
+
+</body>
+</html>

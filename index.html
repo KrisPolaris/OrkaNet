@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrkaNet - Logowanie 🔐</title>
+    <style>
+        body { background: #000; color: #00e6ff; font-family: 'Segoe UI', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .login-box { 
+            background: #050505; border: 2px solid #00e6ff; padding: 30px; 
+            border-radius: 15px; box-shadow: 0 0 20px #00e6ff; text-align: center; width: 300px;
+        }
+        h1 { text-shadow: 0 0 10px #00e6ff; margin-bottom: 20px; }
+        input { 
+            width: 90%; padding: 10px; margin: 10px 0; background: #111; 
+            border: 1px solid #00e6ff; color: #fff; border-radius: 5px; outline: none;
+        }
+        button { 
+            width: 100%; padding: 10px; background: #00e6ff; color: #000; 
+            border: none; font-weight: bold; cursor: pointer; border-radius: 5px; margin-top: 10px;
+        }
+        .link { font-size: 12px; margin-top: 15px; cursor: pointer; text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="login-box">
+    <h1 id="title">LOGOWANIE</h1>
+    <input type="text" id="user" placeholder="Username">
+    <input type="password" id="pass" placeholder="Hasło">
+    <button id="actionBtn">ZALOGUJ</button>
+    <div class="link" id="toggleMode">Nie masz konta? Zarejestruj się!</div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDPvjNjR6nTHQuWdhQGAGk9iJgvPKDQTXA",
+        authDomain: "bebechchat.firebaseapp.com",
+        projectId: "bebechchat",
+        storageBucket: "bebechchat.firebasestorage.app",
+        messagingSenderId: "738356779230",
+        appId: "1:738356779230:web:2c41e46431284e3fb78a4f"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    let isRegister = false;
+
+    // Przełączanie między logowaniem a rejestracją
+    document.getElementById('toggleMode').onclick = () => {
+        isRegister = !isRegister;
+        document.getElementById('title').innerText = isRegister ? "REJESTRACJA" : "LOGOWANIE";
+        document.getElementById('actionBtn').innerText = isRegister ? "STWÓRZ KONTO" : "ZALOGUJ";
+        document.getElementById('toggleMode').innerText = isRegister ? "Masz konto? Zaloguj się!" : "Nie masz konta? Zarejestruj się!";
+    };
+
+    document.getElementById('actionBtn').onclick = async () => {
+        const username = document.getElementById('user').value.trim();
+        const password = document.getElementById('pass').value.trim();
+
+        if(!username || !password) return alert("Wpisz dane!");
+
+        const userRef = doc(db, "users", username);
+
+        if (isRegister) {
+            // REJESTRACJA
+            const snap = await getDoc(userRef);
+            if(snap.exists()) return alert("inną nazwe zröb");
+            
+            await setDoc(userRef, { password: password });
+            alert("gg masz konto");
+            location.reload();
+        } else {
+            // LOGOWANIE
+            const snap = await getDoc(userRef);
+            if(snap.exists() && snap.data().password === password) {
+                localStorage.setItem('loggedUser', username); // Zapamiętuje Cię
+                alert("siemano " + username + "!");
+                // Zamiast starego przekierowania, robimy to z Twoim parametrem:
+window.location.href = "super.html?username=" + username;
+            } else {
+                alert("źle coś wpisałeś");
+            }
+        }
+    };
+</script>
+</body>
+</html>

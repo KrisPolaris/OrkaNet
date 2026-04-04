@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hall of Memes</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: #0d0f14;
+    color: #fff;
+  }
+
+  .header {
+    text-align: center;
+    padding: 22px 10px;
+    font-size: 26px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #8ab4ff, #7df2c9);
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 14px;
+    padding: 16px;
+  }
+
+  .item {
+    background: #1a1d25;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+    transition: transform .15s;
+  }
+
+  .item:active {
+    transform: scale(0.96);
+  }
+
+  .item img {
+    width: 100%;
+    display: block;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="header">Hall of Memes</div>
+
+<div class="gallery">
+  <div class="item"><img src="1.jpg" alt=""></div>
+  <div class="item"><img src="2.jpg" alt=""></div>
+  <div class="item"><img src="3.jpg" alt=""></div>
+  <div class="item"><img src="4.jpg" alt=""></div>
+  <div class="item"><img src="5.jpg" alt=""></div>
+  <div class="item"><img src="6.jpg" alt=""></div>
+  <div class="item"><img src="7.jpg" alt=""></div>
+  <div class="item"><img src="8.jpg" alt=""></div>
+  <div class="item"><img src="9.jpg" alt=""></div>
+  <div class="item"><img src="10.jpg" alt=""></div>
+</div>
+
+</body>
+</html>

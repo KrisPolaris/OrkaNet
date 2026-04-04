@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Creeper Clicker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui;}
+body{
+    background:#0f0f0f;
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    flex-direction:column;
+    text-align:center;
+}
+h1{
+    font-size:32px;
+    margin-bottom:20px;
+    color:#00ff00;
+}
+#count{
+    font-size:48px;
+    margin-bottom:20px;
+}
+img{
+    width:260px;
+    height:260px;
+    border-radius:20px;
+    cursor:pointer;
+    transition:transform 0.1s;
+}
+img:active{
+    transform:scale(0.92);
+}
+audio{
+    display:none;
+}
+</style>
+</head>
+<body>
+
+<h1>Creeper Clicker</h1>
+<div id="count">0</div>
+
+<img id="creeper" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbWLXpQ-2QwcAdNBVy6jnnT1F22MQwsuy9nQ&usqp=CAU">
+
+<!-- MUZYKA W TLE -->
+<audio id="music" src="Let Me Love You (Andrew Watt Acoustic Remix) - DJ Snake (youtube).mp3" loop></audio>
+
+<script>
+let count = 0;
+let started = false;
+
+document.getElementById("creeper").onclick = () => {
+    count++;
+    document.getElementById("count").textContent = count;
+
+    // start muzyki przy pierwszym kliknięciu
+    if(!started){
+        document.getElementById("music").play().catch(()=>{});
+        started = true;
+    }
+
+    if(count === 67){
+    alert("SIX SEVEN!!!");
+} else if(count % 10 === 0){
+    alert("ajć creeper się zbebeszył o" + count + " za mocno ");
+}
+};
+</script>
+
+</body>
+</html>

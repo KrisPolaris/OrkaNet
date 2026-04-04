@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>OrkaKalkulator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui;}
+body{
+    background:#0a0a0a;
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+.calc{
+    width:300px;
+    background:#111;
+    padding:20px;
+    border-radius:20px;
+    border:1px solid #222;
+}
+.display{
+    width:100%;
+    height:60px;
+    background:#000;
+    color:#0f0;
+    font-size:28px;
+    text-align:right;
+    padding:10px;
+    border-radius:10px;
+    margin-bottom:15px;
+    overflow:hidden;
+}
+.buttons{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:10px;
+}
+button{
+    padding:18px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    background:#22c55e;
+    color:#000;
+    cursor:pointer;
+}
+button:active{
+    transform:scale(0.95);
+}
+.op{
+    background:#3b82f6;
+}
+.eq{
+    background:#facc15;
+}
+.clear{
+    background:#ef4444;
+    color:#fff;
+}
+
+/* 🔥 MODAL DO 1337 🔥 */
+#leetModal{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:#000c;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+#leetBox{
+    width:90%;
+    max-width:350px;
+    background:#111;
+    border:3px solid #22c55e;
+    border-radius:20px;
+    padding:20px;
+    text-align:center;
+    color:#fff;
+    font-size:18px;
+    position:relative;
+    background-image:url('https://media.tenor.com/2roX3uxz_68AAAAM/cat-vibing.gif');
+    background-size:cover;
+    background-position:center;
+}
+
+#leetClose{
+    margin-top:20px;
+    padding:10px 20px;
+    background:#22c55e;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="calc">
+    <div class="display" id="display">0</div>
+
+    <div class="buttons">
+        <button class="clear" onclick="clearDisp()">C</button>
+        <button onclick="press('(')">(</button>
+        <button onclick="press(')')">)</button>
+        <button class="op" onclick="press('/')">÷</button>
+
+        <button onclick="press('7')">7</button>
+        <button onclick="press('8')">8</button>
+        <button onclick="press('9')">9</button>
+        <button class="op" onclick="press('*')">×</button>
+
+        <button onclick="press('4')">4</button>
+        <button onclick="press('5')">5</button>
+        <button onclick="press('6')">6</button>
+        <button class="op" onclick="press('-')">−</button>
+
+        <button onclick="press('1')">1</button>
+        <button onclick="press('2')">2</button>
+        <button onclick="press('3')">3</button>
+        <button class="op" onclick="press('+')">+</button>
+
+        <button onclick="press('0')">0</button>
+        <button onclick="press('.')">.</button>
+        <button class="eq" onclick="calculate()">=</button>
+    </div>
+</div>
+
+<!-- 🔥 MODAL 1337 -->
+<div id="leetModal">
+    <div id="leetBox">
+        <div>
+            WhatsApp WhatsApp whatsappowy jest WhatsApp WhatsApp piszę malutki WhatsApp i jest cały w gif-ach
+        </div>
+        <button id="leetClose">Zamknij</button>
+    </div>
+</div>
+
+<script>
+function press(val){
+    const d = document.getElementById('display');
+    if(d.textContent === "0") d.textContent = val;
+    else d.textContent += val;
+}
+
+function clearDisp(){
+    document.getElementById('display').textContent = "0";
+}
+
+function calculate(){
+    const d = document.getElementById('display');
+    try{
+        const result = eval(d.textContent);
+        d.textContent = result;
+
+        // 🔥 EASTER EGG 67 → Spotify
+        if(result == 67){
+            window.location.href =
+            "bebzun.html";
+        }
+
+        // 🔥 EASTER EGG 1337 → WhatsApp modal
+        if(result == 1337){
+            document.getElementById('leetModal').style.display = "flex";
+        }
+
+    } catch {
+        d.textContent = "ERROR";
+    }
+}
+
+document.getElementById('leetClose').onclick = () => {
+    document.getElementById('leetModal').style.display = "none";
+};
+</script>
+
+</body>
+</html>

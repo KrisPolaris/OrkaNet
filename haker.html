@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>free robux</title>
+    <style>
+        /* Stylistyka: Czarny background + błękitny neon */
+        body {
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        #notify-btn {
+            padding: 20px 40px;
+            font-size: 1.5rem;
+            color: #00f2ff;
+            background-color: transparent;
+            border: 2px solid #00f2ff;
+            border-radius: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 2px;
+            /* To jest ten błękitny glow */
+            box-shadow: 0 0 10px #00f2ff, inset 0 0 10px #00f2ff;
+            transition: 0.3s;
+        }
+
+        #notify-btn:hover {
+            background-color: #00f2ff;
+            color: #000;
+            box-shadow: 0 0 40px #00f2ff, 0 0 80px #00f2ff;
+        }
+
+        #notify-btn:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+
+    <button id="notify-btn">DARMOWE ROBUX 1000</button>
+
+    <script>
+        const btn = document.querySelector('#notify-btn');
+
+        btn.addEventListener('click', () => {
+            // Sprawdzenie czy przeglądarka wspiera powiadomienia
+            if (!("Notification" in window)) {
+                alert("scam xD!");
+                return;
+            }
+
+            // Jeśli mamy zgodę, wysyłamy od razu
+            if (Notification.permission === "granted") {
+                sendHackedNotification();
+            } 
+            // Jeśli nie, prosimy o zgodę
+            else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        sendHackedNotification();
+                    }
+                });
+            }
+        });
+
+        function sendHackedNotification() {
+            const title = "ZOSTAŁEŚ ZHAKOWANY";
+            const options = {
+                body: "HAHA HA BEBZUN CIE ZHAKOWAŁ",
+                icon: "Bebe.jpg", // Plik musi być w tym samym folderze
+                vibrate: [200, 100, 200] // Wibracja (na Androidzie)
+            };
+
+            const notification = new Notification(title, options);
+
+            // Po kliknięciu w powiadomienie może się coś dziać
+            notification.onclick = () => {
+                alert("HAHA BEBZUN HAKERSKI");
+            };
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>OrkaNet Weather</title>
+
+<style>
+    body {
+        background: #0d0d0d;
+        color: white;
+        font-family: Arial, sans-serif;
+    }
+
+    #weatherBox {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 15px;
+        border-radius: 12px;
+        backdrop-filter: blur(6px);
+        color: white;
+        font-size: 18px;
+        width: 260px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: 0.3s;
+        margin-top: 10px;
+    }
+
+    #weatherBox.loading {
+        opacity: 0.5;
+    }
+
+    #citySelect {
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: none;
+        background: #222;
+        color: white;
+        font-size: 16px;
+    }
+
+    #citySelect:hover {
+        background: #333;
+    }
+
+    .weather-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 6px;
+    }
+
+    .weather-row {
+        margin: 4px 0;
+    }
+</style>
+</head>
+<body>
+
+<h2>🌦️ OrkaNet Pogoda</h2>
+
+<select id="citySelect">
+    <option value="lodz">Łódź</option>
+    <option value="warszawa">Warszawa</option>
+    <option value="krakow">Kraków</option>
+    <option value="zakopane">Zakopane</option>
+    <option value="gdansk">Gdańsk</option>
+    <option value="minecraft">Minecraft</option>
+</select>
+
+<div id="weatherBox">Ładowanie pogody...</div>
+
+<script>
+const cities = {
+    lodz: { lat: 51.759, lon: 19.458 },
+    warszawa: { lat: 52.229, lon: 21.012 },
+    krakow: { lat: 50.064, lon: 19.945 },
+    zakopane: { lat: 49.299, lon: 19.949 },
+    gdansk: { lat: 54.352, lon: 18.646 }
+};
+
+function getMinecraftWeather() {
+    const weathers = [
+        "Słonecznie (biom: Plains)",
+        "Deszcz (biom: Forest)",
+        "Burza ⚡ (uwaga na creepery)",
+        "Słonecznie (biom: Desert)",
+        "Śnieg (biom: Snowy Tundra)",
+        "Mgła (biom: Swamp)"
+    ];
+    return weathers[Math.floor(Math.random() * weathers.length)];
+}
+
+async function loadWeather(cityKey) {
+    const box = document.getElementById("weatherBox");
+    box.classList.add("loading");
+
+    if (cityKey === "minecraft") {
+        setTimeout(() => {
+            box.innerHTML = `<b>Minecraft:</b> ${getMinecraftWeather()}`;
+            box.classList.remove("loading");
+        }, 300);
+        return;
+    }
+
+    const { lat, lon } = cities[cityKey];
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const w = data.current_weather;
+
+        const conditions = {
+            0: "Słonecznie",
+            1: "Głównie słonecznie",
+            2: "Częściowo pochmurnie",
+            3: "Pochmurnie",
+            45: "Mgła",
+            48: "Osadzająca się mgła",
+            51: "Mżawka lekka",
+            61: "Lekki deszcz",
+            63: "Deszcz",
+            65: "Ulewa",
+            71: "Lekki śnieg",
+            73: "Śnieg",
+            75: "Intensywny śnieg",
+            95: "Burza",
+            99: "Burza z gradem"
+        };
+
+        box.innerHTML = `
+            <div class="weather-title">${cityKey.toUpperCase()}</div>
+            <div class="weather-row">Temperatura: ${w.temperature}°C</div>
+            <div class="weather-row">Wiatr: ${w.windspeed} km/h</div>
+            <div class="weather-row">Warunki: ${conditions[w.weathercode] || "Nieznane"}</div>
+        `;
+    } catch (e) {
+        box.innerText = "Błąd pobierania pogody.";
+    }
+
+    box.classList.remove("loading");
+}
+
+document.getElementById("citySelect").addEventListener("change", (e) => {
+    loadWeather(e.target.value);
+});
+
+// start
+loadWeather("lodz");
+</script>
+
+</body>
+</html>

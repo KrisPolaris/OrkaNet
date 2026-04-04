@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>OrkaZegar LED</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui;}
+
+body{
+    background:#000;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.clock{
+    font-size:80px;
+    color:#0aff0a;
+    font-weight:700;
+    letter-spacing:6px;
+    padding:20px 40px;
+    border-radius:20px;
+    background:#020202;
+    border:3px solid #0aff0a;
+    text-shadow:
+        0 0 10px #0aff0a,
+        0 0 20px #0aff0a,
+        0 0 40px #0aff0a;
+    box-shadow:
+        0 0 20px #0aff0a inset,
+        0 0 30px #0aff0a;
+}
+</style>
+</head>
+<body>
+
+<div class="clock" id="clock">00:00:00</div>
+
+<script>
+function updateClock(){
+    const now = new Date();
+    let h = now.getHours().toString().padStart(2, '0');
+    let m = now.getMinutes().toString().padStart(2, '0');
+    let s = now.getSeconds().toString().padStart(2, '0');
+
+    document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+}
+
+setInterval(updateClock, 1000);
+updateClock();
+</script>
+
+</body>
+</html>

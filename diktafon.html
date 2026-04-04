@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>diktafon</title>
+    <style>
+        body { background: #000; color: #00e6ff; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+        
+        h1 { text-shadow: 0 0 20px #00e6ff; text-transform: uppercase; letter-spacing: 3px; }
+
+        /* Wizualizacja nagrywania (świecące kółko) */
+        #status-circle {
+            width: 100px; height: 100px; border-radius: 50%; background: #050505;
+            border: 4px solid #00e6ff; margin: 20px; transition: 0.5s;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 15px rgba(0, 230, 255, 0.3);
+        }
+
+        .recording { background: #ff0000 !important; border-color: #ff0000 !important; box-shadow: 0 0 30px #ff0000 !important; animation: pulse 1.5s infinite; }
+
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+        /* Przyciski */
+        .btns { display: flex; gap: 15px; margin-top: 20px; }
+        button { 
+            padding: 15px 25px; font-weight: bold; cursor: pointer; border-radius: 10px; border: none;
+            transition: 0.3s; text-transform: uppercase;
+        }
+
+        #startBtn { background: #00e6ff; color: #000; box-shadow: 0 0 15px #00e6ff; }
+        #stopBtn { background: #555; color: #fff; cursor: not-allowed; }
+
+        /* Lista nagrań */
+        #recordingsList { margin-top: 30px; width: 90%; max-width: 400px; }
+        audio { width: 100%; margin-top: 10px; filter: invert(1) hue-rotate(180deg); } /* Hakerski wygląd odtwarzacza */
+    </style>
+</head>
+<body>
+
+    <h1>DYKTAFON</h1>
+
+    <div id="status-circle">🎤</div>
+
+    <div class="btns">
+        <button id="startBtn">NAGRYWAJ</button>
+        <button id="stopBtn" disabled>STOP</button>
+    </div>
+
+    <div id="recordingsList"></div>
+
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const statusCircle = document.getElementById('status-circle');
+        const recordingsList = document.getElementById('recordingsList');
+
+        startBtn.onclick = async () => {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            
+            mediaRecorder.ondataavailable = event => {
+                audioChunks.push(event.data);
+            };
+
+            mediaRecorder.onstop = () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const audio = document.createElement('audio');
+                audio.src = audioUrl;
+                audio.controls = true;
+                
+                // Dodajemy nagranie na górę listy
+                const container = document.createElement('div');
+                container.innerHTML = `<p style="margin-top:20px;">Nagranie ${new Date().toLocaleTimeString()}:</p>`;
+                container.appendChild(audio);
+                recordingsList.prepend(container);
+                
+                audioChunks = [];
+            };
+
+            mediaRecorder.start();
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            stopBtn.style.background = "#ff0000";
+            statusCircle.className = 'recording';
+        };
+
+        stopBtn.onclick = () => {
+            mediaRecorder.stop();
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            stopBtn.style.background = "#555";
+            statusCircle.className = '';
+        };
+    </script>
+</body>
+</html>

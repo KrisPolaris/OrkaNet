@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPICKA SKARBONKA</title>
+    <style>
+        :root {
+            --neon-green: #00ff00;
+            --bg-dark: #0f0f0f;
+            --card-bg: #1e1e1e;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 { color: var(--neon-green); margin: 0; font-size: 1.8rem; }
+
+        .setup-section {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0;
+            border-radius: 10px;
+            border: 1px solid #333;
+            background: #111;
+            color: white;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        .stats-card {
+            background: linear-gradient(145deg, #1e1e1e, #252525);
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid #333;
+            margin-bottom: 20px;
+        }
+
+        .total-amount {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--neon-green);
+            margin: 10px 0;
+        }
+
+        .progress-container {
+            background: #333;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        #progress-bar {
+            background: var(--neon-green);
+            width: 0%;
+            height: 100%;
+            transition: width 0.5s ease-out;
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        button.coin {
+            aspect-ratio: 1 / 1;
+            border-radius: 15px;
+            border: none;
+            background: #2a2a2a;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 0 #000;
+            active-transform: translateY(4px);
+            transition: 0.1s;
+        }
+
+        button.coin:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #000;
+            background: var(--neon-green);
+            color: black;
+        }
+
+        .reset-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            color: #555;
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .pop-anim { animation: pop 0.2s ease; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="header">
+        <h1>Skarbona</h1>
+    </div>
+
+    <div class="setup-section">
+        <input type="text" id="goalName" placeholder="Na co zbierasz?">
+        <input type="number" id="goalValue" placeholder="Ile to kosztuje? (zł)">
+    </div>
+
+    <div class="stats-card">
+        <div id="displayGoal">Cel: ...</div>
+        <div class="total-amount" id="currentMoney">0 zł</div>
+        <div class="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+        <div id="percentText">0% celu</div>
+    </div>
+
+    <div class="grid">
+        <button class="coin" onclick="add(1)">1</button>
+        <button class="coin" onclick="add(2)">2</button>
+        <button class="coin" onclick="add(5)">5</button>
+        <button class="coin" onclick="add(10)">10</button>
+        <button class="coin" onclick="add(20)">20</button>
+        <button class="coin" onclick="add(50)">50</button>
+        <button class="coin" onclick="add(100)">100</button>
+        <button class="coin" onclick="add(200)">200</button>
+        <button class="coin" onclick="add(500)">500</button>
+        <button class="coin" onclick="add(1000)">1k</button>
+        <button class="coin" onclick="add(1500)">1.5k</button>
+        <button class="coin" onclick="add(2000)">2k</button>
+        <button class="coin" onclick="add(5000)">5k</button>
+        <button class="coin" onclick="add(10000)">10k</button>
+        <button class="coin" onclick="add(15000)">15k</button>
+    </div>
+
+    <a href="#" class="reset-link" onclick="resetAll()">WYCZYŚĆ WSZYSTKO</a>
+</div>
+
+<script>
+    let current = 0;
+    
+    function updateUI() {
+        const goalValue = parseFloat(document.getElementById('goalValue').value) || 0;
+        const goalName = document.getElementById('goalName').value || "...";
+        
+        document.getElementById('displayGoal').innerText = "Cel: " + goalName;
+        document.getElementById('currentMoney').innerText = current + " zł";
+        
+        if (goalValue > 0) {
+            let percent = (current / goalValue) * 100;
+            if (percent > 100) percent = 100;
+            document.getElementById('progress-bar').style.width = percent + "%";
+            document.getElementById('percentText').innerText = Math.round(percent) + "% celu";
+        }
+
+        // Animacja cyferek
+        const display = document.getElementById('currentMoney');
+        display.classList.remove('pop-anim');
+        void display.offsetWidth;
+        display.classList.add('pop-anim');
+    }
+
+    function add(val) {
+        current += val;
+        updateUI();
+    }
+
+    function resetAll() {
+        if(confirm("Czyścisz skarbonkę?")) {
+            current = 0;
+            document.getElementById('goalName').value = "";
+            document.getElementById('goalValue').value = "";
+            updateUI();
+        }
+    }
+
+    // Odświeżaj cel przy pisaniu
+    document.getElementById('goalName').addEventListener('input', updateUI);
+    document.getElementById('goalValue').addEventListener('input', updateUI);
+</script>
+
+</body>
+</html>

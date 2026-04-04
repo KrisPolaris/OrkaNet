@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Creeper Clicker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family: 'Segoe UI', sans-serif;}
+    body{ background:#0a0a0a; color:#fff; display:flex; justify-content:center; align-items:center; min-height:100vh; flex-direction:column; text-align:center; padding: 20px; }
+    .game-container { background: #151515; padding: 20px; border-radius: 30px; border: 3px solid #00e6ff; box-shadow: 0 0 30px rgba(0, 230, 255, 0.2); width: 100%; max-width: 400px; }
+    #money-display{ font-size:50px; color: #00e6ff; margin: 10px 0; text-shadow: 0 0 10px #00e6ff; }
+    #creeper { width:180px; height:180px; border-radius:20px; cursor:pointer; transition:0.1s; user-select:none; margin: 10px 0; }
+    #creeper:active { transform:scale(0.92); }
+    
+    .shop { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 20px; max-height: 300px; overflow-y: auto; padding-right: 5px; }
+    .upgrade-card { background: #222; padding: 10px; border-radius: 15px; border: 1px solid #333; display: flex; align-items: center; justify-content: space-between; text-align: left; }
+    .upgrade-img { width: 50px; height: 50px; border-radius: 5px; margin-right: 10px; object-fit: cover; }
+    
+    button { padding: 8px 15px; border: none; border-radius: 8px; background: #00e6ff; font-weight: bold; cursor: pointer; color: #000; }
+    button:disabled { background: #444; color: #888; cursor: not-allowed; }
+    
+    .nav-btns { margin-top: 20px; display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; }
+    #leaderboard { margin-top: 15px; background: #111; padding: 10px; border-radius: 10px; display: none; border: 1px solid #00e6ff; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="game-container">
+    <h2 id="welcome-msg">Wczytywanie...</h2>
+    <div id="money-display">$0</div>
+    
+    <img id="creeper" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbWLXpQ-2QwcAdNBVy6jnnT1F22MQwsuy9nQ&usqp=CAU">
+
+    <div class="shop">
+        <div class="upgrade-card">
+            <img src="palec.png" class="upgrade-img" alt="Palec" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2312/2312894.png'">
+            <div><b>Palec Moc</b> ($100)<br><small>Mnożnik kliku x5</small></div>
+            <button id="buy-palec" disabled>KUP</button>
+        </div>
+
+        <div class="upgrade-card">
+            <img src="pou.png" class="upgrade-img" alt="Pou" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1004/1004664.png'">
+            <div><b>Pou</b> ($75)<br><small>+3 do każdego kliku</small></div>
+            <button id="buy-pou" disabled>KUP</button>
+        </div>
+
+        <div class="upgrade-card">
+            <img src="Stiw.png" class="upgrade-img" alt="Steve">
+            <div><b>Steve</b> ($10)<br><small>+$5 co 7s</small></div>
+            <button id="buy-steve" disabled>KUP</button>
+        </div>
+        <div class="upgrade-card">
+            <img src="Skeleton.png" class="upgrade-img" alt="Szkielet">
+            <div><b>Skeleton</b> ($20)<br><small>+$5 co 5s</small></div>
+            <button id="buy-skeleton" disabled>KUP</button>
+        </div>
+        <div class="upgrade-card">
+            <img src="brzuchgrubiutki.png" class="upgrade-img" alt="Bebzun">
+            <div><b>Bebzun</b> ($50)<br><small>+$10 co 10s</small></div>
+            <button id="buy-bebzun" disabled>KUP</button>
+        </div>
+    </div>
+
+    <div class="nav-btns">
+        <button id="leaderboard-btn" style="background: #008cff; color: white;">🏆 Ranking</button>
+        <button id="logout-btn" style="background: #ff4444; color: white;">Wyloguj</button>
+        <button onclick="window.location.href='super.html'" style="background: #555; color: white;">Menu</button>
+        <button id="reset-btn" style="background: #550000; color: white; border: 1px solid #ff0000;">RESET DATA ⚠️</button>
+    </div>
+    
+    <div id="leaderboard"></div>
+</div>
+
+<audio id="music" src="Let Me Love You (Andrew Watt Acoustic Remix) - DJ Snake (youtube).mp3" loop></audio>
+
+<script type="module">
+    // DODANO updateDoc DO IMPORTÓW
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, doc, setDoc, getDoc, collection, query, orderBy, limit, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDPvjNjR6nTHQuWdhQGAGk9iJgvPKDQTXA",
+        authDomain: "bebechchat.firebaseapp.com",
+        projectId: "bebechchat",
+        storageBucket: "bebechchat.firebasestorage.app",
+        messagingSenderId: "738356779230",
+        appId: "1:738356779230:web:2c41e46431284e3fb78a4f"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const userNick = localStorage.getItem('loggedUser');
+    if (!userNick) { window.location.href = "index.html"; }
+
+    document.getElementById("welcome-msg").textContent = "Siema, " + userNick + "!";
+
+    let money = 0;
+    let upgrades = { steve: 0, skeleton: 0, bebzun: 0, palec: 0, pou: 0 };
+    let started = false;
+
+    async function loadData() {
+        const docSnap = await getDoc(doc(db, "users", userNick));
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            money = data.money || 0;
+            upgrades = { 
+                steve: data.upgrades?.steve || 0, 
+                skeleton: data.upgrades?.skeleton || 0, 
+                bebzun: data.upgrades?.bebzun || 0,
+                palec: data.upgrades?.palec || 0,
+                pou: data.upgrades?.pou || 0 
+            };
+            
+            for(let i=0; i<upgrades.steve; i++) setInterval(() => earn(5), 7000);
+            for(let i=0; i<upgrades.skeleton; i++) setInterval(() => earn(5), 5000);
+            for(let i=0; i<upgrades.bebzun; i++) setInterval(() => earn(10), 10000);
+            
+            updateUI();
+        }
+    }
+
+    async function saveData() {
+        await setDoc(doc(db, "users", userNick), {
+            money: money,
+            upgrades: upgrades,
+            lastSeen: Date.now()
+        }, { merge: true });
+    }
+
+    function updateUI() {
+        document.getElementById("money-display").textContent = "$" + money;
+        document.getElementById("buy-steve").disabled = money < 10;
+        document.getElementById("buy-skeleton").disabled = money < 20;
+        document.getElementById("buy-bebzun").disabled = money < 50;
+        document.getElementById("buy-palec").disabled = money < 100;
+        document.getElementById("buy-pou").disabled = money < 75;
+    }
+
+    function earn(amount) {
+        money += amount;
+        if(money === 100) alert("O JA SETKA!!! 💯🔥");
+        updateUI();
+        saveData();
+    }
+
+    document.getElementById("creeper").onclick = () => {
+        let baseClick = 1;
+        baseClick += (upgrades.pou * 3);
+        let multiplier = upgrades.palec > 0 ? (upgrades.palec * 5) : 1;
+        let finalEarn = baseClick * multiplier;
+        
+        money += finalEarn;
+        updateUI();
+        saveData();
+        
+        if(money === 67) alert("SIX SEVEN!!!");
+        if(money % 100 === 0 && money > 0) alert("ajć creeper sie zbebeszył o " + money + " razy za mocno");
+
+        if(!started) { document.getElementById("music").play().catch(()=>{}); started = true; }
+    };
+
+    // SKLEP
+    document.getElementById("buy-palec").onclick = () => {
+        if(money >= 100) { money -= 100; upgrades.palec++; updateUI(); saveData(); alert("MOCNY PALEC KUPIONY! 🖐️⚡"); }
+    };
+
+    document.getElementById("buy-pou").onclick = () => {
+        if(money >= 75) { money -= 75; upgrades.pou++; updateUI(); saveData(); alert("POU DOŁĄCZYŁ DO EKIPY! 🥔"); }
+    };
+
+    document.getElementById("buy-steve").onclick = () => {
+        if(money >= 10) { money -= 10; upgrades.steve++; updateUI(); setInterval(() => earn(5), 7000); saveData(); alert("Stachu!!!"); }
+    };
+
+    document.getElementById("buy-skeleton").onclick = () => {
+        if(money >= 20) { money -= 20; upgrades.skeleton++; updateUI(); setInterval(() => earn(5), 5000); saveData(); alert("SZKARLATYNA"); }
+    };
+
+    document.getElementById("buy-bebzun").onclick = () => {
+        if(money >= 50) { money -= 50; upgrades.bebzun++; updateUI(); setInterval(() => earn(10), 10000); saveData(); alert("O MUJ BEBZUN"); }
+    };
+
+    document.getElementById("logout-btn").onclick = () => {
+        localStorage.removeItem('loggedUser');
+        window.location.href = "index.html";
+    };
+
+    document.getElementById("leaderboard-btn").onclick = async () => {
+        const lb = document.getElementById("leaderboard");
+        lb.style.display = lb.style.display === "none" ? "block" : "none";
+        const q = query(collection(db, "users"), orderBy("money", "desc"), limit(5));
+        const snap = await getDocs(q);
+        let txt = "<b>TOP 5 BOGACZY:</b><br>";
+        snap.forEach(d => txt += `${d.id}: $${d.data().money || 0}<br>`);
+        lb.innerHTML = txt;
+    };
+
+    // --- NAPRAWIONY RESET (TERAZ UŻYWA updateDoc) ---
+    document.getElementById("reset-btn").onclick = async () => {
+        if(confirm("UWAGA! Czy na pewno chcesz wyczyścić postępy? Hasło zostanie, ale stracisz kasę i ulepszenia.")) {
+            if(confirm("OSTATNIA SZANSA: Serio chcesz to zrobić? Bro, tego się nie cofa!")) {
+                
+                upgrades = { steve: 0, skeleton: 0, bebzun: 0, palec: 0, pou: 0 };
+                money = 0;
+                
+                // Używamy updateDoc, żeby NIE USUNĄĆ hasła i innych danych konta!
+                await updateDoc(doc(db, "users", userNick), {
+                    money: 0,
+                    upgrades: upgrades
+                });
+
+                alert("Zresetowane! Twoje konto żyje, ale portfel jest pusty.");
+                location.reload();
+            }
+        }
+    };
+
+    loadData();
+</script>
+</body>
+</html>

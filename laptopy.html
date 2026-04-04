@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strona o laptopach (do 3500zł!)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #add8e6; /* Twój jasnoniebieski */
+            font-family: 'Ubuntu', sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 { font-size: 2.5rem; margin-bottom: 40px; color: #00bfff; }
+        h2 { font-size: 1.2rem; font-weight: 400; max-width: 800px; margin: 10px auto; }
+        
+        .price { color: #ffffff; font-size: 2.8rem; margin-top: 5px; margin-bottom: 50px; }
+
+        .laptop-img {
+            width: 400px;
+            border-radius: 15px;
+            border: 2px solid #00bfff;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .laptop-img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px #00bfff;
+        }
+
+        .under-construction {
+            margin-top: 60px;
+            font-size: 2rem;
+            color: #ff4500;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            border: 2px dashed #ff4500;
+            padding: 20px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Strona o laptopach (do 3500zł!)</h1>
+
+    <a href="loq1.html">
+        <img src="https://prod-api.mediaexpert.pl/api/images/gallery_500_500/thumbnails/images/85/8566481/Laptop-LENOVO-LOQ-15ARP9-156-IPS-144Hz-R5-7235HS-16GB-RAM-1TB-SSD-GeForce-RTX3050-Windows-11-Home-Funkcje-AI-1.jpg" 
+             alt="Lenovo LOQ" class="laptop-img">
+    </a>
+    <h2>Laptop LENOVO LOQ 15ARP9 15.6" IPS 144Hz R5-7235HS 16GB RAM 1TB SSD GeForce RTX3050 Windows 11 Home, Funkcje AI</h2>
+    <h1 class="price">3499zł</h1>
+
+    <hr style="border: 1px solid #333; width: 60%; margin: 40px auto;">
+
+    <a href="tuf.html">
+        <img src="https://prod-api.mediaexpert.pl/api/images/gallery_500_500/thumbnails/images/87/8718437/2091729-1.jpg" 
+             alt="Asus TUF" class="laptop-img">
+    </a>
+    <h2>Laptop ASUS TUF Gaming F16 (2024) FX607VJB-RL143W Intel Core 5 210H 16GB RAM 512GB SSD GeForce RTX3050 Windows 11 Home</h2>
+    <h1 class="price">3299zł</h1>
+
+    <div class="under-construction">
+        Under Construction
+    </div>
+
+</body>
+</html>

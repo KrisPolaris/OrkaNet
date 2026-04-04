@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini Spotify</title>
+
+<style>
+    body {
+        margin: 0;
+        background: #000;
+        color: #fff;
+        font-family: Arial, sans-serif;
+    }
+
+    .app {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 26px;
+        margin-bottom: 20px;
+        font-weight: 700;
+    }
+
+    .song-list {
+        background: #121212;
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    .song {
+        padding: 12px;
+        border-bottom: 1px solid #1f1f1f;
+        cursor: pointer;
+    }
+
+    .song:hover {
+        background: #1a1a1a;
+    }
+
+    .song-title {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .song-file {
+        font-size: 12px;
+        color: #b3b3b3;
+    }
+
+    .player {
+        background: #121212;
+        padding: 20px;
+        border-radius: 12px;
+        margin-top: 20px;
+    }
+
+    .track-title {
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .track-artist {
+        font-size: 14px;
+        color: #b3b3b3;
+    }
+
+    audio {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .progress-container {
+        margin-top: 15px;
+    }
+
+    .progress {
+        width: 100%;
+    }
+
+    .time-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: #b3b3b3;
+        margin-top: 4px;
+    }
+
+    .play-btn {
+        background: #1db954;
+        color: #000;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: 700;
+        margin-top: 15px;
+        width: 100%;
+    }
+</style>
+</head>
+
+<body>
+<div class="app">
+
+    <h1>Mini Spotify</h1>
+
+    <div class="song-list">
+        <div class="song" onclick="playSong('Monster.mp3', 'Monster', 'Monster')">
+            <div class="song-title">Monster</div>
+            <div class="song-file">Monster.mp3</div>
+        </div>
+
+        <div class="song" onclick="playSong('Avicii - Levels.mp3', 'Levels', 'Avicii')">
+            <div class="song-title">Levels</div>
+            <div class="song-file">Avicii - Levels.mp3</div>
+        </div>
+
+        <div class="song" onclick="playSong('DEAF KEV - Invincible.mp3', 'Invincible', 'DEAF KEV')">
+            <div class="song-title">Invincible</div>
+            <div class="song-file">DEAF KEV - Invincible.mp3</div>
+        </div>
+
+        <div class="song" onclick="playSong('download.php.mp3', 'Flip Flap', 'Unknown')">
+            <div class="song-title">Flip Flap</div>
+            <div class="song-file">download.php.mp3</div>
+        </div>
+
+        <div class="song" onclick="playSong('Imagine Dragons - Natural.mp3', 'Natural', 'Imagine Dragons')">
+            <div class="song-title">Natural</div>
+            <div class="song-file">Imagine Dragons - Natural.mp3</div>
+        </div>
+
+        <div class="song" onclick="playSong('Jim Yosef - Firefly.mp3', 'Firefly', 'Jim Yosef')">
+            <div class="song-title">Firefly</div>
+            <div class="song-file">Jim Yosef - Firefly.mp3</div>
+        </div>
+    
+    <div class="song" onclick="playSong('PressStart.mp3', 'Press Start', 'MDK')">
+            <div class="song-title">Press Start</div>
+            <div class="song-file">bebzunek</div>
+    </div>
+        
+        <div class="song" onclick="playSong('Let Me Love You (Andrew Watt Acoustic Remix) - DJ Snake (youtube).mp3', 'Let Me Love U', 'DJ Snake')">
+            <div class="song-title">Let Me Love U</div>
+            <div class="song-file">pupurupu</div>
+    </div>
+        
+        <div class="song" onclick="playSong('471723_Trololo-song-on-Violin.mp3', 'Trololololo', 'Trololo')">
+            <div class="song-title">Trolololo</div>
+            <div class="song-file">‎ ‎</div>
+    </div>
+
+    <div class="player">
+        <div class="track-title" id="trackTitle">Wybierz utwór</div>
+        <div class="track-artist" id="trackArtist"></div>
+
+        <audio id="audio" controls></audio>
+    </div>
+
+</div>
+
+<script>
+function playSong(file, title, artist) {
+    const audio = document.getElementById("audio");
+    document.getElementById("trackTitle").textContent = title;
+    document.getElementById("trackArtist").textContent = artist;
+
+    audio.src = file;
+    audio.play();
+}
+</script>
+
+</body>
+</html>

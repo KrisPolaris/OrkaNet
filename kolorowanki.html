@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kolorowaneczki</title>
+<style>
+  body {
+    margin: 0;
+    font-family: sans-serif;
+    background: #f0f0f0;
+    text-align: center;
+  }
+
+  header {
+    background-color: #ffcc00;
+    padding: 20px 0;
+    font-size: 2em;
+    font-weight: bold;
+  }
+
+  .gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .gallery img {
+    width: 45%;      /* na telefonie dwa obrazki obok siebie */
+    max-width: 200px;
+    border: 2px solid #333;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  @media (min-width: 600px) {
+    .gallery img {
+      width: 30%;    /* na większych ekranach 3 obrazki w rzędzie */
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>Kolorowaneczki</header>
+
+<div class="gallery">
+  <img src="kolorowanka1.png" alt="Kolorowanka 1">
+  <img src="kolorowanka2.png" alt="Kolorowanka 2">
+  <img src="kolorowanka3.png" alt="Kolorowanka 3">
+  <img src="kolorowanka4.png" alt="Kolorowanka 4">
+  <img src="kolorowanka5.png" alt="Kolorowanka 5">
+  <img src="kolorowanka6.png" alt="Kolorowanka 6">
+  <img src="kolorowanka7.png" alt="Kolorowanka 7">
+  <img src="kolorowanka8.png" alt="Kolorowanka 8">
+  <img src="kolorowanka9.png" alt="Kolorowanka 9">
+  <img src="kolorowanka10.png" alt="Kolorowanka 10">
+  <img src="kolorowanka11.png" alt="Kolorowanka 11">
+  <img src="kolorowanka12.png" alt="Kolorowanka 12">
+</div>
+
+</body>
+</html>

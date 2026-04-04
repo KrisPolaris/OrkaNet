@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Boxes Physics - No Collision Edition</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: url('tlo1.png') no-repeat center center;
+    background-size: cover;
+    overflow: hidden;
+    touch-action: none;
+  }
+
+  /* Bazowy styl dla każdego pudełka */
+  .box {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    touch-action: none;
+    cursor: grab;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+  }
+
+  /* Standardowe pudełko */
+  .box-standard {
+    background-image: url('box.png');
+  }
+
+  /* Nowa skrzynia InPostu / Chest */
+  .chest {
+    background-image: url('chest.jpg');
+    background-color: #553311; /* Kolor zapasowy */
+  }
+</style>
+</head>
+<body>
+
+<div class="box box-standard" id="box1" style="left: 20px; top: 50px;"></div>
+<div class="box box-standard" id="box2" style="left: 150px; top: 50px;"></div>
+<div class="box box-standard" id="box3" style="left: 280px; top: 50px;"></div>
+
+<div class="box chest" id="chest1" style="left: 400px; top: 50px;"></div>
+<div class="box chest" id="chest2" style="left: 520px; top: 50px;"></div>
+
+<script>
+const boxes = document.querySelectorAll('.box');
+const gravity = 0.5;
+const bounce = 0.6;
+const friction = 0.98;
+const boxSize = 100;
+
+const boxStates = [];
+
+boxes.forEach((box, index) => {
+  // Bezpieczne pobieranie pozycji startowej
+  let startX = parseFloat(box.style.left) || 0;
+  let startY = parseFloat(box.style.top) || 0;
+
+  boxStates[index] = {
+    element: box,
+    dragging: false,
+    x: startX,
+    y: startY,
+    vx: 0,
+    vy: 0,
+    lastX: startX,
+    lastY: startY
+  };
+
+  let state = boxStates[index];
+
+  const startDrag = (e) => {
+    state.dragging = true;
+    const touch = e.touches ? e.touches[0] : e;
+    state.offsetX = touch.clientX - state.x;
+    state.offsetY = touch.clientY - state.y;
+    state.vx = 0;
+    state.vy = 0;
+    state.element.style.zIndex = "1000"; // Wyciągnij na wierzch przy chwytaniu
+    e.preventDefault();
+  };
+
+  box.addEventListener('mousedown', startDrag);
+  box.addEventListener('touchstart', startDrag, {passive: false});
+});
+
+window.addEventListener('mousemove', (e) => {
+  boxStates.forEach(state => {
+    if (!state.dragging) return;
+    const touch = e.touches ? e.touches[0] : e;
+    state.lastX = state.x;
+    state.lastY = state.y;
+    state.x = touch.clientX - state.offsetX;
+    state.y = touch.clientY - state.offsetY;
+  });
+});
+
+window.addEventListener('touchmove', (e) => {
+  boxStates.forEach(state => {
+    if (!state.dragging) return;
+    const touch = e.touches[0];
+    state.lastX = state.x;
+    state.lastY = state.y;
+    state.x = touch.clientX - state.offsetX;
+    state.y = touch.clientY - state.offsetY;
+  });
+}, {passive: false});
+
+const endDrag = () => {
+  boxStates.forEach(state => {
+    if (state.dragging) {
+      state.dragging = false;
+      state.element.style.zIndex = "1";
+      // Obliczamy prędkość rzutu z limitem bezpieczeństwa
+      let rawVX = (state.x - state.lastX) * 0.8;
+      let rawVY = (state.y - state.lastY) * 0.8;
+      state.vx = Math.max(Math.min(rawVX, 20), -20);
+      state.vy = Math.max(Math.min(rawVY, 20), -20);
+    }
+  });
+};
+
+window.addEventListener('mouseup', endDrag);
+window.addEventListener('touchend', endDrag);
+
+function update() {
+  boxStates.forEach(state => {
+    if (!state.dragging) {
+      state.vy += gravity;
+      state.x += state.vx;
+      state.y += state.vy;
+      state.vx *= friction;
+      state.vy *= friction;
+
+      // Podłoga
+      if (state.y + boxSize > window.innerHeight) {
+        state.y = window.innerHeight - boxSize;
+        state.vy *= -bounce;
+        if (Math.abs(state.vy) < 1) state.vy = 0;
+      }
+      // Sufit
+      if (state.y < 0) {
+        state.y = 0;
+        state.vy *= -bounce;
+      }
+      // Ściany
+      if (state.x < 0) {
+        state.x = 0;
+        state.vx *= -bounce;
+      } else if (state.x + boxSize > window.innerWidth) {
+        state.x = window.innerWidth - boxSize;
+        state.vx *= -bounce;
+      }
+    }
+    
+    // Transform jest płynniejszy na telefonach
+    state.element.style.left = state.x + 'px';
+    state.element.style.top = state.y + 'px';
+  });
+  requestAnimationFrame(update);
+}
+
+update();
+</script>
+
+</body>
+</html>

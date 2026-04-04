@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cimcirymci</title>
+    <style>
+        body {
+            background-color: #ffffff; /* Biały tryb */
+            font-family: "Impact", sans-serif;
+            margin: 0;
+            padding: 15px;
+            text-align: center;
+            color: #000000;
+        }
+
+        .header-box {
+            background: #ffffff;
+            border: 4px solid #000000;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .header-box h1 {
+            margin: 0;
+            font-size: 35px;
+            color: #000000;
+            text-transform: lowercase;
+        }
+
+        .ad-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .ad-card {
+            background: #ffffff;
+            border: 3px solid #000000;
+            width: 100%;
+            max-width: 400px;
+            padding: 5px;
+            box-shadow: 8px 8px 0px #cccccc;
+        }
+
+        .ad-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .ad-link {
+            display: block;
+            background: #eeeeee;
+            color: #000000;
+            text-decoration: none;
+            font-size: 20px;
+            padding: 15px;
+            border-top: 2px solid #000000;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .ad-link:active {
+            background: #dddddd;
+        }
+
+        .blink {
+            animation: blinker 0.8s linear infinite;
+        }
+
+        @keyframes blinker {
+            50% { opacity: 0.3; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-box">
+        <h1 class="blink">cimcirymci</h1>
+    </div>
+
+    <div class="ad-container">
+
+        <div class="ad-card">
+            <img src="dashie.jpg" alt="Geometry Dash">
+            <a href="GeometryDash.html" class="ad-link">ZAGRAJ TERAZ!!</a>
+        </div>
+
+        <div class="ad-card">
+            <img src="freeram.jpg" alt="Free RAM">
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="ad-link">POBIERZ RAM (FREE)</a>
+        </div>
+
+        <div class="ad-card">
+            <img src="minicraft.jpg" alt="Minecraft">
+            <a href="https://share.google/CIxzn4VlQfpSQBOth" class="ad-link">MINECRAFT ZA DARMO!!</a>
+        </div>
+
+    </div>
+
+    <p style="margin-top: 30px; font-family: Arial; font-size: 11px; color: #666;">
+        Interet 2016 - cimcirymci Edition
+    </p>
+
+</body>
+</html>

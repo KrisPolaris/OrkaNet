@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OrkaNet Paint GIGA</title>
+
+    <style>
+        body {
+            background: #000;
+            color: #00ffff;
+            font-family: 'Segoe UI', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            overflow: hidden; /* Całkowita blokada skakania strony */
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-mini {
+            padding: 5px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        .toolbar {
+            background: #1a1a1a;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 2px solid #333;
+        }
+
+        #paintArea {
+            background: #111;
+            touch-action: none;
+            display: block;
+            margin: 0 auto;
+            flex-grow: 1; /* Płótno zajmie całą resztę miejsca! */
+            cursor: crosshair;
+        }
+
+        button {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-family: 'Bebas Neue', sans-serif;
+        }
+
+        input[type=color] {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        .size-info {
+            font-size: 0.8rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-mini">ORKANET PAINT PRO</div>
+
+<div class="toolbar">
+    <input type="color" id="colorPicker" value="#00ffff">
+    
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <input type="range" id="sizePicker" min="1" max="30" value="8" style="width: 80px;">
+        <span class="size-info">GRUBOŚĆ</span>
+    </div>
+
+    <button onclick="clearCanvas()">WYCZYŚĆ</button>
+</div>
+
+<canvas id="paintArea"></canvas>
+
+<script>
+const canvas = document.getElementById("paintArea");
+const ctx = canvas.getContext("2d");
+let drawing = false;
+let color = "#00ffff";
+let lineWidth = 8;
+
+function setupCanvas() {
+    // Ustawiamy wymiary na sztywno na podstawie okna przeglądarki
+    // Odejmujemy wysokość toolbara i nagłówka (ok. 120px)
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight - 110; 
+    
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+}
+
+window.addEventListener('load', setupCanvas);
+
+document.getElementById("colorPicker").addEventListener("input", (e) => color = e.target.value);
+document.getElementById("sizePicker").addEventListener("input", (e) => lineWidth = e.target.value);
+
+function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    if (e.touches && e.touches.length > 0) {
+        return { 
+            x: e.touches[0].clientX - rect.left, 
+            y: e.touches[0].clientY - rect.top 
+        };
+    }
+    return { x: e.offsetX, y: e.offsetY };
+}
+
+function start(e) {
+    drawing = true;
+    const pos = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
+}
+
+function move(e) {
+    if (!drawing) return;
+    if (e.cancelable) e.preventDefault(); 
+    const pos = getPos(e);
+    ctx.lineWidth = lineWidth;
+    ctx.strokeStyle = color;
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+}
+
+function stop() {
+    drawing = false;
+    ctx.closePath();
+}
+
+// Eventy
+canvas.addEventListener("mousedown", start);
+canvas.addEventListener("mousemove", move);
+window.addEventListener("mouseup", stop);
+
+canvas.addEventListener("touchstart", (e) => {
+    start(e);
+}, {passive: false});
+
+canvas.addEventListener("touchmove", (e) => {
+    move(e);
+}, {passive: false});
+
+canvas.addEventListener("touchend", stop);
+
+function clearCanvas() {
+    if(confirm("Czyścimy wszystko?")) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+}
+</script>
+
+</body>
+</html>

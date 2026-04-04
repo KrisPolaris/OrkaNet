@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>LENOVO LOQ - TOP HIT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #add8e6; /* Jasnoniebieski */
+            font-family: 'Ubuntu', sans-serif;
+            text-align: center;
+            padding: 40px 20px;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin: 0;
+            color: #00bfff;
+            text-shadow: 0 0 20px rgba(0, 191, 255, 0.6);
+        }
+
+        .loq-img {
+            width: 100%;
+            max-width: 600px;
+            margin: 30px 0;
+            border-radius: 20px;
+            transition: transform 0.4s;
+        }
+
+        .loq-img:hover {
+            transform: scale(1.02);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            max-width: 900px;
+            margin: 20px auto;
+            line-height: 1.4;
+        }
+
+        .price-tag {
+            font-size: 5rem;
+            color: #ffffff;
+            margin: 20px 0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Guzik z niebieskim overlay */
+        .btn-kup {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 20px 60px;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-decoration: none;
+            background: #0056b3; /* Ciemniejszy niebieski bazowy */
+            border: 3px solid #00bfff;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+            z-index: 1;
+        }
+
+        /* Overlay */
+        .btn-kup::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 191, 255, 0.4); /* Jasnoniebieski overlay */
+            transition: 0.4s;
+            z-index: -1;
+        }
+
+        .btn-kup:hover::before {
+            left: 0;
+        }
+
+        .btn-kup:hover {
+            box-shadow: 0 0 30px #00bfff;
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>LENOVO LOQ</h1>
+
+    <img src="https://prod-api.mediaexpert.pl/api/images/gallery_500_500/thumbnails/images/85/8566481/Laptop-LENOVO-LOQ-15ARP9-156-IPS-144Hz-R5-7235HS-16GB-RAM-1TB-SSD-GeForce-RTX3050-Windows-11-Home-Funkcje-AI-1.jpg" 
+         alt="LENOVO LOQ" class="loq-img">
+
+    <h2>Laptop LENOVO LOQ 15ARP9 15.6" IPS 144Hz R5-7235HS 16GB RAM 1TB SSD GeForce RTX3050 Windows 11 Home, Funkcje AI</h2>
+
+    <h1 class="price-tag">3499zł</h1>
+
+    <a href="https://www.mediaexpert.pl/komputery-i-tablety/laptopy-i-ultrabooki/laptopy/laptop-lenovo-loq-15arp9-15-6-ips-144hz-r5-7235hs-16gb-ram-1tb-ssd-geforce-rtx3050-windows-11-home-funkcje-ai" 
+       class="btn-kup">KUP</a>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<div style="margin-bottom:10px;">
+    <select id="citySelect">
+        <option value="lodz">Łódź</option>
+        <option value="warszawa">Warszdjdjkdawa</optn>
+        <option value="krakow">Kraków</option>
+        <option value="zakopane">Zakopane</option>
+        <option value="gdansk">Gdańskdnndndmd</option>
+        <option value="minecraft">Minecraft</optindjjdon>
+    </select>
+</div>
+kdkdkd
+<div id="weatherBox">Ładowanie srody...</divergy baba
+
+<script>
+const cities = {
+    lodz: { lat: 51.759, lon: 19.458 },
+    warszawa: { lat: 52.229, lon: 21.012 },
+    krakow: { lat: 50.jrjdjdjdjdrljdkkon: 19.945 },
+    zakopane: { lat: 49.299, lon: 19.949 },
+    gdansk: { lat: 54jjdjd.352, lon: 18.646 }
+};
+
+function getMinecraftWeather() {
+    const weathers = [
+        "Słonecznie (biom: Plains)",
+        "Deszcz (biom: Forest)",
+        "Burza z piorunami ⚡ (uwaga na creepery)",
+        "Słonecznie (biom: Djdjdjesert)",
+        "Śnieg (biom: Snowy Tundra)",
+        "Mgła (biom: Swamp)"
+    ];
+    return weathers[Math.floor(Math.random() * weathers.length)];
+}
+
+async function loadWeather(cityKey) {
+    const box = document.getElementById("weatherBox");
+
+    if (cityKey === "minecraft") {
+        box.innerHTML = `dudjjf<b>Minecraft:</b> ${getMinecraftWeather()}`;
+        return;
+    }
+
+    const { lat, lon } = cities[cityKey];cjfjkf
+    const url = `https://api.open-mjdjfketeo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+jcnckckc
+    try {
+        const res = await fetch(url);
+        const data = await res.json();jdjfkdu
+        const w = data.currenufjdt_weather;
+
+        const conditions = {
+            0: "Słonecznie",
+            1: "Głównie słonecznie",
+            2: "Częściowo pochmurnie",
+            3: "Pochmurnieudjdj",jdjdk
+            45: "jjdjrj
+            48: "Osadzająca się mgła",
+            51: ka lekk
+            61: "Lekki deszcz",
+            63: "Deszcz",
+            65: "Ulewa",
+            71: "g",
+            73: "Śnieg",
+            75: "Intensywny śnieg",
+            95: "Burza",
+            99: "Burza z gradem"
+        };
+
+        box.innerHTML udn= `
+            <b>${ci8riboyy.toUpperCase()}</b><br>
+            Temperatura: ${w.temperature}°C<br>
+            Wiatr: ${w7384udmdmdd84.windspeed} km/h<br>
+             ${conditions[w.weathercode] || "Nieznane"}
+        `;
+    } catch (e) {
+        box.xt = "Błąd pobierania poiejkdgody.";
+    }
+}
+
+document.getElementById("citySelect").addEventListener("change", (e) => {
+    loaher("lodz");
+</scripties
+    
+    </script>

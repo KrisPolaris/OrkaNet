@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>ORNET - SECRET PROJECT</title>
+    <style>
+        body {
+            background: #0a0a0a;
+            color: #00ff00;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .sigma-box {
+            border: 5px solid #00ff00;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            box-shadow: 0 0 20px #00ff00;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .sigma-box:hover {
+            transform: scale(1.05);
+        }
+
+        h1 { font-size: 3rem; margin-bottom: 10px; }
+        p { font-size: 1.2rem; }
+
+        #secret-btn {
+            background: #00ff00;
+            color: black;
+            border: none;
+            padding: 15px 30px;
+            font-weight: bold;
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        #gold-counter {
+            font-size: 2.5rem;
+            color: gold;
+            text-shadow: 2px 2px black;
+            margin: 20px;
+        }
+
+        .car {
+            position: absolute;
+            font-size: 50px;
+            transition: 0.1s linear;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="matrix-bg"></canvas>
+
+    <div class="sigma-box" id="main-ui">
+        <h1>STACJA SIGMA</h1>
+        <p>Wykryto urządzenie: ACER ASPIRE (Level: Legend)</p>
+        <p>Oczekiwanie na: LENOVO LOQ...</p>
+        
+        <div id="gold-counter">💰 PORTFEL: 0 PLN</div>
+        
+        <button id="secret-btn">ODPAL SKILL-UP!</button>
+    </div>
+
+    <script>
+        // MATRIX BACKGROUND
+        const canvas = document.getElementById('matrix-bg');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const letters = "0101SIGMAACERLOQROBLOXPYTHON";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#0f0';
+            ctx.font = fontSize + 'px monospace';
+
+            drops.forEach((y, i) => {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * fontSize, y * fontSize);
+                if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
+        }
+        setInterval(drawMatrix, 33);
+
+        // SECRET INTERACTION
+        let money = 0;
+        const btn = document.getElementById('secret-btn');
+        const counter = document.getElementById('gold-counter');
+
+        btn.addEventListener('click', () => {
+            money += 10;
+            counter.innerText = `💰 PORTFEL: ${money} PLN`;
+            
+            // Spawn drifting cars (BeamNG style!)
+            const car = document.createElement('div');
+            car.className = 'car';
+            car.innerText = '🏎️';
+            car.style.left = '-100px';
+            car.style.top = Math.random() * window.innerHeight + 'px';
+            document.body.appendChild(car);
+
+            let pos = -100;
+            const drive = setInterval(() => {
+                pos += 15;
+                car.style.left = pos + 'px';
+                if (pos > window.innerWidth) {
+                    clearInterval(drive);
+                    car.remove();
+                }
+            }, 20);
+
+            if (money >= 200) {
+                counter.style.color = '#00ffff';
+                counter.innerText = "🎮 PAD ODBLOKOWANY!";
+                btn.innerText = "GIGA CHAD MODE ON";
+                document.body.style.boxShadow = "inset 0 0 100px #00ff00";
+            }
+        });
+    </script>
+</body>
+</html>

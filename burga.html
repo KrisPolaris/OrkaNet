@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hamburger OrkaNet 🍔</title>
+<style>
+  body {
+    background: #ffe0b2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  /* Zwiększyłem wysokość kontenera, żeby wszystko się zmieściło */
+  .burger {
+    position: relative;
+    width: 180px;
+    height: 220px; 
+  }
+
+  .bun-top, .bun-bottom, .lettuce, .tomato, .cheese, .meat {
+    position: absolute;
+    width: 180px;
+  }
+
+  .bun-top {
+    top: 0;
+    height: 60px;
+    background: #f4a460;
+    border-radius: 100px 100px 20px 20px;
+    box-shadow: inset 0 8px 0 #e0913d;
+    z-index: 5;
+  }
+
+  .lettuce {
+    top: 55px;
+    height: 15px;
+    background: #4caf50;
+    border-radius: 20px;
+    z-index: 4;
+  }
+
+  .tomato {
+    top: 65px;
+    width: 160px;
+    height: 15px;
+    background: #e53935;
+    left: 10px;
+    border-radius: 10px;
+    box-shadow: inset 0 -3px 0 #b71c1c;
+    z-index: 3;
+  }
+
+  .cheese {
+    top: 75px;
+    width: 170px;
+    height: 12px;
+    background: #ffeb3b;
+    left: 5px;
+    border-radius: 3px;
+    z-index: 2;
+  }
+
+  .meat {
+    top: 85px;
+    width: 170px;
+    height: 35px;
+    background: #6d4c41;
+    left: 5px;
+    border-radius: 15px;
+    z-index: 1;
+  }
+
+  /* Teraz dolna bułka trzyma się reszty składników */
+  .bun-bottom {
+    top: 115px;
+    height: 45px;
+    background: #f4a460;
+    border-radius: 10px 10px 60px 60px;
+    box-shadow: inset 0 -5px 0 #e0913d;
+  }
+</style>
+</head>
+<body>
+  <div class="burger">
+    <div class="bun-top"></div>
+    <div class="lettuce"></div>
+    <div class="tomato"></div>
+    <div class="cheese"></div>
+    <div class="meat"></div>
+    <div class="bun-bottom"></div>
+  </div>
+</body>
+</html>

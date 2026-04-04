@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tłumacz</title>
+<!-- Czcionka Ubuntu z Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body {
+  margin: 0;
+  background-color: #000;
+  font-family: 'Ubuntu', sans-serif;
+  color: #00ffff;
+  text-align: center;
+}
+
+header {
+  padding: 20px 0;
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  gap: 15px;
+}
+
+textarea {
+  width: 90%;
+  max-width: 500px;
+  height: 120px;
+  background-color: #111;
+  border: 2px solid #00ffff;
+  border-radius: 10px;
+  color: #00ffff;
+  font-size: 1.2em;
+  padding: 10px;
+  text-shadow: 0 0 3px #00ffff;
+  resize: none;
+}
+
+select {
+  background-color: #111;
+  border: 2px solid #00ffff;
+  border-radius: 10px;
+  color: #00ffff;
+  font-size: 1.1em;
+  padding: 5px 10px;
+  text-shadow: 0 0 3px #00ffff;
+  margin: 0 5px;
+}
+
+button {
+  background-color: #000;
+  color: #00ffff;
+  border: 2px solid #00ffff;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 1.2em;
+  cursor: pointer;
+  text-shadow: 0 0 5px #00ffff;
+  transition: 0.2s;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #00ffff;
+  color: #000;
+  box-shadow: 0 0 15px #00ffff;
+}
+
+#output {
+  margin-top: 20px;
+  width: 90%;
+  max-width: 500px;
+  min-height: 50px;
+  background-color: #111;
+  border: 2px solid #00ffff;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: left;
+  font-size: 1.2em;
+  text-shadow: 0 0 3px #00ffff;
+  color: #00ffff;
+}
+</style>
+</head>
+<body>
+
+<header>Tłumacz</header>
+
+<div class="container">
+  <textarea id="inputText" placeholder="Wpisz tekst..."></textarea>
+  
+  <div>
+    <select id="langFrom">
+      <option value="pl">Polski</option>
+      <option value="en">Angielski</option>
+    </select>
+    →
+    <select id="langTo">
+      <option value="en">Angielski</option>
+      <option value="pl">Polski</option>
+    </select>
+  </div>
+
+  <button onclick="translate()">Tłumacz</button>
+  
+  <div id="output">Tu pojawi się tłumaczenie...</div>
+</div>
+
+<script>
+async function translate() {
+  const text = document.getElementById('inputText').value;
+  if(!text) return;
+
+  const from = document.getElementById('langFrom').value;
+  const to = document.getElementById('langTo').value;
+
+  try {
+    const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${from}|${to}`);
+    const data = await response.json();
+    document.getElementById('output').textContent = data.responseData.translatedText;
+  } catch(err) {
+    document.getElementById('output').textContent = 'Błąd tłumaczenia 😢';
+  }
+}
+</script>
+
+</body>
+</html>

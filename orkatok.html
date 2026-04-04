@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrkaTok - OrkaNet PREMIUM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0; padding: 0; height: 100%; 
+            background: #000; font-family: 'Bebas Neue', sans-serif;
+            overflow: hidden; color: white;
+        }
+
+        .orkatok-container {
+            width: 100%; height: 100vh;
+            overflow-y: scroll; 
+            scroll-snap-type: y mandatory;
+        }
+
+        .video-card, .ad-card {
+            width: 100%; height: 100vh;
+            scroll-snap-align: start; 
+            position: relative;
+            display: flex; align-items: center; justify-content: center;
+            background: #000;
+        }
+
+        video, .ad-img { 
+            width: 100%; 
+            height: 90vh; 
+            object-fit: contain; 
+            background: #000;
+            cursor: pointer;
+        }
+
+        .video-info {
+            position: absolute; left: 15px; bottom: 80px;
+            z-index: 10; text-shadow: 2px 2px 5px #000;
+            pointer-events: none;
+        }
+        .video-title { color: #00ffff; font-size: 1.6em; margin: 0; text-transform: uppercase; }
+        .video-author { color: #ffcc00; font-size: 1em; margin-top: 5px; }
+
+        .side-bar {
+            position: absolute; right: 15px; bottom: 150px;
+            display: flex; flex-direction: column; gap: 20px; z-index: 10;
+        }
+
+        .action-btn {
+            background: rgba(0,0,0,0.6); border: 2px solid #00ffff;
+            color: #00ffff; border-radius: 50%; width: 60px; height: 60px;
+            cursor: pointer; font-family: 'Bebas Neue';
+            box-shadow: 0 0 10px rgba(0,255,255,0.3);
+        }
+
+        .comments-overlay {
+            position: fixed; bottom: -100%; left: 0; width: 100%; height: 60%;
+            background: rgba(15,15,15,0.98); border-top: 3px solid #00ffff;
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            z-index: 20; padding: 20px; box-sizing: border-box;
+        }
+        .comments-overlay.active { bottom: 0; }
+        #commentList { height: 220px; overflow-y: auto; margin-bottom: 10px; border-bottom: 1px solid #333; }
+
+        .back-btn { 
+            position: fixed; top: 15px; left: 15px; z-index: 30;
+            background: #ff4444; color: white; border: none; 
+            padding: 10px 20px; font-family: 'Bebas Neue'; cursor: pointer;
+            border-radius: 5px; box-shadow: 0 0 10px rgba(255,0,0,0.5);
+        }
+
+        input { 
+            width: 70%; padding: 12px; background: #222; 
+            border: 1px solid #00ffff; color: #fff; font-family: 'Bebas Neue';
+        }
+
+        .ad-label {
+            position: absolute; top: 20px; right: 20px;
+            background: rgba(255, 204, 0, 0.8); color: black;
+            padding: 5px 10px; border-radius: 5px; font-size: 0.8em;
+        }
+
+        .comment-item {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid #222; padding: 8px; margin: 0;
+        }
+        .del-btn { background: none; border: none; cursor: pointer; font-size: 1.2em; }
+    </style>
+</head>
+<body>
+
+<button class="back-btn" onclick="window.location.href='super.html'">POWRÓT 🚪</button>
+
+<div class="orkatok-container" id="mainContainer"></div>
+
+<div class="comments-overlay" id="commentOverlay">
+    <button onclick="closeComments()" style="float:right; background:none; color:white; border:none; font-size:24px;">❌</button>
+    <h2 style="color:#00ffff; margin-top:0;">KOMENTARZE</h2>
+    <div id="commentList"></div>
+    <div style="display:flex; gap:10px;">
+        <input type="text" id="commentInput" placeholder="Napisz co myślisz...">
+        <button onclick="sendComment()" style="padding:10px 20px; background:#00ffff; border:none; font-family:'Bebas Neue';">DODAJ</button>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, doc, setDoc, getDoc, increment, collection, addDoc, query, orderBy, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDPvjNjR6nTHQuWdhQGAGk9iJgvPKDQTXA",
+        authDomain: "bebechchat.firebaseapp.com",
+        projectId: "bebechchat",
+        storageBucket: "bebechchat.firebasestorage.app",
+        messagingSenderId: "738356779230",
+        appId: "1:738356779230:web:2c41e46431284e3fb78a4f"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const user = localStorage.getItem('loggedUser') || "ADMIN";
+
+    const myVideos = [
+        { type: 'video', file: "film1.mp4", title: "japusko i ptoski" },
+        { type: 'video', file: "film2.mp4", title: "XO but it's in... Minecraft?" },
+        { type: 'video', file: "film3.mp4", title: "stupki z dupki XD" },
+        { type: 'video', file: "film4.mp4", title: "święta prawda" },
+        { type: 'video', file: "film5.mp4", title: "FLAPPY BABUSKA LIFE" },
+        { type: 'video', file: "film6.mp4", title: "Mortals - Dancing Road" },
+        { type: 'video', file: "film7.mp4", title: "2011 ahh car" },
+        { type: 'video', file: "film8.mp4", title: "gruby chłop" },
+        { type: 'video', file: "film9.mp4", title: "qaczka" },
+        { type: 'video', file: "film10.mp4", title: "Epic Hot Wheels" },
+        { type: 'video', file: "film11.mp4", title: "am niam mniam AAAA" },
+        { type: 'video', file: "film12.mp4", title: "WASH MY BELLAY" },
+        { type: 'video', file: "film13.mp4", title: "XD what a car 🚗🚘" },
+        { type: 'video', file: "film14.mp4", title: "Koty co mają 9 żyć😂" },
+        { type: 'video', file: "film15.mp4", title: "wtf is this 😭😭" },
+        { type: 'video', file: "film16.mp4", title: "Perfect lip sync🤣" },
+        { type: 'video', file: "film17.mp4", title: "washing maszinka" },
+        { type: 'video', file: "film18.mp4", title: "Perfekcyjna kanapka 🤣" },
+        { type: 'video', file: "film19.mp4", title: "typowe rzeczy z temu" },
+        { type: 'video', file: "film20.mp4", title: "wtf" },
+        { type: 'video', file: "film21.mp4", title: "Ranking Deserów" }
+    ];
+
+    const myAds = [
+        { type: 'ad', file: "freeram.jpg", link: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", title: "DARMOWY RAM POBIERZ TERAZ" },
+        { type: 'ad', file: "Stiw.png", link: "https://www.xbox.com/pl-PL/play/user/Garfos27", title: "zagraj z nim" },
+        { type: 'ad', file: "dashie.jpg", link: "GeometryDash.html", title: "ZAGRAJ W GEOMETRY DASH" },
+        { type: 'ad', file: "unarmed.png", link: "https://m.olx.pl/zwierzeta/q-kr%C3%B3liki/", title: "kupuj" },
+        { type: 'ad', file: "minicraft.jpg", link: "404.html", title: "ZAGRAJ W MINECRAFT" }
+    ];
+
+    const allContent = [...myVideos, ...myAds];
+    allContent.sort(() => Math.random() - 0.5);
+
+    const container = document.getElementById('mainContainer');
+
+    allContent.forEach((item, index) => {
+        const card = document.createElement('div');
+        if (item.type === 'video') {
+            card.className = 'video-card';
+            card.innerHTML = `
+                <video id="vid-${index}" src="${item.file}" autoplay muted loop playsinline onclick="this.muted = !this.muted"></video>
+                <div class="video-info">
+                    <p class="video-title">${item.title}</p>
+                    <p class="video-author">@${user}</p>
+                </div>
+                <div class="side-bar">
+                    <button class="action-btn" id="btn-like-${index}" onclick="window.like('${item.file}', ${index})">❤️<br><span id="l-${index}">0</span></button>
+                    <button class="action-btn" onclick="window.showComments('${item.file}')">💬</button>
+                </div>
+            `;
+        } else {
+            card.className = 'ad-card';
+            card.innerHTML = `
+                <a href="${item.link}" target="_blank">
+                    <img src="${item.file}" class="ad-img">
+                    <div class="ad-label">REKLAMA 💸</div>
+                </a>
+                <div class="video-info">
+                    <p class="video-title" style="color:#ffcc00">${item.title}</p>
+                    <p class="video-author">SPONSOROWANE</p>
+                </div>
+            `;
+        }
+        container.appendChild(card);
+        if (item.type === 'video') updateLikesDisplay(item.file, index);
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && entry.target.tagName === 'VIDEO') {
+                entry.target.play().catch(e => console.log("Play blocked", e));
+            } else if (!entry.isIntersecting && entry.target.tagName === 'VIDEO') {
+                entry.target.pause();
+            }
+        });
+    }, { threshold: 0.6 });
+
+    setTimeout(() => {
+        document.querySelectorAll('video').forEach(video => observer.observe(video));
+    }, 300);
+
+    window.like = async (name, idx) => {
+        const storageKey = `liked_${name}`;
+        const hasLiked = localStorage.getItem(storageKey);
+        const ref = doc(db, "orkatok", name);
+        const btn = document.getElementById(`btn-like-${idx}`);
+
+        if (!hasLiked) {
+            await setDoc(ref, { likes: increment(1) }, { merge: true });
+            localStorage.setItem(storageKey, "true");
+            if(btn) btn.style.borderColor = "#ff4444";
+        } else {
+            await setDoc(ref, { likes: increment(-1) }, { merge: true });
+            localStorage.removeItem(storageKey);
+            if(btn) btn.style.borderColor = "#00ffff";
+        }
+        updateLikesDisplay(name, idx);
+    };
+
+    async function updateLikesDisplay(name, idx) {
+        const snap = await getDoc(doc(db, "orkatok", name));
+        if (snap.exists()) {
+            const counter = document.getElementById(`l-${idx}`);
+            if(counter) counter.innerText = snap.data().likes || 0;
+        }
+    }
+
+    window.showComments = (name) => {
+        window.currentVideo = name;
+        document.getElementById('commentOverlay').classList.add('active');
+        const q = query(collection(db, "orkatok", name, "comments"), orderBy("time", "desc"));
+        onSnapshot(q, (snap) => {
+            const list = document.getElementById('commentList');
+            list.innerHTML = "";
+            snap.forEach(d => {
+                const data = d.data();
+                list.innerHTML += `
+                    <div class="comment-item">
+                        <p style="margin:0; text-align:left;">
+                            <span style="color:#00ffff;">${data.author}:</span> ${data.text}
+                        </p>
+                        <button class="del-btn" onclick="window.deleteComment('${name}', '${d.id}')">🗑️</button>
+                    </div>`;
+            });
+        });
+    };
+
+    window.deleteComment = async (videoName, commentId) => {
+        if(confirm("Usunąć ten komentarz?")) {
+            await deleteDoc(doc(db, "orkatok", videoName, "comments", commentId));
+        }
+    };
+
+    window.closeComments = () => document.getElementById('commentOverlay').classList.remove('active');
+
+    window.sendComment = async () => {
+        const input = document.getElementById('commentInput');
+        if(!input.value || !window.currentVideo) return;
+        await addDoc(collection(db, "orkatok", window.currentVideo, "comments"), {
+            author: user, text: input.value, time: Date.now()
+        });
+        input.value = "";
+    };
+</script>
+</body>
+</html>

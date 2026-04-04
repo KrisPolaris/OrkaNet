@@ -1,0 +1,267 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrkaNet OS v1.9 - Merge Edition</title>
+    <link rel="icon" type="image/png" href="Bebuch.png">
+    <style>
+        :root {
+            --bg-glass: rgba(255, 255, 255, 0.2);
+            --text-main: white;
+            --panel-bg: #f0f0f0;
+            --panel-text: black;
+            --accent: #0077be;
+        }
+        .dark-theme {
+            --bg-glass: rgba(0, 0, 0, 0.6);
+            --text-main: #e0e0e0;
+            --panel-bg: #1a1a1d;
+            --panel-text: white;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #000; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+        #phone-screen {
+            width: 95vw; max-width: 360px; height: 90vh; max-height: 740px;
+            background-image: url('Tapetaxd.jpg'); background-size: cover; background-position: center;
+            border: 8px solid #000; border-radius: 35px; position: relative;
+            display: flex; flex-direction: column; overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        #boot-screen { position: absolute; inset: 0; background: #000 url('boot.jpg') no-repeat center; background-size: contain; z-index: 6000; display: flex; justify-content: center; align-items: flex-end; padding-bottom: 50px; }
+        #lock-screen { position: absolute; inset: 0; background: url('198.jpg') no-repeat center; background-size: cover; z-index: 4000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; cursor: pointer; }
+        #pin-screen { position: absolute; inset: 0; background: rgba(0,0,0,0.9); z-index: 4500; display: none; flex-direction: column; align-items: center; justify-content: center; color: white; }
+        #notif-center { position: absolute; top: -100%; left: 0; width: 100%; height: 80%; background: var(--panel-bg); color: var(--panel-text); z-index: 3000; transition: 0.4s cubic-bezier(0.1, 0.7, 0.1, 1); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; padding: 20px; box-sizing: border-box; overflow-y: auto; }
+        #notif-center.active { top: 0; }
+        #brightness-overlay { position: absolute; inset: 0; background: black; opacity: 0; pointer-events: none; z-index: 1000; }
+        #status-bar { height: 25px; background: rgba(0,0,0,0.4); display: flex; justify-content: space-between; align-items: center; padding: 0 15px; font-size: 11px; color: white; z-index: 3100; cursor: pointer; }
+        #home-screen { flex: 1; padding: 20px 10px; display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: min-content; gap: 15px; z-index: 5; overflow-y: auto; }
+        #app-drawer { position: absolute; top: 100%; left: 0; width: 100%; height: 85%; background: rgba(0,0,0,0.9); z-index: 2500; transition: 0.5s; padding: 20px; box-sizing: border-box; display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: min-content; gap: 15px; overflow-y: auto; }
+        #app-drawer.active { top: 15%; border-radius: 20px 20px 0 0; }
+        .app-icon-container { display: flex; flex-direction: column; align-items: center; cursor: pointer; position: relative; }
+        .app-icon { width: 55px; height: 55px; border-radius: 12px; background: white; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 8px rgba(0,0,0,0.3); overflow: hidden; font-size: 25px; }
+        .app-icon img { width: 80%; height: 80%; object-fit: contain; }
+        .app-label { font-size: 10px; margin-top: 4px; color: white; text-shadow: 0 1px 2px #000; text-align: center; }
+        .del-btn { position: absolute; top: -5px; right: 0; background: red; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 12px; display: none; justify-content: center; align-items: center; z-index: 10; }
+        #dock { height: 70px; background: var(--bg-glass); display: flex; justify-content: space-evenly; align-items: center; margin: 0 10px 10px 10px; border-radius: 20px; backdrop-filter: blur(5px); cursor: pointer; }
+        #navigation-bar { height: 45px; background: #000; display: flex; justify-content: space-evenly; align-items: center; z-index: 150; }
+        .nav-btn { width: 35px; height: 35px; cursor: pointer; background-size: contain; background-repeat: no-repeat; }
+        #nav-back { background-image: url('nawigacja2.jpg'); }
+        #nav-home { background-image: url('nawigacja1.jpg'); }
+        #app-container { position: absolute; top: 25px; left: 0; width: 100%; height: calc(100% - 70px); background: white; z-index: 50; display: none; flex-direction: column; }
+        iframe { flex: 1; border: none; }
+        #settings-app { padding: 20px; color: var(--panel-text); background: var(--panel-bg); height: 100%; display: none; overflow-y: auto; }
+        input, button { padding: 8px; width: 100%; border-radius: 5px; border: 1px solid #ccc; margin-top: 5px; box-sizing: border-box; }
+        #bat-alert { position: absolute; inset: 0; background: rgba(0,0,0,0.85); z-index: 9000; display: none; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; gap: 20px; }
+        #bat-alert h2 { font-size: 28px; margin: 0; }
+        #bat-alert p { font-size: 16px; margin: 0; }
+        #bat-alert button { width: 160px; padding: 12px; border-radius: 10px; font-size: 16px; border: none; cursor: pointer; }
+    </style>
+</head>
+<body class="dark-theme">
+
+<div id="phone-screen">
+    <div id="boot-screen"><div style="color:white; font-size: 10px; margin-bottom: 20px;">OrkaNet OS Booting...</div></div>
+    <div id="lock-screen" onclick="checkLock()">
+        <div id="lock-time" style="font-size: 60px; font-weight: bold;">00:00</div>
+        <div id="lock-date" style="font-size: 18px;">Data</div>
+    </div>
+    <div id="pin-screen">
+        <h3>Podaj PIN</h3>
+        <input type="password" id="pin-input" readonly style="text-align:center; font-size: 24px;">
+        <div id="pin-grid" style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; width: 240px;"></div>
+    </div>
+
+    <div id="notif-center">
+        <h3>Panel Sterowania</h3>
+        <input type="range" min="0" max="85" value="0" oninput="changeBright(this.value)">
+        <button onclick="setTheme('light')">Jasny ☀️</button>
+        <button onclick="setTheme('dark')" style="background:#333;color:white">Ciemny 🌙</button>
+        <button onclick="document.getElementById('html-importer').click()" style="background:#0077be;color:white;margin-top:15px;">📥 Importuj .html (Gugel Plej)</button>
+        <input type="file" id="html-importer" accept=".html" style="display:none" onchange="importApp(this)">
+        <button onclick="location.reload()" style="margin-top:10px;background:red;color:white">Reset Systemu</button>
+    </div>
+
+    <div id="brightness-overlay"></div>
+    <div id="status-bar" onclick="toggleNotifCenter()">
+        <div class="left"><span id="stat-user">Użytkownik</span> <span id="stat-time">12:00</span></div>
+        <div class="right"><span id="stat-bat">🔋 100%</span></div>
+    </div>
+
+    <div id="home-screen" oncontextmenu="toggleEdit(event)"></div>
+    <div id="app-drawer"></div>
+
+    <div id="dock" onclick="handleDockClick(event)">
+        <div style="font-size:25px;" onclick="openApp('tel.html')">📞</div>
+        <div style="font-size:25px;" onclick="openApp('czat.html')">💬</div>
+        <div style="font-size:25px;" onclick="openSettings()">⚙️</div>
+    </div>
+
+    <div id="navigation-bar">
+        <div class="nav-btn" id="nav-back" onclick="iframeBack()"></div>
+        <div class="nav-btn" id="nav-home" onclick="goHome()"></div>
+    </div>
+
+    <div id="app-container">
+        <iframe id="app-iframe"></iframe>
+        <div id="settings-app">
+            <h2>Ustawienia</h2>
+            <p>Nazwa: <input type="text" onchange="updateUser(this.value)"></p>
+            <p>PIN: <input type="password" onchange="systemPIN = this.value"></p>
+            <p>Tapeta URL: <input type="text" onchange="changeWall(this.value)"></p>
+        </div>
+    </div>
+
+    <div id="bat-alert">
+        <h2>🔋 Niski poziom baterii!</h2>
+        <p id="bat-alert-msg">Podładuj mnie!</p>
+        <button onclick="chargeBattery()" style="background:#00cc44;color:white;">Podładuj ✅</button>
+        <button onclick="dismissBatAlert()" style="background:#555;color:white;">Później ❌</button>
+    </div>
+</div>
+
+<audio id="bat-sound" src="s570.ogg"></audio>
+
+<script>
+    let systemPIN = "";
+    let pinBuffer = "";
+    let batLvl = 100;
+    let editMode = false;
+    let batAlertShown = false;
+
+    let apps = [
+        {id: 1, name: 'Chrome', icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/1280px-Google_Chrome_icon_%28February_2022%29.svg.png', url: 'https://www.google.com/search?igu=1', isImg: true},
+        {id: 2, name: 'Spotify', icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/1280px-Spotify_logo_without_text.svg.png', url: 'https://open.spotify.com/embed/playlist/3kIURx1Kd8JJ5gReAYQVf7?si=Cio0OceuT0uURaKq79hQ8g&pi=tsuUI3ArSk2SI', isImg: true},
+        {id: 3, name: 'Flappy Bebe', icon: 'Bebe.jpg', url: 'flapibebzun.html', isImg: true},
+        {id: 4, name: 'GD', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnpKfYrZPyMtXfrPEBKeRYoAwR6rqzgXatcOxaL1Iw4Q&s=10', url: 'GeometryDash.html', isImg: true},
+        {id: 5, name: 'Notatnik', icon: '📔', url: 'notes.html'},
+        {id: 6, name: 'Skarbona', icon: '🐷', url: 'skarbonka.html'},
+        {id: 7, name: 'OrkaNet', icon: '🐋', url: 'index.html'},
+        {id: 8, name: 'Zegar', icon: '⌚', url: 'clock'},
+        {id: 9, name: 'OrkaTok', icon: '📜', url: 'orkatok.html'},
+        {id: 10, name: 'Lock', icon: '🔒', url: 'lock'},
+        {id: 11, name: 'Getting Over It', icon: '⛏️', url: 'getoverit.html'}
+    ];
+
+    setTimeout(() => {
+        document.getElementById('boot-screen').style.display = 'none';
+        document.getElementById('lock-screen').style.display = 'flex';
+    }, 3000);
+
+    (function buildPinGrid() {
+        const grid = document.getElementById('pin-grid');
+        const keys = ['1','2','3','4','5','6','7','8','9','C','0','OK'];
+        keys.forEach(k => {
+            const btn = document.createElement('button');
+            btn.textContent = k;
+            if (k === 'C') { btn.style.background = 'red'; btn.style.color = 'white'; }
+            if (k === 'OK') { btn.style.background = 'green'; btn.style.color = 'white'; }
+            btn.onclick = () => pressPin(k);
+            grid.appendChild(btn);
+        });
+    })();
+
+    function renderApps() {
+        const home = document.getElementById('home-screen');
+        const drawer = document.getElementById('app-drawer');
+        home.innerHTML = "";
+        drawer.innerHTML = "";
+        apps.forEach(app => { home.appendChild(createAppIcon(app, true)); });
+        [...apps].sort((a, b) => a.name.localeCompare(b.name)).forEach(app => { drawer.appendChild(createAppIcon(app, false)); });
+    }
+
+    function createAppIcon(app, withDel) {
+        const container = document.createElement('div');
+        container.className = 'app-icon-container';
+        container.onclick = () => handleLaunch(app.url);
+        if (withDel) {
+            const del = document.createElement('div');
+            del.className = 'del-btn';
+            del.textContent = 'X';
+            del.style.display = editMode ? 'flex' : 'none';
+            del.onclick = (e) => { e.stopPropagation(); removeApp(app.id); };
+            container.appendChild(del);
+        }
+        const icon = document.createElement('div');
+        icon.className = 'app-icon';
+        if (app.isImg) {
+            const img = document.createElement('img');
+            img.src = app.icon;
+            icon.appendChild(img);
+        } else {
+            icon.textContent = app.icon;
+        }
+        container.appendChild(icon);
+        const label = document.createElement('div');
+        label.className = 'app-label';
+        label.textContent = app.name;
+        container.appendChild(label);
+        return container;
+    }
+
+    function handleLaunch(url) {
+        if (editMode) return;
+        if (url === 'clock') openClock();
+        else if (url === 'lock') lockPhone();
+        else openApp(url);
+        document.getElementById('app-drawer').classList.remove('active');
+    }
+
+    function importApp(input) {
+        const file = input.files[0];
+        if (file) {
+            const url = URL.createObjectURL(file);
+            apps.push({id: Date.now(), name: file.name.replace('.html', ''), icon: '🌫️', url: url});
+            renderApps();
+            alert("Dodano apkę przez Gugel Plej!");
+        }
+    }
+
+    function removeApp(id) { apps = apps.filter(a => a.id !== id); renderApps(); }
+    function toggleEdit(e) { e.preventDefault(); editMode = !editMode; document.querySelectorAll('.del-btn').forEach(d => d.style.display = editMode ? 'flex' : 'none'); }
+    function handleDockClick(e) { if (e.target.id === 'dock') document.getElementById('app-drawer').classList.toggle('active'); }
+    function checkLock() { if (systemPIN === "") unlock(); else { document.getElementById('lock-screen').style.display = 'none'; document.getElementById('pin-screen').style.display = 'flex'; } }
+    function pressPin(val) { if (val === 'C') pinBuffer = ""; else if (val === 'OK') { if (pinBuffer === systemPIN) unlock(); else { alert("Zły PIN!"); pinBuffer = ""; } } else pinBuffer += val; document.getElementById('pin-input').value = "*".repeat(pinBuffer.length); }
+    function unlock() { document.getElementById('lock-screen').style.display = 'none'; document.getElementById('pin-screen').style.display = 'none'; pinBuffer = ""; }
+    function lockPhone() { goHome(); document.getElementById('lock-screen').style.display = 'flex'; }
+    function goHome() { document.getElementById('app-container').style.display = 'none'; document.getElementById('app-drawer').classList.remove('active'); editMode = false; renderApps(); }
+    function iframeBack() { try { document.getElementById('app-iframe').contentWindow.history.back(); } catch(e) {} }
+    function toggleNotifCenter() { document.getElementById('notif-center').classList.toggle('active'); }
+    function changeBright(v) { document.getElementById('brightness-overlay').style.opacity = v / 100; }
+    function changeWall(u) { document.getElementById('phone-screen').style.backgroundImage = `url('${u}')`; }
+    function updateUser(n) { document.getElementById('stat-user').innerText = n; }
+    function setTheme(m) { document.body.className = (m === 'dark' ? 'dark-theme' : ''); }
+    function openApp(url) { document.getElementById('app-iframe').src = url; document.getElementById('app-iframe').style.display = "block"; document.getElementById('settings-app').style.display = "none"; document.getElementById('app-container').style.display = 'flex'; }
+    function openSettings() { document.getElementById('app-iframe').style.display = "none"; document.getElementById('settings-app').style.display = "block"; document.getElementById('app-container').style.display = 'flex'; }
+    function openClock() {
+        const html = `<html><body style="background:#000;color:#00ff00;display:flex;justify-content:center;align-items:center;height:100vh;font-family:monospace;font-size:50px;margin:0;">
+            <div id="t"></div>
+            <script>function tick(){var n=new Date();document.getElementById('t').innerText=n.getHours()+':'+String(n.getMinutes()).padStart(2,'0')+':'+String(n.getSeconds()).padStart(2,'0');}tick();setInterval(tick,1000);<\/script>
+        </body></html>`;
+        openApp(URL.createObjectURL(new Blob([html], {type: 'text/html'})));
+    }
+    function showBatAlert(lvl) { if (batAlertShown) return; batAlertShown = true; document.getElementById('bat-sound').play().catch(() => {}); changeBright(70); document.getElementById('bat-alert-msg').textContent = `Bateria: ${lvl}% – Podładuj mnie!`; document.getElementById('bat-alert').style.display = 'flex'; }
+    function chargeBattery() { batLvl = 100; changeBright(0); batAlertShown = false; document.getElementById('bat-alert').style.display = 'none'; }
+    function dismissBatAlert() { batAlertShown = false; document.getElementById('bat-alert').style.display = 'none'; }
+
+    setInterval(() => {
+        batLvl--;
+        if (batLvl < 0) batLvl = 0;
+        document.getElementById('stat-bat').innerText = "🔋 " + batLvl + "%";
+        if (batLvl === 15 || batLvl === 5) showBatAlert(batLvl);
+    }, 13200);
+
+    function updateStats() {
+        const n = new Date();
+        const t = n.getHours() + ":" + String(n.getMinutes()).padStart(2, '0');
+        document.getElementById('stat-time').innerText = t;
+        document.getElementById('lock-time').innerText = t;
+        document.getElementById('lock-date').innerText = n.toLocaleDateString('pl-PL', {weekday: 'long', day: 'numeric', month: 'long'});
+    }
+
+    setInterval(updateStats, 1000);
+    renderApps();
+    updateStats();
+</script>
+</body>
+</html>

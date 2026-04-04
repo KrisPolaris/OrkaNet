@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Krystian ApkStore</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui;}
+body{
+  background:#05060a;
+  color:#fff;
+  display:flex;
+  justify-content:center;
+}
+.app{
+  width:100%;
+  max-width:480px;
+  padding:16px 10px 40px;
+}
+.header{
+  text-align:center;
+  margin-bottom:16px;
+}
+.header-title{
+  font-size:26px;
+  font-weight:700;
+}
+.header-sub{
+  font-size:12px;
+  color:#9ba0b0;
+  margin-top:4px;
+}
+.card{
+  background:#111827;
+  border-radius:12px;
+  padding:10px;
+  display:flex;
+  gap:10px;
+  margin-bottom:10px;
+}
+.icon{
+  width:52px;
+  height:52px;
+  border-radius:12px;
+  background:#1f2937;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+}
+.info{
+  flex:1;
+}
+.name{
+  font-size:15px;
+  font-weight:600;
+}
+.desc{
+  font-size:12px;
+  color:#9ca3af;
+  margin-top:2px;
+}
+.tag{
+  font-size:11px;
+  color:#22c55e;
+  margin-top:4px;
+}
+.btn{
+  align-self:center;
+}
+.btn a{
+  background:#22c55e;
+  border:none;
+  color:#000;
+  font-size:12px;
+  padding:6px 10px;
+  border-radius:999px;
+  cursor:pointer;
+  text-decoration:none;
+}
+.btn a:active{
+  transform:scale(0.96);
+}
+.footer{
+  margin-top:16px;
+  text-align:center;
+  font-size:11px;
+  color:#6b7280;
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="header">
+    <div class="header-title">Krystian ApkStore</div>
+    <div class="header-sub">prawdziwe APK w Twoim internecie 😎</div>
+  </div>
+
+  <!-- MINECRAFT -->
+  <div class="card">
+    <div class="icon">⛏️</div>
+    <div class="info">
+      <div class="name">Minecraft</div>
+      <div class="desc">minecraft-0-8-0.apk</div>
+      <div class="tag">Sandbox • klasyk</div>
+    </div>
+    <div class="btn">
+      <a href="minecraft-0-8-0.apk" download>POBIERZ APK</a>
+    </div>
+  </div>
+
+  <!-- AURORA STORE -->
+  <div class="card">
+    <div class="icon">🛒</div>
+    <div class="info">
+      <div class="name">Sklep z aplikacjami</div>
+      <div class="desc">AuroraStore-4.7.5.apk</div>
+      <div class="tag">Store • alternatywny sklep</div>
+    </div>
+    <div class="btn">
+      <a href="AuroraStore-4.7.5.apk" download>POBIERZ APK</a>
+    </div>
+  </div>
+
+  <!-- EPIC GAMEZ -->
+  <div class="card">
+    <div class="icon">🎮</div>
+    <div class="info">
+      <div class="name">Epic Gamez</div>
+      <div class="desc">EpicGamesStore-1.0.3.apk</div>
+      <div class="tag">Launcher • Epic</div>
+    </div>
+    <div class="btn">
+      <a href="EpicGamesStore-1.0.3.apk" download>POBIERZ APK</a>
+    </div>
+  </div>
+
+  <!-- ANGRY BIRDS SPACE -->
+  <div class="card">
+    <div class="icon">🐦</div>
+    <div class="info">
+      <div class="name">Angry Birds Space</div>
+      <div class="desc">com.rovio.angrybirdsspace.ads_2.2.14-221400_minAPI16(armeabi-v7a,x86)(nodpi)_apkmirror.com.apk</div>
+      <div class="tag">Arcade • klasyk w kosmosie</div>
+    </div>
+    <div class="btn">
+      <a href="com.rovio.angrybirdsspace.ads_2.2.14-221400_minAPI16(armeabi-v7a,x86)(nodpi)_apkmirror.com.apk" download>POBIERZ APK</a>
+    </div>
+  </div>
+
+  <!-- MINECRAFT MEGA STARY -->
+  <div class="card">
+    <div class="icon">🟩</div>
+    <div class="info">
+      <div class="name">Minecraft mega stary najstarszy</div>
+      <div class="desc">minecraft-pocket-edition-demo.apk</div>
+      <div class="tag">Demo • muzeum MC • o ja cię stary</div>
+    </div>
+    <div class="btn">
+      <a href="minecraft-pocket-edition-demo.apk" download>POBIERZ APK</a>
+    </div>
+  </div>
+
+  <div class="footer">
+    Klikasz „POBIERZ APK” → Android pobiera prawdziwy plik .apk z Twojego serwera.
+  </div>
+</div>
+
+</body>
+</html>

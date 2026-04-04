@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kotflix - Filmy</title>
+    
+    <script>
+        // SPRAWDZANIE LOGOWANIA
+        // Jeśli w pamięci przeglądarki nie ma klucza 'loggedUser', wracamy do logowania
+        if (!localStorage.getItem('loggedUser')) {
+            alert("Ej, najpierw się zaloguj!");
+            window.location.href = "index.html";
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            width: 100%;
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between; /* Żeby przycisk wyloguj był po boku */
+            align-items: center;
+            background-color: black;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #222;
+        }
+
+        .logo {
+            height: 35px;
+            margin-left: 15px;
+        }
+
+        .logout-btn {
+            background: #e50914;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin-right: 15px;
+            border-radius: 3px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .container {
+            padding: 10px;
+        }
+
+        .section-title {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #e5e5e5;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .movie-card {
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            background-color: #141414;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .movie-card img {
+            width: 100%;
+            aspect-ratio: 2/3;
+            object-fit: cover;
+            border: 0;
+        }
+
+        .movie-card p {
+            font-size: 0.75em;
+            margin: 6px;
+            text-align: center;
+            color: #b3b3b3;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="Kotflix.png" alt="Kotflix" class="logo">
+        <button class="logout-btn" onclick="logout()">Wyloguj</button>
+      <img src="Bebe.jpg" alt="Ty bebzunie bebzunowy">
+    </header>
+
+    <div class="container">
+        <h2 id="welcome-msg" class="section-title">Witaj w Kotflixie!</h2>
+        
+        <div class="grid">
+            <a href="fil1.mp4" class="movie-card">
+                <img src="mini1.jpg">
+                <p>yourtexthere</p>
+            </a>
+
+            <a href="fil2.mp4" class="movie-card">
+                <img src="mini2.jpg">
+                <p>yourtexthere</p>
+            </a>
+
+            <a href="fil3.mp4" class="movie-card">
+                <img src="mini3.jpg">
+                <p>yourtexthere</p>
+            </a>
+
+            <a href="fil4.mp4" class="movie-card">
+                <img src="mini4.jpg">
+                <p>yourtexthere</p>
+            </a>
+
+            <a href="fil5.mp4" class="movie-card">
+                <img src="mini5.jpg">
+                <p>yourtexthere</p>
+            </a>
+
+            <a href="fil6.mp4" class="movie-card">
+                <img src="mini6.jpg">
+                <p>yourtexthere</p>
+            </a>
+
+            <a href="fil7.mp4" class="movie-card">
+                <img src="mini7.jpg">
+                <p>yourtexthere</p>
+            </a>
+
+            <a href="fil8.mp4" class="movie-card">
+                <img src="mini8.jpg">
+                <p>yourtexthere</p>
+            </a>
+
+            <a href="fil9.mp4" class="movie-card">
+                <img src="mini9.jpg">
+                <p>yourtexthere</p>
+            </a>
+
+            <a href="fil10.mp4" class="movie-card">
+                <img src="mini10.jpg">
+                <p>yourtexthere</p>
+            </a>
+
+            <a href="fil11.mp4" class="movie-card">
+                <img src="mini11.jpg">
+                <p>yourtexthere</p>
+            </a>
+
+            <a href="fil12.mp4" class="movie-card">
+                <img src="mini12.jpg">
+                <p>yourtexthere</p>
+            </a>
+
+            <a href="fil13.mp4" class="movie-card">
+                <img src="mini13.jpg">
+                <p>yourtexthere</p>
+            </a>
+
+            <a href="fil14.mp4" class="movie-card">
+                <img src="mini14.jpg">
+                <p>yourtexthere</p>
+            </a>
+
+            <a href="fil15.mp4" class="movie-card">
+                <img src="mini15.jpg">
+                <p>yourtexthere</p>
+            </a>
+
+            <a href="fil16.mp4" class="movie-card">
+                <img src="mini16.jpg">
+                <p>yourtexthere</p>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Funkcja wylogowania
+        function logout() {
+            localStorage.removeItem('loggedUser');
+            window.location.href = "index.html";
+        }
+
+        // Możesz też wyświetlić imię użytkownika
+        const user = localStorage.getItem('loggedUser');
+        if (user) {
+            document.getElementById('welcome-msg').innerText = "Siema " + user + ", co oglądamy?";
+        }
+    </script>
+
+</body>
+</html>

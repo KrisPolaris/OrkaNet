@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<htl lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>OrkaGames</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    * { margin:0; padding:0; box-sizing: border-box; font-family: system-ui; }
+    body {
+        background: #0a0a0a;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+    }
+    .app {
+        width: 100%;
+        max-width: 480px;
+        padding: 16px 10px 40px;
+    }
+    .header {
+        text-align: center;
+        margin-bottom: 24px;
+    }
+    .header-title {
+        font-size: 26px;
+        font-weight: 700;
+        color: #22c55e;
+    }
+    .header-sub {
+        font-size: 14px;
+        color: #9ca3af;
+        margin-top: 4px;
+    }
+    .menu {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .menu button {
+        flex: 1 1 calc(50% - 10px);
+        padding: 12px;
+        border: none;
+        border-radius: 12px;
+        background: #22c55e;
+        color: #000;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .menu button:hover {
+        background: #16a34a;
+    }
+    .menu button:active {
+        transform: scale(0.95);
+    }
+    .game iframe {
+        width: 100%;
+        height: 450px;
+        border: 2px solid #22c55e;
+        border-radius: 15px;
+        background: #000;
+    }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="header">
+    <div class="header-title">OrkaGames 🎮</div>
+    <div class="header-sub">Wybierz grę i wykręć rekord! 😎</div>
+  </div>
+
+  <div class="menu">
+    <button onclick="showGame('dino')">🦖 Dino Run</button>
+    <button onclick="showGame('tetris')">🧱 Tetris</button>
+    <button onclick="showGame('flappy')">🦆 Flappy Bird</button>
+    <button onclick="showGame('gd')">🟦 Geometry Dash</button>
+  </div>
+
+  <div class="game" id="game-container">
+    <iframe id="frame" src="https://chromedino.com/black/"></iframe>
+  </div>
+</div>
+
+<script>
+function showGame(g) {
+  const frame = document.getElementById('frame');
+
+  if(g === 'dino') {
+    frame.src = "https://chromedino.com/batman";
+  }
+  else if(g === 'tetris') {
+    frame.src = "https://tetris.com/play-tetris";
+  }
+  else if(g === 'flappy') {
+    frame.src = "https://flappybird.io/";
+  }
+  else if(g === 'gd') {
+    // Tutaj wrzucasz swój plik z Geometry Dash
+    frame.src = "GeometryDash.html";
+  }
+}
+</script>
+
+</body>
+</html>

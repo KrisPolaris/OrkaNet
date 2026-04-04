@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>OrkaNet Camera</title>
+
+<style>
+    body {
+        background: #0d0d0d;
+        color: white;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 20px;
+    }
+
+    video, canvas {
+        width: 90%;
+        max-width: 400px;
+        border-radius: 12px;
+        border: 2px solid white;
+        margin-top: 15px;
+    }
+
+    button {
+        margin-top: 15px;
+        padding: 12px 20px;
+        font-size: 18px;
+        border-radius: 10px;
+        border: none;
+        background: #222;
+        color: white;
+    }
+
+    button:hover {
+        background: #333;
+    }
+</style>
+</head>
+<body>
+
+<h2>📸 OrkaNet Camera</h2>
+
+<video id="camera" autoplay playsinline></video>
+<br>
+<button id="takePhoto">Zrób zdjęcie</button>
+
+<canvas id="photoCanvas" style="display:none;"></canvas>
+
+<script>
+const video = document.getElementById("camera");
+const canvas = document.getElementById("photoCanvas");
+const btn = document.getElementById("takePhoto");
+
+// URUCHOMIENIE KAMERY
+async function startCamera() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "environment" }, // tylna kamera na telefonie
+            audio: false
+        });
+        video.srcObject = stream;
+    } catch (err) {
+        alert("Nie można uruchomić kamery.");
+    }
+}
+
+startCamera();
+
+// ROBIENIE ZDJĘCIA
+btn.addEventListener("click", () => {
+    canvas.style.display = "block";
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(video, 0, 0);
+
+    alert("Zdjęcie zrobione! Możesz je zapisać przytrzymując palcem.");
+});
+</script>
+
+</body>
+</html>

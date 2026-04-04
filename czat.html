@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BebechChat 💬</title>
+    <style>
+        @font-face { 
+            font-family: 'MojaCzcionka'; 
+            src: url('ok.ttf?v=1') format('truetype'), url('ok.ttf') format('opentype');
+            font-display: swap;
+        }
+
+        body { 
+            background: #000; color: #00ff00; 
+            font-family: 'MojaCzcionka', sans-serif; 
+            display: flex; flex-direction: column; height: 100vh; margin: 0; 
+            overflow: hidden;
+        }
+        
+        .chat-header {
+            display: flex; align-items: center; justify-content: center;
+            padding: 10px; background: #0a0a0a; border-bottom: 2px solid #00ff00;
+        }
+
+        #header-logo {
+            width: 45px; height: 45px; border-radius: 50%;
+            border: 2px solid #00ff00; margin-right: 12px;
+            box-shadow: 0 0 10px #00ff00; object-fit: cover;
+        }
+
+        .chat-selector {
+            display: flex; justify-content: center; gap: 8px;
+            padding: 10px; background: #111;
+        }
+
+        .room-btn {
+            padding: 8px 15px; font-size: 11px; background: #222;
+            color: #00ff00; border: 1px solid #00ff00; border-radius: 20px;
+            cursor: pointer; font-weight: bold; transition: 0.3s;
+        }
+
+        .room-btn.active {
+            background: #00ff00; color: #000; box-shadow: 0 0 15px #00ff00;
+        }
+
+        .hidden { display: none !important; }
+
+        #chat-window { 
+            flex: 1; overflow-y: auto; padding: 15px; 
+            display: flex; flex-direction: column;
+        }
+
+        .msg { 
+            position: relative; margin-bottom: 15px; padding: 12px; 
+            border-radius: 18px; max-width: 80%; width: fit-content; 
+        }
+
+        .msg-left { background: #1a1a1a; align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid #333; }
+        .msg-right { background: #004d00; align-self: flex-end; border-bottom-right-radius: 4px; border: 1px solid #00ff00; }
+
+        .user { font-size: 0.7rem; font-weight: bold; margin-bottom: 4px; color: #888; }
+        .vip-user { color: #ffcc00 !important; text-shadow: 0 0 8px #ffcc00; }
+        .pro-tag { color: #ffcc00; font-weight: bold; margin-right: 4px; }
+
+        .emoji { width: 24px; height: 24px; vertical-align: middle; margin: 0 2px; border-radius: 4px; }
+        .chat-img { max-width: 100%; border-radius: 10px; margin-top: 8px; border: 1px solid #00ff00; }
+        
+        audio { width: 200px; margin-top: 8px; filter: invert(100%) hue-rotate(90deg); }
+
+        .del-btn { 
+            position: absolute; right: -8px; top: -8px; 
+            background: #ff0000; color: #fff; border: none; 
+            border-radius: 50%; width: 20px; height: 20px; cursor: pointer;
+        }
+
+        .input-area { padding: 10px; background: #111; display: flex; gap: 6px; border-top: 2px solid #00ff00; flex-wrap: wrap; }
+        input { background: #222; border: 1px solid #00ff00; color: #fff; padding: 10px; border-radius: 8px; outline: none; flex: 1; }
+        #username-display { width: 70px; flex: none; color: #00ff00; text-align: center; font-weight: bold; background: transparent; border: none; }
+        
+        button { background: #00ff00; color: #000; border: none; padding: 10px; font-weight: bold; border-radius: 8px; cursor: pointer; }
+        #micBtn { background: #ff0000; color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="chat-header">
+        <img src="Bebe.jpg" id="header-logo">
+        <h2 id="chat-title">OGÓLNY 🌐</h2>
+    </div>
+
+    <div class="chat-selector">
+        <button class="room-btn active" onclick="switchRoom('global', 'Bebe.jpg', 'OGÓLNY 🌐')">OGÓLNY</button>
+        <button id="btn-kris" class="room-btn hidden" onclick="switchRoom('krystian', 'unarmed.png', 'KRYSTIAN 🛡️')">KRYSTIAN</button>
+        <button id="btn-szymon" class="room-btn hidden" onclick="switchRoom('szymon', 'Stiw.png', 'SZYMON ⚡')">SZYMON</button>
+    </div>
+
+    <div id="chat-window"></div>
+
+    <div class="input-area">
+        <input type="text" id="username-display" readonly>
+        <input type="text" id="message" placeholder="Napisz :bebzun: lub :pou:">
+        <input type="file" id="imageInput" accept="image/*" style="display:none">
+        <button onclick="document.getElementById('imageInput').click()">🖼️</button>
+        <button id="micBtn">🎤</button>
+        <button id="sendBtn">SEND</button>
+        <button onclick="window.location.href='super.html'" style="background:#444; color:white;">X</button>
+    </div>
+
+    <script type="module">
+        const loggedUser = localStorage.getItem('loggedUser') || "Gość";
+        document.getElementById('username-display').value = loggedUser;
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDPvjNjR6nTHQuWdhQGAGk9iJgvPKDQTXA",
+            authDomain: "bebechchat.firebaseapp.com",
+            projectId: "bebechchat",
+            storageBucket: "bebechchat.firebasestorage.app",
+            messagingSenderId: "738356779230",
+            appId: "1:738356779230:web:2c41e46431284e3fb78a4f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        let currentRoom = 'global';
+        const nameL = loggedUser.toLowerCase();
+
+        
+            // --- REVERSE PROTOCOL (ZMODYFIKOWANA LOGIKA) ---
+        const isAdmin = nameL === "admin";
+        
+        // Sprawdzamy, czy ktoś NIE JEST Krisem i NIE JEST Szymonem
+        const isOtherUser = !nameL.includes("kris") && !nameL.includes("krys") && !nameL.includes("szym") && !nameL.includes("simon");
+
+        // Jeśli jesteś Adminem LUB kimś innym (nie Krisem/Szymonem) -> widzisz wszystko
+        const canSeeKrystian = isAdmin || isOtherUser || nameL.includes("szym") || nameL.includes("simon");
+        const canSeeSzymon = isAdmin || isOtherUser || nameL.includes("kris") || nameL.includes("krys");
+
+        // Pokazywanie przycisków
+        if (canSeeKrystian) document.getElementById('btn-kris').classList.remove('hidden');
+        if (canSeeSzymon) document.getElementById('btn-szymon').classList.remove('hidden');
+
+        // FUNKCJA PRZEŁĄCZANIA
+        window.switchRoom = (room, img, title) => {
+            currentRoom = room;
+            document.getElementById('header-logo').src = img;
+            document.getElementById('chat-title').innerText = title;
+            document.querySelectorAll('.room-btn').forEach(b => b.classList.remove('active'));
+            if (event) event.target.classList.add('active');
+            listenToMessages();
+        };
+
+        function parseEmotes(text) {
+            if(!text) return "";
+            return text.replace(/:bebzun:/g, `<img src="Bebe.jpg" class="emoji">`)
+                       .replace(/:pou:/g, `<img src="pou.png" class="emoji">`);
+        }
+
+        // WYŚLIJ
+        async function sendMessage() {
+            const msgInp = document.getElementById('message');
+            const file = document.getElementById('imageInput').files[0];
+            let imgData = null;
+
+            if (file) {
+                const reader = new FileReader();
+                imgData = await new Promise(r => { reader.onload = e => r(e.target.result); reader.readAsDataURL(file); });
+            }
+
+            if (msgInp.value.trim() || imgData) {
+                await addDoc(collection(db, "messages"), {
+                    user: loggedUser, text: msgInp.value, image: imgData,
+                    room: currentRoom, timestamp: serverTimestamp()
+                });
+                msgInp.value = ""; document.getElementById('imageInput').value = "";
+            }
+        }
+
+        document.getElementById('sendBtn').onclick = sendMessage;
+        document.getElementById('message').onkeypress = (e) => { if(e.key === 'Enter') sendMessage(); };
+
+        // ODBIERAJ
+        let unsubscribe;
+        function listenToMessages() {
+            if (unsubscribe) unsubscribe();
+            const q = query(collection(db, "messages"), orderBy("timestamp", "asc"));
+            unsubscribe = onSnapshot(q, (snap) => {
+                const win = document.getElementById('chat-window');
+                win.innerHTML = "";
+                snap.forEach(d => {
+                    const data = d.data();
+                    if (data.room === currentRoom) {
+                        const div = document.createElement('div');
+                        const isMe = data.user === loggedUser;
+                        div.className = `msg ${isMe ? 'msg-right' : 'msg-left'}`;
+                        
+                        const isVip = nameL.includes("kris") || nameL.includes("krys") || nameL.includes("szym") || nameL.includes("simon") || isAdmin;
+                        const vipClass = isVip ? "vip-user" : "";
+                        const proTag = isVip ? "<span class='pro-tag'>{:-PRO-:}</span>" : "";
+
+                        div.innerHTML = `
+                            <span class="user ${vipClass}">${proTag}${data.user}</span>
+                            <span class="text">${parseEmotes(data.text)}</span>
+                            ${data.image ? `<img src="${data.image}" class="chat-img">` : ""}
+                            ${data.audio ? `<audio controls src="${data.audio}"></audio>` : ""}
+                            ${isMe || isAdmin ? `<button class="del-btn" onclick="removeMsg('${d.id}')">X</button>` : ""}
+                        `;
+                        win.appendChild(div);
+                    }
+                });
+                win.scrollTop = win.scrollHeight;
+            });
+        }
+
+        window.removeMsg = async (id) => { if(confirm("Usunąć?")) await deleteDoc(doc(db, "messages", id)); };
+        
+        listenToMessages();
+    </script>
+</body>
+</html>

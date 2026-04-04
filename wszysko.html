@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strona Krystiana</title>
+    <style>
+        /* Podstawowe style dla trybu ciemnego */
+        body {
+            background-color: #0a0a0a;
+            color: #add8e6; /* Jasnoniebieski tekst */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Kontener strony z efektem glow */
+        .container {
+            background: rgba(20, 20, 20, 0.8);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid #add8e6;
+            box-shadow: 0 0 20px rgba(173, 216, 230, 0.3), 
+                        inset 0 0 15px rgba(173, 216, 230, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Efekt świecenia tekstu */
+        h1, h2 {
+            text-shadow: 0 0 10px rgba(173, 216, 230, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .content {
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background: rgba(173, 216, 230, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .greetings {
+            color: #ffffff;
+            font-style: italic;
+            margin-top: 15px;
+        }
+
+        footer {
+            margin-top: 30px;
+            opacity: 0.7;
+            font-size: 1.2rem;
+        }
+
+        /* Animacja delikatnego pulsowania glow */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 20px rgba(173, 216, 230, 0.3); }
+            50% { box-shadow: 0 0 35px rgba(173, 216, 230, 0.5); }
+            100% { box-shadow: 0 0 20px rgba(173, 216, 230, 0.3); }
+        }
+
+        .container {
+            animation: pulse 4s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>O stronie</h2>
+        
+        <div class="content">
+            <p>Raczej ten internet jest fajny, ale no to jest ok...</p>
+        </div>
+
+        <div class="info-box">
+            <p><strong>Kiedy powstała strona:</strong> 20 styczeń 2026r.</p>
+            <p><strong>Kto zrobił:</strong> Krystian</p>
+        </div>
+
+        <div class="greetings">
+            <p>Pozdrowienia do: <strong>Ksawery, Antek, Szymon</strong></p>
+        </div>
+
+        <footer>
+            2026 🫠
+        </footer>
+    </div>
+
+</body>
+</html>

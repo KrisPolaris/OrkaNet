@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>gemibot</title>
+
+<style>
+body {
+  margin: 0;
+  background: black;
+  color: #00ccff;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+#chat {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  display: flex;
+  margin: 8px 0;
+  align-items: flex-end;
+}
+
+.message.user {
+  flex-direction: row-reverse;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 0 8px;
+}
+
+.bubble {
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px #00ccff;
+  word-wrap: break-word;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user .bubble {
+  background: #001a1f;
+}
+
+.bot .bubble {
+  background: #000;
+  border: 1px solid #00ccff;
+}
+
+.deleteBtn {
+  background: transparent;
+  border: none;
+  color: red;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#inputArea {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #00ccff;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  background: black;
+  border: 1px solid #00ccff;
+  color: #00ccff;
+  outline: none;
+}
+
+button {
+  margin-left: 10px;
+  padding: 10px;
+  background: black;
+  border: 1px solid #00ccff;
+  color: #00ccff;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+  
+  
+  <h1>‎ ‎‎ ‎‎ ‎‎ ‎‎ ‎‎ ‎‎ ‎‎ ‎‎ ‎‎‎ ‎ ‎‎ ‎‎ ‎‎ ‎‎ ‎‎ ‎Gemibot</h1>
+
+<div id="chat"></div>
+
+<div id="inputArea">
+  <input id="userInput" placeholder="Napisz wiadomość..." />
+  <button onclick="askAI()">Wyślij</button>
+</div>
+
+<script>
+const chat = document.getElementById("chat");
+const input = document.getElementById("userInput");
+
+let conversationHistory = JSON.parse(localStorage.getItem("chatHistory") || "[]");
+
+// render historii
+window.onload = () => {
+  refreshChat();
+};
+
+// render pojedynczej wiadomości
+function renderMessage(role, text, index) {
+  const div = document.createElement("div");
+  div.className = "message " + (role === "user" ? "user" : "bot");
+
+  const avatar = document.createElement("img");
+  avatar.className = "avatar";
+
+  if (role === "user") {
+    avatar.src = "Bebe.jpg";
+  } else {
+    avatar.src = "https://img.freepik.com/premium-vector/gemini-logo-icon_1273375-853.jpg?w=360";
+  }
+
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+
+  const textSpan = document.createElement("span");
+  textSpan.innerText = text;
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.innerText = "🗑️";
+  deleteBtn.className = "deleteBtn";
+  deleteBtn.onclick = () => deleteMessage(index);
+
+  bubble.appendChild(textSpan);
+  bubble.appendChild(deleteBtn);
+
+  div.appendChild(avatar);
+  div.appendChild(bubble);
+
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+// odświeżenie całego czatu
+function refreshChat() {
+  chat.innerHTML = "";
+  conversationHistory.forEach((msg, i) => {
+    renderMessage(msg.role, msg.text, i);
+  });
+}
+
+// usuwanie wiadomości
+function deleteMessage(index) {
+  conversationHistory.splice(index, 1);
+  saveHistory();
+  refreshChat();
+}
+
+// zapis
+function saveHistory() {
+  localStorage.setItem("chatHistory", JSON.stringify(conversationHistory));
+}
+
+// wysyłanie
+async function askAI() {
+  const text = input.value.trim();
+  if (!text) return;
+
+  input.value = "";
+
+  renderMessage("user", text, conversationHistory.length);
+  conversationHistory.push({ role: "user", text });
+  saveHistory();
+
+  const res = await fetch(
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyBUQIXOnLe6soa8DE-5s4GGIR4t3Ga3-Q4",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        contents: conversationHistory.map(msg => ({
+          role: msg.role === "user" ? "user" : "model",
+          parts: [{ text: msg.text }]
+        }))
+      })
+    }
+  );
+
+  const data = await res.json();
+
+  const reply =
+    data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+  if (reply) {
+    renderMessage("bot", reply, conversationHistory.length);
+    conversationHistory.push({ role: "model", text: reply });
+    saveHistory();
+  } else {
+    renderMessage("bot", "coś sie zbebeszyło sorry", conversationHistory.length);
+    console.log(data);
+  }
+}
+
+input.addEventListener("keypress", function(e) {
+  if (e.key === "Enter") {
+    askAI();
+  }
+});
+</script>
+
+</body>
+</html>

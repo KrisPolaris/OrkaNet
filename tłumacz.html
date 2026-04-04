@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tłumacz</title>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body {
+  margin: 0;
+  background: #000;
+  font-family: 'Ubuntu', sans-serif;
+  color: #00ffff;
+  text-align: center;
+}
+
+header {
+  padding: 20px;
+  font-size: 2em;
+  font-weight: bold;
+  text-shadow: 0 0 15px #00ffff;
+}
+
+.container {
+  padding: 20px;
+}
+
+textarea {
+  width: 95%;
+  height: 120px;
+  background: #111;
+  border: 2px solid #00ffff;
+  border-radius: 10px;
+  color: #00ffff;
+  font-size: 1.1em;
+  padding: 10px;
+}
+
+select, button {
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 1em;
+  background: black;
+  color: #00ffff;
+  border: 2px solid #00ffff;
+  border-radius: 10px;
+}
+
+button:hover {
+  background: #00ffff;
+  color: black;
+  box-shadow: 0 0 15px #00ffff;
+}
+
+#output {
+  margin-top: 20px;
+  padding: 10px;
+  min-height: 50px;
+  background: #111;
+  border: 2px solid #00ffff;
+  border-radius: 10px;
+}
+</style>
+</head>
+<body>
+
+<header>🔥 Tłumacz PL ↔ EN 🔥</header>
+
+<div class="container">
+  <textarea id="text" placeholder="Wpisz tekst..."></textarea>
+  <br>
+  <select id="from">
+    <option value="pl">Polski</option>
+    <option value="en">Angielski</option>
+  </select>
+  →
+  <select id="to">
+    <option value="en">Angielski</option>
+    <option value="pl">Polski</option>
+  </select>
+  <br>
+  <button onclick="translate()">Tłumacz</button>
+
+  <div id="output">Tu pojawi się tłumaczenie...</div>
+</div>
+
+<script>
+async function translate() {
+  const text = document.getElementById("text").value;
+  const from = document.getElementById("from").value;
+  const to = document.getElementById("to").value;
+
+  if (!text) return;
+
+  try {
+    const res = await fetch("https://api.mymemory.translated.net/get?q=" 
+      + encodeURIComponent(text) 
+      + "&langpair=" + from + "|" + to);
+
+    const data = await res.json();
+    document.getElementById("output").innerText =
+      data.responseData.translatedText;
+  } catch (e) {
+    document.getElementById("output").innerText =
+      "Błąd połączenia 😢";
+  }
+}
+</script>
+
+</body>
+</html>

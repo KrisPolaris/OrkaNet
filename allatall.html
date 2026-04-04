@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>allataboutloleverything</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #05060a;
+      --card: #0d0f18;
+      --accent: #ff6fd8;
+      --accent-soft: #3b2b4a;
+      --text-main: #f5f5f7;
+      --text-soft: #a0a3b5;
+      --border-soft: #26293a;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #15182a 0, #05060a 55%, #020308 100%);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .card {
+      width: 100%;
+      max-width: 520px;
+      background: linear-gradient(145deg, #0b0d16, #05060a);
+      border-radius: 18px;
+      border: 1px solid var(--border-soft);
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.02),
+        0 18px 45px rgba(0, 0, 0, 0.7);
+      padding: 20px 20px 18px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0 0, rgba(255, 111, 216, 0.12), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(111, 190, 255, 0.12), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+    .inner {
+      position: relative;
+      z-index: 1;
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+      background: rgba(5, 6, 10, 0.7);
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 4px 10px;
+      margin-bottom: 10px;
+    }
+    .tag-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px rgba(255, 111, 216, 0.9);
+    }
+    h1 {
+      margin: 0 0 4px;
+      font-size: 22px;
+      letter-spacing: 0.03em;
+    }
+    .subtitle {
+      margin: 0 0 16px;
+      font-size: 13px;
+      color: var(--text-soft);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    @media (min-width: 520px) {
+      .grid {
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      }
+    }
+    .block {
+      background: rgba(5, 6, 10, 0.85);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 10px 11px;
+    }
+    .block-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-soft);
+      margin: 0 0 6px;
+    }
+    .line {
+      font-size: 13px;
+      margin: 1px 0;
+    }
+    .label {
+      color: var(--text-soft);
+    }
+    .value-strong {
+      color: var(--text-main);
+    }
+    .value-soft {
+      color: var(--text-soft);
+    }
+    .highlight {
+      color: var(--accent);
+    }
+    .footer {
+      margin-top: 6px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .sign {
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+    .heart {
+      font-size: 16px;
+    }
+    .chip {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(5, 6, 10, 0.8);
+      color: var(--text-soft);
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="inner">
+      <div class="tag">
+        <span class="tag-dot"></span>
+        <span>allataboutloleverything.html</span>
+      </div>
+
+      <h1>All at about lol everything</h1>
+      <p class="subtitle">Mała metryczka wszechświata OrkaNetu, wersja 2026.</p>
+
+      <section class="grid">
+        <div class="block">
+          <h2 class="block-title">Twórcy &amp; pomysł</h2>
+          <p class="line">
+            <span class="label">Kto zrobił:</span>
+            <span class="value-strong"> Krystian</span>
+            <span class="value-soft"> (krispolaris, garfee)</span>
+          </p>
+          <p class="line">
+            <span class="label">Design:</span>
+            <span class="value-strong"> Copilot</span>
+          </p>
+          <p class="line">
+            <span class="label">Kto dał pomysł:</span>
+            <span class="value-soft"> sam się znalazł w mojej głowie</span>
+          </p>
+        </div>
+
+        <div class="block">
+          <h2 class="block-title">Pozdrowienia</h2>
+          <p class="line">
+            <span class="label">Pozdrawiam:</span>
+            <span class="value-soft"> Szymona, Ksawerego, Franka i Mikołaja</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2 class="block-title">Notka końcowa</h2>
+        <p class="line">
+          <span class="heart">&lt;3 🫠</span>
+          <span class="value-soft"> Krystian</span>
+          <span class="highlight"> 2026</span>
+        </p>
+      </section>
+
+      <footer class="footer">
+        <div class="sign">Ten plik istnieje tylko dlatego, że tak chciałeś.</div>
+        <div class="chip">OrkaNet lore entry • v1.0</div>
+      </footer>
+    </div>
+  </main>
+</body>
+</html>

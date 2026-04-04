@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>OrkaAI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui; }
+        body {
+            background: #020617;
+            color: #e5e7eb;
+            display: flex;
+            justify-content: center;
+        }
+        .app {
+            width: 100%;
+            max-width: 480px;
+            padding: 16px 10px 40px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .header-sub {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+        .chat {
+            background: #020617;
+            border-radius: 12px;
+            border: 1px solid #1f2937;
+            padding: 10px;
+            height: 220px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        .msg {
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        .msg.me {
+            text-align: right;
+            color: #a5b4fc;
+        }
+        .msg.ai {
+            text-align: left;
+            color: #6ee7b7;
+        }
+        .input-row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+        input {
+            flex: 1;
+            padding: 6px 8px;
+            border-radius: 999px;
+            border: 1px solid #374151;
+            background: #020617;
+            color: #e5e7eb;
+            font-size: 13px;
+        }
+        button {
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: none;
+            background: #22c55e;
+            color: #000;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        button:active {
+            transform: scale(0.96);
+        }
+        .video {
+            margin-top: 6px;
+        }
+        .video iframe {
+            width: 100%;
+            border-radius: 12px;
+            border: none;
+            aspect-ratio: 16/9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app">
+  <div class="header">
+    <div class="header-title">OrkaAI</div>
+    <div class="header-sub">super mądra sztuczna inteligencja* (*na pewno)</div>
+  </div>
+
+  <div class="chat" id="chat">
+    <div class="msg ai">OrkaAI: Cześć, czego chcesz się dowiedzieć? 😎</div>
+  </div>
+
+  <div class="input-row">
+    <input id="inp" placeholder="Napisz coś do OrkaAI...">
+    <button onclick="sendMsg()">Wyślij</button>
+  </div>
+
+  <div class="video">
+    <iframe 
+      src="https://www.youtube.com/embed/j5a0jTc9S10"
+      title="You've Been Trolled"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  </div>
+</div>
+
+<script>
+function sendMsg() {
+  const inp = document.getElementById('inp');
+  const chat = document.getElementById('chat');
+  const text = inp.value;
+  
+  if(!text) return;
+
+  const me = document.createElement('div');
+  me.className = 'msg me';
+  me.textContent = 'Ty: ' + text;
+  chat.appendChild(me);
+
+  const ai = document.createElement('div');
+  ai.className = 'msg ai';
+  ai.textContent = 'OrkaAI: ' + getReply(text);
+  chat.appendChild(ai);
+
+  chat.scrollTop = chat.scrollHeight;
+  inp.value = '';
+}
+
+function getReply(t) {
+  t = t.toLowerCase();
+  if(t.includes('siema') || t.includes('hej')) return 'No elo! Jestem totalnie prawdziwą sztuczną inteligencją.';
+  if(t.includes('kto') && t.includes('stworzył')) return 'Podobno jakiś 10-letni geniusz z Ozorkowa, legenda głosi...';
+  if(t.includes('orka')) return 'OrkaNet to internet przyszłości, mordo!';
+  if(t.includes('minecraft')) return 'Kopać, budować, nie zginąć! Minecraft to życie.';
+  return 'Słucham? Powiedz to jeszcze raz, ale głośniej, bo mi Bebzun uszy zasłonił.';
+}
+</script>
+
+</body>
+</html>
