@@ -8,7 +8,7 @@
         body { background: #000; color: #00e6ff; font-family: 'Segoe UI', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
         .login-box { 
             background: #050505; border: 2px solid #00e6ff; padding: 30px; 
-            border-radius: 15px; box-shadow: 0 0 20px #00e6ff; text-align: center; width: 300px;
+            border-radius: 15px; box-shadow: 0 0 20px #00e6ff; text-align: center; width: 320px;
         }
         h1 { text-shadow: 0 0 10px #00e6ff; margin-bottom: 20px; }
         input { 
@@ -18,8 +18,20 @@
         button { 
             width: 100%; padding: 10px; background: #00e6ff; color: #000; 
             border: none; font-weight: bold; cursor: pointer; border-radius: 5px; margin-top: 10px;
+            transition: 0.2s;
         }
+        button:hover { box-shadow: 0 0 15px #00e6ff; }
+        
+        .google-btn { 
+            background: #fff; color: #000; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px;
+        }
+        .anon-btn { 
+            background: transparent; border: 1px solid #00e6ff; color: #00e6ff; margin-top: 8px;
+        }
+        .anon-btn:hover { background: rgba(0, 230, 255, 0.1); }
+
         .link { font-size: 12px; margin-top: 15px; cursor: pointer; text-decoration: underline; }
+        .divider { margin: 15px 0; color: #555; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -29,12 +41,23 @@
     <input type="text" id="user" placeholder="Username">
     <input type="password" id="pass" placeholder="Hasło">
     <button id="actionBtn">ZALOGUJ</button>
+    
+    <div class="divider">LUB</div>
+
+    <button id="googleBtn" class="google-btn">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18">
+        Konto Google
+    </button>
+    
+    <button id="anonBtn" class="anon-btn">Wejdź jako Gość 🕵️</button>
+
     <div class="link" id="toggleMode">Nie masz konta? Zarejestruj się!</div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDPvjNjR6nTHQuWdhQGAGk9iJgvPKDQTXA",
@@ -47,10 +70,39 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
 
     let isRegister = false;
 
-    // Przełączanie między logowaniem a rejestracją
+    // --- LOGOWANIE GOOGLE ---
+    document.getElementById('googleBtn').onclick = async () => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            const name = user.displayName || "Użytkownik Google";
+            localStorage.setItem('loggedUser', name);
+            alert("Siema " + name + "!");
+            window.location.href = "super.html?username=" + name;
+        } catch (error) {
+            alert("Błąd Google: " + error.message);
+        }
+    };
+
+    // --- LOGOWANIE ANONIMOWE ---
+    document.getElementById('anonBtn').onclick = async () => {
+        try {
+            await signInAnonymously(auth);
+            const anonName = "Gość_" + Math.floor(Math.random() * 9000 + 1000);
+            localStorage.setItem('loggedUser', anonName);
+            alert("Wchodzisz jako " + anonName);
+            window.location.href = "super.html?username=" + anonName;
+        } catch (error) {
+            alert("Błąd logowania gościa: " + error.message);
+        }
+    };
+
+    // --- STARE LOGOWANIE NA HASŁO ---
     document.getElementById('toggleMode').onclick = () => {
         isRegister = !isRegister;
         document.getElementById('title').innerText = isRegister ? "REJESTRACJA" : "LOGOWANIE";
@@ -61,27 +113,21 @@
     document.getElementById('actionBtn').onclick = async () => {
         const username = document.getElementById('user').value.trim();
         const password = document.getElementById('pass').value.trim();
-
         if(!username || !password) return alert("Wpisz dane!");
 
         const userRef = doc(db, "users", username);
-
         if (isRegister) {
-            // REJESTRACJA
             const snap = await getDoc(userRef);
             if(snap.exists()) return alert("inną nazwe zröb");
-            
             await setDoc(userRef, { password: password });
             alert("gg masz konto");
             location.reload();
         } else {
-            // LOGOWANIE
             const snap = await getDoc(userRef);
             if(snap.exists() && snap.data().password === password) {
-                localStorage.setItem('loggedUser', username); // Zapamiętuje Cię
+                localStorage.setItem('loggedUser', username);
                 alert("siemano " + username + "!");
-                // Zamiast starego przekierowania, robimy to z Twoim parametrem:
-window.location.href = "super.html?username=" + username;
+                window.location.href = "super.html?username=" + username;
             } else {
                 alert("źle coś wpisałeś");
             }
