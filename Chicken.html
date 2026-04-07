@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>3D Chickifingerlicky</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: #87CEEB; /* Błękitne niebo dla kurczaka */ }
+        #info {
+            position: absolute; top: 20px; width: 100%; text-align: center;
+            color: #333; font-family: sans-serif; font-weight: bold; font-size: 20px;
+            pointer-events: none; /* Żeby nie blokowało klikania w kurczaka */
+        }
+    </style>
+</head>
+<body>
+
+<div id="info">Obracaj myszką. Kliknij w kurczaka, żeby usłyszeć chickifingerlicky!</div>
+
+<script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+</script>
+
+<script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    // --- Konfiguracja Sceny ---
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x87CEEB, 10, 50);
+
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 3, 6);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    // Cienie dla lepszego efektu
+    renderer.shadowMap.enabled = true;
+    document.body.appendChild(renderer.domElement);
+
+    // --- Światła ---
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    dirLight.position.set(5, 10, 5);
+    dirLight.castShadow = true;
+    scene.add(dirLight);
+
+    // --- Podłoże (Trawa) ---
+    const groundGeo = new THREE.PlaneGeometry(100, 100);
+    const groundMat = new THREE.MeshStandardMaterial({ color: 0x55aa55 });
+    const ground = new THREE.Mesh(groundGeo, groundMat);
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -1;
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    // --- Tworzenie Kurczaka (Kanciasty styl) ---
+    const chicken = new THREE.Group();
+    scene.add(chicken);
+
+    // Ciało (Białe)
+    const bodyGeo = new THREE.BoxGeometry(2, 2, 2);
+    const bodyMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
+    const body = new THREE.Mesh(bodyGeo, bodyMat);
+    body.position.y = 0.5;
+    body.castShadow = true;
+    chicken.add(body);
+
+    // Głowa
+    const headGeo = new THREE.BoxGeometry(1.2, 1.2, 1.2);
+    const head = new THREE.Mesh(headGeo, bodyMat);
+    head.position.set(0, 2, 0.8);
+    head.castShadow = true;
+    chicken.add(head);
+
+    // Dziób (Pomarańczowy)
+    const beakGeo = new THREE.ConeGeometry(0.3, 0.8, 4);
+    const beakMat = new THREE.MeshStandardMaterial({ color: 0xffaa00 });
+    const beak = new THREE.Mesh(beakGeo, beakMat);
+    beak.rotation.x = Math.PI / 2;
+    beak.rotation.y = Math.PI / 4;
+    beak.position.set(0, 2, 1.8);
+    beak.castShadow = true;
+    chicken.add(beak);
+
+    // Grzebień na głowie (Czerwony)
+    const combGeo = new THREE.BoxGeometry(0.2, 0.6, 0.8);
+    const combMat = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+    const comb = new THREE.Mesh(combGeo, combMat);
+    comb.position.set(0, 2.8, 0.8);
+    chicken.add(comb);
+
+    // Oczy (Czarne)
+    const eyeGeo = new THREE.BoxGeometry(0.2, 0.2, 0.2);
+    const eyeMat = new THREE.MeshStandardMaterial({ color: 0x111111 });
+    const eyeR = new THREE.Mesh(eyeGeo, eyeMat);
+    eyeR.position.set(0.6, 2.2, 1.2);
+    chicken.add(eyeR);
+    const eyeL = new THREE.Mesh(eyeGeo, eyeMat);
+    eyeL.position.set(-0.6, 2.2, 1.2);
+    chicken.add(eyeL);
+
+    // --- Kontrolki Myszy (Obracanie) ---
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true; // Płynne obracanie
+    controls.target.set(0, 1, 0);
+
+    // --- Dźwięk i Klikanie (Raycaster) ---
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    let isJumping = false;
+
+    // Przygotowanie audio
+    const audio = new Audio('chickifingerlicky.ogg');
+
+    window.addEventListener('click', (event) => {
+        // Przeliczenie pozycji myszy na znormalizowane współrzędne urządzenia (-1 do +1)
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        // Aktualizacja promienia raycastera
+        raycaster.setFromCamera(mouse, camera);
+
+        // Sprawdzenie, czy promień przecina dzieci grupy kurczaka
+        const intersects = raycaster.intersectObjects(chicken.children);
+
+        if (intersects.length > 0) {
+            // Trafiliśmy w kurczaka!
+            console.log("BOOP! Kurczak kliknięty.");
+            
+            // Odpal dźwięk
+            audio.currentTime = 0; // Reset na wypadek szybkiego klikania
+            audio.play().catch(e => console.log("Błąd odtwarzania dźwięku. Upewnij się, że plik chickifingerlicky.ogg istnieje!", e));
+
+            // Prosta animacja skoku
+            if (!isJumping) {
+                isJumping = true;
+                let jumpUp = true;
+                let startY = chicken.position.y;
+                
+                const jumpInterval = setInterval(() => {
+                    if (jumpUp) {
+                        chicken.position.y += 0.1;
+                        if (chicken.position.y > startY + 1.5) jumpUp = false;
+                    } else {
+                        chicken.position.y -= 0.1;
+                        if (chicken.position.y <= startY) {
+                            chicken.position.y = startY;
+                            isJumping = false;
+                            clearInterval(jumpInterval);
+                        }
+                    }
+                }, 16);
+            }
+        }
+    });
+
+    // --- Pętla Renderowania ---
+    function animate() {
+        requestAnimationFrame(animate);
+        controls.update(); // Wymagane przy enableDamping
+        renderer.render(scene, camera);
+    }
+
+    // Obsługa zmiany rozmiaru okna
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    animate();
+</script>
+
+</body>
+</html>

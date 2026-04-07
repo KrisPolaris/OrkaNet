@@ -1,141 +1,36 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OrkaNet</title>
-<link rel="icon" type="image/png" href="Pou.png">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-<style>
-body {
-  margin: 0;
-  background: url('123.jpg') no-repeat center center fixed;
-  background-size: cover;
-  font-family: 'Bebas Neue', sans-serif;
-  color: #00ffff;
-  text-align: center;
-  transition: background 0.5s ease;
-}
-
-header {
-  padding: 30px 0 10px 0;
-  font-size: 3.5em;
-  font-weight: bold;
-  color: #00ffff;
-  text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
-  line-height: 1em;
-}
-
-.vip-tag {
-  font-size: 0.4em;
-  color: #ffcc00;
-  display: block;
-  text-shadow: 0 0 10px #ffcc00, 0 0 20px #ff8800;
-  margin-top: 5px;
-  letter-spacing: 2px;
-}
-
-#username {
-  font-size: 1.2em;
-  margin-bottom: 20px;
-  display: block;
-  background: rgba(0,0,0,0.5);
-  padding: 5px;
-  border-bottom: 1px solid #00ffff;
-}
-
-.grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  padding: 20px 10px 50px 10px;
-}
-
-.tile {
-  background-color: rgba(17,17,17,0.85);
-  color: #00ffff;
-  border: 2px solid #00ffff;
-  border-radius: 12px;
-  width: 44%;
-  min-width: 130px;
-  padding: 15px 5px;
-  font-size: 0.9em;
-  font-weight: bold;
-  cursor: pointer;
-  text-decoration: none;
-  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-}
-
-.tile:hover {
-  background-color: #00ffff;
-  color: #000;
-  box-shadow: 0 0 25px #00ffff;
-  transform: scale(1.1) rotate(1deg);
-}
-
-.controls {
-  margin: 20px 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-}
-
-.btn-small {
-  background: rgba(0,255,255,0.2);
-  border: 1px solid #00ffff;
-  color: #00ffff;
-  padding: 8px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-family: 'Bebas Neue', sans-serif;
-  text-decoration: none;
-}
-
-.btn-logout {
-  background: #ff4444 !important;
-  color: white !important;
-  border: none !important;
-}
-
-@media(min-width: 600px) {
-  .tile { width: 22%; }
-}
-  
-  @keyframes neonPulse {
-  0% { box-shadow: 0 0 5px #00ffff; }
-  50% { box-shadow: 0 0 20px #00ffff; }
-  100% { box-shadow: 0 0 5px #00ffff; }
-}
-
-.tile {
-  animation: neonPulse 2s infinite ease-in-out;
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrkaNet</title>
+    <link rel="icon" type="image/png" href="Pou.png">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; background: #000 url('123.jpg') no-repeat center center fixed; background-size: cover; font-family: 'Bebas Neue', sans-serif; color: #00ffff; text-align: center; }
+        header { padding: 30px 0 10px 0; font-size: 3.5em; text-shadow: 0 0 10px #00ffff; }
+        .vip-tag { font-size: 0.4em; color: #ffcc00; display: block; text-shadow: 0 0 10px #ffcc00; letter-spacing: 2px; }
+        #username { font-size: 1.2em; margin-bottom: 20px; background: rgba(0,0,0,0.5); padding: 5px; border-bottom: 1px solid #00ffff; }
+        .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 20px 10px; }
+        .tile { background: rgba(17,17,17,0.85); color: #00ffff; border: 2px solid #00ffff; border-radius: 12px; width: 44%; min-width: 130px; padding: 15px 5px; text-decoration: none; animation: neonPulse 2s infinite ease-in-out; }
+        @keyframes neonPulse { 0%, 100% { box-shadow: 0 0 5px #00ffff; } 50% { box-shadow: 0 0 20px #00ffff; } }
+        .controls { margin: 10px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        .btn-small { background: rgba(0,255,255,0.2); border: 1px solid #00ffff; color: #00ffff; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-family: 'Bebas Neue'; }
+        @media(min-width: 600px) { .tile { width: 22%; } }
+    </style>
 </head>
 <body>
 
-<header id="main-header">
-    ORKANET
-    <span id="vip-label"></span>
-</header>
-
-<div id="username">Weryfikacja profilu OrkaNet...</div>
+<header id="main-header">ORKANET<span id="vip-label"></span></header>
+<div id="username">Weryfikacja profilu...</div>
 
 <div class="controls">
-    <a href="https://wa.me/48889360670" class="btn-small" style="background:#25D366; color:white; border:none;">Napisz do mnie 📱</a>
-    <button class="btn-small btn-logout" onclick="logout()">Wyloguj 🚪</button>
-    <p>pro tip: najlepsze rzeczy chowają sie na dole</p>
+    <a href="https://wa.me/48889360670" class="btn-small" style="background:#25D366; color:white;">Napisz do mnie 📱</a>
+    <button class="btn-small" style="background:#ff4444; color:white;" onclick="logout()">Wyloguj 🚪</button>
 </div>
 
 <div class="grid">
-  <a class="tile" href="czat.html">BebzunChat 💬</a>
+    <a class="tile" href="czat.html">BebzunChat 💬</a>
   <a class="tile" href="eaglercraft.html">MINECRAFT</a>
   <a class="tile" href="clicker.html">Creeper Clicker 💰</a>
   <a class="tile" href="burga.html">Burger 🍔</a>
@@ -158,10 +53,15 @@ header {
   <a class="tile" href="czas.html">Zegar</a>
   <a class="tile" href="kalendar.html">Kalendarz</a>
   <a class="tile" href="laptopy.html">ʟᴀᴘᴛᴏᴘʏ</a>
-  <a class="tile" href="404.html">TikTok (zablokowany, bo mnie zbanują)</a>
+  <a class="tile" href="67 isnt tuff, TikTok Community">TikTok (zablokowany, bo mnie zbanują)</a>
   <a class="tile" href="bugeria.html">Gry</a>
   <a class="tile" href="tudududu.html">Dźwięki</a>
   <a class="tile" href="yuh.html">Android</a>
+  <a class="tile" href="Car..html">Autko</a>
+  <a class="tile" href="Chicken.html">Kurka</a>
+  <a class="tile" href="rubik.html">Kostka Rubika</a>
+  <a class="tile" href=
+  <a class="tile" href="robluxy.html">Free Robux (100% Legitne!)</a>
 </div>
 
 <div class="controls">
@@ -172,51 +72,23 @@ header {
 <div class="controls">
     <audio id="monsterMusic" src="Monster.mp3"></audio>
     <button class="btn-small" onclick="document.getElementById('monsterMusic').play()">Muzyka START ⚡</button>
-    <button class="btn-small" onclick="const m = document.getElementById('monsterMusic'); m.pause(); m.currentTime = 0;">STOP</button>
+    <button class="btn-small" onclick="const m=document.getElementById('monsterMusic'); m.pause(); m.currentTime=0;">STOP</button>
 </div>
 
-<h4 style="color: #555; margin-bottom: 20px;">bebzun zjadł ESPUMISAN</h4>
-
 <script>
-  // 1. Sprawdzanie logowania
-  const loggedUser = localStorage.getItem('loggedUser');
-  
-  if (!loggedUser) {
-      alert("loguj sie bro wracaj");
-      window.location.href = "index.html"; 
-  } else {
-      document.getElementById('username').textContent = 'Twoje konto: ' + loggedUser;
-      
-      // 2. Logika SUPER GOŚCIA
-      const vipLabel = document.getElementById('vip-label');
-      const nameLower = loggedUser.toLowerCase();
-
-      // NAPRAWIONY IF: Wszystkie warunki połączone poprawnie przez || (lub)
-      if (
-          loggedUser === "Admin" || 
-          loggedUser === "Kris" || 
-          loggedUser === "KrisPolaris" || 
-          nameLower.includes("szym") ||
-          nameLower.includes("krys") ||    
-          nameLower.includes("simon") ||
-          nameLower.includes("kris")
-      ) {
-          vipLabel.className = "vip-tag";
-          vipLabel.innerHTML = "SUPER GOŚCIU 🔥";
-          document.getElementById('main-header').style.textShadow = "0 0 20px #ffcc00";
-          document.getElementById('main-header').style.color = "#ffcc00";
-      }
-  }
-
-  // 3. Funkcja wylogowania
-  function logout() {
-      if(confirm("Chcesz opuścić OrkaNet?")) {
-          localStorage.removeItem('loggedUser');
-          window.location.href = "index.html";
-      }
-  }
+    const loggedUser = localStorage.getItem('loggedUser');
+    if (!loggedUser) {
+        alert("Loguj się bro!"); window.location.href = "index.html";
+    } else {
+        document.getElementById('username').textContent = 'Twoje konto: ' + loggedUser;
+        const nameL = loggedUser.toLowerCase();
+        if (loggedUser === "Admin" || nameL.includes("kris") || nameL.includes("szym")) {
+            const v = document.getElementById('vip-label');
+            v.className = "vip-tag"; v.innerHTML = "SUPER GOŚCIU 🔥";
+            document.getElementById('main-header').style.color = "#ffcc00";
+        }
+    }
+    function logout() { if(confirm("Opuszczasz OrkaNet?")) { localStorage.removeItem('loggedUser'); window.location.href = "index.html"; } }
 </script>
-  <a href="orkatok.html">orkatok.html</a>
-
 </body>
 </html>

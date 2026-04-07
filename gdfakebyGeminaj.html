@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>KrisPolaris GD - ZERO LAG & SOLID BLOCKS</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: #000; font-family: sans-serif; }
+        #game { width: 100vw; height: 100vh; position: relative; background: #0a0a0a; border-bottom: 4px solid #0088ff; }
+        #player { 
+            width: 44px; height: 44px; position: absolute; left: 100px; bottom: 100px;
+            background: #555 url('Bebe.jpg') center/cover;
+            box-shadow: 0 0 10px #0088ff; z-index: 10;
+        }
+        .obs { position: absolute; z-index: 5; }
+        .block { width: 50px; height: 50px; background: #0088ff; border: 2px solid #fff; box-sizing: border-box; }
+        .spike { 
+            width: 0; height: 0; border-left: 25px solid transparent; 
+            border-right: 25px solid transparent; border-bottom: 50px solid #0055ff; 
+        }
+        #score { position: absolute; top: 20px; left: 20px; color: #00ccff; font-size: 30px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div id="game">
+        <div id="score">0</div>
+        <div id="player"></div>
+    </div>
+
+<script>
+    const playerEl = document.getElementById('player');
+    const gameEl = document.getElementById('game');
+    const scoreEl = document.getElementById('score');
+
+    let py = 0, vy = 0, score = 0, rotation = 0, gameActive = true;
+    let obstacles = [];
+    
+    const GRAVITY = -0.7;
+    const JUMP_FORCE = 12;
+    const SPEED = 8;
+
+    // STEROWANIE - zero laga
+    function jump() { if (vy === 0 && gameActive) vy = JUMP_FORCE; }
+    window.addEventListener('keydown', (e) => { if (e.code === 'Space') jump(); });
+    gameEl.addEventListener('mousedown', jump);
+
+    function createObstacle(type, x, yOffset = 0) {
+        const el = document.createElement('div');
+        el.className = 'obs ' + type;
+        gameEl.appendChild(el);
+        return { el, x, y: 100 + yOffset, type, width: 50, height: 50 };
+    }
+
+    function spawnPattern() {
+        if (!gameActive) return;
+        const rand = Math.random();
+        let xStart = window.innerWidth;
+
+        if (rand < 0.3) { // Triple Spike
+            for(let i=0; i<3; i++) obstacles.push(createObstacle('spike', xStart + (i*50)));
+        } else if (rand < 0.6) { // Staircase
+            obstacles.push(createObstacle('block', xStart));
+            obstacles.push(createObstacle('block', xStart + 50, 50));
+            obstacles.push(createObstacle('block', xStart + 100, 100));
+        } else { // Jump over block
+            obstacles.push(createObstacle('block', xStart));
+            obstacles.push(createObstacle('spike', xStart + 150));
+        }
+        setTimeout(spawnPattern, 2000 + Math.random() * 1000);
+    }
+
+    function update() {
+        if (!gameActive) return;
+
+        // FIZYKA GRACZA
+        vy += GRAVITY;
+        py += vy;
+
+        // KOLIZJE Z ZIEMIĄ I BLOKAMI
+        let grounded = false;
+        if (py <= 0) {
+            py = 0; vy = 0; grounded = true;
+        }
+
+        // PĘTLA PRZESZKÓD
+        for (let i = obstacles.length - 1; i >= 0; i--) {
+            let o = obstacles[i];
+            o.x -= SPEED;
+            o.el.style.left = o.x + 'px';
+            o.el.style.bottom = o.y + 'px';
+
+            // HITBOXY
+            const pRect = { l: 100 + 5, r: 100 + 39, b: 100 + py + 2, t: 100 + py + 42 };
+            const oRect = { l: o.x + 5, r: o.x + 45, b: o.y, t: o.y + (o.type === 'spike' ? 40 : 50) };
+
+            if (pRect.r > oRect.l && pRect.l < oRect.r && pRect.t > oRect.b && pRect.b < oRect.t) {
+                // Czy stoimy NA bloku?
+                if (o.type === 'block' && vy < 0 && pRect.b >= oRect.t - 15) {
+                    py = o.y - 100 + 50;
+                    vy = 0;
+                    grounded = true;
+                } else {
+                    gameActive = false;
+                    alert("Game Over! Score: " + score);
+                    location.reload();
+                }
+            }
+
+            if (o.x < -100) {
+                o.el.remove();
+                obstacles.splice(i, 1);
+                score++;
+                scoreEl.innerText = score;
+            }
+        }
+
+        // ROTACJA
+        if (!grounded) {
+            rotation += 5;
+        } else {
+            rotation = Math.round(rotation / 90) * 90;
+        }
+
+        playerEl.style.bottom = (100 + py) + 'px';
+        playerEl.style.transform = `rotate(${rotation}deg)`;
+
+        requestAnimationFrame(update);
+    }
+
+    spawnPattern();
+    update();
+</script>
+</body>
+</html>
