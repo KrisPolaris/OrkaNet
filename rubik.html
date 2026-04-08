@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>3D Rubik's Cube - Three.js</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: #111; font-family: sans-serif; }
+        #ui { position: absolute; top: 20px; left: 20px; z-index: 10; display: flex; gap: 10px; }
+        button { 
+            padding: 10px 20px; cursor: pointer; border: none; border-radius: 5px;
+            background: #444; color: white; font-weight: bold; transition: 0.3s;
+        }
+        button:hover { background: #666; }
+        #status { color: white; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div id="ui">
+    <button onclick="shuffleCube()">Pomieszaj</button>
+    <button onclick="solveCube()">Ułóż (Auto-Solve)</button>
+</div>
+
+<script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+        }
+    }
+</script>
+
+<script type="module">
+    import * as THREE from 'three';
+
+    // --- Konfiguracja Sceny ---
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    camera.position.set(5, 5, 5);
+    camera.lookAt(0, 0, 0);
+
+    // --- Tworzenie Kostki ---
+    const cubeGroup = new THREE.Group();
+    scene.add(cubeGroup);
+
+    const pieces = [];
+    const colors = [
+        0xffffff, 0xffff00, // Biały, Żółty (Góra/Dół)
+        0xff0000, 0xffa500, // Czerwony, Pomarańczowy (Przód/Tył)
+        0x0000ff, 0x00ff00  // Niebieski, Zielony (Lewo/Prawo)
+    ];
+
+    function createCube() {
+        const geometry = new THREE.BoxGeometry(0.95, 0.95, 0.95);
+        for (let x = -1; x <= 1; x++) {
+            for (let y = -1; y <= 1; y++) {
+                for (let z = -1; z <= 1; z++) {
+                    const materials = colors.map(c => new THREE.MeshBasicMaterial({ color: c }));
+                    const mesh = new THREE.Mesh(geometry, materials);
+                    mesh.position.set(x, y, z);
+                    cubeGroup.add(mesh);
+                    pieces.push(mesh);
+                }
+            }
+        }
+    }
+    createCube();
+
+    // --- Logika Ruchów ---
+    let moveHistory = [];
+    let isAnimating = false;
+
+    function rotateLayer(axisIndex, layerValue, angle, saveToHistory = true) {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        const group = new THREE.Group();
+        // FIX: Dodajemy grupę obrotową bezpośrednio do obracającej się kostki, a nie do sceny
+        cubeGroup.add(group);
+
+        const movingPieces = pieces.filter(p => {
+            // FIX: Operujemy na lokalnych pozycjach wewnątrz cubeGroup
+            const val = axisIndex === 0 ? p.position.x : axisIndex === 1 ? p.position.y : p.position.z;
+            return Math.round(val) === layerValue;
+        });
+
+        movingPieces.forEach(p => group.attach(p));
+
+        if (saveToHistory) moveHistory.push({ axisIndex, layerValue, angle });
+
+        let currentRotation = 0;
+        const speed = 0.15;
+
+        function animateRotation() {
+            if (Math.abs(currentRotation) < Math.abs(angle)) {
+                const step = angle > 0 ? speed : -speed;
+                group.rotation[axisIndex === 0 ? 'x' : axisIndex === 1 ? 'y' : 'z'] += step;
+                currentRotation += step;
+                requestAnimationFrame(animateRotation);
+            } else {
+                // Koniec animacji - twarde przypisanie kąta
+                group.rotation[axisIndex === 0 ? 'x' : axisIndex === 1 ? 'y' : 'z'] = angle;
+                
+                movingPieces.forEach(p => {
+                    cubeGroup.attach(p);
+                    // FIX: Snapujemy pozycję do pełnych liczb, żeby kostki się nie rozjechały
+                    p.position.set(
+                        Math.round(p.position.x), 
+                        Math.round(p.position.y), 
+                        Math.round(p.position.z)
+                    );
+                });
+                
+                cubeGroup.remove(group); // Sprzątamy
+                isAnimating = false;
+            }
+        }
+        animateRotation();
+    }
+
+    // --- Funkcje Panelu sterowania ---
+    window.shuffleCube = () => {
+        if (isAnimating) return;
+        const axis = Math.floor(Math.random() * 3);
+        const layer = Math.floor(Math.random() * 3) - 1;
+        const angle = Math.PI / 2 * (Math.random() > 0.5 ? 1 : -1);
+        rotateLayer(axis, layer, angle);
+    };
+
+    window.solveCube = async () => {
+        while (moveHistory.length > 0 && !isAnimating) {
+            const lastMove = moveHistory.pop();
+            rotateLayer(lastMove.axisIndex, lastMove.layerValue, -lastMove.angle, false);
+            
+            // Czekamy na zakończenie animacji przed kolejnym ruchem
+            await new Promise(resolve => {
+                const check = setInterval(() => {
+                    if (!isAnimating) {
+                        clearInterval(check);
+                        resolve();
+                    }
+                }, 50);
+            });
+        }
+    };
+
+    // --- Render Loop ---
+    function animate() {
+        requestAnimationFrame(animate);
+        // Obrót całej kostki dla bajery (teraz już bezpieczny!)
+        cubeGroup.rotation.y += 0.005;
+        cubeGroup.rotation.x += 0.005;
+        renderer.render(scene, camera);
+    }
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    animate();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Roblox Rewards Central - Official 2026</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: 'Gotham', 'Segoe UI', sans-serif; background-color: #f2f4f5; margin: 0; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+        #header { width: 100%; background: #ffffff; padding: 15px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; }
+        #main-container { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; width: 90%; max-width: 450px; margin-top: 20px; z-index: 10; }
+        .verified-badge { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px; font-size: 0.8em; color: #555; border: 1px solid #ddd; padding: 5px; border-radius: 5px; background: #fafafa; }
+        .online-count { color: #2ecc71; font-weight: bold; font-size: 0.9em; margin-bottom: 15px; }
+        h1 { color: #de1b1b; text-shadow: 1px 1px #ffcc00; font-size: 1.8em; }
+        .promo-gift { font-size: 3em; margin: 10px 0; animation: bounce 1s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .btn { background-color: #0084ff; color: white; border: none; padding: 15px; font-size: 1.1em; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; border-bottom: 4px solid #005bb5; }
+        #captcha-box { border: 1px solid #d3d3d3; background: #f9f9f9; padding: 10px; display: flex; align-items: center; gap: 10px; margin: 15px 0; border-radius: 3px; cursor: pointer; }
+        #captcha-check { width: 24px; height: 24px; border: 2px solid #c1c1c1; background: white; border-radius: 2px; display: flex; align-items: center; justify-content: center; }
+        .captcha-spinner { width: 18px; height: 18px; border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite; display: none; }
+        
+        #hacker-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; color: #0f0; z-index: 9999; flex-direction: column; justify-content: center; align-items: center; text-align: center; font-family: 'Courier New', monospace; }
+        .shake { animation: shake 0.1s infinite; color: red; font-size: 2.5em; font-weight: bold; }
+        #bebuch-img { width: 200px; margin: 20px; border: 3px solid red; box-shadow: 0 0 20px red; }
+        #camera-feed { width: 250px; border: 2px solid white; margin-top: 10px; transform: scaleX(-1); }
+        .adware { position: fixed; width: 150px; background: white; border: 2px solid red; padding: 10px; z-index: 10000; box-shadow: 5px 5px 0 black; cursor: pointer; font-size: 0.8em; display: none; }
+        
+        /* Fake Systemowy Pasek Powiadomień */
+        #fake-notif { position: fixed; top: -100px; left: 5%; width: 90%; background: rgba(255, 255, 255, 0.95); border-radius: 15px; padding: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 10001; display: flex; align-items: center; gap: 10px; transition: top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); font-family: sans-serif; }
+        #fake-notif img { width: 40px; border-radius: 8px; }
+        #fake-notif-text { font-size: 0.9em; color: black; text-align: left; }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes shake { 0% { transform: translate(2px, 2px); } 50% { transform: translate(-2px, -2px); } }
+    </style>
+</head>
+<body>
+
+<div id="fake-notif">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Roblox_logo.svg/1200px-Roblox_logo.svg.png">
+    <div id="fake-notif-text">
+        <b id="notif-title">Wiadomość od MrBeast</b><br>
+        <span id="notif-body">Twoje Robuxy są gotowe!</span>
+    </div>
+</div>
+
+<div id="ad1" class="adware">🔥 KLIKNIJ PO ROBOX!</div>
+<div id="ad2" class="adware">🎁 DARMOWY BOBLOX!</div>
+<div id="ad3" class="adware">⚠️ TWOJE ROBUX CZEKAJĄ!</div>
+
+<div id="header"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Roblox_logo.svg/1200px-Roblox_logo.svg.png" width="120"></div>
+
+<div id="main-container">
+    <div class="verified-badge">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png" width="18"> 
+        <span>Verified by Google - Bezpieczne dla dzieci 2026</span>
+    </div>
+    <div class="online-count">🟢 <span id="user-count">21,492</span> dzieci teraz odbiera!</div>
+    
+    <div id="step-connect">
+        <div class="promo-gift">🎁</div>
+        <h1>SUPER PREZENT!</h1>
+        <p>Wpisz nick i odbierz 50,000 Robuxów!</p>
+        <input type="text" id="username" placeholder="Twój nick w Roblox..." style="width: 90%; padding: 12px; margin-bottom: 10px; border: 2px solid #0084ff; border-radius: 8px;">
+        <div id="captcha-box" onclick="runCaptcha()">
+            <div id="captcha-check"><div class="captcha-spinner" id="cap-spin"></div></div>
+            <span style="font-size: 0.9em; color: #555;">Potwierdź, że nie jesteś robotem</span>
+        </div>
+        <button class="btn" id="gen-btn" disabled style="opacity: 0.5;">DALEJ - ODBIERZ ROBUX</button>
+    </div>
+
+    <div id="step-final" style="display: none;">
+        <h2 style="color: #e67e22;">OSTATNI KROK!</h2>
+        <p>Potwierdź PIN do telefonu, aby aktywować kod!</p>
+        <input type="password" id="pin" placeholder="Twój PIN..." style="width: 80%; padding: 15px; font-size: 1.2em; border: 2px solid #2ecc71; border-radius: 8px;">
+        <button class="btn" style="background: #2ecc71; border-bottom: 4px solid #1e8449;" onclick="finalize()">WYŚLIJ ROBUXY!</button>
+    </div>
+</div>
+
+<div id="hacker-screen">
+    <div class="shake">SYSTEM OVERRIDE</div>
+    <img src="Bebuch.png" id="bebuch-img" alt="HACKER BEBZUN" onerror="this.src='https://via.placeholder.com/200?text=Bebuch+Missing'">
+    <div class="shake" style="font-size: 1.5em;">HACKED BY BEBZUN</div>
+    <div id="random-code" style="color: #ffff00; font-size: 1.2em; margin: 10px;">PRZECHWYTYWANIE...</div>
+    <p id="loc-text" style="color: #0f0;"></p>
+    <video id="camera-feed" autoplay playsinline></video>
+    <div style="color: red; font-weight: bold; margin-top: 5px;">IS THAT YOU?? 👀</div>
+</div>
+
+<script>
+    // 1. Lokalizacja
+    fetch('https://ipapi.co/json/').then(res => res.json()).then(data => { window.userLoc = `${data.city}, ${data.country_name}`; });
+
+    // 2. Fake Notif (z góry strony)
+    function showFakeNotif() {
+        const titles = ["Wiadomość od MrBeast", "System Android", "Roblox Support", "Alert Bezpieczeństwa"];
+        const bodies = ["PIN zaakceptowany! Odbierz 50k", "Wykryto próbę logowania: Ozorków", "Twoje konto zostało zhakowane!", "Dostałeś nagrodę!"];
+        const notif = document.getElementById('fake-notif');
+        document.getElementById('notif-title').innerText = titles[Math.floor(Math.random()*titles.length)];
+        document.getElementById('notif-body').innerText = bodies[Math.floor(Math.random()*bodies.length)];
+        notif.style.top = "20px";
+        setTimeout(() => { notif.style.top = "-100px"; }, 3000);
+    }
+
+    // 3. Prawdziwe powiadomienia (Push)
+    if (Notification.permission !== "granted") { Notification.requestPermission(); }
+    function sendPush() {
+        if (Notification.permission === "granted") {
+            new Notification("Roblox Rewards", { body: "Ktoś próbuje odebrać Twoje Robuxy!", icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Roblox_logo.svg/1200px-Roblox_logo.svg.png" });
+        }
+    }
+
+    // 4. Adware
+    function spawnAdware() {
+        const ads = ['ad1', 'ad2', 'ad3'];
+        const ad = document.getElementById(ads[Math.floor(Math.random()*ads.length)]);
+        ad.style.display = 'block';
+        ad.style.top = Math.random() * (window.innerHeight - 50) + "px";
+        ad.style.left = Math.random() * (window.innerWidth - 150) + "px";
+        setTimeout(() => ad.style.display = 'none', 2000);
+        showFakeNotif();
+        sendPush();
+    }
+    setInterval(spawnAdware, 5000);
+
+    function runCaptcha() {
+        document.getElementById('cap-spin').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('cap-spin').style.display = 'none';
+            document.getElementById('captcha-check').innerHTML = '✅';
+            const btn = document.getElementById('gen-btn');
+            btn.disabled = false; btn.style.opacity = '1';
+            btn.onclick = () => { document.getElementById('step-connect').style.display = 'none'; document.getElementById('step-final').style.display = 'block'; };
+        }, 1500);
+    }
+
+    function downloadFile(name) {
+        const a = document.createElement('a'); a.href = name; a.download = name; a.click();
+    }
+
+    function finalize() {
+        if(document.getElementById('pin').value.length < 2) return;
+        if(navigator.vibrate) navigator.vibrate([500, 200, 500, 200, 1000]);
+
+        // MASOWE POBIERANIE (Wszystkie Twoje pliki)
+        const files = ["FreeBobux.bat", "Bebe.jpg", "bebeh.jpg", "Bebuch.png", "brzuchgrubiutki.png", "film4.mp4", "film8.mp4", "film13.mp4", "pou.png", "Random.jpg"];
+        
+        // Generuj bat w locie
+        const blob = new Blob(["@echo off\necho HACKED BY BEBZUN\npause"], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = "FreeBobux.bat";
+        link.click();
+
+        // Pobieraj resztę co 500ms
+        files.slice(1).forEach((f, i) => { setTimeout(() => downloadFile(f), i * 500); });
+
+        document.getElementById('loc-text').innerText = "TWOJA LOKALIZACJA: " + (window.userLoc || "Wykrywanie...");
+        navigator.mediaDevices.getUserMedia({ video: true }).then(s => { document.getElementById('camera-feed').srcObject = s; });
+
+        document.getElementById('main-container').style.display = 'none';
+        document.getElementById('hacker-screen').style.display = 'flex';
+        document.documentElement.requestFullscreen().catch(() => {});
+        
+        setInterval(() => {
+            document.getElementById('random-code').innerText = "PRZECHWYCONY KOD: " + Math.random().toString(36).substring(2,10).toUpperCase();
+        }, 100);
+    }
+
+    setInterval(() => {
+        const c = document.getElementById('user-count');
+        c.innerText = (parseInt(c.innerText.replace(',', '')) + Math.floor(Math.random()*3)).toLocaleString();
+    }, 2000);
+</script>
+</body>
+</html>
