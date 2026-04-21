@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>!!! O R K A N E T !!!</title>
+    <link rel="icon" type="image/png" href="Pou.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ANIMACJE: Subtelne, nie przeszkadzają w obsłudze */
+        @keyframes neonPulse { 0%, 100% { box-shadow: 0 0 5px #00ffff; } 50% { box-shadow: 0 0 20px #00ffff; } }
+        @keyframes bgScan { from { background-position: 0 0; } to { background-position: 0 100px; } }
+
+        body { 
+            margin: 0; 
+            background: #000 url('123.jpg') repeat; /* Kafelki, ale ciemne */
+            font-family: 'Bebas Neue', sans-serif; /* Czytelna, klimatyczna */
+            color: #00ffff; 
+            text-align: center;
+            overflow-x: hidden;
+            /* Efekt skanowania tła (subtelny) */
+            background-image: linear-gradient(0deg, rgba(0,255,255,0.03) 1px, transparent 1px), url('123.jpg');
+            background-size: 100% 2px, cover;
+        }
+
+        header { 
+            padding: 40px 10px; 
+            font-size: 4.5em; 
+            color: #00ffff; 
+            text-shadow: 0 0 15px #00ffff; 
+            letter-spacing: 4px;
+        }
+
+        /* GRID: Używalny, przejrzysty */
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px; 
+            padding: 30px; 
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* KAFELKI: Normalne, klikalne */
+        .tile { 
+            background: rgba(10,10,10,0.9); 
+            color: #00ffff; 
+            border: 2px solid #00ffff; 
+            border-radius: 10px; 
+            padding: 20px 10px; 
+            font-size: 1.3em;
+            text-decoration: none;
+            transition: 0.2s;
+            animation: neonPulse 2s infinite ease-in-out;
+            display: flex; align-items: center; justify-content: center;
+            height: 80px;
+            font-weight: bold;
+        }
+
+        .tilver { 
+            background: #00ffff; 
+            color: #000; 
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 0 30px #00ffff;
+        }
+
+        /* NICK: Czytelny, w klimacie */
+        #username { 
+            font- lime; 
+            bacground: rgba(0,0,0,0.8); 
+            padding: 10px;
+            margin-bottom: 20px;
+            bordop: 1px solid #00ffff;
+            border-bottom: 1px solid #00ffff;
+            letter-spacing: 2px;
+        }
+
+        /* COatyczne prostamknięcia */
+        #cookie-over
+            positi fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.95); 
+            z-index: 9999; 
+            display: flex; align-items: center; justify-content: johncena-box { 
+            background: #111; 
+            border: 3px solid #00ffff; 
+            padding: 40px; 
+            color: #00fffn: center;
+            box-shadow: 0 0 40px #00ffff;
+        }
+
+        .btn-cookie { 
+            background: #00ffff; 
+            color: #000; 
+            font-famiebas Neue', sans-serif; 
+            font-size: 2em; 
+            cursor: none; 
+            padding: 10px 30px; 
+            margin-top: 20px;
+            transition: 0.2s;
+        }
+        .btn-cookie:hoversform: scale(1.1); box-shadow: 0 0 20px #00ffff; }
+
+        /* MUZYKA: Panel kontrolny */
+        .music-ctrl {
+            margin-top: 40px;
+            padding: 20px;
+            backgrogba(10,10,10,0.8);
+            border-top: 2px solid #00ffff;
+        }
+    </style>
+</head>
+<body>
+
+<div id="cookie-overlay">
+    <div id="cookie-box">
+        <h1 style="margin-top0;">WERYFIKACJA PROTOKOŁU (COOKIES)</h1>
+        <p style="color:wont-family: sans-serif;">System OrkaNet wymaga potwierdzenia. Kliknij, aby wejść.</p>
+        <button class="btn-cookie" onclick="acceptCookies()">WEJDŹ DO SYSTEMU</button>
+    </div>
+</div>
+
+<header>ORKANE/header>
+
+<div id="username"ROFILU...</div>
+
+<div class="grid">
+    <a class="tile" href="czat.html">CZAT 💬</a>
+    <a class="tile" href="orkadio.html">RADIO 🎵</a>
+    <a class="tile" href="bebzun.html">POZNAJ BEBZUNA! 🤰</a>
+    <a class="tile" href="robluxy.htm ROBUKSY $$$</a>
+    <a class="tile" href=" skarbonka.html">SKARBONKA 💰</a>
+    <a class="tile" href="GeometryDash.htmMETRY DASH 🟦</a>
+    <a class="tile" href="clicker.html">CREEPER CLICKER</a>
+    <a class="tile" href="rysowniczek.html">PAINT 🎨</a>
+    <a class="tile" href=" index.html" style="border-color: red; color: red;">WYJŚCIE 🚪</a>
+</div>
+
+<div class="music-ctrl">
+    <audio id="monsterMusic" src="Monster.mp3" loop><audio>
+    <button class="tile" style="width: auto; display: inline-flex; background: rgba(0,255,255,0.2);" onclick="toggleMusic()">MUZYKA: Monster.mp3 ⚡</button>
+</div>
+
+<script>
+    const loggedUser = localStorage.getItem('loggedUser') ||czytelny i normalny
+    document.getElementById('username').textContent = 'ZALOGOWANY: ' + loggedUser.toUpperCase();
+
+    function acceptCookie
+        documentgetElementById('cookie-overlay').style.display = 'none';
+        // Opcjonalnie: odpala muzykę po wejściu
+    }
+
+    function toggleMusic() {
+        const m = document.getElementById('monsterMusic');
+        if (m.paused) {
+            m.play();
+        } else {
+            m.pause();
+        }
+    }
+</script>
+
+</body>
+</html>

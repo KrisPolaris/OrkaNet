@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>GARFIELD COMEBAK</title>
+    <style>
+        body {
+            background-color: white;
+            font-family: "Segoe UI", "Segoe UI", ; /* Żeby zachować ten dziecięcy klimat */
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        header {
+            padding: 20px;
+        }
+
+        /* Styl dla Logo */
+        .logo {
+            max-width: 300px;
+            height: auto;
+        }
+
+        /* Styl dla Menu */
+        #menu-container {
+            cursor: pointer;
+            display: inline-block;
+            margin: 20px;
+        }
+
+        .menu-label {
+            color: #FFD700; /* Żółty napis */
+            font-weight: bold;
+            font-size: 24px;
+            vertical-align: middle;
+        }
+
+        .hamburger {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        .bar {
+            width: 30px;
+            height: 4px;
+            background-color: #FFD700;
+            margin: 5px 0;
+            border-radius: 2px;
+        }
+
+        /* Wysuwane menu */
+        #nav-menu {
+            display: none;
+            background-color: #f0f8ff;
+            padding: 20px;
+            border: 2px solid #000;
+        }
+
+        #nav-menu a {
+            display: block;
+            text-decoration: none;
+            font-size: 22px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        /* Kolory czcionek z Twojego projektu */
+        .link-dark { color: #00008B; }   /* Ciemnoniebieski */
+        .link-cyan { color: #00FFFF; }   /* Cyjan */
+        .link-light { color: #87CEEB; }  /* Jasnoniebieski */
+        .link-blue { color: #0000FF; }   /* Niebieski */
+
+        h1, h2, h3 {
+            margin: 30px 0;
+        }
+
+        .main-img {
+            max-width: 90%;
+            height: auto;
+            border: 3px solid black;
+        }
+
+        .footer {
+            margin-top: 50px;
+            padding: 20px;
+            color: #555;
+            text-transform: lowercase;
+        }
+
+        iframe {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="Garfe.png" alt="GARFIELD COMEBAK" class="logo">
+    </header>
+
+    <div id="menu-container" onclick="toggleMenu()">
+        <span class="menu-label">MENU</span>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </div>
+
+    <nav id="nav-menu">
+        <a href="komiksy.html" class="link-dark">Komiksy</a>
+        <a href="filmy.html" class="link-cyan">Filmy</a>
+        <a href="postacie.html" class="link-light">Postacie</a>
+        <a href="nowosci.ht" class="link-blue">Nowości</a>
+    </nav>
+
+    <br>
+    <img src="Lazagna.jpg" alt="Lazagna" class="main-img">
+
+    <h1>KOMIK<br>NA<br>DZIŚ</h1>
+
+    <img src="http://garfield.4o4.pl/wp-content/uploads/2018/07/ga980718.gif" alt="Garfield Comic" class="main-img">
+
+    <br>
+    <a href="#" style="font-size: 32px; font-weight: bold; text-decoration: none; color: black;">
+        Obrazy >>>
+    </a>
+
+    <br><br>
+    <img src="garfeek.png" alt="Garfeek" class="main-img">
+
+    <h2>Obejrz mnie<br>na YouTubie</h2>
+
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/GxJBKaLhRFM" 
+            title="YouTube video player" frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+    </iframe>
+
+    <div class="footer">
+        <h3>2014 Paws Inc<br>garfield<br>poland</h3>
+    </div>
+
+    <script>
+        // Prosty skrypt do wysuwania menu
+        function toggleMenu() {
+            var x = document.getElementById("nav-menu");
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "block";
+            }
+        }
+    </script>
+
+</body>
+</html>

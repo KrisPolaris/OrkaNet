@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mój Wymarzony PC - OrkaNet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            background: #050505;
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            text-align: center;
+        }
+        header {
+            padding: 50px 20px;
+            background: linear-gradient(to bottom, #00ffff33, transparent);
+        }
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 5em;
+            margin: 0;
+            color: #00ffff;
+            text-shadow: 0 0 20px #00ffff;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .pc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        .part-card {
+            background: #111;
+            border: 2px solid #333;
+            border-radius: 15px;
+            padding: 20px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .part-card:hover {
+            border-color: #00ffff;
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+        }
+        .part-img {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            border-radius: 10px;
+            background: #000;
+            margin-bottom: 15px;
+        }
+        .part-card h3 {
+            color: #00ffff;
+            font-size: 1.8em;
+            margin: 10px 0;
+        }
+        .specs {
+            text-align: left;
+            font-size: 0.9em;
+            color: #ccc;
+            line-height: 1.5;
+        }
+        .price-tag {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 5px 15px;
+            background: #00ffff;
+            color: #000;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 50px;
+            padding: 15px 30px;
+            background: transparent;
+            color: #00ffff;
+            border: 2px solid #00ffff;
+            text-decoration: none;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5em;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        .back-btn:hover {
+            background: #00ffff;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>PROJECT: BEBZUN-MACHINE</h1>
+    <p>Moja wymarzona bestia do gier i kodowania</p>
+</header>
+
+<div class="container">
+    <div class="pc-grid">
+        <div class="part-card">
+            <img src="https://m.media-amazon.com/images/I/61vG69xxS9L._AC_SL1500_.jpg" class="part-img" alt="CPU">
+            <h3>RYZEN 7 7800X3D</h3>
+            <div class="specs">
+                • Król gamingu<br>
+                • 8 rdzeni / 16 wątków<br>
+                • Potężna pamięć 3D V-Cache<br>
+                • Niskie temperatury i ogromny FPS
+            </div>
+            <div class="price-tag">~1750 PLN</div>
+        </div>
+
+        <div class="part-card">
+            <img src="https://m.media-amazon.com/images/I/71u9S9S6E9L._AC_SL1500_.jpg" class="part-img" alt="GPU">
+            <h3>RADEON RX 7900 GRE</h3>
+            <div class="specs">
+                • 16GB pamięci VRAM<br>
+                • Idealna do 1440p i 4K<br>
+                • Nowoczesna architektura RDNA 3<br>
+                • Wygląda obłędnie w obudowie
+            </div>
+            <div class="price-tag">~2500 PLN</div>
+        </div>
+
+        <div class="part-card">
+            <img src="https://m.media-amazon.com/images/I/61S6o36ZfFL._AC_SL1500_.jpg" class="part-img" alt="RAM">
+            <h3>32GB DDR5 6000MHz</h3>
+            <div class="specs">
+                • 2x16GB Dual Channel<br>
+                • Podświetlenie RGB (więcej FPS!)<br>
+                • Ultra niskie opóźnienia CL30<br>
+                • Przeglądarka nigdy się nie zamuli
+            </div>
+            <div class="price-tag">~500 PLN</div>
+        </div>
+
+        <div class="part-card">
+            <img src="https://m.media-amazon.com/images/I/71C7v56bKDL._AC_SL1500_.jpg" class="part-img" alt="SSD">
+            <h3>2TB NVMe Gen4</h3>
+            <div class="specs">
+                • Prędkość odczytu do 7400 MB/s<br>
+                • System odpala w 3 sekundy<br>
+                • Miejsce na wszystkie gry i filmy<br>
+                • Koniec z ekranami wczytywania
+            </div>
+            <div class="price-tag">~600 PLN</div>
+        </div>
+
+        <div class="part-card">
+            <img src="https://m.media-amazon.com/images/I/71vU32N18AL._AC_SL1500_.jpg" class="part-img" alt="Case">
+            <h3>PANORAMICZNA OBUDOWA</h3>
+            <div class="specs">
+                • Przeszklony przód i bok (akwarium)<br>
+                • 7 wentylatorów RGB<br>
+                • Idealny przepływ powietrza<br>
+                • Wygląda jak milion dolarów
+            </div>
+            <div class="price-tag">~400 PLN</div>
+        </div>
+
+        <div class="part-card">
+            <img src="https://m.media-amazon.com/images/I/81S65-YvX6L._AC_SL1500_.jpg" class="part-img" alt="Monitor">
+            <h3>MONITOR 200Hz+</h3>
+            <div class="specs">
+                • Rozdzielczość 1440p (QHD)<br>
+                • Czas reakcji 1ms (brak smużenia)<br>
+                • Super płynny obraz w CS i Minecrafcie<br>
+                • Matryca IPS - piękne kolory
+            </div>
+            <div class="price-tag">~1200 PLN</div>
+        </div>
+    </div>
+
+    <a href="index.html" class="back-btn">POWRÓT DO ORKANETU</a>
+</div>
+
+</body>
+</html>

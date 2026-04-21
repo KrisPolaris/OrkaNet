@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrkaNet | Premium Portal</title>
+    <link rel="icon" type="image/png" href="Pou.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb; /* Klasyczny niebieski biznesowy */
+            --bg: #f8fafc;      /* Jasne, czyste tło */
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --accent: #ffcc00;
+        }
+
+        body { 
+            margin: 0; 
+            background: var(--bg); 
+            font-family: 'Inter', sans-serif; 
+            color: var(--text); 
+            line-height: 1.6;
+        }
+
+        header { 
+            background: var(--card-bg);
+            padding: 40px 20px; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            font-size: 2.5em;
+            letter-spacing: -1px;
+            color: var(--primary);
+        }
+
+        .vip-tag { 
+            font-size: 0.3em; 
+            background: var(--accent);
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+        
+        #username { 
+            font-weight: 600;
+            color: #64748b;
+            margin-top: 10px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .grid { 
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px; 
+            padding: 20px 0;
+        }
+
+        .tile { 
+            background: var(--card-bg); 
+            color: var(--text); 
+            border-radius: 16px; 
+            padding: 25px 15px; 
+            text-decoration: none; 
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .tile:hover { 
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+
+        .controls { 
+            display: flex; 
+            justify-content: center; 
+            gap: 15px; 
+            margin: 30px 0;
+        }
+
+        .btn-modern { 
+            background: var(--primary); 
+            color: white; 
+            padding: 12px 25px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            border: none;
+            font-family: inherit;
+            font-weight: 600;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .btn-modern:hover { opacity: 0.9; }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+
+        /* Cookie Overlay - Hotel Style */
+        #cookie-overlay { 
+            position: fixed; bottom: 30px; left: 30px; right: 30px; 
+            z-index: 9999; display: flex; justify-content: center; 
+        }
+        #cookie-box { 
+            background: var(--card-bg); 
+            padding: 25px; 
+            border-radius: 20px; 
+            max-width: 500px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        /* Rick Trap - Full Overlay */
+        .rick-trap { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            z-index: 10000; display: none; background: #000; 
+        }
+    </style>
+</head>
+<body>
+
+<div id="rick-trap" class="rick-trap">
+    <iframe style="width:100%; height:100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" allow="autoplay"></iframe>
+</div>
+
+<div id="cookie-overlay">
+    <div id="cookie-box">
+        <div id="cookie-initial">
+            <h3 style="margin-top:0">Polityka Prywatności</h3>
+            <p style="font-size: 0.9em; color: #64748b;">Wykorzystujemy pliki cookie, aby zapewnić najwyższą jakość usług w naszym portalu.</p>
+            <div style="display:flex; gap:10px">
+                <button class="btn-modern" style="flex:1" onclick="acceptCookies()">Akceptuję</button>
+                <button class="btn-modern btn-outline" style="flex:1" onclick="rejectCookies()">Odrzuć</button>
+            </div>
+        </div>
+
+        <div id="pay-screen" style="display: none;">
+            <h3 style="color: #e11d48;">Dostęp Premium</h3>
+            <p>Odrzucenie reklam wymaga subskrypcji Premium.</p>
+            <div style="font-size: 1.5em; font-weight:700; margin: 10px 0;">50.00 PLN / msc</div>
+            <button class="btn-modern" style="width:100%" onclick="activateRickTrap()">Subskrybuj teraz</button>
+        </div>
+    </div>
+</div>
+
+<header>
+    <div class="container">
+        <h1 id="main-header">ORKANET <span id="vip-label"></span></h1>
+        <div id="username">Inicjalizacja profilu...</div>
+        <div class="controls">
+            <a href="https://wa.me/48889360670" class="btn-modern">Skontaktuj się</a>
+            <button class="btn-modern btn-outline" onclick="logout()">Wyloguj</button>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="grid">
+         // a classy
+        </div>
+
+    <div class="controls" style="padding-bottom: 50px;">
+        <button class="btn-modern btn-outline" onclick="document.getElementById('monsterMusic').play()">Odtwórz Audio</button>
+        <audio id="monsterMusic" src="Monster.mp3"></audio>
+    </div>
+</div>
+
+<script>
+    // Logika pozostaje ta sama, zmieniło się tylko UI!
+    if (localStorage.getItem('cookiesAccepted') === 'true') {
+        document.getElementById('cookie-overlay').style.display = 'none';
+    }
+
+    const loggedUser = localStorage.getItem('loggedUser') || "Gość";
+    document.getElementById('username').textContent = 'Zalogowany jako: ' + loggedUser;
+
+    if (["admin", "kris", "krys", "szym"].some(name => loggedUser.toLowerCase().includes(name))) {
+        const v = document.getElementById('vip-label');
+        v.className = "vip-tag"; 
+        v.innerHTML = "PREMIUM MEMBER";
+    }
+
+    function acceptCookies() {
+        localStorage.setItem('cookiesAccepted', 'true');
+        document.getElementById('cookie-overlay').style.fadeOut(); // Opcjonalny efekt
+        document.getElementById('cookie-overlay').style.display = 'none';
+    }
+
+    function rejectCookies() {
+        document.getElementById('cookie-initial').style.display = 'none';
+        document.getElementById('pay-screen').style.display = 'block';
+    }
+
+    function activateRickTrap() {
+        document.getElementById('rick-trap').style.display = 'block';
+    }
+
+    function logout() {
+        if(confirm("Czy na pewno chcesz się wylogować?")) {
+            localStorage.removeItem('loggedUser');
+            window.location.reload();
+        }
+    }
+</script>
+
+</body>
+</html>

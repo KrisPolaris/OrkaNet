@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OrkaCity V2.5 - Pro Edition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <script type="importmap"> { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } } </script>
+    <style>
+        body { margin: 0; overflow: hidden; font-family: 'Segoe UI', sans-serif; background: #87CEEB; touch-action: none; }
+        #gui { position: fixed; top: 10px; left: 10px; background: rgba(0,0,0,0.85); color: white; padding: 15px; border-radius: 12px; z-index: 100; width: 220px; }
+        button { cursor: pointer; background: #00ffff; border: none; padding: 8px; margin: 5px 0; width: 100%; font-weight: bold; border-radius: 5px; color: #000; }
+        input[type="text"] { width: 90%; padding: 5px; margin-bottom: 5px; border-radius: 4px; border: none; }
+        
+        /* MOBILNE KONTROLKI */
+        #mobile-ui { position: fixed; bottom: 30px; width: 100%; height: 150px; pointer-events: none; z-index: 1000; }
+        #joystick-zone { position: absolute; left: 30px; bottom: 0; width: 120px; height: 120px; background: rgba(255,255,255,0.1); border-radius: 50%; pointer-events: auto; }
+        #joystick-knob { position: absolute; top: 35px; left: 35px; width: 50px; height: 50px; background: #00ffff; border-radius: 50%; box-shadow: 0 0 15px #00ffff; }
+        #jump-btn { position: absolute; right: 30px; bottom: 0; width: 80px; height: 80px; background: rgba(0,255,255,0.5); border-radius: 50%; pointer-events: auto; color: white; font-weight: bold; display: flex; align-items: center; justify-content: center; }
+        #view-btn { position: fixed; top: 10px; right: 10px; width: 100px; z-index: 1000; }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<div id="gui">
+    <h3 style="margin:0">OrkaCity V2.5</h3>
+    <p style="font-size: 11px;">Kod: <b id="my-id" style="color:#00ffff">...</b></p>
+    <input type="text" id="conn-id" placeholder="Kod ziomka">
+    <button onclick="connectToFriend()">POŁĄCZ</button>
+    <hr>
+    <p style="font-size: 11px; margin: 5px 0;">Avatar Editor:</p>
+    <button onclick="document.getElementById('fileInput').click()">WGRAJ PNG 🖼️</button>
+    <input type="file" id="fileInput" style="display:none" accept="image/*">
+    <input type="color" id="shirtColor" value="#ff0000" style="width:100%; height:30px;" onchange="updateShirt()">
+    <button onclick="toggleMobileUI()">UKRYJ/POKAŻ DOTYK</button>
+</div>
+
+<button id="view-btn" onclick="toggleView()">WIDOK: 3RD</button>
+
+<div id="mobile-ui">
+    <div id="joystick-zone"><div id="joystick-knob"></div></div>
+    <div id="jump-btn">SKOK</div>
+</div>
+
+<script type="module">
+    import * as THREE from 'three';
+
+    // --- SCENA I MIASTO ---
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x87CEEB);
+    scene.fog = new THREE.Fog(0x87CEEB, 30, 150);
+
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+    const sun = new THREE.DirectionalLight(0xffffff, 1);
+    sun.position.set(50, 100, 50);
+    scene.add(sun);
+
+    // Podłoga i Budynki
+    const floor = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000), new THREE.MeshPhongMaterial({color: 0x555555}));
+    floor.rotation.x = -Math.PI/2;
+    scene.add(floor);
+
+    const obstacles = [];
+    for(let i=0; i<30; i++) {
+        const h = 5 + Math.random()*30;
+        const b = new THREE.Mesh(new THREE.BoxGeometry(8, h, 8), new THREE.MeshPhongMaterial({color: 0x8888aa}));
+        b.position.set(Math.random()*200-100, h/2, Math.random()*200-100);
+        scene.add(b);
+        obstacles.push(new THREE.Box3().setFromObject(b));
+    }
+
+    // --- GRACZ ---
+    const playerGroup = new THREE.Group();
+    scene.add(playerGroup);
+
+    // Model 3D (Ludzik)
+    const bodyMat = new THREE.MeshPhongMaterial({color: 0xff0000});
+    const body = new THREE.Mesh(new THREE.CapsuleGeometry(0.5, 1, 4, 8), bodyMat);
+    body.position.y = 1.2;
+    playerGroup.add(body);
+
+    // Sprite (PNG Skin)
+    let pngSprite = null;
+    const loader = new THREE.TextureLoader();
+
+    // --- FUNKCJA IMPORTU PNG ---
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const texture = loader.load(event.target.result);
+                if(pngSprite) playerGroup.remove(pngSprite);
+                const pngMat = new THREE.SpriteMaterial({ map: texture });
+                pngSprite = new THREE.Sprite(pngMat);
+                pngSprite.scale.set(3, 4, 1);
+                pngSprite.position.y = 2;
+                playerGroup.add(pngSprite);
+                body.visible = false; // Chowaj ludzika 3D jak jest PNG
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // --- MULTIPLAYER (PEERJS) ---
+    const peer = new Peer();
+    const otherPlayers = {};
+    peer.on('open', id => document.getElementById('my-id').innerText = id);
+    let conn;
+    window.connectToFriend = () => {
+        conn = peer.connect(document.getElementById('conn-id').value);
+        setupConn(conn);
+    };
+    peer.on('connection', c => { conn = c; setupConn(conn); });
+
+    function setupConn(c) {
+        c.on('data', data => {
+            if(!otherPlayers[data.id]) {
+                const m = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshPhongMaterial({color: data.color}));
+                otherPlayers[data.id] = m;
+                scene.add(m);
+            }
+            otherPlayers[data.id].position.set(data.x, data.y, data.z);
+        });
+    }
+
+    // --- STEROWANIE MOBILNE ---
+    let moveDir = { x: 0, z: 0 }, isTouching = false, joyCenter = { x: 0, y: 0 };
+    const knob = document.getElementById('joystick-knob');
+    
+    document.getElementById('joystick-zone').addEventListener('touchstart', e => {
+        isTouching = true;
+        const rect = e.target.getBoundingClientRect();
+        joyCenter = { x: rect.left + rect.width/2, y: rect.top + rect.height/2 };
+    });
+    window.addEventListener('touchend', () => { 
+        isTouching = false; moveDir = {x:0, z:0}; knob.style.transform = `translate(0,0)`; 
+    });
+    window.addEventListener('touchmove', e => {
+        if(!isTouching) return;
+        const t = e.touches[0];
+        const dx = t.clientX - joyCenter.x, dy = t.clientY - joyCenter.y;
+        const dist = Math.min(Math.sqrt(dx*dx+dy*dy), 50);
+        const angle = Math.atan2(dy, dx);
+        moveDir.x = Math.cos(angle) * (dist/50);
+        moveDir.z = Math.sin(angle) * (dist/50);
+        knob.style.transform = `translate(${Math.cos(angle)*dist}px, ${Math.sin(angle)*dist}px)`;
+    });
+
+    // --- KAMERA I SKAKANIE ---
+    let isFP = false, vy = 0, mouseX = 0, mouseY = 0;
+    window.toggleView = () => {
+        isFP = !isFP;
+        document.getElementById('view-btn').innerText = isFP ? "WIDOK: 1ST" : "WIDOK: 3RD";
+    };
+    window.toggleMobileUI = () => document.getElementById('mobile-ui').classList.toggle('hidden');
+    window.updateShirt = () => bodyMat.color.set(document.getElementById('shirtColor').value);
+
+    document.getElementById('jump-btn').addEventListener('touchstart', () => { if(playerGroup.position.y <= 0.1) vy = 0.25; });
+    window.addEventListener('keydown', e => { if(e.code === 'Space' && playerGroup.position.y <= 0.1) vy = 0.25; });
+
+    // Obracanie kamerą (myszka)
+    window.addEventListener('mousemove', e => {
+        if(document.pointerLockElement) {
+            playerGroup.rotation.y -= e.movementX * 0.003;
+            mouseY = Math.max(-1.2, Math.min(1.2, mouseY - e.movementY * 0.003));
+        }
+    });
+    renderer.domElement.onclick = () => renderer.domElement.requestPointerLock();
+
+    // --- PĘTLA GRY ---
+    const keys = {};
+    window.addEventListener('keydown', e => keys[e.code] = true);
+    window.addEventListener('keyup', e => keys[e.code] = false);
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+        // Ruch
+        let dx = 0, dz = 0;
+        if(keys['KeyW']) dz -= 1; if(keys['KeyS']) dz += 1;
+        if(keys['KeyA']) dx -= 1; if(keys['KeyD']) dx += 1;
+        if(isTouching) { dx = moveDir.x; dz = moveDir.z; }
+
+        const moveVec = new THREE.Vector3(dx, 0, dz).applyQuaternion(playerGroup.quaternion).multiplyScalar(0.2);
+        
+        // Prosta kolizja
+        const nextPos = playerGroup.position.clone().add(moveVec);
+        let canMove = true;
+        const pBox = new THREE.Box3().setFromCenterAndSize(nextPos, new THREE.Vector3(1, 2, 1));
+        for(let obs of obstacles) if(pBox.intersectsBox(obs)) canMove = false;
+        
+        if(canMove) playerGroup.position.add(moveVec);
+
+        // Skok
+        playerGroup.position.y += vy;
+        if(playerGroup.position.y > 0) vy -= 0.01;
+        else { vy = 0; playerGroup.position.y = 0; }
+
+        // Widok Kamery
+        if(isFP) {
+            camera.position.copy(playerGroup.position).add(new THREE.Vector3(0, 2.5, 0));
+            camera.rotation.set(mouseY, playerGroup.rotation.y + Math.PI, 0, 'YXZ');
+        } else {
+            const camOffset = new THREE.Vector3(0, 5, 10).applyQuaternion(playerGroup.quaternion);
+            camera.position.copy(playerGroup.position).add(camOffset);
+            camera.lookAt(playerGroup.position.clone().add(new THREE.Vector3(0, 2, 0)));
+        }
+
+        // Multiplayer Sync
+        if(conn && conn.open) conn.send({id: peer.id, x: playerGroup.position.x, y: playerGroup.position.y, z: playerGroup.position.z, color: document.getElementById('shirtColor').value});
+
+        renderer.render(scene, camera);
+    }
+    animate();
+</script>
+</body>
+</html>

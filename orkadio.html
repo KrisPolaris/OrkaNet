@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ptasie radyjo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            margin: 0; 
+            background: #000; 
+            font-family: 'Bebas Neue', sans-serif; 
+            color: #00ffff; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header { 
+            font-size: 5em; 
+            letter-spacing: 5px;
+            text-shadow: 0 0 15px #00ffff;
+            margin-bottom: 20px;
+        }
+
+        .radio-box {
+            background: #0a0a0a;
+            border: 2px solid #00ffff;
+            padding: 30px;
+            width: 90%;
+            max-width: 650px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+            text-align: center;
+        }
+
+        #current-station-name {
+            font-size: 2.2em;
+            color: #fff;
+            display: block;
+            margin-bottom: 15px;
+            height: 1.2em;
+            text-shadow: 0 0 10px #ffcc00;
+        }
+
+        .visual-box {
+            height: 60px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 4px;
+            margin-bottom: 20px;
+        }
+
+        .bar {
+            width: 10px;
+            height: 5px;
+            background: #00ffff;
+            animation: bounce 0.5s infinite alternate;
+            animation-play-state: paused;
+        }
+
+        @keyframes bounce {
+            from { height: 5px; opacity: 0.3; }
+            to { height: 50px; opacity: 1; box-shadow: 0 0 10px #00ffff; }
+        }
+
+        .station-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+            max-height: 350px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .station-grid::-webkit-scrollbar { width: 6px; }
+        .station-grid::-webkit-scrollbar-thumb { background: #00ffff; border-radius: 10px; }
+
+        .station-btn {
+            background: #111;
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            padding: 10px;
+            font-family: 'Bebas Neue';
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .station-btn:hover {
+            background: #00ffff;
+            color: #000;
+            transform: scale(1.05);
+        }
+
+        .main-controls {
+            margin: 20px 0;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .ctrl-btn {
+            padding: 12px 35px;
+            font-family: 'Bebas Neue';
+            font-size: 1.6em;
+            cursor: pointer;
+            border: 2px solid #00ffff;
+            background: transparent;
+            color: #00ffff;
+        }
+
+        .btn-play { background: #00ffff; color: #000; }
+
+        .vol-slider {
+            width: 80%;
+            accent-color: #00ffff;
+            cursor: pointer;
+        }
+
+        .back-link {
+            margin-top: 30px;
+            color: #444;
+            text-decoration: none;
+            font-size: 1.4em;
+        }
+
+        .back-link:hover { color: #00ffff; }
+    </style>
+</head>
+<body>
+
+    <header>ptasie radio</header>
+
+    <div class="radio-box">
+        <span id="current-station-name">WYBIERZ RADIO RADIJO DIJO IJO</span>
+
+        <div class="visual-box">
+            <div class="bar" style="animation-delay: 0.1s"></div>
+            <div class="bar" style="animation-delay: 0.3s"></div>
+            <div class="bar" style="animation-delay: 0.5s"></div>
+            <div class="bar" style="animation-delay: 0.2s"></div>
+            <div class="bar" style="animation-delay: 0.4s"></div>
+            <div class="bar" style="animation-delay: 0.6s"></div>
+            <div class="bar" style="animation-delay: 0.3s"></div>
+        </div>
+
+        <audio id="player" crossorigin="anonymous"></audio>
+
+        <div class="main-controls">
+            <button class="ctrl-btn btn-play" onclick="playRad()">START</button>
+            <button class="ctrl-btn" onclick="stopRad()">STOP</button>
+        </div>
+
+        <input type="range" class="vol-slider" min="0" max="1" step="0.01" value="0.5" oninput="setVol(this.value)">
+
+        <div class="station-grid">
+            <button class="station-btn" onclick="setRad('ESKA', 'https://ic2.smcdn.pl/2150-1.mp3')">ESKA</button>
+            <button class="station-btn" onclick="setRad('ANTYRADIO', 'https://an01.cdn.eurozet.pl/ant-waw.mp3')">ANTYRADIO</button>
+            <button class="station-btn" onclick="setRad('RMF FM', 'https://rs6-krk2.rmfstream.pl/RMFFM48')">RMF FM</button>
+            <button class="station-btn" onclick="setRad('RADIO ZET', 'https://n-6-4.dcs.redcdn.pl/sc/o2/Eurozet/live/audio.livx')">RADIO ZET</button>
+            <button class="station-btn" onclick="setRad('RMF MAXX', 'https://rs7-krk2-cyfronet.rmfstream.pl/RMFMAXXX48')">RMF MAXX</button>
+            <button class="station-btn" onclick="setRad('VOX FM', 'https://radio.stream.smcdn.pl/icradio-p/3990-1.aac/playlist.m3u8')">VOX FM</button>
+            
+            <button class="station-btn" onclick="setRad('MELORADYJO', 'https://ml.cdn.eurozet.pl/mel-net.mp3')">Melo</button>
+            <button class="station-btn" onclick="setRad('JEDYNKA', 'https://stream11.polskieradio.pl/pr1/pr1.sdp/playlist.m3u8')">JEDYNKA</button>
+            <button class="station-btn" onclick="setRad('radio +', 'https://pl02.cdn.eurozet.pl/plu-waw.mp3')">Radio +</button>
+            <button class="station-btn" onclick="setRad('Muzo.fm', 'https://stream.rcs.revma.com/1nnezw8qz7zuv')">Muzo.fm</button>
+            
+            <button class="station-btn" onclick="setRad('RADIO MARYJA', 'https://radiomaryja.fastcast4u.com/proxy/radiomaryja?mp=/1')">RADIO MARYJA</button>
+            <button class="station-btn" onclick="setRad('Trójka', 'https://stream13.polskieradio.pl/pr3/pr3.sdp/playlist.m3u8')">Trójka</button>
+            <button class="station-btn" onclick="setRad('Chillizet', 'https://n-6-1.dcs.redcdn.pl/sc/o2/Eurozet/live/chillizet.livx')">chillizet</button>
+            <button class="station-btn" onclick="setRad('‎ ‎', 'miensko.mp3')">‎ ‎</button>
+        </div>
+    </div>
+
+    <a href="index.html" class="back-link">POWRÓT DO ORKANETU</a>
+
+    <script>
+        const player = document.getElementById('player');
+        const sName = document.getElementById('current-station-name');
+        const bars = document.querySelectorAll('.bar');
+
+        function setRad(name, url) {
+            sName.textContent = name;
+            player.src = url;
+            player.load();
+            playRad();
+        }
+
+        function playRad() {
+            if(player.src) {
+                player.play().then(() => {
+                    bars.forEach(b => b.style.animationPlayState = 'running');
+                }).catch(e => {
+                    console.log("Blokada autostartu lub błąd linku");
+                });
+            }
+        }
+
+        function stopRad() {
+            player.pause();
+            bars.forEach(b => b.style.animationPlayState = 'paused');
+        }
+
+        function setVol(v) {
+            player.volume = v;
+        }
+
+        player.volume = 0.5;
+    </script>
+</body>
+</html>

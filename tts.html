@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>głos</title>
+    <style>
+        /* --- CSS: Stylizacja Cyberpunk/Hacker --- */
+        :root {
+            --bg-color: #000000; /* Czarne tło */
+            --main-cyan: #00ffff; /* Cyjanowy kolor główny */
+            --glow-cyan: 0 0 15px rgba(0, 255, 255, 0.7); /* Efekt Glow */
+            --font-family: 'Courier New', Courier, monospace; /* Czcionka terminalowa */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--main-cyan);
+            font-family: var(--font-family);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Główny kontener strony */
+        .terminal-container {
+            width: 80%;
+            max-width: 600px;
+            background: rgba(0, 20, 20, 0.5); /* Lekko przezroczyste tło kontenera */
+            border: 2px solid var(--main-cyan);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--glow-cyan), inset var(--glow-cyan); /* Glow na zewnątrz i wewnątrz */
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: var(--glow-cyan);
+            margin-top: 0;
+        }
+
+        /* Stylizacja elementów formularza */
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            text-shadow: 0 0 5px var(--main-cyan);
+        }
+
+        select, textarea {
+            width: 100%;
+            background: #080808;
+            border: 1px solid var(--main-cyan);
+            color: var(--main-cyan);
+            font-family: var(--font-family);
+            padding: 10px;
+            border-radius: 5px;
+            box-sizing: border-box; /* Żeby padding nie rozpychał elementów */
+            transition: box-shadow 0.3s;
+        }
+
+        select:focus, textarea:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        textarea {
+            height: 150px;
+            resize: none; /* Blokada zmieniania rozmiaru przez użytkownika */
+        }
+
+        /* Cyjanowy Przycisk z efektem glow */
+        button {
+            width: 100%;
+            background: transparent;
+            border: 2px solid var(--main-cyan);
+            color: var(--main-cyan);
+            font-family: var(--font-family);
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            text-shadow: var(--glow-cyan);
+        }
+
+        button:hover {
+            background: var(--main-cyan);
+            color: #000;
+            box-shadow: 0 0 25px var(--main-cyan);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* Ozdobny pasek "ładowania" */
+        .status-bar {
+            font-size: 0.8rem;
+            text-align: center;
+            margin-top: 15px;
+            opacity: 0.7;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="terminal-container">
+        <h1>Text To Speech</h1>
+
+        <div class="control-group">
+            <label for="voice-select">wybierz głks</label>
+            <select id="voice-select">
+                <option value="">Ładowanie głosów...</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label for="text-input">WPISZ NO COŚ</label>
+            <textarea id="text-input" placeholder="wpisz coś pls"></textarea>
+        </div>
+
+        <button id="speak-btn">powiedz to</button>
+
+        <div class="status-bar">ty bebzunku</div>
+    </div>
+
+    <script>
+        /* --- JS: Logika Web Speech API --- */
+
+        // 1. Pobieramy elementy z HTML
+        const voiceSelect = document.getElementById('voice-select');
+        const textInput = document.getElementById('text-input');
+        const speakBtn = document.getElementById('speak-btn');
+        const statusBar = document.querySelector('.status-bar');
+
+        // 2. Inicjalizacja syntezatora mowy
+        const synth = window.speechSynthesis;
+        let voices = [];
+
+        // 3. Funkcja pobierająca dostępne głosy z przeglądarki
+        function populateVoiceList() {
+            // Pobieramy głosy
+            voices = synth.getVoices();
+            
+            // Czyścimy listę rozwijaną
+            voiceSelect.innerHTML = '';
+
+            // Mapujemy głosy na opcje w <select>
+            voices.forEach((voice, i) => {
+                const option = document.createElement('option');
+                option.textContent = `${voice.name} (${voice.lang})`;
+                
+                // Zaznaczamy polski głos jako domyślny, jeśli istnieje
+                if (voice.lang === 'pl-PL') {
+                    option.selected = true;
+                }
+
+                option.setAttribute('data-lang', voice.lang);
+                option.setAttribute('data-name', voice.name);
+                voiceSelect.appendChild(option);
+            });
+
+            // Jeśli brak głosów (rzadko, ale się zdarza)
+            if (voices.length === 0) {
+                const option = document.createElement('option');
+                option.textContent = "Brak dostępnych głosów w przeglądarce";
+                voiceSelect.appendChild(option);
+            }
+        }
+
+        // 4. Ładowanie głosów (to zdarzenie odpala się asynchronicznie)
+        populateVoiceList();
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = populateVoiceList;
+        }
+
+        // 5. Główna funkcja mówienia
+        function speak() {
+            // Sprawdzamy, czy system już nie mówi (żeby nie nakładać głosów)
+            if (synth.speaking) {
+                console.error('Syntezator już pracuje.');
+                statusBar.textContent = "Status: Błąd - system zajęty.";
+                return;
+            }
+
+            // Jeśli tekst jest pusty, nie robimy nic
+            if (textInput.value !== '') {
+                statusBar.textContent = "Status: Generowanie mowy...";
+                
+                // Tworzymy obiekt wypowiedzi
+                const utterThis = new SpeechSynthesisUtterance(textInput.value);
+
+                // Reagujemy na zakończenie mówienia
+                utterThis.onend = function (event) {
+                    console.log('Zakończono syntezę.');
+                    statusBar.textContent = "Status: Zakończono.";
+                }
+
+                // Reagujemy na błąd
+                utterThis.onerror = function (event) {
+                    console.error('Błąd syntezy.');
+                    statusBar.textContent = "Status: Krytyczny błąd syntezy.";
+                }
+
+                // Znajdujemy wybrany głos na liście
+                const selectedOption = voiceSelect.selectedOptions[0].getAttribute('data-name');
+                utterThis.voice = voices.find(voice => voice.name === selectedOption);
+
+                // Opcjonalne ustawienia (możesz dodać suwaki w HTML dla nich)
+                // utterThis.pitch = 1; // Wysokość tonu (0 do 2)
+                // utterThis.rate = 1;  // Prędkość (0.1 do 10)
+
+                // URUCHAMIAMY GADANIE
+                synth.speak(utterThis);
+            } else {
+                statusBar.textContent = "Status: Błąd - wpisz tekst.";
+            }
+        }
+
+        // 6. Podpinamy funkcję pod przycisk
+        speakBtn.addEventListener('click', speak);
+
+        // Opcjonalnie: Mówienie po wciśnięciu Enter w textarea (ale bez Shifta)
+        textInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault(); // Blokujemy nową linię
+                speak();
+            }
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOTALNY CHAOS 3000</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            overflow: hidden; /* Żeby efekty nie uciekały */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Comic Sans MS', cursive; /* Bo dlaczego by nie? */
+        }
+
+        /* TŁO Z MILIONEM EFEKTÓW */
+        .background-chaos {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(45deg, #ff00ff, #00ffff, #ff0000, #00ff00, #0000ff);
+            background-size: 400% 400%;
+            animation: gradientMove 1s infinite linear, shake 0.1s infinite;
+            z-index: -1;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes shake {
+            0% { transform: translate(0,0); }
+            25% { transform: translate(5px, -5px); }
+            50% { transform: translate(-5px, 5px); }
+            75% { transform: translate(5px, 5px); }
+            100% { transform: translate(0,0); }
+        }
+
+        /* GUZIK Z KOSMOSU */
+        .mega-button {
+            padding: 50px 100px;
+            font-size: 50px;
+            font-weight: bold;
+            color: #fff;
+            background: #000;
+            border: 10px solid #fff;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 10px;
+            box-shadow: 0 0 50px #fff, 0 0 100px #ff00ff, 0 0 150px #00ffff;
+            animation: pulse 0.5s infinite alternate, rotate 2s infinite linear;
+            transition: 0.1s;
+        }
+
+        .mega-button:hover {
+            transform: scale(1.5) rotate(10deg);
+            background: red;
+            color: yellow;
+        }
+
+        @keyframes pulse {
+            from { box-shadow: 0 0 20px #fff; }
+            to { box-shadow: 0 0 80px #ff00ff, 0 0 120px #00ffff; }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* LATAJĄCY TEKST */
+        .random-text {
+            position: absolute;
+            color: white;
+            font-size: 20px;
+            pointer-events: none;
+            animation: float 3s infinite linear;
+        }
+
+        @keyframes float {
+            from { transform: translateY(100vh) rotate(0deg); }
+            to { transform: translateY(-100vh) rotate(720deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-chaos"></div>
+
+    <button class="mega-button" onclick="losujPrzekierowanie()">PRZEKIERUJ!!!</button>
+
+    <script>
+        // Generujemy "milion" losowych tekstów w tle
+        for (let i = 0; i < 50; i++) {
+            let div = document.createElement('div');
+            div.className = 'random-text';
+            div.style.left = Math.random() * 100 + 'vw';
+            div.style.animationDelay = Math.random() * 5 + 's';
+            div.style.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            div.innerText = "MATRIX ERROR ORKANET AI RAMpocalypse!!!";
+            document.body.appendChild(div);
+        }
+
+        function losujPrzekierowanie() {
+            // 50% szansy
+            const szansa = Math.random();
+
+            if (szansa > 0.5) {
+                // Wygrana (lub przegrana, zależy jak patrzeć)
+                window.location.href = "pepeRUNRUNILESIŁ.html";
+            } else {
+                // Bebzun!
+                window.location.href = "bebzun.html";
+            }
+        }
+
+        // Dodatkowy efekt: trzęsienie ekranu przy kliknięciu gdziekolwiek
+        document.body.onclick = function() {
+            document.body.style.filter = "invert(1)";
+            setTimeout(() => { document.body.style.filter = "none"; }, 100);
+        }
+    </script>
+
+</body>
+</html>

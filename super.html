@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -5,11 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OrkaNet</title>
     <link rel="icon" type="image/png" href="Pou.png">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-    <style>
-        body { margin: 0; background: #000 url('123.jpg') no-repeat center center fixed; background-size: cover; font-family: 'Bebas Neue', sans-serif; color: #00ffff; text-align: center; }
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    
+    <style id="theme-style">
+        /* TRYB STANDARDOWY (BEBUCH) - ŁADUJE SIĘ PIERWSZY */
+        body { margin: 0; background: #000 url('Bebuch.png') no-repeat center center fixed; background-size: cover; font-family: 'Bebas Neue', sans-serif; color: #00ffff; text-align: center; }
         header { padding: 30px 0 10px 0; font-size: 3.5em; text-shadow: 0 0 10px #00ffff; }
         .vip-tag { font-size: 0.4em; color: #ffcc00; display: block; text-shadow: 0 0 10px #ffcc00; letter-spacing: 2px; }
+        .desktop-only { display: none; font-size: 0.3em; color: #ffcc00; vertical-align: middle; margin-left: 10px; text-shadow: 0 0 5px #ffcc00; }
+        @media (min-width: 800px) { .desktop-only { display: inline-block; } }
         #username { font-size: 1.2em; margin-bottom: 20px; background: rgba(0,0,0,0.5); padding: 5px; border-bottom: 1px solid #00ffff; }
         .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 20px 10px; }
         .tile { background: rgba(17,17,17,0.85); color: #00ffff; border: 2px solid #00ffff; border-radius: 12px; width: 44%; min-width: 130px; padding: 15px 5px; text-decoration: none; animation: neonPulse 2s infinite ease-in-out; }
@@ -17,55 +22,109 @@
         .controls { margin: 10px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
         .btn-small { background: rgba(0,255,255,0.2); border: 1px solid #00ffff; color: #00ffff; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-family: 'Bebas Neue'; }
         @media(min-width: 600px) { .tile { width: 22%; } }
+        #cookie-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        #cookie-box { background: #111; border: 3px solid #00ffff; padding: 30px; border-radius: 15px; max-width: 400px; width: 100%; text-align: center; }
+        .cookie-btn { font-family: 'Bebas Neue'; font-size: 1.5em; cursor: pointer; border-radius: 5px; padding: 12px; border: none; width: 100%; }
+        .btn-accept { background: #00ffff; color: #000; }
+        .btn-reject { background: transparent; border: 1px solid #ff4444; color: #ff4444; margin-top: 10px; }
+        .rick-trap { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; display: none; flex-direction: column; background: #000; }
+        .rick-trap iframe { border: none; width: 100%; height: 33.33vh; }
+    </style>
+
+    <style id="premium-style" disabled>
+        /* TRYB MODERN (OPCJONALNY) */
+        :root { --primary: #2563eb; --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b; --accent: #ffcc00; }
+        body { margin: 0; background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text); text-align: center; }
+        header { background: var(--card-bg); padding: 40px 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 2.5em; color: var(--primary); font-family: 'Montserrat'; text-shadow: none; }
+        .vip-tag { font-size: 0.3em; background: var(--accent); color: #000; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-top: 10px; letter-spacing: 0; }
+        /* NAPRAWA: Klasa .desktop-only dla nagłówka w trybie Modern */
+        header .desktop-only { display: none; font-weight: 300; font-size: 0.4em; color: #64748b; vertical-align: middle; margin-left: 10px; text-shadow: none; }
+        @media (min-width: 800px) { header .desktop-only { display: inline-block; } }
+        #username { font-weight: 600; color: #64748b; background: none; border: none; font-size: 1em; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; padding: 40px; max-width: 1200px; margin: 0 auto; text-align: left;}
+        .tile { background: var(--card-bg); color: var(--text); border-radius: 16px; padding: 25px 15px; width: auto; animation: none; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; }
+        .btn-small { background: var(--primary); border: none; color: white; padding: 12px 25px; border-radius: 8px; font-family: 'Inter'; font-weight: 600; }
+        #cookie-overlay { position: fixed; bottom: 30px; top: auto; left: 30px; right: 30px; height: auto; background: none; justify-content: flex-end; }
+        #cookie-box { background: var(--card-bg); box-shadow: 0 20px 40px rgba(0,0,0,0.2); border: 1px solid rgba(0,0,0,0.1); color: var(--text); max-width: 500px; text-align: left; padding: 25px;}
+        #cookie-title { margin-top: 0; color: var(--text); }
+        .cookie-btn { font-family: 'Inter'; font-size: 1em; font-weight: 600; padding: 10px; }
+        .btn-accept { background: var(--primary); color: white; }
     </style>
 </head>
 <body>
 
-<header id="main-header">ORKANET<span id="vip-label"></span></header>
+<div id="cookie-overlay">
+    <div id="rick-trap" class="rick-trap">
+        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=0" allow="autoplay"></iframe>
+        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=0" allow="autoplay"></iframe>
+        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=0" allow="autoplay"></iframe>
+    </div>
+
+    <div id="cookie-box">
+        <div id="cookie-initial">
+            <h2 id="cookie-title">PLIKI COOKIE I PRYWATNOŚĆ</h2>
+            <p id="cookie-text" style="font-family: sans-serif; font-size: 0.9em; line-height: 1.4;">Nasza strona używa ciasteczek, aby OrkaNet był jeszcze lepszy.</p>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="cookie-btn btn-accept" style="flex: 1;" onclick="acceptCookies()">AKCEPTUJ</button>
+                <button class="cookie-btn btn-reject" style="flex: 1;" onclick="rejectCookies()">ODRZUĆ</button>
+            </div>
+        </div>
+        <div id="pay-screen" style="display: none;">
+            <h2 style="color: #ff4444;">PRYWATNOŚĆ KOSZTUJE</h2>
+            <div style="font-size: 2.5em; color: #ffcc00; margin: 20px 0; text-align: center;">50 ZŁ / MSC</div>
+            <button class="cookie-btn" style="background:#ffcc00; color: #000; width: 100%;" onclick="activateRickTrap()">DOBRA, PŁACĘ</button>
+            <button class="btn-small" style="margin-top:10px; width:100%;" onclick="acceptCookies()">CZEMU (WEJDŹ)</button>
+        </div>
+    </div>
+</div>
+
+<header id="main-header">
+    ORKANET
+    <span id="vip-label"></span>
+    <span class="desktop-only">Siema komputerowcy! 🦕</span>
+</header>
+
 <div id="username">Weryfikacja profilu...</div>
 
 <div class="controls">
-    <a href="https://wa.me/48889360670" class="btn-small" style="background:#25D366; color:white;">Napisz do mnie 📱</a>
+    <button class="btn-small" id="theme-toggle" onclick="toggleTheme()" style="background: #ffcc00; color: #000; border: none;">✨ TRYB PREMIUM ✨</button>
+    <a href="https://wa.me/48889360670" class="btn-small" style="background:#25D366; color:white; text-decoration:none;">WhatsApp 📱</a>
     <button class="btn-small" style="background:#ff4444; color:white;" onclick="logout()">Wyloguj 🚪</button>
 </div>
 
-<div class="grid">
+<div class="grid" id="main-grid">
     <a class="tile" href="czat.html">BebzunChat 💬</a>
-  <a class="tile" href="eaglercraft.html">MINECRAFT</a>
-  <a class="tile" href="clicker.html">Creeper Clicker 💰</a>
-  <a class="tile" href="burga.html">Burger 🍔</a>
-  <a class="tile" href="boxes!.html">Pudełka</a>
-  <a class="tile" href="GeometryDash.html">Geometry Dash 🟦</a>
-  <a class="tile" href="spotifa.html">Spotifa 🎵</a>
-  <a class="tile" href="Windows XP.html">Windows XP 💻</a>
-  <a class="tile" href="skarbonka.html">Skarbonka</a>
-  <a class="tile" href="rysowniczek.html">Paint 🎨</a>
-  <a class="tile" href="bebzun.html">Poznaj Bebzuna! 🤰</a>
-  <a class="tile" href="kolorowanki.html">Kolorowanki</a>
-  <a class="tile" href="kalkulator.html">Kalkulator 🔢</a>
-  <a class="tile" href="ppogoda.html">Pogoda ☁️</a>
-  <a class="tile" href="aparacik.html">Aparat 📸</a>
-  <a class="tile" href="getoverit.html">MiniKraftia</a>
-  <a class="tile" href="aixd.html">AI GEMIBOT</a>
-  <a class="tile" href="oldsuper.html">stary orkanet</a>
-  <a class="tile" href="flapibebzun.html">Flappy Bebech</a>
-  <a class="tile" href="diktafon.html">Dyktafon</a>
-  <a class="tile" href="czas.html">Zegar</a>
-  <a class="tile" href="kalendar.html">Kalendarz</a>
-  <a class="tile" href="laptopy.html">ʟᴀᴘᴛᴏᴘʏ</a>
-  <a class="tile" href="67 isnt tuff, TikTok Community">TikTok (zablokowany, bo mnie zbanują)</a>
-  <a class="tile" href="bugeria.html">Gry</a>
-  <a class="tile" href="tudududu.html">Dźwięki</a>
-  <a class="tile" href="yuh.html">Android</a>
-  <a class="tile" href="Car..html">Autko</a>
-  <a class="tile" href="Chicken.html">Kurka</a>
-  <a class="tile" href="rubik.html">Kostka Rubika</a>
-  <a class="tile" href="robluxy.html">Free Robux (100% Legitne!)</a>
-</div>
-
-<div class="controls">
-    <button class="btn-small" onclick="document.body.style.backgroundImage='url(\'456.jpg\')'">Zmień tło</button>
-    <button class="btn-small" onclick="document.body.style.backgroundImage='url(\'123.jpg\')'">Reset tła</button>
+    <a class="tile" href="eaglercraft.html">MINECRAFT</a>
+    <a class="tile" href="clicker.html">Creeper Clicker 💰</a>
+    <a class="tile" href="burga.html">Burger 🍔</a>
+    <a class="tile" href="boxes!.html">Pudełka</a>
+    <a class="tile" href="GeometryDash.html">Geometry Dash 🟦</a>
+    <a class="tile" href="spotifa.html">Spotifa 🎵</a>
+    <a class="tile" href="Windows XP.html">Windows XP 💻</a>
+    <a class="tile" href="skarbonka.html">Skarbonka</a>
+    <a class="tile" href="rysowniczek.html">Paint 🎨</a>
+    <a class="tile" href="bebzun.html">Poznaj Bebzuna! 🤰</a>
+    <a class="tile" href="kolorowanki.html">Kolorowanki</a>
+    <a class="tile" href="kalkulator.html">Kalkulator 🔢</a>
+    <a class="tile" href="ppogoda.html">Pogoda ☁️</a>
+    <a class="tile" href="aparacik.html">Aparat 📸</a>
+    <a class="tile" href="getoverit.html">MiniKraftia</a>
+    <a class="tile" href="aixd.html">AI GEMIBOT</a>
+    <a class="tile" href="oldsuper.html">stary orkanet</a>
+    <a class="tile" href="flapibebzun.html">Flappy Bebech</a>
+    <a class="tile" href="diktafon.html">Dyktafon</a>
+    <a class="tile" href="czas.html">Zegar</a>
+    <a class="tile" href="kalendar.html">Kalendarz</a>
+    <a class="tile" href="tts.html">Głos</a>
+    <a class="tile" href="tudududu.html">Dźwięki</a>
+    <a class="tile" href="yuh.html">Android</a>
+    <a class="tile" href="Car..html">Autko</a>
+    <a class="tile" href="Chicken.html">Kurka</a>
+    <a class="tile" href="rubik.html">Kostka Rubika</a>
+    <a class="tile" href="ShortenMe.html">Skracacz Linków</a>
+    <a class="tile" href="robluxy.html">Free Robux (100% Legitne!)</a>
+    <a class="tile" href="orkadio.html">Ptasie Radyjo</a>
+    <a class="tile" href="tybzunku.html">Nie pytaj.</a>
 </div>
 
 <div class="controls">
@@ -75,19 +134,65 @@
 </div>
 
 <script>
-    const loggedUser = localStorage.getItem('loggedUser');
-    if (!loggedUser) {
-        alert("Loguj się bro!"); window.location.href = "index.html";
-    } else {
-        document.getElementById('username').textContent = 'Twoje konto: ' + loggedUser;
-        const nameL = loggedUser.toLowerCase();
-        if (loggedUser === "Admin" || nameL.includes("kris") || nameL.includes("szym")) {
-            const v = document.getElementById('vip-label');
-            v.className = "vip-tag"; v.innerHTML = "SUPER GOŚCIU 🔥";
-            document.getElementById('main-header').style.color = "#ffcc00";
+    // Ładowanie motywu: domyślnie "standard" (Bebuch), chyba że zapisano inaczej
+    const savedTheme = localStorage.getItem('theme') || 'standard';
+    applyTheme(savedTheme);
+
+    function toggleTheme() {
+        const currentTheme = localStorage.getItem('theme') === 'premium' ? 'standard' : 'premium';
+        applyTheme(currentTheme);
+        localStorage.setItem('theme', currentTheme);
+    }
+
+    function applyTheme(theme) {
+        const premiumStyle = document.getElementById('premium-style');
+        const standardStyle = document.getElementById('theme-style');
+        const btn = document.getElementById('theme-toggle');
+
+        if (theme === 'premium') {
+            premiumStyle.disabled = false;
+            standardStyle.disabled = true;
+            btn.textContent = "💻 TRYB HAKERA";
+        } else {
+            premiumStyle.disabled = true;
+            standardStyle.disabled = false;
+            btn.textContent = "✨ TRYB PREMIUM ✨";
         }
     }
-    function logout() { if(confirm("Opuszczasz OrkaNet?")) { localStorage.removeItem('loggedUser'); window.location.href = "index.html"; } }
+
+    if (localStorage.getItem('cookiesAccepted') === 'true') {
+        document.getElementById('cookie-overlay').style.display = 'none';
+    }
+
+    const loggedUser = localStorage.getItem('loggedUser') || "Gość";
+    document.getElementById('username').textContent = 'Twoje konto: ' + loggedUser;
+
+    // Przykładowe sprawdzenie VIP - na podstawie loginu
+    if (["admin", "kris", "krys", "szym"].some(n => loggedUser.toLowerCase().includes(n))) {
+        const v = document.getElementById('vip-label');
+        v.className = "vip-tag"; v.innerHTML = "SUPER GOŚCIU 🔥";
+    }
+
+    function acceptCookies() {
+        localStorage.setItem('cookiesAccepted', 'true');
+        document.getElementById('cookie-overlay').style.display = 'none';
+    }
+
+    function rejectCookies() {
+        document.getElementById('cookie-initial').style.display = 'none';
+        document.getElementById('pay-screen').style.display = 'block';
+    }
+
+    function activateRickTrap() {
+        document.getElementById('rick-trap').style.display = 'flex';
+    }
+
+    function logout() { 
+        if(confirm("Opuszczasz OrkaNet?")) { 
+            localStorage.removeItem('loggedUser'); 
+            window.location.reload(); 
+        } 
+    }
 </script>
 </body>
 </html>
