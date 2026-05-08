@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>OrkaLive - Live HTML Viewer</title>
+    <style>
+        body { 
+            margin: 0; 
+            background: #0a0a0a; 
+            color: #00ffff; 
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        header { 
+            padding: 10px; 
+            background: #111; 
+            border-bottom: 2px solid #00ffff;
+            text-align: center;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        .container { 
+            display: flex; 
+            flex: 1; 
+        }
+        textarea { 
+            width: 50%; 
+            background: #1a1a1a; 
+            color: #00ff00; 
+            border: none; 
+            padding: 20px; 
+            font-family: 'Consolas', monospace; 
+            font-size: 16px;
+            outline: none;
+            resize: none;
+            border-right: 2px solid #333;
+        }
+        iframe { 
+            width: 50%; 
+            background: white; 
+            border: none; 
+        }
+        .footer {
+            background: #111;
+            padding: 5px;
+            font-size: 12px;
+            text-align: right;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<header>ORKA LIVE VIEWER v1.0</header>
+
+<div class="container">
+    <textarea id="html-code" placeholder="Wpisz tutaj swój kod HTML/CSS..."></textarea>
+    <iframe id="preview-window"></iframe>
+</div>
+
+<div class="footer">kebab</div>
+
+<script>
+    const codeArea = document.getElementById('html-code');
+    const preview = document.getElementById('preview-window');
+
+    codeArea.addEventListener('input', () => {
+        const code = codeArea.value;
+        const previewDoc = preview.contentDocument || preview.contentWindow.document;
+        
+        previewDoc.open();
+        previewDoc.write(code);
+        previewDoc.close();
+    });
+
+    // Przykładowy kod na start
+    codeArea.value = "<h1>Siema!</h1>\n<p>Tu masz to co chciałeś</p>\n<style>\n  body { background: yellow; }\n  h1 { color: red; }\n</style>";
+    // Wywołaj od razu, żeby pokazać przykład
+    codeArea.dispatchEvent(new Event('input'));
+</script>
+
+</body>
+</html>

@@ -16,95 +16,98 @@
 
     body { 
         background: #000; color: #00ff00; 
-        font-family: 'MojaCzcionka', Arial, sans-serif; /* KURIER WYWALONY */
-        display: flex; flex-direction: column; height: 100vh; margin: 0; 
+        font-family: 'MojaCzcionka', Arial, sans-serif;
+        display: flex; flex-direction: column; 
+        height: 100vh; /* Sztywna wysokość ekranu */
+        margin: 0; 
         overflow: hidden;
     }
     
-    /* Dodaję wymuszenie czcionki dla elementów formularza, bo one często ignorują body */
-    input, button, .room-btn {
+    input, button, .room-btn, h2 {
         font-family: 'MojaCzcionka', Arial, sans-serif !important;
     }
 
-    /* ... reszta Twoich stylów bez zmian ... */
-   
-        body { 
-            background: #000; color: #00ff00; 
-            font-family: 'MojaCzcionka', 'Courier New', monospace; /* Dodany zapasowy monospaced */
-            display: flex; flex-direction: column; height: 100vh; margin: 0; 
-            overflow: hidden;
-        }
-        
-        .chat-header {
-            display: flex; align-items: center; justify-content: center;
-            padding: 10px; background: #0a0a0a; border-bottom: 2px solid #00ff00;
-        }
+    .chat-header {
+        display: flex; align-items: center; justify-content: center;
+        padding: 10px; background: #0a0a0a; border-bottom: 2px solid #00ff00;
+        flex-shrink: 0;
+    }
 
-        #header-logo {
-            width: 45px; height: 45px; border-radius: 50%;
-            border: 2px solid #00ff00; margin-right: 12px;
-            box-shadow: 0 0 10px #00ff00; object-fit: cover; cursor: pointer;
-        }
+    #header-logo {
+        width: 45px; height: 45px; border-radius: 50%;
+        border: 2px solid #00ff00; margin-right: 12px;
+        box-shadow: 0 0 10px #00ff00; object-fit: cover; cursor: pointer;
+    }
 
-        .chat-selector {
-            display: flex; justify-content: center; gap: 8px;
-            padding: 10px; background: #111;
-        }
+    .chat-selector {
+        display: flex; justify-content: center; gap: 8px;
+        padding: 10px; background: #111;
+        flex-shrink: 0;
+    }
 
-        .room-btn {
-            padding: 8px 15px; font-size: 11px; background: #222;
-            color: #00ff00; border: 1px solid #00ff00; border-radius: 20px;
-            cursor: pointer; font-family: 'MojaCzcionka', sans-serif;
-        }
+    .room-btn {
+        padding: 8px 15px; font-size: 11px; background: #222;
+        color: #00ff00; border: 1px solid #00ff00; border-radius: 20px;
+        cursor: pointer;
+    }
 
-        .room-btn.active {
-            background: #00ff00; color: #000; box-shadow: 0 0 15px #00ff00;
-        }
+    .room-btn.active {
+        background: #00ff00; color: #000; box-shadow: 0 0 15px #00ff00;
+    }
 
-        #chat-window { 
-            flex: 1; overflow-y: auto; padding: 15px; 
-            display: flex; flex-direction: column;
-            scroll-behavior: smooth;
-        }
+    /* NAPRAWIONE OKNO CZATU */
+    #chat-window { 
+        flex: 1; 
+        min-height: 0; /* To pozwala oknu się kurczyć */
+        overflow-y: auto; padding: 15px; 
+        display: flex; flex-direction: column;
+        scroll-behavior: smooth;
+    }
 
-        .msg { 
-            position: relative; margin-bottom: 15px; padding: 12px; 
-            border-radius: 18px; max-width: 85%; width: fit-content; 
-            word-wrap: break-word;
-        }
+    .msg { 
+        position: relative; margin-bottom: 15px; padding: 12px; 
+        border-radius: 18px; max-width: 85%; width: fit-content; 
+        word-wrap: break-word;
+    }
 
-        .msg-left { background: #1a1a1a; align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid #333; }
-        .msg-right { background: #004d00; align-self: flex-end; border-bottom-right-radius: 4px; border: 1px solid #00ff00; }
-        .msg-bot { border: 1px solid #ffcc00 !important; box-shadow: 0 0 5px #ffcc00; }
+    .msg-left { background: #1a1a1a; align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid #333; }
+    .msg-right { background: #004d00; align-self: flex-end; border-bottom-right-radius: 4px; border: 1px solid #00ff00; }
+    .msg-bot { border: 1px solid #ffcc00 !important; box-shadow: 0 0 5px #ffcc00; }
 
-        .user { font-size: 0.7rem; font-weight: bold; margin-bottom: 4px; color: #00ff00; display: flex; align-items: center; gap: 5px; }
+    .user { font-size: 0.7rem; font-weight: bold; margin-bottom: 4px; color: #00ff00; display: flex; align-items: center; gap: 5px; }
 
-        .emoji { width: 24px; height: 24px; vertical-align: middle; margin: 0 2px; border-radius: 4px; }
-        .chat-img { max-width: 100%; border-radius: 10px; margin-top: 8px; border: 1px solid #00ff00; display: block; }
-        
-        .del-btn { 
-            position: absolute; right: -8px; top: -8px; 
-            background: #ff0000; color: #fff; border: none; 
-            border-radius: 50%; width: 20px; height: 20px; cursor: pointer;
-            font-size: 10px; display: flex; align-items: center; justify-content: center;
-        }
+    .emoji { width: 24px; height: 24px; vertical-align: middle; margin: 0 2px; border-radius: 4px; }
+    .chat-img { max-width: 100%; border-radius: 10px; margin-top: 8px; border: 1px solid #00ff00; display: block; cursor: pointer; }
+    
+    .del-btn { 
+        position: absolute; right: -8px; top: -8px; 
+        background: #ff0000; color: #fff; border: none; 
+        border-radius: 50%; width: 20px; height: 20px; cursor: pointer;
+        font-size: 10px; display: flex; align-items: center; justify-content: center;
+    }
 
-        .input-area { padding: 10px; background: #111; display: flex; gap: 6px; border-top: 2px solid #00ff00; align-items: center; }
-        input { background: #222; border: 1px solid #00ff00; color: #fff; padding: 10px; border-radius: 8px; outline: none; flex: 1; font-family: 'MojaCzcionka', sans-serif; }
-        
-        button { background: #00ff00; color: #000; border: none; padding: 10px; font-weight: bold; border-radius: 8px; cursor: pointer; font-family: 'MojaCzcionka', sans-serif; }
-    </style>
+    /* NAPRAWIONY PASEK WPISYWANIA */
+    .input-area { 
+        padding: 10px; background: #111; display: flex; gap: 6px; 
+        border-top: 2px solid #00ff00; align-items: center;
+        flex-shrink: 0; /* Pasek nigdy nie zniknie */
+    }
+
+    input { background: #222; border: 1px solid #00ff00; color: #fff; padding: 10px; border-radius: 8px; outline: none; flex: 1; min-width: 0; }
+    
+    button { background: #00ff00; color: #000; border: none; padding: 10px; font-weight: bold; border-radius: 8px; cursor: pointer; white-space: nowrap; }
+</style>
 </head>
 <body>
 
     <div class="chat-header">
-        <img src="Bebe.jpg" id="header-logo" onclick="hackerMode()">
+        <img src="Bebe.jpg" id="header-logo">
         <h2 id="chat-title">OGÓLNY 🌐</h2>
     </div>
 
     <div class="chat-selector">
-        <button id="btn-global" class="room-btn active" onclick="switchRoom('global', 'Bebe.jpg', 'OGÓLNY 🌐')">GŁÓWNY 1</button>
-        <button id="btn-global2" class="room-btn" onclick="switchRoom('global2', 'Bebe.jpg', 'GŁÓWNY 2 🌍')">GŁÓWNY 2</button>
+        <button id="btn-global" class="room-btn active">GŁÓWNY 1</button>
+        <button id="btn-global2" class="room-btn">GŁÓWNY 2</button>
     </div>
 
     <div id="chat-window"></div>
@@ -112,14 +115,12 @@
     <div class="input-area">
         <input type="text" id="message" placeholder="Pisz tutaj... (:bebzun: :pou:)">
         <input type="file" id="imageInput" accept="image/*" style="display:none">
-        <button onclick="document.getElementById('imageInput').click()">🖼️</button>
+        <button id="btn-img">🖼️</button>
         <button id="sendBtn">SEND</button>
         <button onclick="window.location.href='super.html'" style="background:#444; color:white;">X</button>
     </div>
 
     <script type="module">
-        const loggedUser = localStorage.getItem('loggedUser') || "Gość";
-
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
@@ -134,19 +135,24 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const loggedUser = localStorage.getItem('loggedUser') || "Gość";
         let currentRoom = 'global';
 
-        window.switchRoom = (room, img, title) => {
+        function switchRoom(room, img, title) {
             currentRoom = room;
             document.getElementById('header-logo').src = img;
             document.getElementById('chat-title').innerText = title;
             document.querySelectorAll('.room-btn').forEach(b => b.classList.remove('active'));
-            const activeBtn = room === 'global' ? 'btn-global' : 'btn-global2';
-            document.getElementById(activeBtn).classList.add('active');
+            
+            if(room === 'global') document.getElementById('btn-global').classList.add('active');
+            else document.getElementById('btn-global2').classList.add('active');
+            
             listenToMessages();
-        };
+        }
 
-        // BOT BEBZUN
+        document.getElementById('btn-global').onclick = () => switchRoom('global', 'Bebe.jpg', 'OGÓLNY 🌐');
+        document.getElementById('btn-global2').onclick = () => switchRoom('global2', 'Bebe.jpg', 'GŁÓWNY 2 🌍');
+
         async function botBebzun(userText) {
             const triggers = ['bebzun', 'bebech'];
             if (triggers.some(t => userText.toLowerCase().includes(t))) {
@@ -162,18 +168,12 @@
             }
         }
 
-        window.hackerMode = () => {
-            document.body.style.filter = "hue-rotate(180deg)";
-            setTimeout(() => document.body.style.filter = "none", 2000);
-        };
-
         function parseEmotes(text) {
             if(!text) return "";
             return text.replace(/:bebzun:/g, `<img src="Bebe.jpg" class="emoji">`)
                        .replace(/:pou:/g, `<img src="pou.png" class="emoji">`);
         }
 
-        // NAPRAWIONA JEDYNA FUNKCJA WYSYŁANIA
         async function sendMessage() {
             const msgInp = document.getElementById('message');
             const fileInp = document.getElementById('imageInput');
@@ -207,6 +207,15 @@
 
         document.getElementById('sendBtn').onclick = sendMessage;
         document.getElementById('message').onkeypress = (e) => { if(e.key === 'Enter') sendMessage(); };
+        document.getElementById('btn-img').onclick = () => document.getElementById('imageInput').click();
+        document.getElementById('header-logo').onclick = () => {
+            document.body.style.filter = "hue-rotate(180deg)";
+            setTimeout(() => document.body.style.filter = "none", 2000);
+        };
+
+        window.removeMsg = async (id) => { 
+            if(confirm("Usunąć wiadomość?")) await deleteDoc(doc(db, "messages", id)); 
+        };
 
         let unsubscribe;
         function listenToMessages() {
@@ -239,7 +248,6 @@
             });
         }
 
-        window.removeMsg = async (id) => { if(confirm("Usunąć wiadomość?")) await deleteDoc(doc(db, "messages", id)); };
         listenToMessages();
     </script>
 </body>

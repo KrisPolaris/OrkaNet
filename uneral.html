@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Google</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            background-color: #ffffff;
+        }
+
+        /* Kontener logo */
+        .logo-section {
+            margin-top: 20vh;
+            margin-bottom: 30px;
+        }
+
+        .google-logo {
+            font-size: 90px;
+            font-weight: bold;
+            letter-spacing: -5px;
+        }
+
+        /* Kolory liter Google */
+        .g1 { color: #4285F4; }
+        .o1 { color: #EA4335; }
+        .o2 { color: #FBBC05; }
+        .g2 { color: #4285F4; }
+        .l1 { color: #34A853; }
+        .e1 { color: #EA4335; }
+
+        /* Pasek wyszukiwania */
+        .search-container {
+            width: 90%;
+            max-width: 584px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            padding-left: 45px;
+            font-size: 16px;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            outline: none;
+            transition: box-shadow 0.2s;
+        }
+
+        .search-input:focus, .search-input:hover {
+            box-shadow: 0 1px 6px rgba(32,33,36,.28);
+            border-color: rgba(223,225,229,0);
+        }
+
+        /* Przyciski */
+        .button-section {
+            margin-top: 30px;
+        }
+
+        .btn {
+            background-color: #f8f9fa;
+            border: 1px solid #f8f9fa;
+            border-radius: 4px;
+            color: #3c4043;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            margin: 11px 4px;
+            padding: 0 16px;
+            line-height: 36px;
+            min-width: 54px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .btn:hover {
+            box-shadow: 0 1px 1px rgba(0,0,0,.1);
+            background-color: #f8f9fa;
+            border: 1px solid #dadce0;
+            color: #202124;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="logo-section">
+        <span class="google-logo">
+            <span class="g1">G</span><span class="o1">o</span><span class="o2">o</span><span class="g2">g</span><span class="l1">l</span><span class="e1">e</span>
+        </span>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="query" class="search-input" placeholder="Szukaj w Google lub wpisz adres URL">
+    </div>
+
+    <div class="button-section">
+        <button class="btn" onclick="startSearch()">Szukaj w Google</button>
+        <button class="btn" onclick="lucky()">Szczęśliwy traf</button>
+    </div>
+
+    <script>
+        // Funkcja wyszukiwania
+        function startSearch() {
+            const val = document.getElementById('query').value;
+            if (val) {
+                // Przekierowanie do prawdziwego Google z Twoim zapytaniem!
+                window.location.href = "https://www.google.com/search?q=" + encodeURIComponent(val);
+            } else {
+                alert("Wpisz coś najpierw!");
+            }
+        }
+
+        // Obsługa klawisza Enter
+        document.getElementById('query').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                startSearch();
+            }
+        });
+
+        function lucky() {
+            window.location.href = "https://www.google.com/doodles";
+        }
+    </script>
+
+</body>
+</html>

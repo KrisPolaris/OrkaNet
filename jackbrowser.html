@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JackBrowser</title>
+    <style>
+        :root { --bg:#050505; --accent:#00ccff; --panel:#151515; --text:#fff; }
+
+        body {
+            margin:0;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background:var(--bg);
+            color:var(--text);
+            display:flex;
+            flex-direction:column;
+            height:100vh;
+            overflow:hidden;
+        }
+
+        #tabs-bar {
+            display:flex;
+            background:#000;
+            padding:8px 8px 0;
+            gap:4px;
+            border-bottom:2px solid var(--accent);
+            align-items: flex-end;
+        }
+
+        .tab {
+            background:#222;
+            padding:6px 15px;
+            border-radius:8px 8px 0 0;
+            cursor:pointer;
+            display:flex;
+            align-items: center;
+            gap:10px;
+            font-size:12px;
+            min-width: 100px;
+            max-width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            border: 1px solid transparent;
+            transition: 0.2s;
+        }
+
+        .tab.active {
+            background:var(--panel);
+            border:1px solid var(--accent);
+            border-bottom: 1px solid var(--panel);
+            z-index: 2;
+        }
+
+        .close-tab { 
+            margin-left:auto; 
+            color:#888; 
+            font-weight: bold;
+        }
+        .close-tab:hover { color: #ff4444; }
+
+        .add-tab-btn {
+            background:var(--accent);
+            border:none;
+            width:28px;
+            height:28px;
+            border-radius:50%;
+            cursor:pointer;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+
+        #nav-bar {
+            background:var(--panel);
+            padding:10px;
+            display:flex;
+            gap:10px;
+            align-items: center;
+        }
+
+        #url-input {
+            flex:1;
+            padding:8px 15px;
+            border-radius:20px;
+            border:1px solid #444;
+            background:#000;
+            color:var(--accent);
+            outline: none;
+        }
+
+        #url-input:focus { border-color: var(--accent); }
+
+        .page-container {
+            width:100%;
+            height:100%;
+            border:none;
+            display:none;
+            background: white; /* Większość stron ma białe tło */
+        }
+
+        .page-container.active { display:block; }
+        
+        button {
+            background: #333;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover { background: #444; }
+    </style>
+</head>
+<body>
+
+<div id="tabs-bar">
+    <button class="add-tab-btn" onclick="addTab()">+</button>
+</div>
+
+<div id="nav-bar">
+    <button onclick="goBack()">⬅️</button>
+    <input id="url-input" type="text" placeholder="Wpisz adres lub szukaj w Google..." onkeypress="if(event.key==='Enter') loadURL()">
+    <button onclick="loadURL()">🚀</button>
+</div>
+
+<div id="content-area" style="flex:1; position: relative;">
+    </div>
+
+<script>
+let tabs = [];
+let activeTabId = null;
+
+const START_URL = "https://www.google.com/search?igu=1";
+
+function smartURL(input){
+    let url = input.trim();
+    if(!url) return START_URL;
+
+    // Obsługa YouTube
+    if(url.includes("youtube.com/watch?v=") || url.includes("youtu.be/")){
+        let id = "";
+        if(url.includes("v=")) id = url.split("v=")[1].split("&")[0];
+        else id = url.split("be/")[1].split("?")[0];
+        return "https://www.youtube.com/embed/" + id;
+    }
+
+    // Jeśli nie ma kropek i spacji -> szukaj w google
+    if(!url.includes(".") || url.includes(" ")){
+        return "https://www.google.com/search?q=" + encodeURIComponent(url) + "&igu=1";
+    }
+
+    if(!url.startsWith("http")){
+        return "https://" + url;
+    }
+
+    return url;
+}
+
+function addTab(){
+    let id = "tab-" + Date.now();
+    let newTab = {
+        id: id,
+        url: START_URL,
+        title: "Nowa karta"
+    };
+
+    tabs.push(newTab);
+    
+    // Tworzenie iframe od razu
+    let ifr = document.createElement("iframe");
+    ifr.id = "iframe-" + id;
+    ifr.className = "page-container";
+    ifr.src = newTab.url;
+    document.getElementById("content-area").appendChild(ifr);
+
+    switchTab(id);
+}
+
+function renderTabs(){
+    const bar = document.getElementById("tabs-bar");
+    const plusBtn = bar.querySelector(".add-tab-btn");
+
+    // Czyścimy stare elementy kart (ale nie iframe!)
+    document.querySelectorAll(".tab").forEach(e => e.remove());
+
+    tabs.forEach(tab => {
+        let el = document.createElement("div");
+        el.className = "tab " + (tab.id === activeTabId ? "active" : "");
+        el.onclick = () => switchTab(tab.id);
+
+        el.innerHTML = `
+            <span class="tab-title">${tab.title}</span>
+            <span class="close-tab" onclick="event.stopPropagation(); closeTab('${tab.id}')">×</span>
+        `;
+
+        bar.insertBefore(el, plusBtn);
+    });
+}
+
+function switchTab(id){
+    activeTabId = id;
+    let currentTab = tabs.find(t => t.id === id);
+
+    // Przełączanie widoczności iframe
+    document.querySelectorAll(".page-container").forEach(ifr => {
+        ifr.classList.remove("active");
+    });
+    
+    const activeIfr = document.getElementById("iframe-" + id);
+    if(activeIfr) {
+        activeIfr.classList.add("active");
+        document.getElementById("url-input").value = currentTab.url;
+    }
+
+    renderTabs();
+}
+
+function loadURL(){
+    let input = document.getElementById("url-input").value;
+    let finalURL = smartURL(input);
+
+    let tab = tabs.find(t => t.id === activeTabId);
+    if(!tab) return;
+
+    tab.url = finalURL;
+    tab.title = "Ładowanie...";
+    
+    let ifr = document.getElementById("iframe-" + activeTabId);
+    ifr.src = finalURL;
+
+    renderTabs();
+
+    // Próba wyciągnięcia nazwy domeny do tytułu
+    setTimeout(() => {
+        try {
+            let domain = new URL(finalURL).hostname.replace("www.", "");
+            tab.title = domain;
+        } catch {
+            tab.title = "Strona";
+        }
+        renderTabs();
+    }, 1000);
+}
+
+function closeTab(id){
+    if(tabs.length === 1) {
+        // Jeśli ostatnia karta, po prostu ją zresetuj
+        let tab = tabs[0];
+        tab.url = START_URL;
+        document.getElementById("iframe-" + tab.id).src = START_URL;
+        switchTab(tab.id);
+        return;
+    }
+
+    tabs = tabs.filter(t => t.id !== id);
+    document.getElementById("iframe-" + id).remove();
+
+    if(activeTabId === id) {
+        switchTab(tabs[tabs.length - 1].id);
+    } else {
+        renderTabs();
+    }
+}
+
+function goBack(){
+    try {
+        let ifr = document.getElementById("iframe-" + activeTabId);
+        ifr.contentWindow.history.back();
+    } catch(e) {
+        console.log("Blokada CORS - nie można cofnąć historii zewnętrznej strony.");
+    }
+}
+
+// Startowa karta
+addTab();
+</script>
+
+</body>
+</html>
