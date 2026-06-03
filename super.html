@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OrkaNet</title>
     <link rel="icon" type="image/png" href="Pou.png">
-    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Inter:wght@300;400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Inter:wght@300;400;600&family=Montserrat:wght@700&family=Courier+Prime&family=Bebas+Neue&display=swap" rel="stylesheet">
     
-    <style id="theme-style">
-        /* TRYB STANDARDOWY (BEBUCH) */
-        body { 
+    <style>
+        /* ==========================================================================
+           1. TRYB STANDARDOWY (cyber marian)
+           ========================================================================== */
+        body.theme-standard { 
             margin: 0; 
             background: #000 url('456.jpg') no-repeat center center fixed; 
             background-size: cover; 
@@ -17,67 +19,131 @@
             color: #00ffff; 
             text-align: center; 
         }
-        header { padding: 30px 0 10px 0; font-size: 3.5em; text-shadow: 0 0 10px #00ffff; }
-        .vip-tag { font-size: 0.4em; color: #ffcc00; display: block; text-shadow: 0 0 10px #ffcc00; letter-spacing: 2px; }
+        body.theme-standard header { padding: 30px 0 10px 0; font-size: 3.5em; text-shadow: 0 0 10px #00ffff; }
+        body.theme-standard .vip-tag { font-size: 0.4em; color: #ffcc00; display: block; text-shadow: 0 0 10px #ffcc00; letter-spacing: 2px; }
+        body.theme-standard .stats-bar { background: rgba(0,0,0,0.7); border-top: 1px solid #00ffff; border-bottom: 1px solid #00ffff; padding: 10px; margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; font-size: 0.8em; }
+        body.theme-standard .stat-val { color: #ffcc00; }
+        body.theme-standard #username { font-size: 1.2em; margin-bottom: 20px; background: rgba(0,0,0,0.5); padding: 5px; border-bottom: 1px solid #00ffff; }
+        body.theme-standard .tile { background: rgba(17,17,17,0.85); color: #00ffff; border: 2px solid #00ffff; border-radius: 12px; width: 44%; min-width: 130px; padding: 15px 5px; text-decoration: none; animation: neonPulse 2s infinite ease-in-out; text-align: center;}
+        @keyframes neonPulse { 0%, 100% { box-shadow: 0 0 5px #00ffff; } 50% { box-shadow: 0 0 20px #00ffff; } }
+
+        /* ==========================================================================
+           2. TRYB MODERN (PREMIUM)
+           ========================================================================== */
+        body.theme-premium { --primary: #2563eb; --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b; --accent: #ffcc00; margin: 0; background: var(--bg); font-family: 'Bungee', cursive; color: var(--text); text-align: center; }
+        body.theme-premium header { background: var(--card-bg); padding: 40px 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 2.5em; color: var(--primary); text-shadow: none; }
+        body.theme-premium .stats-bar { background: #fff; border: 1px solid #ddd; color: #555; padding: 10px; margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; font-size: 0.8em;}
+        body.theme-premium .vip-tag { font-size: 0.3em; background: var(--accent); color: #000; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-top: 10px; letter-spacing: 0; text-shadow: none; }
+        body.theme-premium #username { color: #64748b; background: none; border: none; font-size: 1.2em; margin-bottom: 20px; padding: 5px; }
+        body.theme-premium .tile { background: var(--card-bg); color: var(--text); border-radius: 16px; padding: 25px 15px; animation: none; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: auto; min-width: 130px; text-decoration: none; text-align: center;}
+
+        /* ==========================================================================
+           3. TRYB TERMINAL
+           ========================================================================== */
+        body.theme-terminal { margin: 0; background: #050505; font-family: 'Courier Prime', monospace; color: #00ff00; text-align: left; padding: 20px; }
+        body.theme-terminal header { font-size: 2.5em; text-align: center; font-family: 'Courier Prime', monospace; text-shadow: 0 0 5px #00ff00; margin-bottom: 10px; }
+        body.theme-terminal header::before { content: "root@orkanet:~# "; font-size: 0.5em; color: #888; }
+        body.theme-terminal .vip-tag { font-size: 0.5em; color: #ff00ff; display: block; text-shadow: none; }
+        body.theme-terminal .stats-bar { background: #111; border: 1px dashed #00ff00; padding: 10px; margin-bottom: 20px; display: flex; justify-content: flex-start; gap: 40px; font-size: 0.9em; }
+        body.theme-terminal .stat-val { color: #fff; font-weight: bold; }
+        body.theme-terminal #username { font-size: 1.1em; margin-bottom: 20px; background: none; border: none; border-left: 3px solid #00ff00; padding-left: 10px; }
+        body.theme-terminal .tile { background: #000; color: #00ff00; border: 1px solid #00ff00; border-radius: 0px; width: 44%; min-width: 130px; padding: 10px 5px; text-decoration: none; text-align: center; font-family: 'Courier Prime', monospace; }
+        body.theme-terminal .tile::before { content: "./"; color: #888; }
+        body.theme-terminal .tile:hover { background: #00ff00; color: #000; }
+
+        /* ==========================================================================
+           4. TRYB WINDOWS XP
+           ========================================================================== */
+        body.theme-windows { margin: 0; background: #3b6ea5; font-family: 'Tahoma', 'Inter', sans-serif; color: #000; text-align: center; }
+        body.theme-windows header { background: linear-gradient(to right, #0058e6, #3a95ff); color: white; padding: 15px; font-size: 2em; text-shadow: 1px 1px 2px #000; text-align: left; border-bottom: 2px solid #ffffff; box-shadow: 0 4px 5px rgba(0,0,0,0.3); }
+        body.theme-windows .vip-tag { font-size: 0.4em; color: #ffcc00; display: inline-block; margin-left: 20px; }
+        body.theme-windows .stats-bar { background: #f1f1f1; border: 2px outset #fff; color: #000; padding: 5px; margin: 10px; display: flex; justify-content: space-around; font-size: 0.8em; box-shadow: inset 1px 1px 1px #808080; }
+        body.theme-windows .stat-val { color: blue; font-weight: bold; }
+        body.theme-windows #username { background: #fff; border: 2px inset #fff; margin: 10px auto; width: 90%; padding: 5px; font-weight: bold; text-align: left; color: #333; }
+        body.theme-windows .tile { background: #ece9d8; color: #000; border-top: 2px solid #fff; border-left: 2px solid #fff; border-right: 2px solid #707070; border-bottom: 2px solid #707070; border-radius: 3px; width: 44%; min-width: 130px; padding: 15px 5px; text-decoration: none; font-family: sans-serif; font-weight: bold; box-shadow: 1px 1px 3px rgba(0,0,0,0.2); text-align: center;}
+        body.theme-windows .tile:active { border-top: 2px solid #707070; border-left: 2px solid #707070; border-right: 2px solid #fff; border-bottom: 2px solid #fff; }
+
+        /* ==========================================================================
+           5. TRYB CYBERPUNK (Meta AI)
+           ========================================================================== */
+        body.theme-cyberpunk { 
+            --cyber-bg: #0f0f1a; --cyber-card: #1a1a2e; --cyber-accent: #00d9ff; --cyber-accent2: #ff006e; --cyber-text: #e0e0e0; --cyber-text-dim: #8d8daa;
+            margin: 0; background: var(--cyber-bg); font-family: 'Segoe UI', sans-serif; color: var(--cyber-text); text-align: center; min-height: 100vh;
+            background-image: radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(255, 0, 110, 0.1) 0%, transparent 50%);
+        }
+        body.theme-cyberpunk header { background: linear-gradient(135deg, var(--cyber-accent), var(--cyber-accent2)); padding: 20px; box-shadow: 0 4px 20px rgba(0, 217, 255, 0.3); font-size: 3rem; font-weight: 900; letter-spacing: 4px; color: #fff; text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
+        body.theme-cyberpunk .vip-tag { font-size: 1rem; color: #ffcc00; margin-top: 5px; font-weight: bold; text-shadow: 0 0 10px #ffcc00; display: block; }
+        body.theme-cyberpunk .stats-bar { background: var(--cyber-card); border-bottom: 1px solid rgba(0, 217, 255, 0.2); padding: 15px; display: flex; justify-content: center; gap: 40px; font-size: 0.9rem; color: var(--cyber-text-dim); }
+        body.theme-cyberpunk .stat-val { color: var(--cyber-accent); font-weight: bold; }
+        body.theme-cyberpunk #username { color: var(--cyber-accent); font-weight: bold; margin: 10px 0; font-size: 1.1rem; background: none; border: none; }
+        body.theme-cyberpunk .tile { background: var(--cyber-card); color: var(--cyber-text); border-radius: 12px; border: 2px solid transparent; padding: 20px 15px; text-decoration: none; font-weight: 600; position: relative; overflow: hidden; transition: all 0.3s ease; display: block; text-align: center;}
+        body.theme-cyberpunk .tile::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(0, 217, 255, 0.2), transparent); transition: left 0.5s ease; }
+        body.theme-cyberpunk .tile:hover::before { left: 100%; }
+        body.theme-cyberpunk .tile:hover { border-color: var(--cyber-accent); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0, 217, 255, 0.3); color: var(--cyber-accent); }
+
+        /* ==========================================================================
+           WSPÓLNE STYLE GLOBALNE
+           ========================================================================== */
         .desktop-only { display: none; font-size: 0.3em; color: #ffcc00; vertical-align: middle; margin-left: 10px; text-shadow: 0 0 5px #ffcc00; }
         @media (min-width: 800px) { .desktop-only { display: inline-block; } }
         
-        /* Statystyki */
-        .stats-bar { 
-            background: rgba(0,0,0,0.7); 
-            border-top: 1px solid #00ffff; 
-            border-bottom: 1px solid #00ffff; 
-            padding: 10px; 
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            font-size: 0.8em;
-        }
-        .stat-val { color: #ffcc00; }
-
-        #username { font-size: 1.2em; margin-bottom: 20px; background: rgba(0,0,0,0.5); padding: 5px; border-bottom: 1px solid #00ffff; }
         .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 20px 10px; }
-        .tile { background: rgba(17,17,17,0.85); color: #00ffff; border: 2px solid #00ffff; border-radius: 12px; width: 44%; min-width: 130px; padding: 15px 5px; text-decoration: none; animation: neonPulse 2s infinite ease-in-out; }
-        @keyframes neonPulse { 0%, 100% { box-shadow: 0 0 5px #00ffff; } 50% { box-shadow: 0 0 20px #00ffff; } }
-        .controls { margin: 10px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 10px; }
-        .btn-small { background: rgba(0,255,255,0.2); border: 1px solid #00ffff; color: #00ffff; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-family: 'Bungee', cursive; }
-        @media(min-width: 600px) { .tile { width: 22%; } }
+        body.theme-premium .grid, body.theme-cyberpunk .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; padding: 40px; max-width: 1200px; margin: 0 auto; }
+        @media(min-width: 600px) { .tile { width: 22% !important; } body.theme-premium .tile, body.theme-cyberpunk .tile { width: auto !important; } }
         
+        .controls { margin: 10px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 10px; }
+        .btn-small { background: rgba(0,255,255,0.2); border: 1px solid #00ffff; color: #00ffff; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-family: inherit; font-weight: bold;}
+        
+        body.theme-premium .btn-small { background: var(--primary); border: none; color: white; padding: 12px 25px; border-radius: 8px; }
+        body.theme-terminal .btn-small { background: #000; border: 1px solid #00ff00; color: #00ff00; border-radius: 0; }
+        body.theme-windows .btn-small { background: #ece9d8; border-top: 2px solid #fff; border-left: 2px solid #fff; border-right: 2px solid #707070; border-bottom: 2px solid #707070; color: #000; border-radius: 3px; }
+        body.theme-cyberpunk .btn-small { background: #1a1a2e; border: 1px solid #00d9ff; color: #e0e0e0; padding: 10px 20px; border-radius: 8px; }
+
+        /* Ciasteczka */
         #cookie-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        #cookie-box { background: #111; border: 3px solid #00ffff; padding: 30px; border-radius: 15px; max-width: 400px; width: 100%; text-align: center; }
-        .cookie-btn { font-family: 'Bungee', cursive; font-size: 1.5em; cursor: pointer; border-radius: 5px; padding: 12px; border: none; width: 100%; }
+        #cookie-box { background: #111; border: 3px solid #00ffff; padding: 30px; border-radius: 15px; max-width: 400px; width: 100%; text-align: center; color: #00ffff; }
+        .cookie-btn { font-family: inherit; font-size: 1.5em; cursor: pointer; border-radius: 5px; padding: 12px; border: none; width: 100%; }
         .btn-accept { background: #00ffff; color: #000; }
         .btn-reject { background: transparent; border: 1px solid #ff4444; color: #ff4444; margin-top: 10px; }
-    </style>
+        
+        #orkanet-footer { margin-top: 30px; padding: 15px; text-align: center; font-size: 0.9em; opacity: 0.8; }
+        body.theme-standard #orkanet-footer { color: #00ffff; border-top: 1px solid #00ffff; }
+        body.theme-premium #orkanet-footer { color: #2563eb; border-top: 1px solid #ddd; }
+        body.theme-terminal #orkanet-footer { color: #00ff00; border-top: 1px dashed #00ff00; }
+        body.theme-windows #orkanet-footer { color: #fff; border-top: 2px outset #fff; }
+        body.theme-cyberpunk #orkanet-footer { color: #8d8daa; border-top: 1px solid rgba(0, 217, 255, 0.2); background: #1a1a2e;}
 
-    <style id="premium-style" disabled>
-        /* TRYB MODERN (PREMIUM) */
-        :root { --primary: #2563eb; --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b; --accent: #ffcc00; }
-        body { margin: 0; background: var(--bg); font-family: 'Bungee', cursive; color: var(--text); text-align: center; }
-        header { background: var(--card-bg); padding: 40px 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 2.5em; color: var(--primary); text-shadow: none; }
-        .stats-bar { background: #fff; border: 1px solid #ddd; color: #555; }
-        .vip-tag { font-size: 0.3em; background: var(--accent); color: #000; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-top: 10px; letter-spacing: 0; }
-        #username { color: #64748b; background: none; border: none; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; padding: 40px; max-width: 1200px; margin: 0 auto; }
-        .tile { background: var(--card-bg); color: var(--text); border-radius: 16px; padding: 25px 15px; animation: none; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: auto; }
-        .btn-small { background: var(--primary); border: none; color: white; padding: 12px 25px; border-radius: 8px; }
+        /* Nowa animacja: obrót całego ekranu i tęcza */
+/* Animacja samej tęczy (tło i elementy) bez ruszania strony */
+@keyframes rainbowGlow {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
+/* Klasa, którą skrypt na chwilę wrzuci na stronę */
+.rainbow-active {
+    animation: rainbowGlow 3s ease-in-out;
+}
     </style>
 </head>
-<body>
+<body class="theme-standard">
 
 <div id="cookie-overlay">
     <div id="cookie-box">
         <div id="cookie-initial">
-            <h2 id="cookie-title">PLIKI COOKIE I PRYWATNOŚĆ</h2>
-            <p id="cookie-text" style="font-family: sans-serif; font-size: 0.9em; line-height: 1.4;">Nasza strona używa ciasteczek, aby OrkaNet był jeszcze lepszy.</p>
+            <h2>PLIKI COOKIE I PRYWATNOŚĆ</h2>
+            <p style="font-family: sans-serif; font-size: 0.9em; line-height: 1.4;">Nasza strona używa ciasteczek, aby OrkaNet był jeszcze lepszy. Akceptując, zgadzasz się na zbieranie danych o odwiedzinach dla statystyk Bebecha 🍪</p>
             <div style="display: flex; gap: 10px; margin-top: 20px;">
                 <button class="cookie-btn btn-accept" style="flex: 1;" onclick="acceptCookies()">AKCEPTUJ</button>
                 <button class="cookie-btn btn-reject" style="flex: 1;" onclick="rejectCookies()">ODRZUĆ</button>
             </div>
         </div>
         <div id="pay-screen" style="display: none;">
-            <h2 style="color: #ff4444;">PRYWATNOŚĆ KOSZTUJE</h2>
+            <h2>PRYWATNOŚĆ KOSZTUJE</h2>
             <div style="font-size: 2.5em; color: #ffcc00; margin: 20px 0; text-align: center;">50 ZŁ / MSC</div>
             <button class="cookie-btn btn-accept" style="background:#ffcc00; color: #000; width: 100%;" onclick="acceptCookies()">DOBRA, PŁACĘ (ŻARTUJĘ, WEJDŹ)</button>
         </div>
@@ -85,7 +151,7 @@
 </div>
 
 <header id="main-header">
-    ORKANET
+    <h1 id="header-text" style="display:inline-block; margin:0; font-family:inherit; font-size:inherit; color:inherit; text-shadow:inherit; font-weight:inherit; cursor:pointer;">ORKANET</h1>
     <span id="vip-label"></span>
     <span class="desktop-only"></span>
 </header>
@@ -93,17 +159,20 @@
 <div class="stats-bar">
     <div>UŻYTKOWNICY: <span id="reg-count" class="stat-val">...</span></div>
     <div>ONLINE: <span id="on-count" class="stat-val" style="color: #00ff00;">...</span></div>
+    <div>👀 ODWIEDZINY: <span id="visit-counter" class="stat-val" style="color:#ff006e;">0</span></div>
 </div>
 
 <div id="username">Weryfikacja profilu...</div>
 
 <div class="controls">
-    <button class="btn-small" id="theme-toggle" onclick="toggleTheme()" style="background: #ffcc00; color: #000; border: none;">✨ TRYB PREMIUM ✨</button>
-    <a href="https://whatsapp.com/channel/0029Vb7o86m65yDC9fzCYk0m" class="btn-small" style="background:#25D366; color:white; text-decoration:none;">WhatsApp 📱</a>
-    <button class="btn-small" style="background:#ff4444; color:white;" onclick="logout()">Wyloguj 🚪</button>
+    <button class="btn-small" id="theme-toggle" onclick="toggleTheme()">✨ ZMIEŃ TRYB ✨</button>
+    <a href="https://whatsapp.com/channel/0029Vb7o86m65yDC9fzCYk0m" class="btn-small" style="background:#25D366; color:white; text-decoration:none; border:none; display:inline-flex; align-items:center;">WhatsApp 📱</a>
+    <button class="btn-small" style="background:#ff4444; color:white; border:none;" onclick="logout()">Wyloguj 🚪</button>
+    <button class="btn-small" onclick="showRandomPage()">🎲 Losowa Strona</button>
+    <button class="btn-small" id="music-btn" onclick="toggleMusic()">🎵 Muzyka</button>
 </div>
 
-<div class="grid" id="main-grid">
+<main class="grid" id="main-grid">
     <a class="tile" href="czat.html">BebzunChat 💬</a>
     <a class="tile" href="bebzunit.html">MINECRAFT</a>
     <a class="tile" href="clicker.html">Creeper Clicker 💰</a>
@@ -136,21 +205,27 @@
     <a class="tile" href="robluxy.html">Free Robux (100% Legitne!)</a>
     <a class="tile" href="orkadio.html">Ptasie Radyjo</a>
     <a class="tile" href="tybzunku.html">Nie pytaj.</a>
-    <a class="tile" href=" "> </a>
     <a class="tile" href="thissitehasnolitteralsens.html">moja pierwsza strona</a>
     <a class="tile" href="jackbrowser.html">JackBrowser (podróba Chrome)</a>
     <a class="tile" href="robox.html">Zepsuty Roblox Okropnie O Ja</a>
     <a class="tile" href="wouldyoustasiekcode.html">Testuj swój Kod</a>
     <a class="tile" href="leceprzezoknoskirskirskir.html">OrkaVid</a>
+    <a class="tile" href="dajmikase.html">Przelicznik walut</a>
+    <a class="tile" href="supramariusz.html">Mario</a>
     <a class="tile" href="https://krispolaris.github.io/Glupie-AI">ai very smart</a>
-</div>
+    
+</main>
+
+<footer id="orkanet-footer">
+    © 2026 OrkaNet - Wszelkie prawa do Bebecha zastrzeżone.
+</footer>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getFirestore, collection, query, where, onSnapshot, getCountFromServer, doc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     const firebaseConfig = {
-        apiKey: "AIzaSy...", // Tu wstaw swój klucz
+        apiKey: "AIzaSy...", 
         authDomain: "bebechchat.firebaseapp.com",
         projectId: "bebechchat",
         storageBucket: "bebechchat.firebasestorage.app",
@@ -161,14 +236,11 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Aktualizacja liczników
     async function loadStats() {
-        // Zarejestrowani
         const coll = collection(db, "users");
         const snapshot = await getCountFromServer(coll);
         document.getElementById('reg-count').innerText = snapshot.data().count;
 
-        // Online (aktywni w ostatnie 5 min)
         const fiveMinsAgo = new Date(Date.now() - 5 * 60 * 1000);
         const q = query(collection(db, "users"), where("lastActive", ">", fiveMinsAgo));
         
@@ -177,7 +249,6 @@
         });
     }
 
-    // Meldujemy aktywność obecnego usera
     const user = localStorage.getItem('loggedUser');
     if (user && user !== "Gość") {
         const userRef = doc(db, "users", user);
@@ -188,42 +259,58 @@
 </script>
 
 <script>
-    // Reszta Twojej logiki (motywy, wylogowanie itp.)
-    const savedTheme = localStorage.getItem('theme') || 'standard';
-    applyTheme(savedTheme);
+    // System 5 motywów! (Usunięto monster)
+    const themes = ['standard', 'premium', 'terminal', 'windows', 'cyberpunk'];
+    let currentThemeIndex = themes.indexOf(localStorage.getItem('theme') || 'standard');
+    if (currentThemeIndex === -1) currentThemeIndex = 0;
+
+    applyTheme(themes[currentThemeIndex]);
 
     function toggleTheme() {
-        const currentTheme = localStorage.getItem('theme') === 'premium' ? 'standard' : 'premium';
-        applyTheme(currentTheme);
-        localStorage.setItem('theme', currentTheme);
+        currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+        const nextTheme = themes[currentThemeIndex];
+        applyTheme(nextTheme);
+        localStorage.setItem('theme', nextTheme);
     }
 
     function applyTheme(theme) {
-        const premiumStyle = document.getElementById('premium-style');
-        const standardStyle = document.getElementById('theme-style');
+        document.body.className = '';
+        document.body.classList.add('theme-' + theme);
+
         const btn = document.getElementById('theme-toggle');
 
-        if (theme === 'premium') {
-            if(premiumStyle) premiumStyle.disabled = false;
-            if(standardStyle) standardStyle.disabled = true;
-            btn.textContent = "💻 TRYB HAKERA";
-        } else {
-            if(premiumStyle) premiumStyle.disabled = true;
-            if(standardStyle) standardStyle.disabled = false;
-            btn.textContent = "✨ TRYB PREMIUM ✨";
+        if (theme === 'standard') {
+            btn.textContent = "✨ TRYB STANDARD ✨";
+            btn.style.background = "#ffcc00";
+            btn.style.color = "#000";
+        } else if (themtheme === 'premium') {
+            btn.textContent = "💎 TRYB PREMIUM 💎";
+            btn.style.background = "#2563eb";
+            btn.style.color = "#fff";
+        } else if (theme === 'terminal') {
+            btn.textContent = "🐧 TRYB TERMINAL 🐧";
+            btn.style.background = "#00ff00";
+            btn.style.color = "#000";
+        } else if (theme === 'windows') {
+            btn.textContent = "💻 TRYB WINDOWS 💻";
+            btn.style.background = "#ece9d8";
+            btn.style.color = "#000";
+        } else if (theme === 'cyberpunk') {
+            btn.textContent = "🤖 TRYB CYBERPUNK 🤖";
+            btn.style.background = "#ff006e";
+            btn.style.color = "#fff";
         }
     }
 
+    // Licznik Odwiedzin 
+    let visits = localStorage.getItem("orkanetVisits") || 0;
+    visits++;
+    localStorage.setItem("orkanetVisits", visits);
+    document.getElementById("visit-counter").textContent = visits;
+
+    // Ciasteczka
     if (localStorage.getItem('cookiesAccepted') === 'true') {
         document.getElementById('cookie-overlay').style.display = 'none';
-    }
-
-    const loggedUser = localStorage.getItem('loggedUser') || "Gość";
-    document.getElementById('username').textContent = 'Twoje konto: ' + loggedUser;
-
-    if (["admin", "kris", "krys", "szym"].some(n => loggedUser.toLowerCase().includes(n))) {
-        const v = document.getElementById('vip-label');
-        if(v) { v.className = "vip-tag"; v.innerHTML = "SUPER GOŚCIU 🔥"; }
     }
 
     function acceptCookies() {
@@ -236,12 +323,58 @@
         document.getElementById('pay-screen').style.display = 'block';
     }
 
+    // Login i VIP system
+    const loggedUser = localStorage.getItem('loggedUser') || "Gość";
+    document.getElementById('username').textContent = 'Twoje konto: ' + loggedUser;
+
+    if (["admin", "kris", "krys", "szym", "sim"].some(n => loggedUser.toLowerCase().includes(n))) {
+        const v = document.getElementById('vip-label');
+        if(v) { v.className = "vip-tag"; v.innerHTML = "SUPER GOŚCIU 🔥"; }
+    }
+
+    // Wylogowanie
     function logout() { 
         if(confirm("Opuszczasz OrkaNet?")) { 
             localStorage.removeItem('loggedUser'); 
             window.location.reload(); 
         } 
     }
+
+    // Losowa Strona
+    function showRandomPage() {
+        const pages = [...document.querySelectorAll('.tile')];
+        const random = pages[Math.floor(Math.random() * pages.length)];
+        if(random.href && random.href.trim() !== "") {
+            location.href = random.href;
+        }
+    }
+
+    // Uniwersalny system muzyczny (Działa na music.mp3)
+    let musicPlaying = false;
+    let normalMusic = new Audio("music.mp3");
+
+    function toggleMusic() {
+        const mBtn = document.getElementById('music-btn');
+
+        if(musicPlaying){
+            normalMusic.pause();
+            mBtn.textContent = "🎵 Muzyka";
+        } else {
+            normalMusic.play();
+            mBtn.textContent = "⏸️ Pauza";
+        }
+        musicPlaying = !musicPlaying;
+    }
+
+// Tęczowa zmiana kolorów całej gamy po kliknięciu logo (bez kręcenia stroną)
+document.getElementById('header-text').addEventListener('click', () => {
+    document.documentElement.classList.add('rainbow-active');
+    
+    // Po 3 sekundach usuwamy efekt, żeby można było kliknąć ponownie
+    setTimeout(() => {
+        document.documentElement.classList.remove('rainbow-active');
+    }, 3000);
+});
 </script>
 </body>
 </html>

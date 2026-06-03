@@ -1,0 +1,424 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Mario Mobile - Pegasus Player</title>
+    
+    <script src="https://unpkg.com/jsnes/dist/jsnes.min.js"></script>
+    
+    <style>
+        /* Blokujemy przesuwanie strony palcem na telefonie, żeby grało się wygodnie */
+        * {
+            box-sizing: border-box;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        body {
+            background-color: #1a1a1a;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 10px;
+            overflow: hidden;
+            touch-action: none;
+        }
+        
+        h1 {
+            color: #ff3333;
+            font-size: 20px;
+            margin: 5px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        #status {
+            color: #ffcc00;
+            margin-bottom: 15px;
+            font-size: 13px;
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        #pc-controls-info {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #444;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 11px;
+            color: #ccc;
+            margin-bottom: 10px;
+            text-align: center;
+            line-height: 1.5;
+            max-width: 400px;
+        }
+        
+        #pc-controls-info span {
+            color: #ff3333;
+            font-weight: bold;
+        }
+
+        /* Styl dla przycisku importu */
+        .file-upload {
+            background-color: #ff3333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 15px;
+            border: none;
+            font-size: 14px;
+            box-shadow: 0 4px #990000;
+            transition: 0.1s;
+            text-align: center;
+        }
+        
+        .file-upload:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px #990000;
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+
+        #canvas-container {
+            border: 4px solid #ff3333;
+            background-color: #000;
+            box-shadow: 0 0 20px rgba(255, 51, 51, 0.5);
+            border-radius: 4px;
+            max-width: 100%;
+        }
+        
+        canvas {
+            display: block;
+            width: 100%;
+            max-width: 400px; 
+            height: auto;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        /* --- STYLIZACJA WIRTUALNEGO PADA DLA TELEFONU --- */
+        #mobile-controls {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 450px;
+            margin-top: auto;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        .dpad {
+            display: grid;
+            grid-template-columns: repeat(3, 45px);
+            grid-template-rows: repeat(3, 45px);
+            gap: 2px;
+        }
+
+        .dpad-btn {
+            background: #333;
+            border: 2px solid #555;
+            color: #fff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            touch-action: none;
+        }
+        .dpad-btn:active { background: #555; }
+        .center-space { background: transparent; border: none; }
+
+        .action-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-action {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            box-shadow: 0 4px #990000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: none;
+        }
+        .btn-b { background-color: #ffcc00; box-shadow: 0 4px #b38f00; color: #000; }
+        .btn-a { background-color: #ff3333; box-shadow: 0 4px #b32424; }
+        .btn-action:active { transform: translateY(4px); box-shadow: none; }
+
+        .system-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-sys {
+            background: #444;
+            border: 1px solid #666;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            touch-action: none;
+        }
+        .btn-sys:active { background: #666; }
+    </style>
+</head>
+<body>
+
+    <h1>Super Mario Bros</h1>
+    <div id="status">Pobieranie pliku gra.nes...<br>Zimportuj to co zostało pobrane!</div>
+    
+    <div id="pc-controls-info">
+        🎮 <b>Sterowanie PC:</b> Ruch = <span>Strzałki</span> | Skok (A) = <span>X</span> | Atak/Bieg (B) = <span>Z</span><br>
+        Start = <span>Enter</span> | Select = <span>Prawy Shift</span> | Obsługa pada na USB: <span>Aktywna automatycznie!</span>
+    </div>
+
+    <label class="file-upload">
+        📥 ZIMPORTUJ POBRANY PLIK GRA.NES
+        <input type="file" id="rom-file" accept=".nes">
+    </label>
+    
+    <p style="font-size: 11px; opacity: 0.6; margin: 0 0 10px 0;">sorry może nie być dźwięku</p>
+
+    <div id="canvas-container">
+        <canvas id="nes-canvas" width="256" height="240"></canvas>
+    </div>
+
+    <div id="mobile-controls">
+        <div class="dpad">
+            <div class="center-space"></div>
+            <div class="dpad-btn" id="btn-up">▲</div>
+            <div class="center-space"></div>
+            
+            <div class="dpad-btn" id="btn-left">◀</div>
+            <div class="center-space"></div>
+            <div class="dpad-btn" id="btn-right">▶</div>
+            
+            <div class="center-space"></div>
+            <div class="dpad-btn" id="btn-down">▼</div>
+            <div class="center-space"></div>
+        </div>
+
+        <div class="action-container">
+            <div class="action-buttons">
+                <div class="btn-action btn-b" id="btn-b">B</div>
+                <div class="btn-action btn-a" id="btn-a">A</div>
+            </div>
+            
+            <div class="system-buttons">
+                <div class="btn-sys" id="btn-select">Select</div>
+                <div class="btn-sys" id="btn-start">Start</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('nes-canvas');
+        const ctx = canvas.getContext('2d');
+        const statusDiv = document.getElementById('status');
+        const fileInput = document.getElementById('rom-file');
+        
+        let imageData = ctx.createImageData(256, 240);
+        let pixelView = new DataView(imageData.data.buffer);
+
+        // 1. Inicjalizacja JSNES
+        const nes = new jsnes.NES({
+            onFrame: function(buffer) {
+                for (let i = 0; i < 240 * 256; ++i) {
+                    let pixel = buffer[i];
+                    let r = pixel & 0xFF;
+                    let g = (pixel >> 8) & 0xFF;
+                    let b = (pixel >> 16) & 0xFF;
+                    let rgba = (r << 24) | (g << 16) | (b << 8) | 255;
+                    pixelView.setInt32(i * 4, rgba);
+                }
+                ctx.putImageData(imageData, 0, 0);
+            }
+        });
+
+        // Mapowanie klawiatury PC (Klawisze systemowe zablokowane przed przesuwaniem okna)
+        const keysMapping = {
+            'ArrowUp': jsnes.Controller.BUTTON_UP,
+            'ArrowDown': jsnes.Controller.BUTTON_DOWN,
+            'ArrowLeft': jsnes.Controller.BUTTON_LEFT,
+            'ArrowRight': jsnes.Controller.BUTTON_RIGHT,
+            'KeyX': jsnes.Controller.BUTTON_A,
+            'KeyZ': jsnes.Controller.BUTTON_B,
+            'ShiftRight': jsnes.Controller.BUTTON_SELECT,
+            'Enter': jsnes.Controller.BUTTON_START
+        };
+
+        window.addEventListener("keydown", (e) => {
+            if (keysMapping[e.code] !== undefined) {
+                e.preventDefault();
+                nes.buttonDown(1, keysMapping[e.code]);
+            }
+        });
+
+        window.addEventListener("keyup", (e) => {
+            if (keysMapping[e.code] !== undefined) {
+                e.preventDefault();
+                nes.buttonUp(1, keysMapping[e.code]);
+            }
+        });
+
+        // Dotyk na telefonie
+        function bindMobileButton(elementId, nesButton) {
+            const btn = document.getElementById(elementId);
+            if (!btn) return;
+            btn.addEventListener('touchstart', (e) => { e.preventDefault(); nes.buttonDown(1, nesButton); }, { passive: false });
+            btn.addEventListener('touchend', (e) => { e.preventDefault(); nes.buttonUp(1, nesButton); }, { passive: false });
+        }
+        bindMobileButton('btn-up', jsnes.Controller.BUTTON_UP);
+        bindMobileButton('btn-down', jsnes.Controller.BUTTON_DOWN);
+        bindMobileButton('btn-left', jsnes.Controller.BUTTON_LEFT);
+        bindMobileButton('btn-right', jsnes.Controller.BUTTON_RIGHT);
+        bindMobileButton('btn-a', jsnes.Controller.BUTTON_A);
+        bindMobileButton('btn-b', jsnes.Controller.BUTTON_B);
+        bindMobileButton('btn-select', jsnes.Controller.BUTTON_SELECT);
+        bindMobileButton('btn-start', jsnes.Controller.BUTTON_START);
+
+        // --- OBSŁUGA FIZYCZNEGO PADA (GAMEPAD API) ---
+        let gamepadState = {};
+
+        window.addEventListener("gamepadconnected", (e) => {
+            console.log("Pad podłączony: " + e.gamepad.id);
+            statusDiv.innerHTML = "Wykryto kontroler: " + e.gamepad.id.substring(0, 20) + "...<br>Zaimportuj plik i graj!";
+        });
+
+        function updateGamepadInputs() {
+            const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+            const gp = gamepads[0]; // Bierzemy pierwszego podłączonego pada
+            
+            if (!gp) return;
+
+            // Mapowanie standardowych przycisków typu Xbox/PlayStation
+            const padButtons = {
+                0: jsnes.Controller.BUTTON_A,       // Przycisk dolny (A / X)
+                1: jsnes.Controller.BUTTON_B,       // Przycisk prawy (B / Kółko)
+                2: jsnes.Controller.BUTTON_B,       // Przycisk lewy (X / Kwadrat) jako alternatywny atak
+                8: jsnes.Controller.BUTTON_SELECT,  // Select / Share
+                9: jsnes.Controller.BUTTON_START,   // Start / Options
+                12: jsnes.Controller.BUTTON_UP,     // D-Pad Góra
+                13: jsnes.Controller.BUTTON_DOWN,   // D-Pad Dół
+                14: jsnes.Controller.BUTTON_LEFT,   // D-Pad Lewo
+                15: jsnes.Controller.BUTTON_RIGHT   // D-Pad Prawo
+            };
+
+            // Sprawdzanie przycisków fizycznych
+            for (let btnIdx in padButtons) {
+                let nesBtn = padButtons[btnIdx];
+                let isPressed = gp.buttons[btnIdx] && gp.buttons[btnIdx].pressed;
+
+                // Sprawdzamy też gałkę analogową dla ruchu (lewy analog)
+                if (btnIdx == 12 && gp.axes[1] < -0.5) isPressed = true; // Analog góra
+                if (btnIdx == 13 && gp.axes[1] > 0.5) isPressed = true;  // Analog dół
+                if (btnIdx == 14 && gp.axes[0] < -0.5) isPressed = true; // Analog lewo
+                if (btnIdx == 15 && gp.axes[0] > 0.5) isPressed = true;  // Analog prawo
+
+                if (isPressed && !gamepadState[nesBtn]) {
+                    nes.buttonDown(1, nesBtn);
+                    gamepadState[nesBtn] = true;
+                } else if (!isPressed && gamepadState[nesBtn]) {
+                    nes.buttonUp(1, nesBtn);
+                    gamepadState[nesBtn] = false;
+                }
+            }
+        }
+
+        // Funkcja uruchamiająca grę w 60 FPS
+        function startEmulator(romData) {
+            let romString = "";
+            const chunkSize = 65536;
+            for (let offset = 0; offset < romData.length; offset += chunkSize) {
+                const chunk = romData.subarray(offset, offset + chunkSize);
+                romString += String.fromCharCode.apply(null, chunk);
+            }
+
+            try {
+                nes.loadROM(romString);
+                statusDiv.innerText = "GRA URUCHOMIONA! KLIKNIJ START LUB NACIŚNIJ PRZYCISK NA PADZIE";
+                statusDiv.style.color = "#00ff66";
+
+                let fps = 60;
+                let fpsInterval = 1000 / fps;
+                let then = performance.now();
+
+                function step(now) {
+                    requestAnimationFrame(step);
+                    
+                    // Czytamy stan kontrolera w każdej klatce gry
+                    updateGamepadInputs();
+
+                    let elapsed = now - then;
+                    if (elapsed > fpsInterval) {
+                        then = now - (elapsed % fpsInterval);
+                        nes.frame();
+                    }
+                }
+                requestAnimationFrame(step);
+            } catch(err) {
+                statusDiv.innerText = "BŁĄD URUCHAMIANIA: " + err.message;
+                statusDiv.style.color = "#ff3333";
+            }
+        }
+
+        // 2. Obsługa importu pobranego pliku przez użytkownika
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            statusDiv.innerText = "Wczytywanie zaimportowanego pliku...";
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                startEmulator(new Uint8Array(event.target.result));
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        // 3. AUTOMATYCZNE WYMUSZENIE POBRANIA PLIKU GRA.NES PRZEZ PRZEGLĄDARKĘ
+        function triggerAutoDownload() {
+            const link = document.createElement('a');
+            link.href = 'gra.nes'; // Ścieżka do Twojego pliku na serwerze
+            link.download = 'gra.nes'; // Wymuszenie pobrania o tej nazwie
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(triggerAutoDownload, 500);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>money money money</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #0b0f19;
+            color: #e2e8f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(rgba(0, 242, 254, 0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0, 242, 254, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            top: -50%;
+            left: -50%;
+            transform: rotate(5deg);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .converter-card {
+            background: rgba(17, 24, 39, 0.85);
+            border: 2px solid #00f2fe;
+            border-radius: 16px;
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.25), inset 0 0 15px rgba(0, 242, 254, 0.1);
+            width: 100%;
+            max-width: 480px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            position: relative;
+        }
+
+        .converter-card::after {
+            content: 'kasa';
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: #0b0f19;
+            padding: 0 8px;
+            font-size: 0.75rem;
+            color: #00f2fe;
+            font-family: monospace;
+            letter-spacing: 2px;
+            border: 1px solid #00f2fe;
+            border-radius: 4px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 25px;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.6);
+            letter-spacing: 1px;
+            border-bottom: 1px dashed rgba(0, 242, 254, 0.3);
+            padding-bottom: 15px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .field-container {
+            display: flex;
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(0, 242, 254, 0.4);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .field-container:focus-within {
+            border-color: #00f2fe;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+        }
+
+        input[type="number"] {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            padding: 14px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        input[::-webkit-outer-spin-button],
+        input[::-webkit-inner-spin-button] {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        select {
+            background: #1e293b;
+            color: #00f2fe;
+            border: none;
+            outline: none;
+            padding: 0 15px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-top-right-radius: 7px;
+            border-bottom-right-radius: 7px;
+            border-left: 1px solid rgba(0, 242, 254, 0.4);
+            transition: background 0.2s;
+        }
+
+        select:hover {
+            background: #2d3748;
+        }
+
+        .swap-btn-container {
+            display: flex;
+            justify-content: center;
+            margin: -5px 0 15px 0;
+        }
+
+        .swap-btn {
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid #00f2fe;
+            color: #00f2fe;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.1);
+        }
+
+        .swap-btn:hover {
+            background: #00f2fe;
+            color: #0b0f19;
+            transform: rotate(180deg);
+            box-shadow: 0 0 15px #00f2fe;
+        }
+
+        .result-box {
+            background: rgba(0, 242, 254, 0.05);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 25px;
+            min-height: 90px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .result-box .text {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 5px;
+        }
+
+        .result-box .value {
+            font-size: 1.8rem;
+            color: #00f2fe;
+            font-weight: 800;
+            text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);
+        }
+
+        .rates-grid {
+            margin-top: 25px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+            padding-top: 15px;
+        }
+
+        .rates-title {
+            font-size: 0.8rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .rates-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            font-size: 0.85rem;
+            font-family: monospace;
+        }
+
+        .rate-item {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 6px 10px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            border-left: 2px solid #475569;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="converter-card">
+        <h1>Kalkulator Walut</h1>
+
+        <div class="input-group">
+            <label for="amount">Chcę wymienić:</label>
+            <div class="field-container">
+                <input type="number" id="amount" value="100" min="0" placeholder="0.00">
+                <select id="fromCurrency">
+                    <option value="PLN" selected>PLN</option>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="GBP">GBP</option>
+                    <option value="MXN">MXN</option>
+                    <option value="BTC">BTC</option>
+                    <option value="DOGE">DOGE</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="swap-btn-container">
+            <button class="swap-btn" id="swapBtn" title="Zamień waluty">⇄</button>
+        </div>
+
+        <div class="input-group">
+            <label for="toCurrency">Na walutę:</label>
+            <div class="field-container">
+                <select id="toCurrency" style="width: 100%; border-top-left-radius: 7px; border-bottom-left-radius: 7px; border-left: none;">
+                    <option value="PLN">PLN</option>
+                    <option value="USD" selected>USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="GBP">GBP</option>
+                    <option value="MXN">MXN</option>
+                    <option value="BTC">BTC</option>
+                    <option value="DOGE">DOGE</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="result-box">
+            <div class="text" id="resultText">100,00 PLN =</div>
+            <div class="value" id="resultValue">0,00 USD</div>
+        </div>
+
+        <div class="rates-grid">
+            <div class="rates-title">Kursy referencyjne (w PLN)</div>
+            <div class="rates-list" id="ratesList"></div>
+        </div>
+    </div>
+
+    <script>
+        const exchangeRates = {
+            PLN: 1.00,
+            USD: 3.66,
+            EUR: 4.24,
+            GBP: 4.91,      
+            MXN: 0.21,      
+            BTC: 241025.21, 
+            DOGE: 0.34      
+        };
+
+        const amountInput = document.getElementById('amount');
+        const fromSelect = document.getElementById('fromCurrency');
+        const toSelect = document.getElementById('toCurrency');
+        const swapBtn = document.getElementById('swapBtn');
+        const resultText = document.getElementById('resultText');
+        const resultValue = document.getElementById('resultValue');
+        const ratesList = document.getElementById('ratesList');
+
+        function displayRatesTable() {
+            ratesList.innerHTML = '';
+            for (const [currency, rate] of Object.entries(exchangeRates)) {
+                if (currency === 'PLN') continue;
+                
+                const item = document.createElement('div');
+                item.className = 'rate-item';
+                item.innerHTML = `<span>${currency}</span> <span>${rate.toLocaleString('pl-PL', { minimumFractionDigits: 2 })} zł</span>`;
+                ratesList.appendChild(item);
+            }
+        }
+
+        function calculateConversion() {
+            const amount = parseFloat(amountInput.value);
+            const fromCurr = fromSelect.value;
+            const toCurr = toSelect.value;
+
+            if (isNaN(amount) || amount <= 0) {
+                resultText.textContent = 'Wpisz poprawną kwotę...';
+                resultValue.textContent = '---';
+                return;
+            }
+
+            const amountInPLN = amount * exchangeRates[fromCurr];
+            const finalResult = amountInPLN / exchangeRates[toCurr];
+
+            const decimals = (toCurr === 'BTC' || toCurr === 'DOGE') ? 4 : 2;
+            const formattedResult = finalResult.toLocaleString('pl-PL', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+            const formattedAmount = amount.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            resultText.textContent = `${formattedAmount} ${fromCurr} =`;
+            resultValue.textContent = `${formattedResult} ${toCurr}`;
+        }
+
+        swapBtn.addEventListener('click', () => {
+            const temp = fromSelect.value;
+            fromSelect.value = toSelect.value;
+            toSelect.value = temp;
+            calculateConversion();
+        });
+
+        amountInput.addEventListener('input', calculateConversion);
+        fromSelect.addEventListener('change', calculateConversion);
+        toSelect.addEventListener('change', calculateConversion);
+
+        displayRatesTable();
+        calculateConversion();
+    </script>
+</body>
+</html>

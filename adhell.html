@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AD HELL - TOTALNE ZNISZCZENIE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+     crossorigin="anonymous"></script>
+
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 10px;
+            overflow-x: hidden;
+            background-image: linear-gradient(rgba(255, 0, 0, 0.15) 1px, transparent 1px);
+            background-size: 100% 3px;
+        }
+        header {
+            text-align: center;
+            padding: 30px;
+            background: #330000;
+            border: 8px ridge #ff0000;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-family: 'Bungee', cursive;
+            color: #ff0055;
+            text-shadow: 0 0 10px #ff0055, 0 0 30px #ffcc00;
+            font-size: 3.5rem;
+            margin: 0;
+            animation: shake 0.2s infinite;
+        }
+        .alert-text {
+            color: #00ff00;
+            font-weight: bold;
+            font-size: 1.5rem;
+            margin-top: 10px;
+            animation: blink 0.4s infinite alternate;
+        }
+        .ad-container-mega {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .banner {
+            background: #111;
+            border: 4px solid #fff;
+            padding: 15px;
+            position: relative;
+            border-radius: 6px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(255,255,255,0.2);
+            cursor: pointer;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .banner:hover { transform: scale(1.03); z-index: 10; }
+        .ad-badge {
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            background: #ff0055;
+            color: white;
+            font-size: 9px;
+            padding: 2px 6px;
+            font-weight: bold;
+            border-radius: 3px;
+        }
+        .scam-cyan { border-color: #00ffcc; animation: glowCyan 1s infinite alternate; }
+        .scam-magenta { border-color: #ff00ff; animation: glowMagenta 0.7s infinite alternate; }
+        .scam-yellow { border-color: #ffcc00; animation: glowYellow 0.5s infinite alternate; }
+        
+        .real-google-ad {
+            border: 4px solid #4285F4 !important;
+            background: #151515;
+            box-shadow: 0 0 20px rgba(66, 133, 244, 0.6);
+        }
+        .btn-ad {
+            background: #00ff00;
+            color: black;
+            border: none;
+            padding: 8px 15px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            margin-top: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px #008800;
+        }
+        #escape-zone { text-align: center; margin: 50px 0; height: 80px; }
+        #escape-btn {
+            background: #2563eb;
+            color: white;
+            border: 3px solid white;
+            padding: 20px 40px;
+            font-family: 'Bungee', cursive;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 1.3rem;
+        }
+
+        @keyframes blink { 0% { opacity: 0; } 100% { opacity: 1; } }
+        @keyframes glowCyan { 0% { box-shadow: 0 0 5px #00ffcc; } 100% { box-shadow: 0 0 25px #00ffcc; } }
+        @keyframes glowMagenta { 0% { box-shadow: 0 0 5px #ff00ff; } 100% { box-shadow: 0 0 25px #ff00ff; } }
+        @keyframes glowYellow { 0% { box-shadow: 0 0 5px #ffcc00; } 100% { box-shadow: 0 0 25px #ffcc00; } }
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -1px) rotate(-1deg); }
+            50% { transform: translate(2px, 1px) rotate(1deg); }
+            100% { transform: translate(1px, -1px) rotate(0deg); }
+        }
+    </style>
+</head>
+<body onload="generateHell()">
+
+    <header>
+        <h1>⚠️ AD HELL: APOKALIPSA ⚠️</h1>
+        <div class="alert-text">ZAINSTALOWANO 40 WIRUSÓW EMERYTALNYCH I 20 REKLAM GOOGLE!</div>
+    </header>
+
+    <div class="ad-container-mega" id="mega-grid">
+        </div>
+
+    <div id="escape-zone">
+        <button id="escape-btn" onmouseover="uciekaj()">Uciekaj stąd! 🚪</button>
+    </div>
+
+    <script>
+        // 40 idealnych nagłówków pod 70-latków i teorie spiskowe
+        const seniorTitles = [
+            "🚨 UNIA ZAKAZUJE UPRAWY KOPERKU?!", "👵 Emerytka z Sanoka odkryła JEDEN TRIK!",
+            "💊 ZUS ukrywał to przez 30 lat!", "🔋 Przełom! Prąd z ziemniaka za darmo!",
+            "📿 Cudowny pierścień magnetyczny na wszystko", "📜 Rząd dopłaca 5000zł do każdego kota?!",
+            "🛑 Koniec z okularami! Wystarczy zakropić...", "⚠️ Od jutra wyłączają WSZYSTKIE bankomaty!",
+            "🥕 Ta roślina leczy kręgosłup w 12 minut", "🦖 Naukowcy znaleźli żywego smoka w Bieszczadach",
+            "💧 Szklanka tego napoju cofa wiek o 25 lat", "📱 Nowy zakaz używania smartfonów po 18:00!",
+            "🍫 Niemiecka czekolada truje Polaków?!", "⛪ Proboszcz zdradził sekret bogactwa!",
+            "📉 Waluta załamie się o północy! Kupuj złoto!", "🌽 Jadalna folia z Biedronki - prawda czy mit?",
+            "🧄 Czosnek potraktowany prądem leczy Bebech", "📺 Koniec telewizji naziemnej! Sprawdź dekoder",
+            "🍄 Grzyb gigant z lasu pod Radomiem mówi?!", "🧙‍♀️ Jasnowidz z Pcimia ostrzega przed środą",
+            "🦶 Plaster z cebuli wyciąga toksyny przez pięty", "💸 Zwrócą Ci podatek za ostatnie 15 lat!",
+            "🛰️ 5G aktywuje czipy w szczepionkach gołębi!", "🥚 Jajo kurze potrójnej żółtości leczy stawy",
+            "🦷 Japońska metoda na nowe zęby w tydzień", "🧂 Sól z Wieliczki ma właściwości lewitujące!",
+            "🍵 Pij ten ocet, a tłuszcz sam spłynie", "📻 Tajny komunikat radiowy dla emerytów!",
+            "🥶 Sanatoria będą teraz darmowe, ale...", "🦔 Jeże przynoszą ukryte dotacje z UE",
+            "🔑 Jak otworzyć dowolny zamek spinaczem?", "🥖 Chleb z mąki z robaków już w sklepach!",
+            "🌡️ Słońce zgaśnie na dwa dni? Przygotuj się", "💵 Dodatkowa 19. emerytura dla każdego!",
+            "🧅 Skarpeta pełna czosnku pod łóżkiem i...", "🛸 UFO wylądowało pod Ciechocinkiem!",
+            "🥩 Skandal w rzeźni! Robili parówki z...", "👁️ Tajne stowarzyszenie kontroluje ceny masła!",
+            "🧼 Mydło z jadu żmii wygładza zmarszczki", "🕸️ Pajęczyna w sprayu zamiast bandaża!"
+        ];
+
+        const seniorTexts = [
+            "Kliknij tutaj, aby podpisać petycję przeciwko nowym unijnym dyrektywom!",
+            "Lekarze z Warszawy są wściekli. Apteki chcą zablokować ten darmowy sposób.",
+            "Wystarczy, że podasz swój PESEL i numer konta, a wyślemy darmowy katalog.",
+            "Możesz zaoszczędzić nawet 1200 zł miesięcznie na ogrzewaniu. Sprawdź instrukcję.",
+            "Nasączony wyciągiem z młodego buraka pasowego. Działa natychmiastowo.",
+            "Wydrukowano już specjalne wnioski. Liczba miejsc ograniczona, decyduje kolejność!",
+            "Odkrycie polskiego zielarza zmieniło wszystko. Zobacz nagranie wideo.",
+            "Zabezpiecz swoje oszczędności w jedynym słusznym banku alternatywnym.",
+            "Niesamowity skandal w Ministerstwie Zdrowia. Ukrywali raport!",
+            "Unia Europejska wprowadza tajny podatek od oddychania świeżym powietrzem.",
+            "Niesamowite! Sąsiedzi będą zazdrościć Ci figury i młodego wyglądu.",
+            "Wszystko przez tajne maszty nadawcze poukrywane w kościelnych wieżach.",
+            "Kup zestaw 12 cudownych garnków i odbierz darmowy masażer do stóp już dziś!",
+            "Tylko u nas oryginalna receptura ojca Grzegorza z klasztoru na Podlasiu."
+        ];
+
+        const styles = ["scam-cyan", "scam-magenta", "scam-yellow"];
+
+        function generateHell() {
+            const grid = document.getElementById('mega-grid');
+            let adElements = [];
+
+            // 1. Tworzymy 40 reklam dla emerytów
+            for (let i = 0; i < 40; i++) {
+                const title = seniorTitles[i % seniorTitles.length];
+                const text = seniorTexts[Math.floor(Math.random() * seniorTexts.length)];
+                const style = styles[Math.floor(Math.random() * styles.length)];
+
+                const html = `
+                    <div class="banner ${style}" onclick="spamAlert(event)">
+                        <div class="ad-badge">WAŻNE / PILNE</div>
+                        <h2>${title}</h2>
+                        <p>${text}</p>
+                        <button class="btn-ad">SPRAWDŹ PRAWDĘ 📜</button>
+                    </div>
+                `;
+                adElements.push({ type: 'custom', html: html });
+            }
+
+            // 2. Tworzymy 20 prawdziwych boksów Google Ads
+            for (let i = 1; i <= 20; i++) {
+                const googleHtml = `
+                    <div class="banner real-google-ad" onclick="event.stopPropagation()">
+                        <div class="ad-badge" style="background: #4285F4;">GOOGLE ADS #${i}</div>
+                        <p style="color: #666; font-size: 11px; margin:0;">Reklama Google Sponsorowana</p>
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                             data-ad-slot="SLOT_NR_${i}"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                        <script>
+                             (adsbygoogle = window.adsbygoogle || []).push({});
+                        <\/script>
+                    </div>
+                `;
+                adElements.push({ type: 'google', html: googleHtml });
+            }
+
+            // 3. Tasujemy tablicę (algorytm Fisher-Yates), żeby wszystko było losowo wymieszane
+            for (let i = adElements.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [adElements[i], adElements[j]] = [adElements[j], adElements[i]];
+            }
+
+            // 4. Wrzucamy gotowy chaos do siatki HTML
+            grid.innerHTML = adElements.map(el => el.html).join('');
+        }
+
+        function spamAlert(e) {
+            if (e) e.stopPropagation();
+            alert("⚠️ UWAGA KOMUNIKAT ⚠️\n\nAby przeczytać artykuł, zaakceptuj przekazanie swojej emerytury na fundusz walki z 5G. Kliknij OK, aby kontynuować.");
+        }
+
+        document.body.addEventListener('click', function(e) {
+            if (e.target === document.body || e.target.id === 'mega-grid') {
+                spamAlert();
+            }
+        });
+
+        function uciekaj() {
+            const btn = document.getElementById('escape-btn');
+            const x = Math.random() * (window.innerWidth - 250);
+            const y = Math.random() * (window.innerHeight - 100);
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+        document.getElementById('escape-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            alert("Niemożliwe! Kliknąłeś! Wracasz na OrkaNet.");
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
