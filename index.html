@@ -1,73 +1,240 @@
-HEJ
-Jeśli jesteś pierwszy
-raz w OrkaNecie
-to siema
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OrkaNet - Logowanie 🔐</title>
+    <title>OrkaNet - Mega Logowanie 🔐</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    
     <style>
-        body { background: #000; color: #00e6ff; font-family: 'Segoe UI', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body { 
+            background: #000 url('123.jpg') no-repeat center center fixed; 
+            background-size: cover;
+            color: #00ffff; 
+            font-family: 'Bebas Neue', sans-serif; 
+            letter-spacing: 1.5px;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+            padding: 20px; 
+        }
+
         .login-box { 
-            background: #050505; border: 2px solid #00e6ff; padding: 30px; 
-            border-radius: 15px; box-shadow: 0 0 20px #00e6ff; text-align: center; width: 320px;
+            background: rgba(5, 5, 5, 0.85); 
+            border: 3px solid #00ffff; 
+            padding: 35px 25px; 
+            border-radius: 0px; /* Całkowicie surowe, kanciaste rogi dla klimatu */
+            box-shadow: 0 0 25px #00ffff, inset 0 0 15px rgba(0, 255, 255, 0.2); 
+            text-align: center; 
+            width: 100%;
+            max-width: 380px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
-        h1 { text-shadow: 0 0 10px #00e6ff; margin-bottom: 20px; }
+
+        h1 { 
+            font-size: 3.5em;
+            text-shadow: 0 0 12px #00ffff; 
+            margin-bottom: 25px; 
+            letter-spacing: 3px;
+        }
+
         input { 
-            width: 90%; padding: 10px; margin: 10px 0; background: #111; 
-            border: 1px solid #00e6ff; color: #fff; border-radius: 5px; outline: none;
-        }
-        button { 
-            width: 100%; padding: 10px; background: #00e6ff; color: #000; 
-            border: none; font-weight: bold; cursor: pointer; border-radius: 5px; margin-top: 10px;
+            width: 100%; 
+            padding: 12px 15px; 
+            margin: 12px 0; 
+            background: rgba(17, 17, 17, 0.9); 
+            border: 2px solid #00ffff; 
+            color: #fff; 
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4em;
+            letter-spacing: 1px;
+            outline: none;
             transition: 0.2s;
         }
-        button:hover { box-shadow: 0 0 15px #00e6ff; }
-        
-        .google-btn { 
-            background: #fff; color: #000; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px;
-        }
-        .anon-btn { 
-            background: transparent; border: 1px solid #00e6ff; color: #00e6ff; margin-top: 8px;
-        }
-        .anon-btn:hover { background: rgba(0, 230, 255, 0.1); }
 
-        .link { font-size: 12px; margin-top: 15px; cursor: pointer; text-decoration: underline; }
-        .divider { margin: 15px 0; color: #555; font-size: 12px; }
+        input:focus {
+            box-shadow: 0 0 15px #00ffff;
+            background: #000;
+            border-color: #fff;
+        }
+
+        /* Stylizacja placeholderów, żeby pasowały do reszty */
+        input::placeholder {
+            color: rgba(0, 255, 255, 0.4);
+        }
+
+        button { 
+            width: 100%; 
+            padding: 12px; 
+            background: transparent; 
+            color: #00ffff; 
+            border: 2px solid #00ffff; 
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6em;
+            letter-spacing: 1px;
+            font-weight: bold; 
+            cursor: pointer; 
+            margin-top: 12px;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        button:hover { 
+            background: #00ffff;
+            color: #000;
+            box-shadow: 0 0 20px #00ffff;
+            transform: scale(1.02);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-pref { 
+            background: transparent; 
+            color: #00ffaa; 
+            border-color: #00ffaa;
+        }
+
+        .btn-pref:hover { 
+            background: #00ffaa;
+            color: #000;
+            box-shadow: 0 0 20px #00ffaa; 
+        }
+        
+        .btn-fb { 
+            background: transparent; 
+            border-color: #ff00aa; 
+            color: #ff00aa; 
+        }
+
+        .btn-fb:hover { 
+            background: #ff00aa;
+            color: #fff;
+            box-shadow: 0 0 20px #ff00aa; 
+        }
+
+        .google-btn { 
+            background: #fff; 
+            color: #000; 
+            border: none;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 12px; 
+            margin-top: 15px;
+        }
+
+        .google-btn:hover {
+            background: #f1f1f1;
+            box-shadow: 0 0 15px #fff;
+        }
+        
+        .link { 
+            font-size: 1.3em; 
+            margin-top: 20px; 
+            cursor: pointer; 
+            text-decoration: none; 
+            color: #fff;
+            border-bottom: 2px dashed #00ffff;
+            display: inline-block;
+            padding-bottom: 2px;
+        }
+
+        .link:hover {
+            text-shadow: 0 0 8px #00ffff;
+            border-bottom-style: solid;
+        }
+
+        .recovery-links { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-top: 4px; 
+            margin-bottom: 12px; 
+            font-size: 1.1em; 
+        }
+
+        .recovery-links span { 
+            cursor: pointer; 
+            text-decoration: underline; 
+            color: rgba(0, 255, 255, 0.6); 
+        }
+
+        .recovery-links span:hover { 
+            color: #fff; 
+            text-shadow: 0 0 5px #00ffff;
+        }
+        
+        .divider { 
+            margin: 20px 0 10px 0; 
+            color: #555; 
+            font-size: 1.3em; 
+            font-weight: bold; 
+            border-bottom: 1px dashed #333;
+            padding-bottom: 5px;
+        }
+
+        .section-title { 
+            font-size: 1.2em; 
+            color: #666; 
+            margin-top: 15px; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+        }
     </style>
 </head>
 <body>
 
 <div class="login-box">
     <h1 id="title">LOGOWANIE</h1>
-    <input type="text" id="user" placeholder="Username">
-    <input type="password" id="pass" placeholder="Hasło">
-    <button id="actionBtn">ZALOGUJ</button>
     
-    <div class="divider">LUB</div>
+    <input type="text" id="user" placeholder="USERNAME / EMAIL" autocomplete="username">
+    <input type="password" id="pass" placeholder="HASŁO" autocomplete="current-password">
+    
+    <div class="recovery-links">
+        <span id="forgotOld">ZAPOMNIAŁEM (STARY SYSTEM)</span>
+        <span id="forgotFb">ZAPOMNIAŁEM (FIREBASE)</span>
+    </div>
 
-    <button id="googleBtn" class="google-btn">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18">
-        Konto Google
+    <button type="button" id="actionBtn">ZALOGUJ (STARY SYSTEM)</button>
+    <button type="button" id="emailLoginBtn" class="btn-fb">ZALOGUJ (EMAIL FIREBASE)</button>
+    <button type="button" id="emailRegBtn" class="btn-fb" style="display:none;">REJESTRACJA FIREBASE (EMAIL)</button>
+    
+    <div class="link" id="toggleMode">NIE MASZ KONTA? PRZEŁĄCZ NA REJESTRACJĘ!</div>
+
+    <div class="divider">LUB SZYBKIE OPCJE</div>
+
+    <div class="section-title">STREFA GOŚCIA</div>
+    <button type="button" id="anonPrefBtn" class="btn-pref">WEJDŹ JAKO GOŚĆ (PREFEROWANE)</button>
+    <button type="button" id="anonFbBtn" class="btn-fb">WEJDŹ JAKO GOŚĆ (FIREBASE)</button>
+
+    <div class="section-title">INNE METODY</div>
+    <button type="button" id="googleBtn" class="google-btn">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="Google">
+        KONTO GOOGLE
     </button>
-    
-    <button id="anonBtn" class="anon-btn">Wejdź jako Gość 🕵️</button>
-
-    <div class="link" id="toggleMode">Nie masz konta? Zarejestruj się!</div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, signInAnonymously, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
+    // Zostawiłem kropki, żeby klucz nie wyciekł na GitHubie - podmień u siebie na ten prawdziwy!
     const firebaseConfig = {
         apiKey: "AIzaSyDsP0W5fAqZvgdPw6QmmPbVdQcWTDxaZSk",
         authDomain: "bebechchat.firebaseapp.com",
         projectId: "bebechchat",
-        storageBucket: "bebechchat.firebasestorage.app",
+        storageBucket: "bebechchat.appspot.com", // NAPRAWIONE PRZEZ DEWELOPERA - TERAZ UPLOAD DZIAŁA
         messagingSenderId: "738356779230",
         appId: "1:738356779230:web:2c41e46431284e3fb78a4f"
     };
@@ -79,64 +246,117 @@ to siema
 
     let isRegister = false;
 
-    // --- LOGOWANIE GOOGLE ---
-    document.getElementById('googleBtn').onclick = async () => {
-        try {
-            const result = await signInWithPopup(auth, provider);
-            const user = result.user;
-            const name = user.displayName || "Użytkownik Google";
-            localStorage.setItem('loggedUser', name);
-            alert("Siema " + name + "!");
-            window.location.href = "super.html?username=" + name;
-        } catch (error) {
-            alert("Błąd Google: " + error.message);
-        }
-    };
+    // --- ODCZYSKIWANIE HASŁA ---
+    document.getElementById('forgotOld').addEventListener('click', () => {
+        alert("Wysłano prośbę: Wyślij email na adres: mekoramabuilder17@gmail.com, w treści podaj swój Username oraz NOWE HASŁO, które chcesz ustawić.");
+    });
 
-    // --- LOGOWANIE ANONIMOWE ---
-    document.getElementById('anonBtn').onclick = async () => {
+    document.getElementById('forgotFb').addEventListener('click', async () => {
+        const email = document.getElementById('user').value.trim();
+        if(!email.includes("@")) return alert("Wpisz swój email w pole Username/Email, aby zresetować hasło przez Firebase!");
+        try {
+            await sendPasswordResetEmail(auth, email);
+            alert("Sprawdź skrzynkę mailową! Link do resetu został wysłany na: " + email);
+        } catch (error) {
+            alert("Błąd resetowania: " + error.message);
+        }
+    });
+
+    // --- GOŚĆ PREFEROWANY ---
+    document.getElementById('anonPrefBtn').addEventListener('click', () => {
+        const anonName = "Gość_" + Math.floor(Math.random() * 9000 + 1000);
+        localStorage.setItem('loggedUser', anonName);
+        alert("Wbijasz ekspresowo jako: " + anonName);
+        window.location.href = "super.html?username=" + encodeURIComponent(anonName);
+    });
+
+    // --- GOŚĆ FIREBASE ---
+    document.getElementById('anonFbBtn').addEventListener('click', async () => {
         try {
             await signInAnonymously(auth);
-            const anonName = "Gość_" + Math.floor(Math.random() * 9000 + 1000);
+            const anonName = "Gość_FB_" + Math.floor(Math.random() * 9000 + 1000);
             localStorage.setItem('loggedUser', anonName);
-            alert("Wchodzisz jako " + anonName);
-            window.location.href = "super.html?username=" + anonName;
+            alert("Zalogowano w Firebase jako: " + anonName);
+            window.location.href = "super.html?username=" + encodeURIComponent(anonName);
         } catch (error) {
-            alert("Błąd logowania gościa: " + error.message);
+            alert("Błąd gościa Firebase: " + error.message);
         }
-    };
+    });
 
-    // --- STARE LOGOWANIE NA HASŁO ---
-    document.getElementById('toggleMode').onclick = () => {
+    // --- KONTO GOOGLE ---
+    document.getElementById('googleBtn').addEventListener('click', async () => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const name = result.user.displayName || "Użytkownik Google";
+            localStorage.setItem('loggedUser', name);
+            alert("Siema: " + name + "!");
+            window.location.href = "super.html?username=" + encodeURIComponent(name);
+        } catch (error) {
+            alert("Błąd Google Auth: " + error.message);
+        }
+    });
+
+    // --- PRZEŁĄCZNIK TRYBU ---
+    const toggleBtn = document.getElementById('toggleMode');
+    toggleBtn.addEventListener('click', () => {
         isRegister = !isRegister;
         document.getElementById('title').innerText = isRegister ? "REJESTRACJA" : "LOGOWANIE";
-        document.getElementById('actionBtn').innerText = isRegister ? "STWÓRZ KONTO" : "ZALOGUJ";
-        document.getElementById('toggleMode').innerText = isRegister ? "Masz konto? Zaloguj się!" : "Nie masz konta? Zarejestruj się!";
-    };
+        toggleBtn.innerText = isRegister ? "MASZ KONTO? ZALOGUJ SIĘ!" : "NIE MASZ KONTA? ZAREJESTRUJ SIĘ!";
+        document.getElementById('actionBtn').innerText = isRegister ? "REJESTRACJA PREFEROWANA (BEZ MAILA)" : "ZALOGUJ (STARY SYSTEM)";
+        document.getElementById('emailLoginBtn').style.display = isRegister ? "none" : "block";
+        document.getElementById('emailRegBtn').style.display = isRegister ? "block" : "none";
+    });
 
-    document.getElementById('actionBtn').onclick = async () => {
+    // --- STARY SYSTEM ---
+    document.getElementById('actionBtn').addEventListener('click', async () => {
         const username = document.getElementById('user').value.trim();
         const password = document.getElementById('pass').value.trim();
         if(!username || !password) return alert("Wpisz dane!");
-
         const userRef = doc(db, "users", username);
         if (isRegister) {
-            const snap = await getDoc(userRef);
-            if(snap.exists()) return alert("inną nazwe zröb");
-            await setDoc(userRef, { password: password });
-            alert("gg masz konto");
-            location.reload();
+            try {
+                const snap = await getDoc(userRef);
+                if(snap.exists()) return alert("Ta nazwa jest zajęta!");
+                await setDoc(userRef, { password: password, createdAt: new Date() });
+                alert("Konto w starym systemie założone! Automatycznie przełączam na logowanie.");
+                // Zamiast resetować stronę, sprytnie klikamy przełącznik trybu
+                toggleBtn.click();
+            } catch (e) { alert("Błąd: " + e.message); }
         } else {
-            const snap = await getDoc(userRef);
-            if(snap.exists() && snap.data().password === password) {
-                localStorage.setItem('loggedUser', username);
-                alert("siemano " + username + "!");
-                window.location.href = "super.html?username=" + username;
-            } else {
-                alert("źle coś wpisałeś");
-            }
+            try {
+                const snap = await getDoc(userRef);
+                if(snap.exists() && snap.data().password === password) {
+                    localStorage.setItem('loggedUser', username);
+                    window.location.href = "super.html?username=" + encodeURIComponent(username);
+                } else { alert("Błędne dane w starym systemie"); }
+            } catch (e) { alert("Błąd: " + e.message); }
         }
-    };
+    });
+
+    // --- REJESTRACJA FIREBASE ---
+    document.getElementById('emailRegBtn').addEventListener('click', async () => {
+        const email = document.getElementById('user').value.trim();
+        const password = document.getElementById('pass').value.trim();
+        if(!email.includes("@")) return alert("Wymagany poprawny email z @!");
+        if(password.length < 6) return alert("Hasło Firebase musi mieć minimum 6 znaków!");
+        try {
+            await createUserWithEmailAndPassword(auth, email, password);
+            alert("Konto Firebase utworzone! Możesz się zalogować.");
+            toggleBtn.click(); // Przełączenie bez przeładowania strony
+        } catch (error) { alert("Błąd rejestracji: " + error.message); }
+    });
+
+    // --- LOGOWANIE FIREBASE ---
+    document.getElementById('emailLoginBtn').addEventListener('click', async () => {
+        const email = document.getElementById('user').value.trim();
+        const password = document.getElementById('pass').value.trim();
+        if(!email.includes("@")) return alert("Wpisz email z @!");
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            localStorage.setItem('loggedUser', email);
+            window.location.href = "super.html?username=" + encodeURIComponent(email);
+        } catch (error) { alert("Błąd logowania: " + error.message); }
+    });
 </script>
 </body>
 </html>

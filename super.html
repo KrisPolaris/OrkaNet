@@ -24,7 +24,24 @@
         body.theme-standard .stats-bar { background: rgba(0,0,0,0.7); border-top: 1px solid #00ffff; border-bottom: 1px solid #00ffff; padding: 10px; margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; font-size: 0.8em; }
         body.theme-standard .stat-val { color: #ffcc00; }
         body.theme-standard #username { font-size: 1.2em; margin-bottom: 20px; background: rgba(0,0,0,0.5); padding: 5px; border-bottom: 1px solid #00ffff; }
-        body.theme-standard .tile { background: rgba(17,17,17,0.85); color: #00ffff; border: 2px solid #00ffff; border-radius: 12px; width: 44%; min-width: 130px; padding: 15px 5px; text-decoration: none; animation: neonPulse 2s infinite ease-in-out; text-align: center;}
+        
+        /* Poprawione kafelki we Flexboxie dla trybu Standard - równe wysokości i centrowanie */
+        body.theme-standard .tile { 
+            background: rgba(17,17,17,0.85); 
+            color: #00ffff; 
+            border: 2px solid #00ffff; 
+            border-radius: 12px; 
+            width: 44%; 
+            min-width: 130px; 
+            padding: 15px 5px; 
+            text-decoration: none; 
+            animation: neonPulse 2s infinite ease-in-out; 
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+        }
         @keyframes neonPulse { 0%, 100% { box-shadow: 0 0 5px #00ffff; } 50% { box-shadow: 0 0 20px #00ffff; } }
 
         /* ==========================================================================
@@ -35,7 +52,7 @@
         body.theme-premium .stats-bar { background: #fff; border: 1px solid #ddd; color: #555; padding: 10px; margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; font-size: 0.8em;}
         body.theme-premium .vip-tag { font-size: 0.3em; background: var(--accent); color: #000; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-top: 10px; letter-spacing: 0; text-shadow: none; }
         body.theme-premium #username { color: #64748b; background: none; border: none; font-size: 1.2em; margin-bottom: 20px; padding: 5px; }
-        body.theme-premium .tile { background: var(--card-bg); color: var(--text); border-radius: 16px; padding: 25px 15px; animation: none; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: auto; min-width: 130px; text-decoration: none; text-align: center;}
+        body.theme-premium .tile { background: var(--card-bg); color: var(--text); border-radius: 16px; padding: 25px 15px; animation: none; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: auto; min-width: 130px; text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center;}
 
         /* ==========================================================================
            3. TRYB TERMINAL
@@ -47,7 +64,7 @@
         body.theme-terminal .stats-bar { background: #111; border: 1px dashed #00ff00; padding: 10px; margin-bottom: 20px; display: flex; justify-content: flex-start; gap: 40px; font-size: 0.9em; }
         body.theme-terminal .stat-val { color: #fff; font-weight: bold; }
         body.theme-terminal #username { font-size: 1.1em; margin-bottom: 20px; background: none; border: none; border-left: 3px solid #00ff00; padding-left: 10px; }
-        body.theme-terminal .tile { background: #000; color: #00ff00; border: 1px solid #00ff00; border-radius: 0px; width: 44%; min-width: 130px; padding: 10px 5px; text-decoration: none; text-align: center; font-family: 'Courier Prime', monospace; }
+        body.theme-terminal .tile { background: #000; color: #00ff00; border: 1px solid #00ff00; border-radius: 0px; width: 44%; min-width: 130px; padding: 10px 5px; text-decoration: none; text-align: center; font-family: 'Courier Prime', monospace; display: flex; align-items: center; justify-content: center;}
         body.theme-terminal .tile::before { content: "./"; color: #888; }
         body.theme-terminal .tile:hover { background: #00ff00; color: #000; }
 
@@ -60,7 +77,7 @@
         body.theme-windows .stats-bar { background: #f1f1f1; border: 2px outset #fff; color: #000; padding: 5px; margin: 10px; display: flex; justify-content: space-around; font-size: 0.8em; box-shadow: inset 1px 1px 1px #808080; }
         body.theme-windows .stat-val { color: blue; font-weight: bold; }
         body.theme-windows #username { background: #fff; border: 2px inset #fff; margin: 10px auto; width: 90%; padding: 5px; font-weight: bold; text-align: left; color: #333; }
-        body.theme-windows .tile { background: #ece9d8; color: #000; border-top: 2px solid #fff; border-left: 2px solid #fff; border-right: 2px solid #707070; border-bottom: 2px solid #707070; border-radius: 3px; width: 44%; min-width: 130px; padding: 15px 5px; text-decoration: none; font-family: sans-serif; font-weight: bold; box-shadow: 1px 1px 3px rgba(0,0,0,0.2); text-align: center;}
+        body.theme-windows .tile { background: #ece9d8; color: #000; border-top: 2px solid #fff; border-left: 2px solid #fff; border-right: 2px solid #707070; border-bottom: 2px solid #707070; border-radius: 3px; width: 44%; min-width: 130px; padding: 15px 5px; text-decoration: none; font-family: sans-serif; font-weight: bold; box-shadow: 1px 1px 3px rgba(0,0,0,0.2); text-align: center; display: flex; align-items: center; justify-content: center;}
         body.theme-windows .tile:active { border-top: 2px solid #707070; border-left: 2px solid #707070; border-right: 2px solid #fff; border-bottom: 2px solid #fff; }
 
         /* ==========================================================================
@@ -76,7 +93,7 @@
         body.theme-cyberpunk .stats-bar { background: var(--cyber-card); border-bottom: 1px solid rgba(0, 217, 255, 0.2); padding: 15px; display: flex; justify-content: center; gap: 40px; font-size: 0.9rem; color: var(--cyber-text-dim); }
         body.theme-cyberpunk .stat-val { color: var(--cyber-accent); font-weight: bold; }
         body.theme-cyberpunk #username { color: var(--cyber-accent); font-weight: bold; margin: 10px 0; font-size: 1.1rem; background: none; border: none; }
-        body.theme-cyberpunk .tile { background: var(--cyber-card); color: var(--cyber-text); border-radius: 12px; border: 2px solid transparent; padding: 20px 15px; text-decoration: none; font-weight: 600; position: relative; overflow: hidden; transition: all 0.3s ease; display: block; text-align: center;}
+        body.theme-cyberpunk .tile { background: var(--cyber-card); color: var(--cyber-text); border-radius: 12px; border: 2px solid transparent; padding: 20px 15px; text-decoration: none; font-weight: 600; position: relative; overflow: hidden; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; text-align: center;}
         body.theme-cyberpunk .tile::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(0, 217, 255, 0.2), transparent); transition: left 0.5s ease; }
         body.theme-cyberpunk .tile:hover::before { left: 100%; }
         body.theme-cyberpunk .tile:hover { border-color: var(--cyber-accent); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0, 217, 255, 0.3); color: var(--cyber-accent); }
@@ -87,6 +104,7 @@
         .desktop-only { display: none; font-size: 0.3em; color: #ffcc00; vertical-align: middle; margin-left: 10px; text-shadow: 0 0 5px #ffcc00; }
         @media (min-width: 800px) { .desktop-only { display: inline-block; } }
         
+        /* Flexbox grid poprawiający wyświetlanie na telefonach */
         .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 20px 10px; }
         body.theme-premium .grid, body.theme-cyberpunk .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; padding: 40px; max-width: 1200px; margin: 0 auto; }
         @media(min-width: 600px) { .tile { width: 22% !important; } body.theme-premium .tile, body.theme-cyberpunk .tile { width: auto !important; } }
@@ -113,21 +131,16 @@
         body.theme-windows #orkanet-footer { color: #fff; border-top: 2px outset #fff; }
         body.theme-cyberpunk #orkanet-footer { color: #8d8daa; border-top: 1px solid rgba(0, 217, 255, 0.2); background: #1a1a2e;}
 
-        /* Nowa animacja: obrót całego ekranu i tęcza */
-/* Animacja samej tęczy (tło i elementy) bez ruszania strony */
-@keyframes rainbowGlow {
-    0% {
-        filter: hue-rotate(0deg);
-    }
-    100% {
-        filter: hue-rotate(360deg);
-    }
-}
+        /* Animacja samej tęczy (tło i elementy) bez ruszania strony */
+        @keyframes rainbowGlow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
 
-/* Klasa, którą skrypt na chwilę wrzuci na stronę */
-.rainbow-active {
-    animation: rainbowGlow 3s ease-in-out;
-}
+        /* Klasa, którą skrypt na chwilę wrzuci na stronę */
+        .rainbow-active {
+            animation: rainbowGlow 3s ease-in-out;
+        }
     </style>
 </head>
 <body class="theme-standard">
@@ -174,7 +187,6 @@
 
 <main class="grid" id="main-grid">
     <a class="tile" href="czat.html">BebzunChat 💬</a>
-    <a class="tile" href="bebzunit.html">MINECRAFT</a>
     <a class="tile" href="clicker.html">Creeper Clicker 💰</a>
     <a class="tile" href="burga.html">Burger 🍔</a>
     <a class="tile" href="boxes!.html">Pudełka</a>
@@ -213,7 +225,7 @@
     <a class="tile" href="dajmikase.html">Przelicznik walut</a>
     <a class="tile" href="supramariusz.html">Mario</a>
     <a class="tile" href="https://krispolaris.github.io/Glupie-AI">ai very smart</a>
-    
+    <a class="tile" href="https://krispolaris.github.io/SafeCraft">Minecraft za darmo</a>
 </main>
 
 <footer id="orkanet-footer">
@@ -237,16 +249,18 @@
     const db = getFirestore(app);
 
     async function loadStats() {
-        const coll = collection(db, "users");
-        const snapshot = await getCountFromServer(coll);
-        document.getElementById('reg-count').innerText = snapshot.data().count;
+        try {
+            const coll = collection(db, "users");
+            const snapshot = await getCountFromServer(coll);
+            document.getElementById('reg-count').innerText = snapshot.data().count;
 
-        const fiveMinsAgo = new Date(Date.now() - 5 * 60 * 1000);
-        const q = query(collection(db, "users"), where("lastActive", ">", fiveMinsAgo));
-        
-        onSnapshot(q, (snap) => {
-            document.getElementById('on-count').innerText = snap.size;
-        });
+            const fiveMinsAgo = new Date(Date.now() - 5 * 60 * 1000);
+            const q = query(collection(db, "users"), where("lastActive", ">", fiveMinsAgo));
+            
+            onSnapshot(q, (snap) => {
+                document.getElementById('on-count').innerText = snap.size;
+            });
+        } catch(e) {}
     }
 
     const user = localStorage.getItem('loggedUser');
@@ -259,7 +273,6 @@
 </script>
 
 <script>
-    // System 5 motywów! (Usunięto monster)
     const themes = ['standard', 'premium', 'terminal', 'windows', 'cyberpunk'];
     let currentThemeIndex = themes.indexOf(localStorage.getItem('theme') || 'standard');
     if (currentThemeIndex === -1) currentThemeIndex = 0;
@@ -283,7 +296,7 @@
             btn.textContent = "✨ TRYB STANDARD ✨";
             btn.style.background = "#ffcc00";
             btn.style.color = "#000";
-        } else if (themtheme === 'premium') {
+        } else if (theme === 'premium') { // REPARACJA: Naprawiono błąd 'themtheme'
             btn.textContent = "💎 TRYB PREMIUM 💎";
             btn.style.background = "#2563eb";
             btn.style.color = "#fff";
@@ -349,7 +362,7 @@
         }
     }
 
-    // Uniwersalny system muzyczny (Działa na music.mp3)
+    // Uniwersalny system muzyczny
     let musicPlaying = false;
     let normalMusic = new Audio("music.mp3");
 
@@ -366,15 +379,13 @@
         musicPlaying = !musicPlaying;
     }
 
-// Tęczowa zmiana kolorów całej gamy po kliknięciu logo (bez kręcenia stroną)
-document.getElementById('header-text').addEventListener('click', () => {
-    document.documentElement.classList.add('rainbow-active');
-    
-    // Po 3 sekundach usuwamy efekt, żeby można było kliknąć ponownie
-    setTimeout(() => {
-        document.documentElement.classList.remove('rainbow-active');
-    }, 3000);
-});
+    // Tęczowa zmiana kolorów logo
+    document.getElementById('header-text').addEventListener('click', () => {
+        document.documentElement.classList.add('rainbow-active');
+        setTimeout(() => {
+            document.documentElement.classList.remove('rainbow-active');
+        }, 3000);
+    });
 </script>
 </body>
 </html>

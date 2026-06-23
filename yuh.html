@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OrkaNet OS v1.9 - Merge Edition</title>
+    <title>Graphite v2.1 JEST</title>
     <link rel="icon" type="image/png" href="Bebuch.png">
     <style>
         :root {
@@ -24,7 +23,7 @@
         #phone-screen {
             width: 95vw; max-width: 360px; height: 90vh; max-height: 740px;
             background-image: url('Tapetaxd.jpg'); background-size: cover; background-position: center;
-            border: 8px solid #000; border-radius: 35px; position: relative;
+            border: 8px solid #000; border-radius: 0px; position: relative;
             display: flex; flex-direction: column; overflow: hidden;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
@@ -37,13 +36,19 @@
         #status-bar { height: 25px; background: rgba(0,0,0,0.4); display: flex; justify-content: space-between; align-items: center; padding: 0 15px; font-size: 11px; color: white; z-index: 3100; cursor: pointer; }
         #home-screen { flex: 1; padding: 20px 10px; display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: min-content; gap: 15px; z-index: 5; overflow-y: auto; }
         #app-drawer { position: absolute; top: 100%; left: 0; width: 100%; height: 85%; background: rgba(0,0,0,0.9); z-index: 2500; transition: 0.5s; padding: 20px; box-sizing: border-box; display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: min-content; gap: 15px; overflow-y: auto; }
-        #app-drawer.active { top: 15%; border-radius: 20px 20px 0 0; }
+        #app-drawer.active { top: 15%; border-radius: 0px 0px 0 0; }
         .app-icon-container { display: flex; flex-direction: column; align-items: center; cursor: pointer; position: relative; }
-        .app-icon { width: 55px; height: 55px; border-radius: 12px; background: white; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 8px rgba(0,0,0,0.3); overflow: hidden; font-size: 25px; }
+        
+        .app-icon { 
+            width: 55px; height: 55px; 
+            border-radius: 50%; 
+            background: white; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 8px rgba(0,0,0,0.3); overflow: hidden; font-size: 25px; 
+        }
+        
         .app-icon img { width: 80%; height: 80%; object-fit: contain; }
         .app-label { font-size: 10px; margin-top: 4px; color: white; text-shadow: 0 1px 2px #000; text-align: center; }
         .del-btn { position: absolute; top: -5px; right: 0; background: red; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 12px; display: none; justify-content: center; align-items: center; z-index: 10; }
-        #dock { height: 70px; background: var(--bg-glass); display: flex; justify-content: space-evenly; align-items: center; margin: 0 10px 10px 10px; border-radius: 20px; backdrop-filter: blur(5px); cursor: pointer; }
+        #dock { height: 70px; background: var(--bg-glass); display: flex; justify-content: space-evenly; align-items: center; margin: 0 10px 10px 10px; border-radius: 0px; backdrop-filter: blur(5px); cursor: pointer; }
         #navigation-bar { height: 45px; background: #000; display: flex; justify-content: space-evenly; align-items: center; z-index: 150; }
         .nav-btn { width: 35px; height: 35px; cursor: pointer; background-size: contain; background-repeat: no-repeat; }
         #nav-back { background-image: url('nawigacja2.jpg'); }
@@ -51,17 +56,41 @@
         #app-container { position: absolute; top: 25px; left: 0; width: 100%; height: calc(100% - 70px); background: white; z-index: 50; display: none; flex-direction: column; }
         iframe { flex: 1; border: none; }
         #settings-app { padding: 20px; color: var(--panel-text); background: var(--panel-bg); height: 100%; display: none; overflow-y: auto; }
-        input, button { padding: 8px; width: 100%; border-radius: 5px; border: 1px solid #ccc; margin-top: 5px; box-sizing: border-box; }
+        input, button { padding: 8px; width: 100%; border-radius: 0px; border: 1px solid #ccc; margin-top: 5px; box-sizing: border-box; }
         #bat-alert { position: absolute; inset: 0; background: rgba(0,0,0,0.85); z-index: 9000; display: none; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; gap: 20px; }
         #bat-alert h2 { font-size: 28px; margin: 0; }
         #bat-alert p { font-size: 16px; margin: 0; }
-        #bat-alert button { width: 160px; padding: 12px; border-radius: 10px; font-size: 16px; border: none; cursor: pointer; }
+        #bat-alert button { width: 160px; padding: 12px; border-radius: 0px; font-size: 16px; border: none; cursor: pointer; }
+
+        /* EKRAN NADCHODZĄCEGO POŁĄCZENIA */
+        #incoming-call-screen {
+            position: absolute; inset: 0; background: rgba(15, 15, 20, 0.95);
+            z-index: 8500; display: none; flex-direction: column; align-items: center;
+            justify-content: space-between; padding: 50px 20px; box-sizing: border-box; color: white;
+        }
+        #incoming-avatar {
+            width: 110px; height: 110px; border-radius: 50%;
+            border: 3px solid white; overflow: hidden; margin-top: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+        }
+        #incoming-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        #incoming-number { font-size: 28px; font-weight: bold; letter-spacing: 1px; margin-top: 15px; text-align: center; }
+        #incoming-status { font-size: 16px; color: #00ff00; margin-top: 5px; text-shadow: 0 0 5px #00ff00; min-height: 25px; }
+        #incoming-buttons { display: flex; justify-content: space-evenly; width: 100%; margin-bottom: 30px; }
+        .call-btn-ui {
+            width: 65px; height: 65px; border-radius: 50%; border: none;
+            font-size: 24px; cursor: pointer; display: flex; justify-content: center;
+            align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.4); transition: transform 0.1s;
+        }
+        .call-btn-ui:active { transform: scale(0.9); }
+        #btn-accept { background: #00cc44; color: white; }
+        #btn-decline { background: #ff3333; color: white; }
     </style>
 </head>
 <body class="dark-theme">
 
 <div id="phone-screen">
-    <div id="boot-screen"><div style="color:white; font-size: 10px; margin-bottom: 20px;">OrkaNet OS Booting...</div></div>
+    <div id="boot-screen"><div style="color:white; font-size: 10px; margin-bottom: 20px;">Booting...</div></div>
     <div id="lock-screen" onclick="checkLock()">
         <div id="lock-time" style="font-size: 60px; font-weight: bold;">00:00</div>
         <div id="lock-date" style="font-size: 18px;">Data</div>
@@ -70,6 +99,18 @@
         <h3>Podaj PIN</h3>
         <input type="password" id="pin-input" readonly style="text-align:center; font-size: 24px;">
         <div id="pin-grid" style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; width: 240px;"></div>
+    </div>
+
+    <div id="incoming-call-screen">
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+            <div id="incoming-avatar"><img src="images.jpeg" alt="Zwykły ludź"></div>
+            <div id="incoming-number">000 000 000</div>
+            <div id="incoming-status">Dzwoni...</div>
+        </div>
+        <div id="incoming-buttons">
+            <button class="call-btn-ui" id="btn-decline" onclick="declineSpamCall()">❌</button>
+            <button class="call-btn-ui" id="btn-accept" onclick="acceptSpamCall()">✅</button>
+        </div>
     </div>
 
     <div id="notif-center">
@@ -121,6 +162,7 @@
 </div>
 
 <audio id="bat-sound" src="s570.ogg"></audio>
+<audio id="spam-ringtone-player" src="PressStart.mp3" loop></audio>
 
 <script>
     let systemPIN = "";
@@ -128,6 +170,17 @@
     let batLvl = 100;
     let editMode = false;
     let batAlertShown = false;
+
+    // Zmienne do losowych połączeń
+    let isSpamCallActive = false;
+    const spamSentences = [
+        "JESTEM NIEZNANYM NUMEREM",
+        "siema",
+        "Kupiłem dzisiaj kilogram ziemniaków na aliexpress",
+        "rybka superhiroułs jest bebzunem i się z tego cieszy.    Dagrasso zabrało ją do kosza i jest tam razem z pizzą margaritą która została zrobiona w 1919 czyli wtedy kiedy zaczeła się druga wojna światowa.najadła się tą pizzą i póściła pawia na kierownika dagraso, a do teraz siedzi w sklepie zoologicznym razem z czejsem",
+        "ostatnie słowa bolinarda: Bebzun i Ser",
+        "Zadzwoń pod sześć sześć sześć, sześć sześć sześć, dwa cztery sześć. jeśli zadzwonisz czeka cie niespodzianka"
+    ];
 
     let apps = [
         {id: 1, name: 'Chrome', icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/1280px-Google_Chrome_icon_%28February_2022%29.svg.png', url: 'https://www.google.com/search?igu=1', isImg: true},
@@ -138,14 +191,15 @@
         {id: 6, name: 'Skarbona', icon: '🐷', url: 'skarbonka.html'},
         {id: 7, name: 'OrkaNet', icon: '🐋', url: 'index.html'},
         {id: 8, name: 'Zegar', icon: '⌚', url: 'clock'},
-        {id: 9, name: 'OrkaTok', icon: '📜', url: 'orkatok.html'},
         {id: 10, name: 'Lock', icon: '🔒', url: 'lock'},
-        {id: 11, name: 'Getting Over It', icon: '⛏️', url: 'getoverit.html'}
+        {id: 11, name: 'Minecraft', icon: '⛏️', url: 'eaglercraft.com'},
+        {id: 12, name: 'GemiBot', icon: '🤖', url: 'aixd.html'}
     ];
 
     setTimeout(() => {
         document.getElementById('boot-screen').style.display = 'none';
         document.getElementById('lock-screen').style.display = 'flex';
+        startSpamCheckEngine(); 
     }, 3000);
 
     (function buildPinGrid() {
@@ -243,6 +297,62 @@
     function showBatAlert(lvl) { if (batAlertShown) return; batAlertShown = true; document.getElementById('bat-sound').play().catch(() => {}); changeBright(70); document.getElementById('bat-alert-msg').textContent = `Bateria: ${lvl}% – Podładuj mnie!`; document.getElementById('bat-alert').style.display = 'flex'; }
     function chargeBattery() { batLvl = 100; changeBright(0); batAlertShown = false; document.getElementById('bat-alert').style.display = 'none'; }
     function dismissBatAlert() { batAlertShown = false; document.getElementById('bat-alert').style.display = 'none'; }
+
+    // ZMODYFIKOWANY SILNIK LOSOWYCH POŁĄCZEŃ (Szansa 1/6 co minutę)
+    function startSpamCheckEngine() {
+        setInterval(() => {
+            if (isSpamCallActive || document.getElementById('boot-screen').style.display !== 'none') return;
+
+            let roll = Math.floor(Math.random() * 1); // Losowanie od 0 do 5 (szansa dokładnie 1/6)
+            if (roll === 0) {
+                triggerSpamCall();
+            }
+        }, 30000); // 60000 milisekund = 1 minuta
+    }
+
+    function triggerSpamCall() {
+        isSpamCallActive = true;
+        
+        let randNum = Math.floor(Math.random() * (999999999 - 450000000 + 1)) + 450000000;
+        let numStr = String(randNum);
+        let formattedNum = numStr.slice(0, 3) + " " + numStr.slice(3, 6) + " " + numStr.slice(6);
+        
+        document.getElementById('incoming-number').innerText = formattedNum;
+        document.getElementById('incoming-status').innerText = "Nadchodzące połączenie...";
+        document.getElementById('btn-accept').style.display = "flex";
+        document.getElementById('incoming-call-screen').style.display = "flex";
+
+        let ringtone = document.getElementById('spam-ringtone-player');
+        ringtone.currentTime = 0;
+        ringtone.play().catch(e => console.log("Czekam na interakcję użytkownika lub brak pliku"));
+    }
+
+    function acceptSpamCall() {
+        document.getElementById('spam-ringtone-player').pause();
+
+        document.getElementById('btn-accept').style.display = "none";
+        document.getElementById('incoming-status').innerText = "Połączenie odebrane...";
+
+        let randomSentence = spamSentences[Math.floor(Math.random() * spamSentences.length)];
+
+        let utterance = new SpeechSynthesisUtterance(randomSentence);
+        utterance.lang = 'pl-PL';
+        utterance.rate = 1.0;
+        
+        utterance.onend = () => {
+            setTimeout(() => { declineSpamCall(); }, 1000);
+        };
+        
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function declineSpamCall() {
+        document.getElementById('spam-ringtone-player').pause();
+        window.speechSynthesis.cancel(); 
+
+        document.getElementById('incoming-call-screen').style.display = "none";
+        isSpamCallActive = false;
+    }
 
     setInterval(() => {
         batLvl--;

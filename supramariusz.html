@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mario Mobile - Pegasus Player</title>
     
     <script src="https://unpkg.com/jsnes/dist/jsnes.min.js"></script>
@@ -42,13 +41,14 @@
         
         #status {
             color: #ffcc00;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             font-size: 13px;
             font-weight: bold;
             text-align: center;
             line-height: 1.4;
         }
 
+        /* Poradnik PC domyślnie widoczny */
         #pc-controls-info {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid #444;
@@ -67,17 +67,24 @@
             font-weight: bold;
         }
 
+        /* UKRYWANIE PORADNIKA PC NA TELEFONACH */
+        @media (max-width: 600px) {
+            #pc-controls-info {
+                display: none !important;
+            }
+        }
+
         /* Styl dla przycisku importu */
         .file-upload {
             background-color: #ff3333;
             color: white;
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 5px;
             font-weight: bold;
             cursor: pointer;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             border: none;
-            font-size: 14px;
+            font-size: 13px;
             box-shadow: 0 4px #990000;
             transition: 0.1s;
             text-align: center;
@@ -116,7 +123,7 @@
             width: 100%;
             max-width: 450px;
             margin-top: auto;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             padding: 0 10px;
         }
 
@@ -207,7 +214,7 @@
         <input type="file" id="rom-file" accept=".nes">
     </label>
     
-    <p style="font-size: 11px; opacity: 0.6; margin: 0 0 10px 0;">sorry może nie być dźwięku</p>
+    <p style="font-size: 11px; opacity: 0.6; margin: 0 0 5px 0;">sorry może nie być dźwięku</p>
 
     <div id="canvas-container">
         <canvas id="nes-canvas" width="256" height="240"></canvas>
@@ -265,7 +272,7 @@
             }
         });
 
-        // Mapowanie klawiatury PC (Klawisze systemowe zablokowane przed przesuwaniem okna)
+        // Mapowanie klawiatury PC
         const keysMapping = {
             'ArrowUp': jsnes.Controller.BUTTON_UP,
             'ArrowDown': jsnes.Controller.BUTTON_DOWN,
@@ -291,12 +298,13 @@
             }
         });
 
-        // Dotyk na telefonie
+        // Stabilny dotyk mobilny
         function bindMobileButton(elementId, nesButton) {
             const btn = document.getElementById(elementId);
             if (!btn) return;
             btn.addEventListener('touchstart', (e) => { e.preventDefault(); nes.buttonDown(1, nesButton); }, { passive: false });
             btn.addEventListener('touchend', (e) => { e.preventDefault(); nes.buttonUp(1, nesButton); }, { passive: false });
+            btn.addEventListener('touchcancel', (e) => { e.preventDefault(); nes.buttonUp(1, nesButton); }, { passive: false });
         }
         bindMobileButton('btn-up', jsnes.Controller.BUTTON_UP);
         bindMobileButton('btn-down', jsnes.Controller.BUTTON_DOWN);
@@ -317,33 +325,30 @@
 
         function updateGamepadInputs() {
             const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
-            const gp = gamepads[0]; // Bierzemy pierwszego podłączonego pada
+            const gp = gamepads[0];
             
             if (!gp) return;
 
-            // Mapowanie standardowych przycisków typu Xbox/PlayStation
             const padButtons = {
-                0: jsnes.Controller.BUTTON_A,       // Przycisk dolny (A / X)
-                1: jsnes.Controller.BUTTON_B,       // Przycisk prawy (B / Kółko)
-                2: jsnes.Controller.BUTTON_B,       // Przycisk lewy (X / Kwadrat) jako alternatywny atak
-                8: jsnes.Controller.BUTTON_SELECT,  // Select / Share
-                9: jsnes.Controller.BUTTON_START,   // Start / Options
-                12: jsnes.Controller.BUTTON_UP,     // D-Pad Góra
-                13: jsnes.Controller.BUTTON_DOWN,   // D-Pad Dół
-                14: jsnes.Controller.BUTTON_LEFT,   // D-Pad Lewo
-                15: jsnes.Controller.BUTTON_RIGHT   // D-Pad Prawo
+                0: jsnes.Controller.BUTTON_A,
+                1: jsnes.Controller.BUTTON_B,
+                2: jsnes.Controller.BUTTON_B,
+                8: jsnes.Controller.BUTTON_SELECT,
+                9: jsnes.Controller.BUTTON_START,
+                12: jsnes.Controller.BUTTON_UP,
+                13: jsnes.Controller.BUTTON_DOWN,
+                14: jsnes.Controller.BUTTON_LEFT,
+                15: jsnes.Controller.BUTTON_RIGHT
             };
 
-            // Sprawdzanie przycisków fizycznych
             for (let btnIdx in padButtons) {
                 let nesBtn = padButtons[btnIdx];
                 let isPressed = gp.buttons[btnIdx] && gp.buttons[btnIdx].pressed;
 
-                // Sprawdzamy też gałkę analogową dla ruchu (lewy analog)
-                if (btnIdx == 12 && gp.axes[1] < -0.5) isPressed = true; // Analog góra
-                if (btnIdx == 13 && gp.axes[1] > 0.5) isPressed = true;  // Analog dół
-                if (btnIdx == 14 && gp.axes[0] < -0.5) isPressed = true; // Analog lewo
-                if (btnIdx == 15 && gp.axes[0] > 0.5) isPressed = true;  // Analog prawo
+                if (btnIdx == 12 && gp.axes[1] < -0.5) isPressed = true;
+                if (btnIdx == 13 && gp.axes[1] > 0.5) isPressed = true;
+                if (btnIdx == 14 && gp.axes[0] < -0.5) isPressed = true;
+                if (btnIdx == 15 && gp.axes[0] > 0.5) isPressed = true;
 
                 if (isPressed && !gamepadState[nesBtn]) {
                     nes.buttonDown(1, nesBtn);
@@ -355,7 +360,7 @@
             }
         }
 
-        // Funkcja uruchamiająca grę w 60 FPS
+        // Uruchamianie gry ze sztywnym lockiem na 60 FPS (Zabezpieczenie przed 120/144/165Hz)
         function startEmulator(romData) {
             let romString = "";
             const chunkSize = 65536;
@@ -369,18 +374,16 @@
                 statusDiv.innerText = "GRA URUCHOMIONA! KLIKNIJ START LUB NACIŚNIJ PRZYCISK NA PADZIE";
                 statusDiv.style.color = "#00ff66";
 
-                let fps = 60;
-                let fpsInterval = 1000 / fps;
+                const fpsInterval = 1000 / 60; // 60 FPS
                 let then = performance.now();
 
                 function step(now) {
                     requestAnimationFrame(step);
                     
-                    // Czytamy stan kontrolera w każdej klatce gry
                     updateGamepadInputs();
 
                     let elapsed = now - then;
-                    if (elapsed > fpsInterval) {
+                    if (elapsed >= fpsInterval) {
                         then = now - (elapsed % fpsInterval);
                         nes.frame();
                     }
@@ -392,7 +395,7 @@
             }
         }
 
-        // 2. Obsługa importu pobranego pliku przez użytkownika
+        // Obsługa importu pliku
         fileInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -405,11 +408,11 @@
             reader.readAsArrayBuffer(file);
         });
 
-        // 3. AUTOMATYCZNE WYMUSZENIE POBRANIA PLIKU GRA.NES PRZEZ PRZEGLĄDARKĘ
+        // Wymuszenie pobrania
         function triggerAutoDownload() {
             const link = document.createElement('a');
-            link.href = 'gra.nes'; // Ścieżka do Twojego pliku na serwerze
-            link.download = 'gra.nes'; // Wymuszenie pobrania o tej nazwie
+            link.href = 'gra.nes'; 
+            link.download = 'gra.nes'; 
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);

@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="pl">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>OrkaNet - Standard HTML 4.01</title>
+    
+    <style type="text/css">
+        /* HTML4 i CSS2 w pełnej krasie */
+        body { 
+            margin: 0; 
+            padding: 0;
+            background: #000000 url('456.jpg') no-repeat center center fixed; 
+            -moz-background-size: cover; /* Dla starych wersji Firefoxa */
+            -webkit-background-size: cover; /* Dla starego Safari/Chrome */
+            background-size: cover; 
+            font-family: 'Arial', 'Helvetica', sans-serif; 
+            color: #00ffff; 
+            text-align: center; 
+        }
+        
+        #header { 
+            padding: 30px 0 10px 0; 
+            font-size: 50px; 
+            font-weight: bold;
+        }
+        
+        .vip-tag { 
+            font-size: 16px; 
+            color: #ffcc00; 
+            display: block; 
+            letter-spacing: 2px; 
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        .stats-bar { 
+            background: #111111; 
+            border-top: 1px solid #00ffff; 
+            border-bottom: 1px solid #00ffff; 
+            padding: 10px; 
+            margin-bottom: 20px; 
+        }
+        
+        .stats-container {
+            width: 70%;
+            margin: 0 auto;
+        }
+        
+        .stat-item {
+            display: inline-block;
+            width: 30%;
+            font-size: 13px;
+        }
+        
+        .stat-val { 
+            color: #ffcc00; 
+            font-weight: bold;
+        }
+        
+        #username { 
+            font-size: 18px; 
+            margin-bottom: 20px; 
+            background: #111111; 
+            padding: 8px; 
+            display: inline-block;
+            border-bottom: 1px solid #00ffff; 
+        }
+
+        /* Kontener na kafelki - zamiast Flex/Grid używamy float: left */
+        .grid { 
+            width: 90%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        /* Słynny "Clearfix" z ery HTML4, żeby kontenery się nie rozjeżdżały przez float */
+        .clearfix:after {
+            content: ".";
+            display: block;
+            height: 0;
+            clear: both;
+            visibility: hidden;
+        }
+        
+        .tile { 
+    background: #111111; 
+    color: #00ffff; 
+    border: 2px solid #00ffff; 
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 12px; 
+    
+    /* Zmiana z float na inline-block uratuje siatkę */
+    display: inline-block;
+    vertical-align: top;
+    
+    /* Na telefonie idealnie sprawdzą się 2 kafelki w rzędzie (około 44% szerokości + marginesy) */
+    width: 44%;
+    height: 90px; /* Wymuszona stała wysokość, żeby kafelki były równe i nie skakały */
+    
+    margin: 2%;
+    padding: 10px 2px; 
+    text-decoration: none; 
+    font-weight: bold;
+    font-size: 14px;
+    
+    /* Wyśrodkowanie tekstu w pionie w starym stylu */
+    line-height: 1.4;
+}
+        
+        .tile:hover {
+            background: #222222;
+            color: #ffcc00;
+            border-color: #ffcc00;
+        }
+        
+        .controls { 
+            margin: 20px 0; 
+        }
+        
+        .btn-small { 
+            background: #111111; 
+            border: 1px solid #00ffff; 
+            color: #00ffff; 
+            padding: 8px 15px; 
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+        }
+
+        #orkanet-footer { 
+            margin-top: 40px; 
+            padding: 20px; 
+            font-size: 12px; 
+            border-top: 1px solid #00ffff;
+            background: #111111;
+        }
+    </style>
+</head>
+<body>
+
+<div id="header">
+    ORKANET
+    <span class="vip-tag">SUPER GOŚCIU 🔥</span>
+</div>
+
+<div class="stats-bar">
+    <div class="stats-container">
+        <div class="stat-item">UŻYTKOWNICY: <span class="stat-val">...</span></div>
+        <div class="stat-item">ONLINE: <span class="stat-val" style="color: #00ff00;">...</span></div>
+        <div class="stat-item">👀 ODWIEDZINY: <span class="stat-val" style="color: #ff006e;">1</span></div>
+    </div>
+</div>
+
+<div id="username">Twoje konto: Gość</div>
+
+<div class="controls">
+    <span class="btn-small">✨ ZMIEŃ TRYB ✨</span>
+    <a href="https://whatsapp.com/channel/0029Vb7o86m65yDC9fzCYk0m" class="btn-small" style="background: #25D366; color: #ffffff; border: none;">WhatsApp 📱</a>
+    <span class="btn-small" style="background: #ff4444; color: #ffffff; border: none;">Wyloguj 🚪</span>
+    <span class="btn-small">🎲 Losowa Strona</span>
+    <span class="btn-small">🎵 Muzyka</span>
+</div>
+
+<div class="grid clearfix">
+    <a class="tile" href="czat.html">BebzunChat 💬</a>
+    <a class="tile" href="clicker.html">Creeper Clicker 💰</a>
+    <a class="tile" href="burga.html">Burger 🍔</a>
+    <a class="tile" href="boxes!.html">Pudełka</a>
+    <a class="tile" href="GeometryDash.html">Geometry Dash 🟦</a>
+    <a class="tile" href="spotifa.html">Spotifa 🎵</a>
+    <a class="tile" href="Windows XP.html">Windows XP 💻</a>
+    <a class="tile" href="skarbonka.html">Skarbonka</a>
+    <a class="tile" href="rysowniczek.html">Paint 🎨</a>
+    <a class="tile" href="bebzun.html">Poznaj Bebzuna! 🤰</a>
+    <a class="tile" href="kolorowanki.html">Kolorowanki</a>
+    <a class="tile" href="kalkulator.html">Kalkulator 🔢</a>
+    <a class="tile" href="ppogoda.html">Pogoda ☁️</a>
+    <a class="tile" href="aparacik.html">Aparat 📸</a>
+    <a class="tile" href="getoverit.html">MiniKraftia</a>
+    <a class="tile" href="aixd.html">AI GEMIBOT</a>
+    <a class="tile" href="oldsuper.html">stary orkanet</a>
+    <a class="tile" href="flapibebzun.html">Flappy Bebech</a>
+    <a class="tile" href="diktafon.html">Dyktafon</a>
+    <a class="tile" href="czas.html">Zegar</a>
+    <a class="tile" href="kalendar.html">Kalendarz</a>
+    <a class="tile" href="tts.html">Głos</a>
+    <a class="tile" href="tudududu.html">Dźwięki</a>
+    <a class="tile" href="yuh.html">Android</a>
+    <a class="tile" href="Car..html">Autko</a>
+    <a class="tile" href="Chicken.html">Kurka</a>
+    <a class="tile" href="rubik.html">Kostka Rubika</a>
+    <a class="tile" href="ShortenMe.html">Skracacz Linków</a>
+    <a class="tile" href="robluxy.html">Free Robux</a>
+    <a class="tile" href="orkadio.html">Ptasie Radyjo</a>
+    <a class="tile" href="tybzunku.html">Nie pytaj.</a>
+    <a class="tile" href="thissitehasnolitteralsens.html">moja strona</a>
+    <a class="tile" href="jackbrowser.html">JackBrowser</a>
+    <a class="tile" href="robox.html">Zepsuty Roblox</a>
+    <a class="tile" href="wouldyoustasiekcode.html">Testuj Kod</a>
+    <a class="tile" href="leceprzezoknoskirskirskir.html">OrkaVid</a>
+    <a class="tile" href="dajmikase.html">Przelicznik</a>
+    <a class="tile" href="supramariusz.html">Mario</a>
+    <a class="tile" href="https://krispolaris.github.io/Glupie-AI">ai smart</a>
+    <a class="tile" href="https://krispolaris.github.io/SafeCraft">Minecraft</a>
+</div>
+
+<div id="orkanet-footer">
+    © 2026 OrkaNet - Wszelkie prawa do Bebecha zastrzeżone.
+</div>
+
+</body>
+</html>

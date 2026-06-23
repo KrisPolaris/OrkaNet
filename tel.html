@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Telefon - OrkaNet App</title>
+    <style>
+        body {
+            background-color: #111;
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 90vh;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
+        #screen {
+            width: 100%;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #avatar-container {
+            display: none;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 15px;
+            border: 2px solid white;
+        }
+        #avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        #number-display {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            height: 45px;
+            letter-spacing: 2px;
+        }
+        #call-status {
+            font-size: 16px;
+            color: #00ff00;
+            height: 20px;
+            text-shadow: 0 0 5px #00ff00;
+        }
+        #keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            width: 240px;
+            margin-bottom: 20px;
+        }
+        .key {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            border: none;
+            background: #222;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            user-select: none;
+        }
+        .key:active {
+            background: #333;
+        }
+        #actions {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            width: 240px;
+        }
+        .btn-call { background: #00cc44; color: white; }
+        .btn-call:active { background: #009933; }
+        .btn-hangup { background: #ff3333; color: white; display: none; }
+        .btn-hangup:active { background: #cc0000; }
+        .btn-del { background: #444; font-size: 18px; }
+    </style>
+</head>
+<body>
+
+<div id="screen">
+    <div id="avatar-container"><img id="avatar-img" src="images.jpeg" alt="Avatar"></div>
+    <div id="number-display"></div>
+    <div id="call-status"></div>
+</div>
+
+<div id="keypad">
+    <button class="key" onclick="press('1')">1</button>
+    <button class="key" onclick="press('2')">2</button>
+    <button class="key" onclick="press('3')">3</button>
+    <button class="key" onclick="press('4')">4</button>
+    <button class="key" onclick="press('5')">5</button>
+    <button class="key" onclick="press('6')">6</button>
+    <button class="key" onclick="press('7')">7</button>
+    <button class="key" onclick="press('8')">8</button>
+    <button class="key" onclick="press('9')">9</button>
+    <button class="key" onclick="press('*')">*</button>
+    <button class="key" onclick="press('0')">0</button>
+    <button class="key" onclick="press('#')">#</button>
+</div>
+
+<div id="actions">
+    <button class="key btn-del" id="del-btn" onclick="backspace()">⌫</button>
+    <button class="key btn-call" id="call-btn" onclick="startCall()">📞</button>
+    <button class="key btn-hangup" id="hangup-btn" onclick="endCall()">📴</button>
+</div>
+
+<audio id="custom-audio" loop></audio>
+
+<script>
+    let numBuffer = "";
+    let callInterval;
+    let timeoutCall;
+    let audioCtx;
+    let currentOsc;
+    let currentGain;
+
+    const sosNumbers = ["112", "911", "997", "998", "999"];
+    const funnyWords = ["kupa", "bździągwa", "kartofel", "bebe", "parówka", "pomidor"];
+
+    // Standardowe częstotliwości dźwięków klawiszy (DTMF)
+    const dtmfFrequencies = {
+        '1': [697, 1209], '2': [697, 1336], '3': [697, 1477],
+        '4': [770, 1209], '5': [770, 1336], '6': [770, 1477],
+        '7': [852, 1209], '8': [852, 1336], '9': [852, 1477],
+        '*': [941, 1209], '0': [941, 1336], '#': [941, 1477]
+    };
+
+    function initAudio() {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    function playKeyTone(key) {
+        initAudio();
+        if (!dtmfFrequencies[key]) return;
+
+        const freqs = dtmfFrequencies[key];
+        const osc1 = audioCtx.createOscillator();
+        const osc2 = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        osc1.frequency.value = freqs[0];
+        osc2.frequency.value = freqs[1];
+
+        gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+
+        osc1.connect(gainNode);
+        osc2.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        osc1.start();
+        osc2.start();
+
+        setTimeout(() => {
+            osc1.stop();
+            osc2.stop();
+        }, 100);
+    }
+
+    function press(val) {
+        playKeyTone(val);
+        let clean = numBuffer.replace(/[-\s]/g, "");
+        if (clean.length < 15) {
+            numBuffer += val;
+            formatDisplay();
+        }
+    }
+
+    function backspace() {
+        let clean = numBuffer.replace(/[-\s]/g, "");
+        clean = clean.slice(0, -1);
+        numBuffer = clean;
+        formatDisplay();
+    }
+
+    function formatDisplay() {
+        let clean = numBuffer.replace(/[-\s]/g, "");
+        // Obsługa numeru zagranicznego 929-556-2746
+        if (clean.startsWith("929") && clean.length > 3) {
+            if (clean.length <= 6) {
+                numBuffer = clean.slice(0, 3) + "-" + clean.slice(3);
+            } else {
+                numBuffer = clean.slice(0, 3) + "-" + clean.slice(3, 6) + "-" + clean.slice(6);
+            }
+        } else {
+            // Standardowe polskie formatowanie 3-3-3
+            if (clean.length > 3 && clean.length <= 6) {
+                numBuffer = clean.slice(0, 3) + " " + clean.slice(3);
+            } else if (clean.length > 6) {
+                numBuffer = clean.slice(0, 3) + " " + clean.slice(3, 6) + " " + clean.slice(6);
+            } else {
+                numBuffer = clean;
+            }
+        }
+        document.getElementById('number-display').innerText = numBuffer;
+    }
+
+    function startDialTone() {
+        initAudio();
+        currentOsc = audioCtx.createOscillator();
+        currentGain = audioCtx.createGain();
+        currentOsc.type = 'sine';
+        currentOsc.frequency.value = 425;
+        
+        currentOsc.connect(currentGain);
+        currentGain.connect(audioCtx.destination);
+        currentOsc.start();
+
+        let isPlaying = false;
+        callInterval = setInterval(() => {
+            if (!isPlaying) {
+                if (currentGain) currentGain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                isPlaying = true;
+                setTimeout(() => {
+                    if (currentGain) currentGain.gain.setValueAtTime(0, audioCtx.currentTime);
+                    isPlaying = false;
+                }, 1000);
+            }
+        }, 5000);
+        
+        currentGain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        isPlaying = true;
+        setTimeout(() => {
+            if (currentGain) currentGain.gain.setValueAtTime(0, audioCtx.currentTime);
+            isPlaying = false;
+        }, 1000);
+    }
+
+    function stopAudioNodes() {
+        clearInterval(callInterval);
+        clearTimeout(timeoutCall);
+        if (currentOsc) {
+            try { currentOsc.stop(); } catch(e){}
+            currentOsc.disconnect();
+        }
+        currentOsc = null;
+        currentGain = null;
+    }
+
+    function speakTTS(text, callback) {
+        let utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'pl-PL';
+        utterance.rate = 1.0;
+        if (callback) {
+            utterance.onend = callback;
+        }
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function startCall() {
+        let cleanNumber = numBuffer.replace(/[-\s]/g, "");
+        if (cleanNumber === "") return;
+        
+        document.getElementById('call-btn').style.display = "none";
+        document.getElementById('del-btn').style.display = "none";
+        document.getElementById('hangup-btn').style.display = "flex";
+        document.getElementById('call-status').innerText = "Wybieranie...";
+        document.getElementById('avatar-container').style.display = "block";
+
+        startDialTone();
+
+        timeoutCall = setTimeout(() => {
+            stopAudioNodes();
+            let audioPlayer = document.getElementById('custom-audio');
+            
+            if (cleanNumber === "666666245") {
+                document.getElementById('call-status').innerText = "Rozmowa: Edek";
+                audioPlayer.src = "edek.mp3";
+                audioPlayer.play().catch(e => {});
+            } 
+            else if (cleanNumber === "666666666") {
+                document.getElementById('call-status').innerText = "Rozmowa: Diablo 😈";
+                audioPlayer.src = "diablo.mp3";
+                audioPlayer.play().catch(e => {});
+            }
+            else if (cleanNumber === "9295562746") {
+                document.getElementById('call-status').innerText = "Rozmowa: Mario 🍄";
+                audioPlayer.src = "mario.mp3";
+                audioPlayer.play().catch(e => {});
+            }
+            else if (sosNumbers.includes(cleanNumber)) {
+                document.getElementById('call-status').innerText = "Rozmowa: Emergency";
+                audioPlayer.src = "ioioio.mp3";
+                audioPlayer.play().catch(e => {});
+            } 
+            else if (cleanNumber === "123456789") {
+                document.getElementById('call-status').innerText = "Rozmowa: Numberblock";
+                audioPlayer.src = "whatinnumber.mp3";
+                audioPlayer.play().catch(e => {});
+            } 
+            else {
+                let chance = Math.floor(Math.random() * 4); // 0, 1, 2, 3 (1/4 szansy)
+                
+                if (chance === 0) {
+                    document.getElementById('call-status').innerText = "Połączenie odebrane";
+                    let randomWord = funnyWords[Math.floor(Math.random() * funnyWords.length)];
+                    speakTTS(randomWord);
+                    timeoutCall = setTimeout(() => { endCall(); }, 2000);
+                } else {
+                    // Nie odebrał. Sprawdzamy szansę na pocztę głosową (1/4)
+                    let voicemailChance = Math.floor(Math.random() * 4);
+                    if (voicemailChance === 0) {
+                        document.getElementById('call-status').innerText = "Poczta głosowa";
+                        let msg = "Tu poczta głosowa numeru " + numBuffer + ". Po sygnale zostaw wiadomość.";
+                        speakTTS(msg, () => {
+                            // Po tekście puszczamy długi pisk poczty głosowej
+                            initAudio();
+                            currentOsc = audioCtx.createOscillator();
+                            currentGain = audioCtx.createGain();
+                            currentOsc.frequency.value = 1000; // Pisk poczty
+                            currentGain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                            currentOsc.connect(currentGain);
+                            currentGain.connect(audioCtx.destination);
+                            currentOsc.start();
+                            
+                            timeoutCall = setTimeout(() => { endCall(); }, 1500);
+                        });
+                    } else {
+                        document.getElementById('call-status').innerText = "Zajęte";
+                        startFastBusyTone();
+                    }
+                }
+            }
+        }, 3500);
+    }
+
+    function startFastBusyTone() {
+        initAudio();
+        currentOsc = audioCtx.createOscillator();
+        currentGain = audioCtx.createGain();
+        currentOsc.frequency.value = 425;
+        currentOsc.connect(currentGain);
+        currentGain.connect(audioCtx.destination);
+        currentOsc.start();
+        
+        let on = true;
+        callInterval = setInterval(() => {
+            if (currentGain) currentGain.gain.setValueAtTime(on ? 0.1 : 0, audioCtx.currentTime);
+            on = !on;
+        }, 200); 
+    }
+
+    function endCall() {
+        stopAudioNodes();
+        window.speechSynthesis.cancel(); 
+        
+        let audioPlayer = document.getElementById('custom-audio');
+        audioPlayer.pause();
+        audioPlayer.src = "";
+
+        document.getElementById('call-status').innerText = "Połączenie zakończone";
+        
+        setTimeout(() => {
+            document.getElementById('call-status').innerText = "";
+            document.getElementById('call-btn').style.display = "flex";
+            document.getElementById('del-btn').style.display = "flex";
+            document.getElementById('hangup-btn').style.display = "none";
+            document.getElementById('avatar-container').style.display = "none";
+        }, 1200);
+    }
+</script>
+
+</body>
+</html>

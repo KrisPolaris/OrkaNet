@@ -97,12 +97,19 @@
         let score = 0;
         let gameRunning = true;
 
+        // SYSTEM KONTROLI FPS (BLOKADA DO 60 FPS)
+        let lastTime = 0;
+        const fpsInterval = 1000 / 60; // Oktawa czasowa dla 60 FPS (~16.67 ms)
+
         function resetGame() {
             bird.y = 200; bird.velocity = 0;
             pipes = []; score = 0; frame = 0;
             gameRunning = true;
             document.getElementById("game-over-msg").style.display = "none";
-            loop();
+            
+            // Resetujemy licznik czasu, żeby gra nie przeskoczyła przy restarcie
+            lastTime = performance.now();
+            requestAnimationFrame(loop);
         }
 
         // --- INTELIGENTNY ZAPIS REKORDU ---
@@ -176,8 +183,22 @@
             setTimeout(resetGame, 1500);
         }
 
-        function loop() {
+        // NAPRAWIONA PĘTLA Z DELTA TIME
+        function loop(timestamp) {
             if (!gameRunning) return;
+
+            requestAnimationFrame(loop);
+
+            // Obliczamy ile milisekund minęło od ostatniego rysowania
+            let elapsed = timestamp - lastTime;
+
+            // Jeśli klatka próbuje się wyrenderować zbyt szybko (np. przy 144Hz/165Hz), przerywamy i czekamy
+            if (elapsed < fpsInterval) return;
+
+            // Zapisujemy czas renderu obecnej klatki
+            lastTime = timestamp - (elapsed % fpsInterval);
+
+            // Klasyczne czyszczenie i rysowanie planszy (dokładnie 60 razy na sekundę)
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawPipes();
             drawBird();
@@ -185,12 +206,18 @@
             ctx.fillStyle = "#ffcc00";
             ctx.font = "bold 24px Arial";
             ctx.fillText("BRZUCHY: " + score, 15, 35);
-            requestAnimationFrame(loop);
         }
 
         const flap = () => { if(gameRunning) bird.velocity = bird.lift; };
+        
+        // Sterowanie klawiaturą
         window.addEventListener("keydown", (e) => { if(e.code === "Space") flap(); });
-        canvas.addEventListener("pointerdown", (e) => { e.preventDefault(); flap(); });
+        
+        // Stabilne sterowanie dotykowe na telefon
+        canvas.addEventListener("touchstart", (e) => { 
+            e.preventDefault(); 
+            flap(); 
+        }, { passive: false });
 
         function loadLeaderboard() {
             const q = query(collection(db, "scores"), orderBy("score", "desc"), limit(5));
@@ -209,7 +236,10 @@
         }
 
         loadLeaderboard();
-        loop();
+        
+        // Pierwsze odpalenie gry z przekazaniem czasu startowego
+        lastTime = performance.now();
+        requestAnimationFrame(loop);
     </script>
 </body>
 </html>

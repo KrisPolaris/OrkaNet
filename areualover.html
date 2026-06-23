@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tester Miłości</title>
+    <style>
+        /* CSS: Potężny styl pastelowo-różowy */
+        body {
+            background-color: #ffb6c1; /* Pastelowy róż tła */
+            color: #d11270; /* Głęboki róż tekstu, bo musi być widać */
+            font-family: 'Comic Sans MS', cursive; /* Hakerska czcionka mistrzów */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+        }
+
+        .inputs-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        input {
+            background-color: #ffe4e1; /* Jaśniejszy pastelowy dla pól */
+            color: #d11270;
+            border: 3px solid #d11270; /* Różowa obramówka */
+            padding: 10px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        button {
+            background-color: #d11270;
+            color: #ffb6c1;
+            border: 3px solid #ffe4e1; /* Odwrotna obramówka */
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            font-weight: bold;
+        }
+
+        button:hover {
+            transform: scale(1.1); /* Hakerski efekt przybliżenia */
+            box-shadow: 0 0 15px #d11270;
+        }
+
+        #wynik {
+            margin-top: 30px;
+            font-size: 2rem;
+            font-weight: bold;
+            min-height: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>LOVE TESTER</h1>
+
+    <div class="inputs-container">
+        <input type="text" id="imie1" placeholder="Twoje Imię">
+        <input type="text" id="imie2" placeholder="Imię Kochanego">
+    </div>
+
+    <button onclick="testujMilosc()">Test!</button>
+
+    <p id="wynik"></p>
+
+    <script>
+        function testujMilosc() {
+            let imie1 = document.getElementById("imie1").value.trim().toLowerCase();
+            let imie2 = document.getElementById("imie2").value.trim().toLowerCase();
+            let wynikElement = document.getElementById("wynik");
+            let procent;
+
+            // Upewnij się, że oba pola są wypełnione
+            if (imie1 === "" || imie2 === "") {
+                wynikElement.innerHTML = "Wpisz oba imiona!";
+                return;
+            }
+
+            // --- HAKERSKA LOGIKA ---
+
+            // Alan + Alan daje 101%
+            if ((imie1 === "alan" && imie2 === "alan")) {
+                procent = 101;
+            }
+            // Html + css daje 99%
+            else if ((imie1 === "html" && imie2 === "css") || (imie1 === "css" && imie2 === "html")) {
+                procent = 99;
+            }
+            // Oliwia i Ola daje 100%
+            else if ((imie1 === "oliwia" && imie2 === "ola") || (imie1 === "ola" && imie2 === "oliwia")) {
+                procent = 100;
+            }
+            // Bebzun i Bebech daje błąd systemu (ustawiamy kod na -999)
+            else if ((imie1 === "bebzun" && imie2 === "bebech") || (imie1 === "bebech" && imie2 === "bebzun")) {
+                procent = -999;
+            }
+            // Antek i Iga daje 98%
+            else if ((imie1 === "antek" && imie2 === "iga") || (imie1 === "iga" && imie2 === "antek")) {
+                procent = 98;
+            }
+            // Oliwia i (ktokolwiek) daje powyżej 86%
+            else if (imie1 === "oliwia" || imie2 === "oliwia") {
+                procent = Math.floor(Math.random() * 14) + 87; 
+            }
+            // Losowy wynik dla reszty
+            else {
+                procent = Math.floor(Math.random() * 101); 
+            }
+
+            // --- WYŚWIETLENIE WYNIKU ---
+            // Tutaj sprawdzamy, czy wpadł nasz kod dla Bebzuna
+            if (procent === -999) {
+                wynikElement.innerHTML = "WYNIK: ----999% na poczwórnych minusach 💀";
+            } else {
+                wynikElement.innerHTML = "WYNIK: " + procent + "%";
+            }
+        }
+    </script>
+
+</body>
+</html>
