@@ -25,7 +25,6 @@
         body.theme-standard .stat-val { color: #ffcc00; }
         body.theme-standard #username { font-size: 1.2em; margin-bottom: 20px; background: rgba(0,0,0,0.5); padding: 5px; border-bottom: 1px solid #00ffff; }
         
-        /* Poprawione kafelki we Flexboxie dla trybu Standard - równe wysokości i centrowanie */
         body.theme-standard .tile { 
             background: rgba(17,17,17,0.85); 
             color: #00ffff; 
@@ -104,7 +103,6 @@
         .desktop-only { display: none; font-size: 0.3em; color: #ffcc00; vertical-align: middle; margin-left: 10px; text-shadow: 0 0 5px #ffcc00; }
         @media (min-width: 800px) { .desktop-only { display: inline-block; } }
         
-        /* Flexbox grid poprawiający wyświetlanie na telefonach */
         .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 20px 10px; }
         body.theme-premium .grid, body.theme-cyberpunk .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; padding: 40px; max-width: 1200px; margin: 0 auto; }
         @media(min-width: 600px) { .tile { width: 22% !important; } body.theme-premium .tile, body.theme-cyberpunk .tile { width: auto !important; } }
@@ -131,16 +129,89 @@
         body.theme-windows #orkanet-footer { color: #fff; border-top: 2px outset #fff; }
         body.theme-cyberpunk #orkanet-footer { color: #8d8daa; border-top: 1px solid rgba(0, 217, 255, 0.2); background: #1a1a2e;}
 
-        /* Animacja samej tęczy (tło i elementy) bez ruszania strony */
         @keyframes rainbowGlow {
             0% { filter: hue-rotate(0deg); }
             100% { filter: hue-rotate(360deg); }
         }
-
-        /* Klasa, którą skrypt na chwilę wrzuci na stronę */
-        .rainbow-active {
+        .rainbow-active, .rainbow-active #main-header {
             animation: rainbowGlow 3s ease-in-out;
         }
+
+        /* ==========================================================================
+           NOWY SEKTOR: SYSTEM ZNAJOMYCH (ROBLOX STYLE)
+           ========================================================================== */
+        .friends-panel {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 15px;
+            background: rgba(17,17,17,0.85);
+            border: 2px solid #00ffff;
+            border-radius: 15px;
+            font-family: inherit;
+        }
+        body.theme-premium .friends-panel { background: #fff; border: 1px solid #ddd; color: #1e293b; }
+        body.theme-terminal .friends-panel { background: #000; border: 1px dashed #00ff00; color: #00ff00; border-radius: 0; text-align: left; }
+        body.theme-windows .friends-panel { background: #ece9d8; border: 2px outset #fff; color: #000; border-radius: 3px; }
+        body.theme-cyberpunk .friends-panel { background: #1a1a2e; border: 2px solid #00d9ff; color: #e0e0e0; box-shadow: 0 0 15px rgba(0, 217, 255, 0.2); }
+
+        .friends-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        body.theme-terminal .friends-list { justify-content: flex-start; }
+
+        /* Kółko jak w Robloxie */
+        .roblox-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            border: 2px solid transparent;
+        }
+        body.theme-standard .roblox-avatar { border-color: #00ffff; }
+        body.theme-terminal .roblox-avatar { border-radius: 0; border-color: #00ff00; font-family: monospace; }
+        body.theme-cyberpunk .roblox-avatar { border-color: #ff006e; }
+
+        .friend-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.8rem;
+            width: 70px;
+            text-align: center;
+        }
+        .friend-name {
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Powiadomienie o zaproszeniu */
+        .invite-box {
+            background: rgba(255, 204, 0, 0.2);
+            border: 1px solid #ffcc00;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            font-size: 0.9em;
+        }
+        body.theme-terminal .invite-box { background: #000; border: 1px dashed #00ff00; color: #00ff00; border-radius: 0; }
+        body.theme-windows .invite-box { background: #fff; border: 2px inset #fff; color: #000; }
     </style>
 </head>
 <body class="theme-standard">
@@ -148,17 +219,17 @@
 <div id="cookie-overlay">
     <div id="cookie-box">
         <div id="cookie-initial">
-            <h2>PLIKI COOKIE I PRYWATNOŚĆ</h2>
-            <p style="font-family: sans-serif; font-size: 0.9em; line-height: 1.4;">Nasza strona używa ciasteczek, aby OrkaNet był jeszcze lepszy. Akceptując, zgadzasz się na zbieranie danych o odwiedzinach dla statystyk Bebecha 🍪</p>
+            <h2 id="cookie-title">PLIKI COOKIE I PRYWATNOŚĆ</h2>
+            <p id="cookie-desc" style="font-family: sans-serif; font-size: 0.9em; line-height: 1.4;">Nasza strona używa ciasteczek, aby OrkaNet był jeszcze lepszy. Akceptując, zgadzasz się na zbieranie danych o odwiedzinach dla statystyk Bebecha 🍪</p>
             <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button class="cookie-btn btn-accept" style="flex: 1;" onclick="acceptCookies()">AKCEPTUJ</button>
-                <button class="cookie-btn btn-reject" style="flex: 1;" onclick="rejectCookies()">ODRZUĆ</button>
+                <button id="cookie-btn-acc" class="cookie-btn btn-accept" style="flex: 1;" onclick="acceptCookies()">AKCEPTUJ</button>
+                <button id="cookie-btn-rej" class="cookie-btn btn-reject" style="flex: 1;" onclick="rejectCookies()">ODRZUĆ</button>
             </div>
         </div>
         <div id="pay-screen" style="display: none;">
-            <h2>PRYWATNOŚĆ KOSZTUJE</h2>
+            <h2 id="pay-title">PRYWATNOŚĆ KOSZTUJE</h2>
             <div style="font-size: 2.5em; color: #ffcc00; margin: 20px 0; text-align: center;">50 ZŁ / MSC</div>
-            <button class="cookie-btn btn-accept" style="background:#ffcc00; color: #000; width: 100%;" onclick="acceptCookies()">DOBRA, PŁACĘ (ŻARTUJĘ, WEJDŹ)</button>
+            <button id="pay-btn" class="cookie-btn btn-accept" style="background:#ffcc00; color: #000; width: 100%;" onclick="acceptCookies()">DOBRA, PŁACĘ (ŻARTUJĘ, WEJDŹ)</button>
         </div>
     </div>
 </div>
@@ -170,62 +241,80 @@
 </header>
 
 <div class="stats-bar">
-    <div>UŻYTKOWNICY: <span id="reg-count" class="stat-val">...</span></div>
-    <div>ONLINE: <span id="on-count" class="stat-val" style="color: #00ff00;">...</span></div>
-    <div>👀 ODWIEDZINY: <span id="visit-counter" class="stat-val" style="color:#ff006e;">0</span></div>
+    <div id="stat-reg-label">UŻYTKOWNICY: <span id="reg-count" class="stat-val">...</span></div>
+    <div id="stat-on-label">ONLINE: <span id="on-count" class="stat-val" style="color: #00ff00;">...</span></div>
+    <div id="stat-visit-label">👀 ODWIEDZINY: <span id="visit-counter" class="stat-val" style="color:#ff006e;">0</span></div>
 </div>
 
 <div id="username">Weryfikacja profilu...</div>
 
+<!-- NOWY PANEL SZEFIE: ZNAJOMI -->
+<div class="friends-panel">
+    <div id="friends-title" style="font-size: 1.1em; margin-bottom: 10px; font-weight: bold;">👥 ZNAJOMI</div>
+    
+    <!-- Okienko na zaproszenia -->
+    <div id="incoming-invites"></div>
+
+    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px;">
+        <input type="text" id="friend-search-input" placeholder="Wpisz nick..." style="padding: 5px 10px; border-radius: 5px; border: 1px solid #00ffff; background: #000; color: #fff; font-family: inherit; font-size: 0.8em; max-width: 180px;">
+        <button class="btn-small" id="btn-add-friend" onclick="sendFriendRequest()" style="padding: 5px 10px; font-size: 0.8em;">Dodaj</button>
+    </div>
+    
+    <div class="friends-list" id="friends-display-list">
+        <!-- Tutaj wjadą kółka robloxowe z JS -->
+    </div>
+</div>
+
 <div class="controls">
     <button class="btn-small" id="theme-toggle" onclick="toggleTheme()">✨ ZMIEŃ TRYB ✨</button>
+    <button class="btn-small" id="lang-toggle" onclick="toggleLang()">🌐 PL / EN</button>
     <a href="https://whatsapp.com/channel/0029Vb7o86m65yDC9fzCYk0m" class="btn-small" style="background:#25D366; color:white; text-decoration:none; border:none; display:inline-flex; align-items:center;">WhatsApp 📱</a>
-    <button class="btn-small" style="background:#ff4444; color:white; border:none;" onclick="logout()">Wyloguj 🚪</button>
-    <button class="btn-small" onclick="showRandomPage()">🎲 Losowa Strona</button>
+    <button class="btn-small" id="logout-btn" style="background:#ff4444; color:white; border:none;" onclick="logout()">Wyloguj 🚪</button>
+    <button class="btn-small" id="random-btn" onclick="showRandomPage()">🎲 Losowa Strona</button>
     <button class="btn-small" id="music-btn" onclick="toggleMusic()">🎵 Muzyka</button>
 </div>
 
 <main class="grid" id="main-grid">
-    <a class="tile" href="czat.html">BebzunChat 💬</a>
-    <a class="tile" href="clicker.html">Creeper Clicker 💰</a>
-    <a class="tile" href="burga.html">Burger 🍔</a>
-    <a class="tile" href="boxes!.html">Pudełka</a>
-    <a class="tile" href="GeometryDash.html">Geometry Dash 🟦</a>
-    <a class="tile" href="spotifa.html">Spotifa 🎵</a>
-    <a class="tile" href="Windows XP.html">Windows XP 💻</a>
-    <a class="tile" href="skarbonka.html">Skarbonka</a>
-    <a class="tile" href="rysowniczek.html">Paint 🎨</a>
-    <a class="tile" href="bebzun.html">Poznaj Bebzuna! 🤰</a>
-    <a class="tile" href="kolorowanki.html">Kolorowanki</a>
-    <a class="tile" href="kalkulator.html">Kalkulator 🔢</a>
-    <a class="tile" href="ppogoda.html">Pogoda ☁️</a>
-    <a class="tile" href="aparacik.html">Aparat 📸</a>
-    <a class="tile" href="getoverit.html">MiniKraftia</a>
-    <a class="tile" href="aixd.html">AI GEMIBOT</a>
-    <a class="tile" href="oldsuper.html">stary orkanet</a>
-    <a class="tile" href="flapibebzun.html">Flappy Bebech</a>
-    <a class="tile" href="diktafon.html">Dyktafon</a>
-    <a class="tile" href="czas.html">Zegar</a>
-    <a class="tile" href="kalendar.html">Kalendarz</a>
-    <a class="tile" href="tts.html">Głos</a>
-    <a class="tile" href="tudududu.html">Dźwięki</a>
-    <a class="tile" href="yuh.html">Android</a>
-    <a class="tile" href="Car..html">Autko</a>
-    <a class="tile" href="Chicken.html">Kurka</a>
-    <a class="tile" href="rubik.html">Kostka Rubika</a>
-    <a class="tile" href="ShortenMe.html">Skracacz Linków</a>
-    <a class="tile" href="robluxy.html">Free Robux (100% Legitne!)</a>
-    <a class="tile" href="orkadio.html">Ptasie Radyjo</a>
-    <a class="tile" href="tybzunku.html">Nie pytaj.</a>
-    <a class="tile" href="thissitehasnolitteralsens.html">moja pierwsza strona</a>
-    <a class="tile" href="jackbrowser.html">JackBrowser (podróba Chrome)</a>
-    <a class="tile" href="robox.html">Zepsuty Roblox Okropnie O Ja</a>
-    <a class="tile" href="wouldyoustasiekcode.html">Testuj swój Kod</a>
-    <a class="tile" href="leceprzezoknoskirskirskir.html">OrkaVid</a>
-    <a class="tile" href="dajmikase.html">Przelicznik walut</a>
-    <a class="tile" href="supramariusz.html">Mario</a>
-    <a class="tile" href="https://krispolaris.github.io/Glupie-AI">ai very smart</a>
-    <a class="tile" href="https://krispolaris.github.io/SafeCraft">Minecraft za darmo</a>
+    <a class="tile" href="czat.html" data-pl="BebzunChat 💬" data-en="BebzunChat 💬">BebzunChat 💬</a>
+    <a class="tile" href="clicker.html" data-pl="Creeper Clicker 💰" data-en="Creeper Clicker 💰">Creeper Clicker 💰</a>
+    <a class="tile" href="burga.html" data-pl="Burger 🍔" data-en="Burger 🍔">Burger 🍔</a>
+    <a class="tile" href="boxes!.html" data-pl="Pudełka 📦" data-en="Boxes 📦">Pudełka 📦</a>
+    <a class="tile" href="GeometryDash.html" data-pl="Geometry Dash 🟦" data-en="Geometry Dash 🟦">Geometry Dash 🟦</a>
+    <a class="tile" href="spotifa.html" data-pl="Spotifa 🎵" data-en="Spotifa 🎵">Spotifa 🎵</a>
+    <a class="tile" href="Windows XP.html" data-pl="Windows XP 💻" data-en="Windows XP 💻">Windows XP 💻</a>
+    <a class="tile" href="skarbonka.html" data-pl="Skarbonka 🐷" data-en="Piggy Bank 🐷">Skarbonka 🐷</a>
+    <a class="tile" href="rysowniczek.html" data-pl="Paint 🎨" data-en="Paint 🎨">Paint 🎨</a>
+    <a class="tile" href="bebzun.html" data-pl="Poznaj Bebzuna! 🤰" data-en="Meet Bebzun! 🤰">Poznaj Bebzuna! 🤰</a>
+    <a class="tile" href="kolorowanki.html" data-pl="Kolorowanki 🖍️" data-en="Coloring Books 🖍️">Kolorowanki 🖍️</a>
+    <a class="tile" href="kalkulator.html" data-pl="Kalkulator 🔢" data-en="Calculator 🔢">Kalkulator 🔢</a>
+    <a class="tile" href="ppogoda.html" data-pl="Pogoda ☁️" data-en="Weather ☁️">Pogoda ☁️</a>
+    <a class="tile" href="aparacik.html" data-pl="Aparat 📸" data-en="Camera 📸">Aparat 📸</a>
+    <a class="tile" href="getoverit.html" data-pl="MiniKraftia ⛏️" data-en="MiniKraftia ⛏️">MiniKraftia ⛏️</a>
+    <a class="tile" href="aixd.html" data-pl="AI GEMIBOT 🤖" data-en="AI GEMIBOT 🤖">AI GEMIBOT 🤖</a>
+    <a class="tile" href="oldsuper.html" data-pl="stary orkanet 💾" data-en="old orkanet 💾">stary orkanet 💾</a>
+    <a class="tile" href="flapibebzun.html" data-pl="Flappy Bebech 🕊️" data-en="Flappy Bebech 🕊️">Flappy Bebech 🕊️</a>
+    <a class="tile" href="diktafon.html" data-pl="Dyktafon 🎙️" data-en="Voice Recorder 🎙️">Dyktafon 🎙️</a>
+    <a class="tile" href="czas.html" data-pl="Zegar ⏰" data-en="Clock ⏰">Zegar ⏰</a>
+    <a class="tile" href="kalendar.html" data-pl="Kalendarz 📅" data-en="Calendar 📅">Kalendarz 📅</a>
+    <a class="tile" href="tts.html" data-pl="Głos 🗣️" data-en="Voice 🗣️">Głos 🗣️</a>
+    <a class="tile" href="tudududu.html" data-pl="Dźwięki 🔊" data-en="Sounds 🔊">Dźwięki 🔊</a>
+    <a class="tile" href="yuh.html" data-pl="Android 🤖" data-en="Android 🤖">Android 🤖</a>
+    <a class="tile" href="Car..html" data-pl="Autko 🚗" data-en="Car 🚗">Autko 🚗</a>
+    <a class="tile" href="Chicken.html" data-pl="Kurka 🐔" data-en="Chicken 🐔">Kurka 🐔</a>
+    <a class="tile" href="rubik.html" data-pl="Kostka Rubika 🎲" data-en="Rubik's Cube 🎲">Kostka Rubika 🎲</a>
+    <a class="tile" href="ShortenMe.html" data-pl="Skracacz Linków 🔗" data-en="URL Shortener 🔗">Skracacz Linków 🔗</a>
+    <a class="tile" href="robluxy.html" data-pl="Free Robux (100% Legitne!) 💰" data-en="Free Robux (100% Legit!) 💰">Free Robux (100% Legitne!) 💰</a>
+    <a class="tile" href="orkadio.html" data-pl="Ptasie Radyjo 📻" data-en="Bird Radio 📻">Ptasie Radyjo 📻</a>
+    <a class="tile" href="tybzunku.html" data-pl="Nie pytaj. 🤫" data-en="Don't ask. 🤫">Nie pytaj. 🤫</a>
+    <a class="tile" href="thissitehasnolitteralsens.html" data-pl="moja pierwsza strona 📄" data-en="my first website 📄">moja pierwsza strona 📄</a>
+    <a class="tile" href="jackbrowser.html" data-pl="JackBrowser (podróba Chrome) 🌐" data-en="JackBrowser (Chrome clone) 🌐">JackBrowser (podróba Chrome) 🌐</a>
+    <a class="tile" href="robox.html" data-pl="Zepsuty Roblox Okropnie O Ja 💥" data-en="Broken Roblox Awful Oh My 💥">Zepsuty Roblox Okropnie O Ja 💥</a>
+    <a class="tile" href="wouldyoustasiekcode.html" data-pl="Testuj swój Kod 💻" data-en="Test your Code 💻">Testuj swój Kod 💻</a>
+    <a class="tile" href="leceprzezoknoskirskirskir.html" data-pl="OrkaVid 🎬" data-en="OrkaVid 🎬">OrkaVid 🎬</a>
+    <a class="tile" href="dajmikase.html" data-pl="Przelicznik walut 💱" data-en="Currency Converter 💱">Przelicznik walut 💱</a>
+    <a class="tile" href="supramariusz.html" data-pl="Mario 🍄" data-en="Mario 🍄">Mario 🍄</a>
+    <a class="tile" href="https://krispolaris.github.io/Glupie-AI" data-pl="ai very smart 🧠" data-en="ai very smart 🧠">ai very smart 🧠</a>
+    <a class="tile" href="https://krispolaris.github.io/SafeCraft" data-pl="Minecraft za darmo 🧱" data-en="Minecraft for free 🧱">Minecraft za darmo 🧱</a>
 </main>
 
 <footer id="orkanet-footer">
@@ -234,10 +323,10 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, collection, query, where, onSnapshot, getCountFromServer, doc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getFirestore, collection, query, where, onSnapshot, getCountFromServer, doc, updateDoc, setDoc, getDoc, serverTimestamp, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     const firebaseConfig = {
-        apiKey: "AIzaSy...", 
+        apiKey: "AIzaSyDPvjNjR6nTHQuWdhQGAGk9iJgvPKDQTXA", 
         authDomain: "bebechchat.firebaseapp.com",
         projectId: "bebechchat",
         storageBucket: "bebechchat.firebasestorage.app",
@@ -247,6 +336,17 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+
+    const myUser = localStorage.getItem('loggedUser') || "Gość";
+
+    // Rejestracja Gościa w bazie, żeby system znajomych działał stabilnie
+    if (myUser) {
+        const userRef = doc(db, "users", myUser);
+        setDoc(userRef, { 
+            username: myUser, 
+            lastActive: serverTimestamp() 
+        }, { merge: true }).catch(() => {});
+    }
 
     async function loadStats() {
         try {
@@ -262,17 +362,231 @@
             });
         } catch(e) {}
     }
+    loadStats();
 
-    const user = localStorage.getItem('loggedUser');
-    if (user && user !== "Gość") {
-        const userRef = doc(db, "users", user);
-        updateDoc(userRef, { lastActive: serverTimestamp() }).catch(() => {});
+    // Paleta ślicznych, jasnych kolorów dla kółek Roblox style
+    const niceColors = ["#ff006e", "#00d9ff", "#00ff00", "#ffcc00", "#9b5de5", "#f15bb5", "#00f5d4"];
+    function getDeterministicColor(name) {
+        let sum = 0;
+        for (let i = 0; i < name.length; i++) sum += name.charCodeAt(i);
+        return niceColors[sum % niceColors.length];
     }
 
-    loadStats();
+    // LISTENER SYSTEMU ZNAJOMYCH I ZAPROSZEŃ
+    if(myUser) {
+        // Słuchaj zaakceptowanych znajomych
+        onSnapshot(doc(db, "friends_lists", myUser), (docSnap) => {
+            const listDiv = document.getElementById('friends-display-list');
+            listDiv.innerHTML = '';
+            if(docSnap.exists() && docSnap.data().friendsList) {
+                const arr = docSnap.data().friendsList;
+                if(arr.length === 0) {
+                    listDiv.innerHTML = '<span style="font-size:0.8em; opacity:0.6;">Brak znajomych. Zaproś kogoś!</span>';
+                }
+                arr.forEach(fName => {
+                    const firstLet = fName.charAt(0).toUpperCase();
+                    const color = getDeterministicColor(fName);
+                    
+                    const card = document.createElement('div');
+                    card.className = 'friend-card';
+                    card.innerHTML = `
+                        <div class="roblox-avatar" style="background: ${color}">${firstLet}</div>
+                        <div class="friend-name">${fName}</div>
+                    `;
+                    listDiv.appendChild(card);
+                });
+            } else {
+                listDiv.innerHTML = '<span style="font-size:0.8em; opacity:0.6;">Brak znajomych. Zaproś kogoś!</span>';
+            }
+        });
+
+        // Słuchaj zaproszeń przychodzących do mnie
+        const qInv = query(collection(db, "friend_requests"), where("to", "==", myUser));
+        onSnapshot(qInv, (snap) => {
+            const container = document.getElementById('incoming-invites');
+            container.innerHTML = '';
+            snap.forEach(docBox => {
+                const reqData = docBox.data();
+                const reqId = docBox.id;
+                const fromWho = reqData.from;
+
+                const box = document.createElement('div');
+                box.className = 'invite-box';
+                box.innerHTML = `
+                    <span>👤 <b>${fromWho}</b> zaprasza Cię!</span>
+                    <div>
+                        <button class="btn-small" style="background:#00ff00; color:#000; padding:3px 8px; font-size:0.8em; border:none;" id="acc-${reqId}">TAK</button>
+                        <button class="btn-small" style="background:#ff4444; color:#fff; padding:3px 8px; font-size:0.8em; border:none;" id="rej-${reqId}">NIE</button>
+                    </div>
+                `;
+                container.appendChild(box);
+
+                // Akceptowanie zaproszenia
+                document.getElementById(`acc-${reqId}`).onclick = async () => {
+                    // Dodaj mi znajomego
+                    const myRef = doc(db, "friends_lists", myUser);
+                    const mySnap = await getDoc(myRef);
+                    let myArr = mySnap.exists() ? (mySnap.data().friendsList || []) : [];
+                    if(!myArr.includes(fromWho)) myArr.push(fromWho);
+                    await setDoc(myRef, { friendsList: myArr }, { merge: true });
+
+                    // Dodaj jemu znajomego
+                    const hisRef = doc(db, "friends_lists", fromWho);
+                    const hisSnap = await getDoc(hisRef);
+                    let hisArr = hisSnap.exists() ? (hisSnap.data().friendsList || []) : [];
+                    if(!hisArr.includes(myUser)) hisArr.push(myUser);
+                    await setDoc(hisRef, { friendsList: hisArr }, { merge: true });
+
+                    // Usuń zaproszenie z bazy
+                    await deleteDoc(doc(db, "friend_requests", reqId));
+                };
+
+                // Odrzucenie zaproszenia
+                document.getElementById(`rej-${reqId}`).onclick = async () => {
+                    await deleteDoc(doc(db, "friend_requests", reqId));
+                };
+            });
+        });
+    }
+
+    // Funkcja wysyłania zaproszenia (Udostępniona do window)
+    window.sendFriendRequest = async function() {
+        const input = document.getElementById('friend-search-input');
+        const targetName = input.value.trim();
+        if(!targetName) return;
+        if(targetName === myUser) {
+            alert(currentLang === 'pl' ? "Nie możesz zaprosić samego siebie!" : "You cannot invite yourself!");
+            return;
+        }
+
+        // Sprawdź czy user istnieje w kolekcji users
+        const userCheck = await getDoc(doc(db, "users", targetName));
+        if(!userCheck.exists()) {
+            alert(currentLang === 'pl' ? "Nie znaleziono takiego użytkownika!" : "User not found!");
+            return;
+        }
+
+        // Dodaj dokument zaproszenia
+        const reqId = myUser + "_" + targetName;
+        await setDoc(doc(db, "friend_requests", reqId), {
+            from: myUser,
+            to: targetName,
+            timestamp: serverTimestamp()
+        });
+        
+        alert(currentLang === 'pl' ? "Zaproszenie wysłane!" : "Request sent!");
+        input.value = '';
+    }
 </script>
 
 <script>
+    // --- SYSTEM TŁUMACZEŃ (PL / EN) ---
+    const translations = {
+        pl: {
+            cookiesTitle: "PLIKI COOKIE I PRYWATNOŚĆ",
+            cookiesDesc: "Nasza strona używa ciasteczek, aby OrkaNet był jeszcze lepszy. Akceptując, zgadzasz się na zbieranie danych o odwiedzinach dla statystyk Bebecha 🍪",
+            cookiesAccept: "AKCEPTUJ",
+            cookiesReject: "ODRZUĆ",
+            cookiesPay: "PRYWATNOŚĆ KOSZTUJE",
+            cookiesPayBtn: "DOBRA, PŁACĘ (ŻARTUJĘ, WEJDŹ)",
+            statReg: "KONTA W ORKANECIE: ",
+            statOn: "ONLINE: ",
+            statVisit: "👀 ODWIEDZINY: ",
+            account: "Twoje konto: ",
+            guest: "Gość",
+            logoutConfirm: "Opuszczasz OrkaNet?",
+            btnLogout: "Wyloguj 🚪",
+            btnRandom: "🎲 Losowa Strona",
+            btnMusic: "🎵 Muzyka",
+            btnPause: "⏸️ Pauza",
+            vipText: "SUPER GOŚCIU 🔥",
+            footerText: "© 2026 OrkaNet - Wszelkie prawa do Bebecha zastrzeżone.",
+            friendsTitle: "👥 ZNAJOMI (ROBLOX STYLE)",
+            friendsBtn: "Dodaj",
+            friendsPlace: "Wpisz nick..."
+        },
+        en: {
+            cookiesTitle: "COOKIES & PRIVACY",
+            cookiesDesc: "Our site uses cookies to make OrkaNet even better. By accepting, you agree to the collection of visit data for Bebech statistics 🍪",
+            cookiesAccept: "ACCEPT",
+            cookiesReject: "REJECT",
+            cookiesPay: "PRIVACY COSTS MONEY",
+            cookiesPayBtn: "OK, I PAY (JUST KIDDING, ENTER)",
+            statReg: "USERS: ",
+            statOn: "ONLINE: ",
+            statVisit: "👀 VISITS: ",
+            account: "Your account: ",
+            guest: "Guest",
+            logoutConfirm: "Are you leaving OrkaNet?",
+            btnLogout: "Logout 🚪",
+            btnRandom: "🎲 Random Page",
+            btnMusic: "🎵 Music",
+            btnPause: "⏸️ Pause",
+            vipText: "SUPER GUY 🔥",
+            footerText: "© 2026 OrkaNet - All rights to Bebech reserved.",
+            friendsTitle: "👥 FRIENDS (ROBLOX STYLE)",
+            friendsBtn: "Add",
+            friendsPlace: "Enter username..."
+        }
+    };
+
+    let currentLang = localStorage.getItem('lang') || 'pl';
+
+    function applyLanguage(lang) {
+        const t = translations[lang];
+        
+        document.getElementById('cookie-title').textContent = t.cookiesTitle;
+        document.getElementById('cookie-desc').textContent = t.cookiesDesc;
+        document.getElementById('cookie-btn-acc').textContent = t.cookiesAccept;
+        document.getElementById('cookie-btn-rej').textContent = t.cookiesReject;
+        document.getElementById('pay-title').textContent = t.cookiesPay;
+        document.getElementById('pay-btn').textContent = t.cookiesPayBtn;
+
+        const rc = document.getElementById('reg-count').textContent;
+        const oc = document.getElementById('on-count').textContent;
+        const vc = document.getElementById('visit-counter').textContent;
+        
+        document.getElementById('stat-reg-label').innerHTML = t.statReg + '<span id="reg-count" class="stat-val">' + rc + '</span>';
+        document.getElementById('stat-on-label').innerHTML = t.statOn + '<span id="on-count" class="stat-val" style="color: #00ff00;">' + oc + '</span>';
+        document.getElementById('stat-visit-label').innerHTML = t.statVisit + '<span id="visit-counter" class="stat-val" style="color:#ff006e;">' + vc + '</span>';
+
+        const savedUser = localStorage.getItem('loggedUser');
+        const loggedUser = savedUser || (lang === 'pl' ? translations.pl.guest : translations.en.guest);
+        document.getElementById('username').textContent = t.account + loggedUser;
+        
+        const v = document.getElementById('vip-label');
+        if (v && v.className === "vip-tag") {
+            v.innerHTML = t.vipText;
+        }
+
+        document.getElementById('logout-btn').textContent = t.btnLogout;
+        document.getElementById('random-btn').textContent = t.btnRandom;
+        document.getElementById('music-btn').textContent = musicPlaying ? t.btnPause : t.btnMusic;
+
+        // Tłumaczenie panelu znajomych
+        document.getElementById('friends-title').textContent = t.friendsTitle;
+        document.getElementById('btn-add-friend').textContent = t.friendsBtn;
+        document.getElementById('friend-search-input').placeholder = t.friendsPlace;
+
+        document.querySelectorAll('.tile').forEach(tile => {
+            if(lang === 'pl') {
+                tile.textContent = tile.getAttribute('data-pl');
+            } else {
+                tile.textContent = tile.getAttribute('data-en');
+            }
+        });
+        
+        document.getElementById('orkanet-footer').textContent = t.footerText;
+        applyTheme(themes[currentThemeIndex]);
+    }
+
+    function toggleLang() {
+        currentLang = currentLang === 'pl' ? 'en' : 'pl';
+        localStorage.setItem('lang', currentLang);
+        applyLanguage(currentLang);
+    }
+
+    // --- SYSTEM MOTYWÓW ---
     const themes = ['standard', 'premium', 'terminal', 'windows', 'cyberpunk'];
     let currentThemeIndex = themes.indexOf(localStorage.getItem('theme') || 'standard');
     if (currentThemeIndex === -1) currentThemeIndex = 0;
@@ -281,9 +595,9 @@
 
     function toggleTheme() {
         currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-        const nextTheme = themes[currentThemeIndex];
-        applyTheme(nextTheme);
-        localStorage.setItem('theme', nextTheme);
+        const nextTheme = themes[themes[currentThemeIndex]];
+        applyTheme(themes[currentThemeIndex]);
+        localStorage.setItem('theme', themes[currentThemeIndex]);
     }
 
     function applyTheme(theme) {
@@ -291,37 +605,36 @@
         document.body.classList.add('theme-' + theme);
 
         const btn = document.getElementById('theme-toggle');
+        const fInput = document.getElementById('friend-search-input');
 
         if (theme === 'standard') {
-            btn.textContent = "✨ TRYB STANDARD ✨";
-            btn.style.background = "#ffcc00";
-            btn.style.color = "#000";
-        } else if (theme === 'premium') { // REPARACJA: Naprawiono błąd 'themtheme'
-            btn.textContent = "💎 TRYB PREMIUM 💎";
-            btn.style.background = "#2563eb";
-            btn.style.color = "#fff";
+            btn.textContent = currentLang === 'pl' ? "✨ TRYB STANDARD ✨" : "✨ STANDARD MODE ✨";
+            btn.style.background = "#ffcc00"; btn.style.color = "#000";
+            if(fInput) { fInput.style.borderColor = "#00ffff"; fInput.style.background = "#000"; fInput.style.color = "#fff"; }
+        } else if (theme === 'premium') {
+            btn.textContent = currentLang === 'pl' ? "💎 TRYB PREMIUM 💎" : "💎 PREMIUM MODE 💎";
+            btn.style.background = "#2563eb"; btn.style.color = "#fff";
+            if(fInput) { fInput.style.borderColor = "#ddd"; fInput.style.background = "#fff"; fInput.style.color = "#000"; }
         } else if (theme === 'terminal') {
-            btn.textContent = "🐧 TRYB TERMINAL 🐧";
-            btn.style.background = "#00ff00";
-            btn.style.color = "#000";
+            btn.textContent = currentLang === 'pl' ? "🐧 TRYB TERMINAL 🐧" : "🐧 TERMINAL MODE 🐧";
+            btn.style.background = "#00ff00"; btn.style.color = "#000";
+            if(fInput) { fInput.style.borderColor = "#00ff00"; fInput.style.background = "#000"; fInput.style.color = "#00ff00"; }
         } else if (theme === 'windows') {
-            btn.textContent = "💻 TRYB WINDOWS 💻";
-            btn.style.background = "#ece9d8";
-            btn.style.color = "#000";
+            btn.textContent = currentLang === 'pl' ? "💻 TRYB WINDOWS 💻" : "💻 WINDOWS MODE 💻";
+            btn.style.background = "#ece9d8"; btn.style.color = "#000";
+            if(fInput) { fInput.style.borderColor = "#707070"; fInput.style.background = "#fff"; fInput.style.color = "#000"; }
         } else if (theme === 'cyberpunk') {
-            btn.textContent = "🤖 TRYB CYBERPUNK 🤖";
-            btn.style.background = "#ff006e";
-            btn.style.color = "#fff";
+            btn.textContent = currentLang === 'pl' ? "🤖 TRYB CYBERPUNK 🤖" : "🤖 CYBERPUNK MODE 🤖";
+            btn.style.background = "#ff006e"; btn.style.color = "#fff";
+            if(fInput) { fInput.style.borderColor = "#00d9ff"; fInput.style.background = "#1a1a2e"; fInput.style.color = "#e0e0e0"; }
         }
     }
 
-    // Licznik Odwiedzin 
     let visits = localStorage.getItem("orkanetVisits") || 0;
     visits++;
     localStorage.setItem("orkanetVisits", visits);
     document.getElementById("visit-counter").textContent = visits;
 
-    // Ciasteczka
     if (localStorage.getItem('cookiesAccepted') === 'true') {
         document.getElementById('cookie-overlay').style.display = 'none';
     }
@@ -331,29 +644,28 @@
         document.getElementById('cookie-overlay').style.display = 'none';
     }
 
+    style="display:none;"
     function rejectCookies() {
         document.getElementById('cookie-initial').style.display = 'none';
         document.getElementById('pay-screen').style.display = 'block';
     }
 
-    // Login i VIP system
-    const loggedUser = localStorage.getItem('loggedUser') || "Gość";
-    document.getElementById('username').textContent = 'Twoje konto: ' + loggedUser;
-
-    if (["admin", "kris", "krys", "szym", "sim"].some(n => loggedUser.toLowerCase().includes(n))) {
+    const checkUser = localStorage.getItem('loggedUser') || "Gość";
+    if (["admin", "kris", "krys", "szym", "sim"].some(n => checkUser.toLowerCase().includes(n))) {
         const v = document.getElementById('vip-label');
-        if(v) { v.className = "vip-tag"; v.innerHTML = "SUPER GOŚCIU 🔥"; }
+        if(v) { v.className = "vip-tag"; }
     }
 
-    // Wylogowanie
+    applyLanguage(currentLang);
+    
     function logout() { 
-        if(confirm("Opuszczasz OrkaNet?")) { 
+        const confirmMsg = translations[currentLang].logoutConfirm;
+        if(confirm(confirmMsg)) { 
             localStorage.removeItem('loggedUser'); 
             window.location.reload(); 
         } 
     }
 
-    // Losowa Strona
     function showRandomPage() {
         const pages = [...document.querySelectorAll('.tile')];
         const random = pages[Math.floor(Math.random() * pages.length)];
@@ -362,24 +674,21 @@
         }
     }
 
-    // Uniwersalny system muzyczny
     let musicPlaying = false;
     let normalMusic = new Audio("music.mp3");
 
     function toggleMusic() {
         const mBtn = document.getElementById('music-btn');
-
         if(musicPlaying){
             normalMusic.pause();
-            mBtn.textContent = "🎵 Muzyka";
+            mBtn.textContent = translations[currentLang].btnMusic;
         } else {
             normalMusic.play();
-            mBtn.textContent = "⏸️ Pauza";
+            mBtn.textContent = translations[currentLang].btnPause;
         }
         musicPlaying = !musicPlaying;
     }
 
-    // Tęczowa zmiana kolorów logo
     document.getElementById('header-text').addEventListener('click', () => {
         document.documentElement.classList.add('rainbow-active');
         setTimeout(() => {

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ptasie radyjo - annoying edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            margin: 0; 
+            background: #000; 
+            font-family: 'Bebas Neue', sans-serif; 
+            color: #00ffff; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header { 
+            font-size: 5em; 
+            letter-spacing: 5px;
+            text-shadow: 0 0 15px #00ffff;
+            margin-bottom: 20px;
+        }
+
+        .radio-box {
+            background: #0a0a0a;
+            border: 2px solid #00ffff;
+            padding: 30px;
+            width: 90%;
+            max-width: 650px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+            text-align: center;
+        }
+
+        #current-station-name {
+            font-size: 2.2em;
+            color: #fff;
+            display: block;
+            margin-bottom: 5px;
+            height: 1.2em;
+            text-shadow: 0 0 10px #ffcc00;
+        }
+
+        #frequency-display {
+            font-size: 3.5em;
+            color: #00ffff;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        .visual-box {
+            height: 60px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 4px;
+            margin-bottom: 20px;
+        }
+
+        .bar {
+            width: 10px;
+            height: 5px;
+            background: #00ffff;
+            animation: bounce 0.5s infinite alternate;
+            animation-play-state: paused;
+        }
+
+        @keyframes bounce {
+            from { height: 5px; opacity: 0.3; }
+            to { height: 50px; opacity: 1; box-shadow: 0 0 10px #00ffff; }
+        }
+
+        .tuner-container {
+            margin: 25px 0;
+            background: #111;
+            padding: 20px;
+            border: 1px solid #333;
+        }
+
+        .fm-slider {
+            width: 100%;
+            accent-color: #ffcc00;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .scale-labels {
+            display: flex;
+            justify-content: space-between;
+            color: #888;
+            font-size: 1.2em;
+        }
+
+        .main-controls {
+            margin: 20px 0;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .ctrl-btn {
+            padding: 12px 35px;
+            font-family: 'Bebas Neue';
+            font-size: 1.6em;
+            cursor: pointer;
+            border: 2px solid #00ffff;
+            background: transparent;
+            color: #00ffff;
+        }
+
+        .btn-play { background: #00ffff; color: #000; }
+
+        .vol-container {
+            margin-top: 15px;
+            font-size: 1.2em;
+            color: #888;
+        }
+
+        .vol-slider {
+            width: 50%;
+            accent-color: #00ffff;
+            cursor: pointer;
+            vertical-align: middle;
+        }
+
+        .back-link {
+            margin-top: 30px;
+            color: #444;
+            text-decoration: none;
+            font-size: 1.4em;
+        }
+
+        .back-link:hover { color: #00ffff; }
+    </style>
+</head>
+<body>
+
+    <header>ptasie radio</header>
+
+    <div class="radio-box">
+        <span id="current-station-name">SZUKANIE SYGNAŁU...</span>
+        <div id="frequency-display">87.5 MHz</div>
+
+        <div class="visual-box">
+            <div class="bar" style="animation-delay: 0.1s"></div>
+            <div class="bar" style="animation-delay: 0.3s"></div>
+            <div class="bar" style="animation-delay: 0.5s"></div>
+            <div class="bar" style="animation-delay: 0.2s"></div>
+            <div class="bar" style="animation-delay: 0.4s"></div>
+            <div class="bar" style="animation-delay: 0.6s"></div>
+            <div class="bar" style="animation-delay: 0.3s"></div>
+        </div>
+
+        <!-- Odtwarzacze: jeden na radio internetowe, drugi na szum analogowy -->
+        <audio id="player" crossorigin="anonymous"></audio>
+        <audio id="static-player" src="StaticTV.mp3" loop></audio>
+
+        <div class="tuner-container">
+            <label style="display:block; margin-bottom:10px; color:#aaa;">GAŁKA TUNINGU FM</label>
+            <input type="range" class="fm-slider" id="tuner" min="87.5" max="108.0" step="0.1" value="87.5" oninput="tuneRadio(this.value)">
+            <div class="scale-labels">
+                <span>87.5 MHz</span>
+                <span>95 MHz</span>
+                <span>100 MHz</span>
+                <span>108.0 MHz</span>
+            </div>
+        </div>
+
+        <div class="main-controls">
+            <button class="ctrl-btn btn-play" onclick="playRad()">START</button>
+            <button class="ctrl-btn" onclick="stopRad()">STOP</button>
+        </div>
+
+        <div class="vol-container">
+            GŁOŚNOŚĆ: <input type="range" class="vol-slider" min="0" max="1" step="0.01" value="0.5" oninput="setGlobalVolume(this.value)">
+        </div>
+    </div>
+
+    <a href="index.html" class="back-link">POWRÓT DO ORKANETU</a>
+
+    <script>
+        const player = document.getElementById('player');
+        const staticPlayer = document.getElementById('static-player');
+        const sName = document.getElementById('current-station-name');
+        const freqDisplay = document.getElementById('frequency-display');
+        const bars = document.querySelectorAll('.bar');
+
+        let globalVolume = 0.5;
+        let isPlaying = false;
+        let lastLoadedUrl = "";
+        let currentRdsStation = "";
+        let hasRdsConnected = false;
+
+        // Kompletna lista stacji dopasowana pod Łódź i okolice
+        const stations = [
+            { freq: 87.9, name: "RADIO MARYJA", url: "https://radiomaryja.fastcast4u.com/proxy/radiomaryja?mp=/1" },
+            { freq: 67.6, name: "placeholder", url: "placeholder" },
+            { freq: 89.6, name: "ANTYRADIO", url: "https://an01.cdn.eurozet.pl/ant-waw.mp3" },
+            { freq: 90.1, name: "ESKA LODZ", url: "https://ic2.smcdn.pl/2150-1.mp3" },
+            { freq: 91.4, name: "Dwojka", url: "https://stream12.polskieradio.pl/pr2/pr2.sdp/playlist.m3u8"; },
+            { freq: 92.6, name: "RADIO ZET", url: "https://n-6-4.dcs.redcdn.pl/sc/o2/Eurozet/live/audio.livx" },
+            { freq: 93.5, name: "RMF FM", url: "https://rs6-krk2.rmfstream.pl/RMFFM48" },
+            { freq: 96.0, name: "RADIO PARADA", url: "placeholfer" },
+            { freq: 97.4, name: "TOK FM", url: "placeholder" },
+            { freq: 97.9, name: "VOX FM", url: "https://radio.stream.smcdn.pl/icradio-p/3990-1.aac/playlist.m3u8" },
+            { freq: 98.6, name: "RADIO NIEPOKALANOW", url: "placeholder" },
+            { freq: 99.2, name: "RADIO LODZ", url: "https://stream.radiolodz.pl/RadioLodz-1-HQ.aac" },
+            { freq: 99.8, name: "ESKA2", url: "https://radio.stream.smcdn.pl/icradio-p/1380-1.aac/playlist.m3u8 },
+            { freq: 100.4, name: "RADIO +", url: "https://pl02.cdn.eurozet.pl/plu-waw.mp3" },
+            { freq: 101.3, name: "ZLOTE PRZEBOJE", url: "https://hub.radiostream.pl/stream.pls" },
+            { freq: 103.8, name: "TROJKA", url: "https://stream13.polskieradio.pl/pr3/pr3.sdp/playlist.m3u8" },
+            { freq: 104.5, name: "MELORADIO", url: "https://ml.cdn.eurozet.pl/mel-net.mp3" },
+            { freq: 102.3, name: "ESKA ROCK", url: "https://waw01.cdn.eurozet.pl/waw-net.mp3" },
+            { freq: 105.0, name: "RMF CLASSIC", url: "placeholder" },
+            { freq: 107.8, name: "JEDYNKA", url: "https://stream11.polskieradio.pl/pr1/pr1.sdp/playlist.m3u8" }
+        ];
+
+        function tuneRadio(freq) {
+            freq = parseFloat(freq);
+            freqDisplay.textContent = freq.toFixed(1) + " MHz";
+
+            let bestStation = null;
+            let minDiff = 999;
+
+            stations.forEach(st => {
+                let diff = Math.abs(st.freq - freq);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    bestStation = st;
+                }
+            });
+
+            // Zasięg łapania fali to max 0.3 MHz dla zagęszczonego łódzkiego eteru
+            if (bestStation && minDiff <= 0.3) {
+                if (lastLoadedUrl !== bestStation.url) {
+                    player.src = bestStation.url;
+                    player.load();
+                    lastLoadedUrl = bestStation.url;
+                    if (isPlaying) player.play().catch(() => {});
+                    
+                    hasRdsConnected = false;
+                    currentRdsStation = bestStation.name;
+                }
+
+                // Mikser szumów i muzyki - wysoka czułość suwaka
+                let radioFactor = 1 - (minDiff / 0.3);
+                let staticFactor = (minDiff / 0.3) + 0.15; // Zawsze zostaje min. 15% szumu w tle dla retro klimatu
+
+                if (staticFactor > 1) staticFactor = 1;
+                if (radioFactor < 0) radioFactor = 0;
+
+                player.volume = radioFactor * globalVolume;
+                staticPlayer.volume = staticFactor * globalVolume;
+
+                // Sprawdzenie idealnego trafienia fali (w celu wywołania RDS)
+                if (minDiff.toFixed(1) == 0.0) {
+                    if (!hasRdsConnected) {
+                        hasRdsConnected = true; 
+                        let rdsRoll = Math.random() < 0.5; // 50% szansy na RDS
+                        if (rdsRoll) {
+                            sName.textContent = "[RDS: " + bestStation.name + "]";
+                        } else {
+                            sName.textContent = "ODBIÓR SYGNAŁU...";
+                        }
+                    }
+                } else {
+                    hasRdsConnected = false; 
+                    sName.textContent = "ODBIÓR SYGNAŁU (SŁABY)...";
+                }
+
+            } else {
+                sName.textContent = "SZUKANIE STACJI...";
+                player.volume = 0;
+                staticPlayer.volume = globalVolume;
+                hasRdsConnected = false;
+            }
+        }
+
+        function playRad() {
+            isPlaying = true;
+            staticPlayer.play().catch(() => {});
+            tuneRadio(document.getElementById('tuner').value);
+            
+            player.play().then(() => {
+                bars.forEach(b => b.style.animationPlayState = 'running');
+            }).catch(e => {});
+            bars.forEach(b => b.style.animationPlayState = 'running');
+        }
+
+        function stopRad() {
+            isPlaying = false;
+            player.pause();
+            staticPlayer.pause();
+            bars.forEach(b => b.style.animationPlayState = 'paused');
+        }
+
+        function setGlobalVolume(v) {
+            globalVolume = parseFloat(v);
+            tuneRadio(document.getElementById('tuner').value);
+        }
+
+        setGlobalVolume(0.5);
+    </script>
+</body>
+</html>

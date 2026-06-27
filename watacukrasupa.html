@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>OrkaSearch</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui;}
+body{
+    background:#fff;
+    color:#000;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding-top:80px;
+}
+h1{
+    font-size:40px;
+    margin-bottom:20px;
+    color:#22c55e;
+}
+input{
+    width:80%;
+    max-width:500px;
+    padding:12px;
+    font-size:18px;
+    border-radius:10px;
+    border:2px solid #22c55e;
+    outline:none;
+}
+.results{
+    margin-top:30px;
+    width:80%;
+    max-width:600px;
+}
+.result{
+    margin-bottom:20px;
+}
+.result a{
+    font-size:20px;
+    color:#22c55e;
+    text-decoration:none;
+}
+.result p{
+    font-size:14px;
+    color:#444;
+}
+</style>
+</head>
+<body>
+
+<h1>OrkaSearch</h1>
+<input id="searchBox" placeholder="Szukaj w OrkaNecie..." oninput="search()">
+
+<div class="results" id="results"></div>
+
+<script>
+// 🔥 Twoja lista stron OrkaNetu
+const pages = [
+    { title: "APK Store", url: "apkstore.html", desc: "Sklep z aplikacjami OrkaNetu." },
+    { title: "Clicker", url: "clicker.html", desc: "Gra klikana w OrkaNecie." },
+    { title: "Czas", url: "czas.html", desc: "Zegar i czas systemowy." },
+    { title: "Jutub", url: "Jutub.html", desc: "Odtwarzacz wideo OrkaNetu." },
+    { title: "Kalkulator", url: "kalkulator.html", desc: "Prosty kalkulator." },
+    { title: "Messenger", url: "messenger.html", desc: "Komunikator OrkaNetu." },
+    { title: "Notes", url: "notes.html", desc: "Notatnik OrkaNetu." },
+    { title: "OrkaAI", url: "orkaAI.html", desc: "Sztuczna inteligencja OrkaNetu." },
+    { title: "OrkaGamez", url: "orkagamez.html", desc: "Gry offline OrkaNetu." },
+    { title: "Spotifa", url: "spotifa.html", desc: "Odtwarzacz muzyki OrkaNetu." }
+];
+
+function search(){
+    const q = document.getElementById("searchBox").value.toLowerCase();
+    const out = document.getElementById("results");
+
+    out.innerHTML = "";
+
+    if(q.trim() === ""){
+        return;
+    }
+
+    const found = pages.filter(p =>
+        p.title.toLowerCase().includes(q) ||
+        p.desc.toLowerCase().includes(q)
+    );
+
+    if(found.length === 0){
+        out.innerHTML = "<p>Brak wyników.</p>";
+        return;
+    }
+
+    found.forEach(p => {
+        out.innerHTML += `
+            <div class="result">
+                <a href="${p.url}">${p.title}</a>
+                <p>${p.desc}</p>
+            </div>
+        `;
+    });
+}
+</script>
+
+</body>
+</html>

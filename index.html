@@ -197,6 +197,9 @@
 <div class="login-box">
     <h1 id="title">LOGOWANIE</h1>
     
+    <!-- NOWE POLE NICKU (Zaczyna ukryte, pojawia się przy rejestracji) -->
+    <input type="text" id="usernameInput" placeholder="TWÓJ NICK (USERNAME)" style="display: none;">
+    
     <input type="text" id="user" placeholder="USERNAME / EMAIL" autocomplete="username">
     <input type="password" id="pass" placeholder="HASŁO" autocomplete="current-password">
     
@@ -214,10 +217,10 @@
     <div class="divider">LUB SZYBKIE OPCJE</div>
 
     <div class="section-title">STREFA GOŚCIA</div>
-    <button type="button" id="anonPrefBtn" class="btn-pref">WEJDŹ JAKO GOŚĆ (PREFEROWANE)</button>
-    <button type="button" id="anonFbBtn" class="btn-fb">WEJDŹ JAKO GOŚĆ (FIREBASE)</button>
+    <button type="button" id="anonPrefBtn" class="btn-pref">WEJDŹ JAKO GOŚĆ (100% działające)</button>
+    <button type="button" id="anonFbBtn" class="btn-fb">WEJDŹ JAKO GOŚĆ</button>
 
-    <div class="section-title">INNE METODY</div>
+    <div class="section-title">INNE METEDY</div>
     <button type="button" id="googleBtn" class="google-btn">
         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="Google">
         KONTO GOOGLE
@@ -229,12 +232,11 @@
     import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, signInAnonymously, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-    // Zostawiłem kropki, żeby klucz nie wyciekł na GitHubie - podmień u siebie na ten prawdziwy!
     const firebaseConfig = {
-        apiKey: "AIzaSyDsP0W5fAqZvgdPw6QmmPbVdQcWTDxaZSk",
+        apiKey: "AIzaSyDPvjNjR6nTHQuWdhQGAGk9iJgvPKDQTXA",
         authDomain: "bebechchat.firebaseapp.com",
         projectId: "bebechchat",
-        storageBucket: "bebechchat.appspot.com", // NAPRAWIONE PRZEZ DEWELOPERA - TERAZ UPLOAD DZIAŁA
+        storageBucket: "bebechchat.appspot.com", 
         messagingSenderId: "738356779230",
         appId: "1:738356779230:web:2c41e46431284e3fb78a4f"
     };
@@ -248,7 +250,7 @@
 
     // --- ODCZYSKIWANIE HASŁA ---
     document.getElementById('forgotOld').addEventListener('click', () => {
-        alert("Wysłano prośbę: Wyślij email na adres: mekoramabuilder17@gmail.com, w treści podaj swój Username oraz NOWE HASŁO, które chcesz ustawić.");
+        alert("Wyślij email na adres: mekoramabuilder17@gmail.com, w treści podaj swój Username oraz NOWE HASŁO, które chcesz ustawić.");
     });
 
     document.getElementById('forgotFb').addEventListener('click', async () => {
@@ -305,6 +307,9 @@
         document.getElementById('actionBtn').innerText = isRegister ? "REJESTRACJA PREFEROWANA (BEZ MAILA)" : "ZALOGUJ (STARY SYSTEM)";
         document.getElementById('emailLoginBtn').style.display = isRegister ? "none" : "block";
         document.getElementById('emailRegBtn').style.display = isRegister ? "block" : "none";
+        
+        // Dynamiczne pokazywanie/ukrywanie pola na wpisanie Nicku przy rejestracji
+        document.getElementById('usernameInput').style.display = isRegister ? "block" : "none";
     });
 
     // --- STARY SYSTEM ---
@@ -319,7 +324,6 @@
                 if(snap.exists()) return alert("Ta nazwa jest zajęta!");
                 await setDoc(userRef, { password: password, createdAt: new Date() });
                 alert("Konto w starym systemie założone! Automatycznie przełączam na logowanie.");
-                // Zamiast resetować stronę, sprytnie klikamy przełącznik trybu
                 toggleBtn.click();
             } catch (e) { alert("Błąd: " + e.message); }
         } else {
@@ -333,16 +337,34 @@
         }
     });
 
-    // --- REJESTRACJA FIREBASE ---
+    // --- REJESTRACJA FIREBASE (Z USTAWIANIEM USERNAME) ---
     document.getElementById('emailRegBtn').addEventListener('click', async () => {
         const email = document.getElementById('user').value.trim();
         const password = document.getElementById('pass').value.trim();
+        const username = document.getElementById('usernameInput').value.trim();
+
         if(!email.includes("@")) return alert("Wymagany poprawny email z @!");
         if(password.length < 6) return alert("Hasło Firebase musi mieć minimum 6 znaków!");
+        if(!username) return alert("Wpisz swój unikalny nick (username)!");
+
         try {
+            // 1. Sprawdź w Firestore, czy nick nie jest już przez kogoś zajęty
+            const userRef = doc(db, "users", username);
+            const snap = await getDoc(userRef);
+            if(snap.exists()) return alert("Ten nick jest już zajęty przez innego użytkownika!");
+
+            // 2. Stwórz konto mailowe w Firebase Auth
             await createUserWithEmailAndPassword(auth, email, password);
-            alert("Konto Firebase utworzone! Możesz się zalogować.");
-            toggleBtn.click(); // Przełączenie bez przeładowania strony
+            
+            // 3. Zapisz powiązanie nicku z mailem w bazie Firestore, żeby system znajomych działał stabilnie
+            await setDoc(userRef, { 
+                username: username,
+                email: email, 
+                createdAt: new Date() 
+            });
+
+            alert("Konto Firebase dla użytkownika " + username + " utworzone! Teraz możesz się zalogować.");
+            toggleBtn.click(); 
         } catch (error) { alert("Błąd rejestracji: " + error.message); }
     });
 
@@ -353,6 +375,8 @@
         if(!email.includes("@")) return alert("Wpisz email z @!");
         try {
             await signInWithEmailAndPassword(auth, email, password);
+            
+            // Domyślnie zapisujemy email, dopóki nie pobierzesz dopasowanego nicku z bazy
             localStorage.setItem('loggedUser', email);
             window.location.href = "super.html?username=" + encodeURIComponent(email);
         } catch (error) { alert("Błąd logowania: " + error.message); }
