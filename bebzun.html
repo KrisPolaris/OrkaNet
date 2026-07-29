@@ -10,45 +10,58 @@
             color: #000000;           /* Czarny tekst */
             font-family: 'Tahoma', sans-serif;
             text-align: center;
-            padding: 10px; /* Mniejszy padding, żeby tekst nie uciekał */
+            padding: 10px;
             margin: 0;
+            box-sizing: border-box;
         }
 
         h1 {
-            font-size: 2.8rem; /* Nieco mniejszy na telefon, ale czytelny */
-            margin: 20px 0;
+            font-size: 2rem; /* Normalny rozmiar na telefon */
+            margin: 15px 0;
             text-transform: uppercase;
         }
 
         .tekst-bebzuna {
-            font-size: 1.8rem; /* POWIĘKSZONE - teraz będzie widać na telefonie! */
+            font-size: 1.1rem; /* Zbalansowana, czytelna czcionka bez przybliżenia */
             font-weight: bold;
-            margin: 20px auto;
-            max-width: 95%; /* Wykorzystuje prawie cały ekran telefonu */
+            margin: 15px auto;
+            max-width: 90%;
             line-height: 1.4;
+            word-wrap: break-word; /* Długie słowa (np. XXXXXXXXXXXXXXXXL) nie rozepchną ekranu */
         }
 
         img {
-            max-width: 95%; /* Obrazki prawie na całą szerokość ekranu */
+            max-width: 90%; 
             height: auto;
-            border: 5px solid black;
+            border: 4px solid black;
             display: block;
-            margin: 25px auto;
-            box-shadow: 10px 10px 0px black; /* Sigma styl */
+            margin: 20px auto;
+            box-shadow: 6px 6px 0px black; /* Styl sigma dopasowany do telefonu */
         }
 
-        /* Styl dla odtwarzacza, żeby nie był za mały */
         audio {
             width: 90%;
-            margin: 20px 0;
+            max-width: 400px;
+            margin: 15px 0;
         }
 
         .wybuch {
-            margin-top: 40px;
-            font-size: 3rem; /* Wielki napis na końcu */
+            margin: 30px auto 10px auto;
+            font-size: 1.8rem;
+            font-weight: bold;
             background: red;
             color: white;
             padding: 10px;
+            max-width: 90%;
+            box-sizing: border-box;
+        }
+
+        /* Jeśli ktoś odpali stronę na większym ekranie/komputerze */
+        @media (min-width: 600px) {
+            h1 { font-size: 2.8rem; }
+            .tekst-bebzuna { font-size: 1.4rem; max-width: 700px; }
+            img { max-width: 500px; }
+            .wybuch { font-size: 2.5rem; max-width: 600px; }
         }
     </style>
 </head>
@@ -56,13 +69,13 @@
 
     <h1>Poznaj Bebzuna</h1>
 
-    <img src="bebeh.jpg">
+    <img src="bebeh.jpg" alt="Bebeh">
 
     <p class="tekst-bebzuna">
         Bebzun to bebech który jest bebechem i ma bebeszki bebeszkujące. Bebzun lubi jeść wszystko i ma rączki. Ma też spodnie rozmiar XXXXXXXXXXXXXXXXL. więc to jedyne o nim wiem.
     </p>
 
-    <img src="Random.jpg">
+    <img src="Random.jpg" alt="Random">
 
     <p class="tekst-bebzuna">
         Tak naprawdę, bebzun tyle je że czasem wybucha bo się przejadł i musi pić coca colę z espumiasanem (wtf) Ale tak to jest grzecznym brzuchem
@@ -75,16 +88,30 @@
         </audio>
     </div>
 
-    <img src="unarmed.png">
+    <img src="unarmed.png" alt="Królik">
   
     <p class="tekst-bebzuna">
-        Kto jest właścicielem bebzuna? TEN GŁUPI KRÓLIK POWYŻEJ
+        Kto jest właścicielem bebzuna? TEN GŁUPI KRÓLIK POWYŻEJ (jednak nie)
     </p>
     
-    <img src="brzuchgrubiutki.png">
+    <img src="brzuchgrubiutki.png" alt="Brzuch">
     
     <p class="tekst-bebzuna">
         Bebzunita bebzunkowa bebeszek gruby
+    </p>
+    
+    <p class="tekst-bebzuna">
+        Rodzina Bebzuna Jest TAKA: <br>
+        Pradziad: 13.12.1901r. <br>
+        Dziad: 31.10.1954r. <br>
+        Tata: 21.01.1974r. <br>
+        Mama: 10.02.1978r. <br>
+        Siostra: 13.07.1995r. <br>
+        Bebzun: 10.01.2004r. <br>
+        Dziewczyna Bebzuna: 23.05.2007r. <br>
+        Bebech (wróg): 15.07.2012r. <br>
+        Kuzyn: 14.01.2021r. <br>
+        Myszka Pipi: 13.07.2024r.
     </p>
   
     <div class="wybuch">BEBZUN WYBUCHŁ SORRY</div>
