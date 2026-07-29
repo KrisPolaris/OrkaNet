@@ -8,9 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Inter:wght@300;400;600&family=Montserrat:wght@700&family=Courier+Prime&family=Bebas+Neue&display=swap" rel="stylesheet">
     
     <style>
-        /* ==========================================================================
-           1. TRYB STANDARDOWY (cyber marian)
-           ========================================================================== */
         body.theme-standard { 
             margin: 0; 
             background: #000 url('456.jpg') no-repeat center center fixed; 
@@ -43,9 +40,6 @@
         }
         @keyframes neonPulse { 0%, 100% { box-shadow: 0 0 5px #00ffff; } 50% { box-shadow: 0 0 20px #00ffff; } }
 
-        /* ==========================================================================
-           2. TRYB MODERN (PREMIUM)
-           ========================================================================== */
         body.theme-premium { --primary: #2563eb; --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b; --accent: #ffcc00; margin: 0; background: var(--bg); font-family: 'Bungee', cursive; color: var(--text); text-align: center; }
         body.theme-premium header { background: var(--card-bg); padding: 40px 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 2.5em; color: var(--primary); text-shadow: none; }
         body.theme-premium .stats-bar { background: #fff; border: 1px solid #ddd; color: #555; padding: 10px; margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; font-size: 0.8em;}
@@ -53,9 +47,6 @@
         body.theme-premium #username { color: #64748b; background: none; border: none; font-size: 1.2em; margin-bottom: 20px; padding: 5px; }
         body.theme-premium .tile { background: var(--card-bg); color: var(--text); border-radius: 16px; padding: 25px 15px; animation: none; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: auto; min-width: 130px; text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center;}
 
-        /* ==========================================================================
-           3. TRYB TERMINAL
-           ========================================================================== */
         body.theme-terminal { margin: 0; background: #050505; font-family: 'Courier Prime', monospace; color: #00ff00; text-align: left; padding: 20px; }
         body.theme-terminal header { font-size: 2.5em; text-align: center; font-family: 'Courier Prime', monospace; text-shadow: 0 0 5px #00ff00; margin-bottom: 10px; }
         body.theme-terminal header::before { content: "root@orkanet:~# "; font-size: 0.5em; color: #888; }
@@ -67,9 +58,6 @@
         body.theme-terminal .tile::before { content: "./"; color: #888; }
         body.theme-terminal .tile:hover { background: #00ff00; color: #000; }
 
-        /* ==========================================================================
-           4. TRYB WINDOWS XP
-           ========================================================================== */
         body.theme-windows { margin: 0; background: #3b6ea5; font-family: 'Tahoma', 'Inter', sans-serif; color: #000; text-align: center; }
         body.theme-windows header { background: linear-gradient(to right, #0058e6, #3a95ff); color: white; padding: 15px; font-size: 2em; text-shadow: 1px 1px 2px #000; text-align: left; border-bottom: 2px solid #ffffff; box-shadow: 0 4px 5px rgba(0,0,0,0.3); }
         body.theme-windows .vip-tag { font-size: 0.4em; color: #ffcc00; display: inline-block; margin-left: 20px; }
@@ -79,9 +67,6 @@
         body.theme-windows .tile { background: #ece9d8; color: #000; border-top: 2px solid #fff; border-left: 2px solid #fff; border-right: 2px solid #707070; border-bottom: 2px solid #707070; border-radius: 3px; width: 44%; min-width: 130px; padding: 15px 5px; text-decoration: none; font-family: sans-serif; font-weight: bold; box-shadow: 1px 1px 3px rgba(0,0,0,0.2); text-align: center; display: flex; align-items: center; justify-content: center;}
         body.theme-windows .tile:active { border-top: 2px solid #707070; border-left: 2px solid #707070; border-right: 2px solid #fff; border-bottom: 2px solid #fff; }
 
-        /* ==========================================================================
-           5. TRYB CYBERPUNK (Meta AI)
-           ========================================================================== */
         body.theme-cyberpunk { 
             --cyber-bg: #0f0f1a; --cyber-card: #1a1a2e; --cyber-accent: #00d9ff; --cyber-accent2: #ff006e; --cyber-text: #e0e0e0; --cyber-text-dim: #8d8daa;
             margin: 0; background: var(--cyber-bg); font-family: 'Segoe UI', sans-serif; color: var(--cyber-text); text-align: center; min-height: 100vh;
@@ -97,9 +82,6 @@
         body.theme-cyberpunk .tile:hover::before { left: 100%; }
         body.theme-cyberpunk .tile:hover { border-color: var(--cyber-accent); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0, 217, 255, 0.3); color: var(--cyber-accent); }
 
-        /* ==========================================================================
-           WSPÓLNE STYLE GLOBALNE
-           ========================================================================== */
         .desktop-only { display: none; font-size: 0.3em; color: #ffcc00; vertical-align: middle; margin-left: 10px; text-shadow: 0 0 5px #ffcc00; }
         @media (min-width: 800px) { .desktop-only { display: inline-block; } }
         
@@ -115,7 +97,6 @@
         body.theme-windows .btn-small { background: #ece9d8; border-top: 2px solid #fff; border-left: 2px solid #fff; border-right: 2px solid #707070; border-bottom: 2px solid #707070; color: #000; border-radius: 3px; }
         body.theme-cyberpunk .btn-small { background: #1a1a2e; border: 1px solid #00d9ff; color: #e0e0e0; padding: 10px 20px; border-radius: 8px; }
 
-        /* Ciasteczka */
         #cookie-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
         #cookie-box { background: #111; border: 3px solid #00ffff; padding: 30px; border-radius: 15px; max-width: 400px; width: 100%; text-align: center; color: #00ffff; }
         .cookie-btn { font-family: inherit; font-size: 1.5em; cursor: pointer; border-radius: 5px; padding: 12px; border: none; width: 100%; }
@@ -137,9 +118,6 @@
             animation: rainbowGlow 3s ease-in-out;
         }
 
-        /* ==========================================================================
-           NOWY SEKTOR: SYSTEM ZNAJOMYCH (ROBLOX STYLE)
-           ========================================================================== */
         .friends-panel {
             max-width: 600px;
             margin: 20px auto;
@@ -163,7 +141,6 @@
         }
         body.theme-terminal .friends-list { justify-content: flex-start; }
 
-        /* Kółko jak w Robloxie */
         .roblox-avatar {
             width: 50px;
             height: 50px;
@@ -176,6 +153,7 @@
             color: #fff;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
             border: 2px solid transparent;
+            cursor: pointer;
         }
         body.theme-standard .roblox-avatar { border-color: #00ffff; }
         body.theme-terminal .roblox-avatar { border-radius: 0; border-color: #00ff00; font-family: monospace; }
@@ -187,17 +165,29 @@
             align-items: center;
             gap: 5px;
             font-size: 0.8rem;
-            width: 70px;
+            width: 75px;
             text-align: center;
+            position: relative;
         }
         .friend-name {
             width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            cursor: pointer;
         }
 
-        /* Powiadomienie o zaproszeniu */
+        .remove-friend-btn {
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 2px 5px;
+            font-size: 0.65rem;
+            cursor: pointer;
+            margin-top: 2px;
+        }
+
         .invite-box {
             background: rgba(255, 204, 0, 0.2);
             border: 1px solid #ffcc00;
@@ -212,6 +202,83 @@
         }
         body.theme-terminal .invite-box { background: #000; border: 1px dashed #00ff00; color: #00ff00; border-radius: 0; }
         body.theme-windows .invite-box { background: #fff; border: 2px inset #fff; color: #000; }
+
+        /* Modal DMs */
+        #dm-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+        #dm-box {
+            background: #111;
+            border: 2px solid #00ffff;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 450px;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,255,255,0.3);
+            color: #fff;
+        }
+        #dm-header {
+            background: rgba(0,255,255,0.1);
+            padding: 12px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #00ffff;
+        }
+        #dm-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .dm-msg {
+            max-width: 75%;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 0.9em;
+            word-break: break-word;
+            text-align: left;
+            font-family: sans-serif;
+        }
+        .dm-msg.me {
+            align-self: flex-end;
+            background: #00ffff;
+            color: #000;
+        }
+        .dm-msg.them {
+            align-self: flex-start;
+            background: #222;
+            color: #fff;
+            border: 1px solid #444;
+        }
+        #dm-input-area {
+            display: flex;
+            padding: 10px;
+            gap: 8px;
+            border-top: 1px solid #333;
+            background: #000;
+        }
+        #dm-input {
+            flex: 1;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #00ffff;
+            background: #111;
+            color: #fff;
+            font-family: inherit;
+        }
     </style>
 </head>
 <body class="theme-standard">
@@ -248,11 +315,9 @@
 
 <div id="username">Weryfikacja profilu...</div>
 
-<!-- NOWY PANEL SZEFIE: ZNAJOMI -->
 <div class="friends-panel">
     <div id="friends-title" style="font-size: 1.1em; margin-bottom: 10px; font-weight: bold;">👥 ZNAJOMI</div>
     
-    <!-- Okienko na zaproszenia -->
     <div id="incoming-invites"></div>
 
     <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px;">
@@ -261,13 +326,26 @@
     </div>
     
     <div class="friends-list" id="friends-display-list">
-        <!-- Tutaj wjadą kółka robloxowe z JS -->
+    </div>
+</div>
+
+<!-- Modal dla wiadomości prywatnych (DM) -->
+<div id="dm-modal">
+    <div id="dm-box">
+        <div id="dm-header">
+            <span id="dm-title">Czat z: -</span>
+            <button onclick="closeDM()" style="background:none; border:none; color:#ff4444; font-size:1.2em; cursor:pointer;">✖</button>
+        </div>
+        <div id="dm-messages"></div>
+        <div id="dm-input-area">
+            <input type="text" id="dm-input" placeholder="Napisz wiadomość..." onkeypress="if(event.key==='Enter') sendDM()">
+            <button class="btn-small" onclick="sendDM()">Wyślij</button>
+        </div>
     </div>
 </div>
 
 <div class="controls">
     <button class="btn-small" id="theme-toggle" onclick="toggleTheme()">✨ ZMIEŃ TRYB ✨</button>
-    <button class="btn-small" id="lang-toggle" onclick="toggleLang()">🌐 PL / EN</button>
     <a href="https://whatsapp.com/channel/0029Vb7o86m65yDC9fzCYk0m" class="btn-small" style="background:#25D366; color:white; text-decoration:none; border:none; display:inline-flex; align-items:center;">WhatsApp 📱</a>
     <button class="btn-small" id="logout-btn" style="background:#ff4444; color:white; border:none;" onclick="logout()">Wyloguj 🚪</button>
     <button class="btn-small" id="random-btn" onclick="showRandomPage()">🎲 Losowa Strona</button>
@@ -275,46 +353,48 @@
 </div>
 
 <main class="grid" id="main-grid">
-    <a class="tile" href="czat.html" data-pl="BebzunChat 💬" data-en="BebzunChat 💬">BebzunChat 💬</a>
-    <a class="tile" href="clicker.html" data-pl="Creeper Clicker 💰" data-en="Creeper Clicker 💰">Creeper Clicker 💰</a>
-    <a class="tile" href="burga.html" data-pl="Burger 🍔" data-en="Burger 🍔">Burger 🍔</a>
-    <a class="tile" href="boxes!.html" data-pl="Pudełka 📦" data-en="Boxes 📦">Pudełka 📦</a>
-    <a class="tile" href="GeometryDash.html" data-pl="Geometry Dash 🟦" data-en="Geometry Dash 🟦">Geometry Dash 🟦</a>
-    <a class="tile" href="spotifa.html" data-pl="Spotifa 🎵" data-en="Spotifa 🎵">Spotifa 🎵</a>
-    <a class="tile" href="Windows XP.html" data-pl="Windows XP 💻" data-en="Windows XP 💻">Windows XP 💻</a>
-    <a class="tile" href="skarbonka.html" data-pl="Skarbonka 🐷" data-en="Piggy Bank 🐷">Skarbonka 🐷</a>
-    <a class="tile" href="rysowniczek.html" data-pl="Paint 🎨" data-en="Paint 🎨">Paint 🎨</a>
-    <a class="tile" href="bebzun.html" data-pl="Poznaj Bebzuna! 🤰" data-en="Meet Bebzun! 🤰">Poznaj Bebzuna! 🤰</a>
-    <a class="tile" href="kolorowanki.html" data-pl="Kolorowanki 🖍️" data-en="Coloring Books 🖍️">Kolorowanki 🖍️</a>
-    <a class="tile" href="kalkulator.html" data-pl="Kalkulator 🔢" data-en="Calculator 🔢">Kalkulator 🔢</a>
-    <a class="tile" href="ppogoda.html" data-pl="Pogoda ☁️" data-en="Weather ☁️">Pogoda ☁️</a>
-    <a class="tile" href="aparacik.html" data-pl="Aparat 📸" data-en="Camera 📸">Aparat 📸</a>
-    <a class="tile" href="getoverit.html" data-pl="MiniKraftia ⛏️" data-en="MiniKraftia ⛏️">MiniKraftia ⛏️</a>
-    <a class="tile" href="aixd.html" data-pl="AI GEMIBOT 🤖" data-en="AI GEMIBOT 🤖">AI GEMIBOT 🤖</a>
-    <a class="tile" href="oldsuper.html" data-pl="stary orkanet 💾" data-en="old orkanet 💾">stary orkanet 💾</a>
-    <a class="tile" href="flapibebzun.html" data-pl="Flappy Bebech 🕊️" data-en="Flappy Bebech 🕊️">Flappy Bebech 🕊️</a>
-    <a class="tile" href="diktafon.html" data-pl="Dyktafon 🎙️" data-en="Voice Recorder 🎙️">Dyktafon 🎙️</a>
-    <a class="tile" href="czas.html" data-pl="Zegar ⏰" data-en="Clock ⏰">Zegar ⏰</a>
-    <a class="tile" href="kalendar.html" data-pl="Kalendarz 📅" data-en="Calendar 📅">Kalendarz 📅</a>
-    <a class="tile" href="tts.html" data-pl="Głos 🗣️" data-en="Voice 🗣️">Głos 🗣️</a>
-    <a class="tile" href="tudududu.html" data-pl="Dźwięki 🔊" data-en="Sounds 🔊">Dźwięki 🔊</a>
-    <a class="tile" href="yuh.html" data-pl="Android 🤖" data-en="Android 🤖">Android 🤖</a>
-    <a class="tile" href="Car..html" data-pl="Autko 🚗" data-en="Car 🚗">Autko 🚗</a>
-    <a class="tile" href="Chicken.html" data-pl="Kurka 🐔" data-en="Chicken 🐔">Kurka 🐔</a>
-    <a class="tile" href="rubik.html" data-pl="Kostka Rubika 🎲" data-en="Rubik's Cube 🎲">Kostka Rubika 🎲</a>
-    <a class="tile" href="ShortenMe.html" data-pl="Skracacz Linków 🔗" data-en="URL Shortener 🔗">Skracacz Linków 🔗</a>
-    <a class="tile" href="robluxy.html" data-pl="Free Robux (100% Legitne!) 💰" data-en="Free Robux (100% Legit!) 💰">Free Robux (100% Legitne!) 💰</a>
-    <a class="tile" href="orkadio.html" data-pl="Ptasie Radyjo 📻" data-en="Bird Radio 📻">Ptasie Radyjo 📻</a>
-    <a class="tile" href="tybzunku.html" data-pl="Nie pytaj. 🤫" data-en="Don't ask. 🤫">Nie pytaj. 🤫</a>
-    <a class="tile" href="thissitehasnolitteralsens.html" data-pl="moja pierwsza strona 📄" data-en="my first website 📄">moja pierwsza strona 📄</a>
-    <a class="tile" href="jackbrowser.html" data-pl="JackBrowser (podróba Chrome) 🌐" data-en="JackBrowser (Chrome clone) 🌐">JackBrowser (podróba Chrome) 🌐</a>
-    <a class="tile" href="robox.html" data-pl="Zepsuty Roblox Okropnie O Ja 💥" data-en="Broken Roblox Awful Oh My 💥">Zepsuty Roblox Okropnie O Ja 💥</a>
-    <a class="tile" href="wouldyoustasiekcode.html" data-pl="Testuj swój Kod 💻" data-en="Test your Code 💻">Testuj swój Kod 💻</a>
-    <a class="tile" href="leceprzezoknoskirskirskir.html" data-pl="OrkaVid 🎬" data-en="OrkaVid 🎬">OrkaVid 🎬</a>
-    <a class="tile" href="dajmikase.html" data-pl="Przelicznik walut 💱" data-en="Currency Converter 💱">Przelicznik walut 💱</a>
-    <a class="tile" href="supramariusz.html" data-pl="Mario 🍄" data-en="Mario 🍄">Mario 🍄</a>
-    <a class="tile" href="https://krispolaris.github.io/Glupie-AI" data-pl="ai very smart 🧠" data-en="ai very smart 🧠">ai very smart 🧠</a>
-    <a class="tile" href="https://krispolaris.github.io/SafeCraft" data-pl="Minecraft za darmo 🧱" data-en="Minecraft for free 🧱">Minecraft za darmo 🧱</a>
+    <a class="tile" href="czat.html">BebzunChat 💬</a>
+    <a class="tile" href="clicker.html">Creeper Clicker 💰</a>
+    <a class="tile" href="burga.html">Burger 🍔</a>
+    <a class="tile" href="boxes!.html">Pudełka 📦</a>
+    <a class="tile" href="GeometryDash.html">Geometry Dash 🟦</a>
+    <a class="tile" href="spotifa.html">Spotifa 🎵</a>
+    <a class="tile" href="Windows XP.html">Windows XP 💻</a>
+    <a class="tile" href="skarbonka.html">Skarbonka 🐷</a>
+    <a class="tile" href="rysowniczek.html">Paint 🎨</a>
+    <a class="tile" href="bebzun.html">Poznaj Bebzuna! 🤰</a>
+    <a class="tile" href="kolorowanki.html">Kolorowanki 🖍️</a>
+    <a class="tile" href="kalkulator.html">Kalkulator 🔢</a>
+    <a class="tile" href="ppogoda.html">Pogoda ☁️</a>
+    <a class="tile" href="aparacik.html">Aparat 📸</a>
+    <a class="tile" href="getoverit.html">MiniKraftia ⛏️</a>
+    <a class="tile" href="aixd.html">AI GEMIBOT 🤖</a>
+    <a class="tile" href="oldsuper.html">stary orkanet 💾</a>
+    <a class="tile" href="flapibebzun.html">Flappy Bebech 🕊️</a>
+    <a class="tile" href="diktafon.html">Dyktafon 🎙️</a>
+    <a class="tile" href="czas.html">Zegar ⏰</a>
+    <a class="tile" href="kalendar.html">Kalendarz 📅</a>
+    <a class="tile" href="tts.html">Głos 🗣️</a>
+    <a class="tile" href="tudududu.html">Dźwięki 🔊</a>
+    <a class="tile" href="yuh.html">Android 🤖</a>
+    <a class="tile" href="Car..html">Autko 🚗</a>
+    <a class="tile" href="Chicken.html">Kurka 🐔</a>
+    <a class="tile" href="rubik.html">Kostka Rubika 🎲</a>
+    <a class="tile" href="ShortenMe.html">Skracacz Linków 🔗</a>
+    <a class="tile" href="robluxy.html">Free Robux (100% Legitne!) 💰</a>
+    <a class="tile" href="orkadio.html">Ptasie Radyjo 📻</a>
+    <a class="tile" href="tybzunku.html">Nie pytaj. 🤫</a>
+    <a class="tile" href="thissitehasnolitteralsens.html">moja pierwsza strona 📄</a>
+    <a class="tile" href="jackbrowser.html">JackBrowser (podróba Chrome) 🌐</a>
+    <a class="tile" href="robox.html">Zepsuty Roblox Okropnie O Ja 💥</a>
+    <a class="tile" href="wouldyoustasiekcode.html">Testuj swój Kod 💻</a>
+    <a class="tile" href="leceprzezoknoskirskirskir.html">OrkaVid 🎬</a>
+    <a class="tile" href="dajmikase.html">Przelicznik walut 💱</a>
+    <a class="tile" href="supramariusz.html">Mario 🍄</a>
+    <a class="tile" href="https://krispolaris.github.io/Glupie-AI">ai very smart 🧠</a>
+    <a class="tile" href="https://krispolaris.github.io/SafeCraft">Minecraft za darmo 🧱</a>
+    <a class="tile" href="areualover.html">tester miłości ale dziwny</a>
+    <a class="tile" href="https://krispolaris.github.io/SafeCraft/ezul.html">eŻul</a>
 </main>
 
 <footer id="orkanet-footer">
@@ -323,7 +403,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, collection, query, where, onSnapshot, getCountFromServer, doc, updateDoc, setDoc, getDoc, serverTimestamp, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getFirestore, collection, query, where, orderBy, onSnapshot, getCountFromServer, doc, updateDoc, setDoc, getDoc, addDoc, serverTimestamp, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDPvjNjR6nTHQuWdhQGAGk9iJgvPKDQTXA", 
@@ -338,8 +418,9 @@
     const db = getFirestore(app);
 
     const myUser = localStorage.getItem('loggedUser') || "Gość";
+    let activeDMTarget = null;
+    let unsubscribeDM = null;
 
-    // Rejestracja Gościa w bazie, żeby system znajomych działał stabilnie
     if (myUser) {
         const userRef = doc(db, "users", myUser);
         setDoc(userRef, { 
@@ -364,7 +445,6 @@
     }
     loadStats();
 
-    // Paleta ślicznych, jasnych kolorów dla kółek Roblox style
     const niceColors = ["#ff006e", "#00d9ff", "#00ff00", "#ffcc00", "#9b5de5", "#f15bb5", "#00f5d4"];
     function getDeterministicColor(name) {
         let sum = 0;
@@ -372,9 +452,7 @@
         return niceColors[sum % niceColors.length];
     }
 
-    // LISTENER SYSTEMU ZNAJOMYCH I ZAPROSZEŃ
     if(myUser) {
-        // Słuchaj zaakceptowanych znajomych
         onSnapshot(doc(db, "friends_lists", myUser), (docSnap) => {
             const listDiv = document.getElementById('friends-display-list');
             listDiv.innerHTML = '';
@@ -390,8 +468,9 @@
                     const card = document.createElement('div');
                     card.className = 'friend-card';
                     card.innerHTML = `
-                        <div class="roblox-avatar" style="background: ${color}">${firstLet}</div>
-                        <div class="friend-name">${fName}</div>
+                        <div class="roblox-avatar" style="background: ${color}" onclick="openDM('${fName}')">${firstLet}</div>
+                        <div class="friend-name" onclick="openDM('${fName}')">${fName}</div>
+                        <button class="remove-friend-btn" onclick="removeFriend('${fName}')">Usuń 🗑️</button>
                     `;
                     listDiv.appendChild(card);
                 });
@@ -400,7 +479,6 @@
             }
         });
 
-        // Słuchaj zaproszeń przychodzących do mnie
         const qInv = query(collection(db, "friend_requests"), where("to", "==", myUser));
         onSnapshot(qInv, (snap) => {
             const container = document.getElementById('incoming-invites');
@@ -421,27 +499,22 @@
                 `;
                 container.appendChild(box);
 
-                // Akceptowanie zaproszenia
                 document.getElementById(`acc-${reqId}`).onclick = async () => {
-                    // Dodaj mi znajomego
                     const myRef = doc(db, "friends_lists", myUser);
                     const mySnap = await getDoc(myRef);
                     let myArr = mySnap.exists() ? (mySnap.data().friendsList || []) : [];
                     if(!myArr.includes(fromWho)) myArr.push(fromWho);
                     await setDoc(myRef, { friendsList: myArr }, { merge: true });
 
-                    // Dodaj jemu znajomego
                     const hisRef = doc(db, "friends_lists", fromWho);
                     const hisSnap = await getDoc(hisRef);
                     let hisArr = hisSnap.exists() ? (hisSnap.data().friendsList || []) : [];
                     if(!hisArr.includes(myUser)) hisArr.push(myUser);
                     await setDoc(hisRef, { friendsList: hisArr }, { merge: true });
 
-                    // Usuń zaproszenie z bazy
                     await deleteDoc(doc(db, "friend_requests", reqId));
                 };
 
-                // Odrzucenie zaproszenia
                 document.getElementById(`rej-${reqId}`).onclick = async () => {
                     await deleteDoc(doc(db, "friend_requests", reqId));
                 };
@@ -449,24 +522,21 @@
         });
     }
 
-    // Funkcja wysyłania zaproszenia (Udostępniona do window)
     window.sendFriendRequest = async function() {
         const input = document.getElementById('friend-search-input');
         const targetName = input.value.trim();
         if(!targetName) return;
         if(targetName === myUser) {
-            alert(currentLang === 'pl' ? "Nie możesz zaprosić samego siebie!" : "You cannot invite yourself!");
+            alert("Nie możesz zaprosić samego siebie!");
             return;
         }
 
-        // Sprawdź czy user istnieje w kolekcji users
         const userCheck = await getDoc(doc(db, "users", targetName));
         if(!userCheck.exists()) {
-            alert(currentLang === 'pl' ? "Nie znaleziono takiego użytkownika!" : "User not found!");
+            alert("Nie znaleziono takiego użytkownika!");
             return;
         }
 
-        // Dodaj dokument zaproszenia
         const reqId = myUser + "_" + targetName;
         await setDoc(doc(db, "friend_requests", reqId), {
             from: myUser,
@@ -474,119 +544,83 @@
             timestamp: serverTimestamp()
         });
         
-        alert(currentLang === 'pl' ? "Zaproszenie wysłane!" : "Request sent!");
+        alert("Zaproszenie wysłane!");
         input.value = '';
-    }
-</script>
+    };
 
-<script>
-    // --- SYSTEM TŁUMACZEŃ (PL / EN) ---
-    const translations = {
-        pl: {
-            cookiesTitle: "PLIKI COOKIE I PRYWATNOŚĆ",
-            cookiesDesc: "Nasza strona używa ciasteczek, aby OrkaNet był jeszcze lepszy. Akceptując, zgadzasz się na zbieranie danych o odwiedzinach dla statystyk Bebecha 🍪",
-            cookiesAccept: "AKCEPTUJ",
-            cookiesReject: "ODRZUĆ",
-            cookiesPay: "PRYWATNOŚĆ KOSZTUJE",
-            cookiesPayBtn: "DOBRA, PŁACĘ (ŻARTUJĘ, WEJDŹ)",
-            statReg: "KONTA W ORKANECIE: ",
-            statOn: "ONLINE: ",
-            statVisit: "👀 ODWIEDZINY: ",
-            account: "Twoje konto: ",
-            guest: "Gość",
-            logoutConfirm: "Opuszczasz OrkaNet?",
-            btnLogout: "Wyloguj 🚪",
-            btnRandom: "🎲 Losowa Strona",
-            btnMusic: "🎵 Muzyka",
-            btnPause: "⏸️ Pauza",
-            vipText: "SUPER GOŚCIU 🔥",
-            footerText: "© 2026 OrkaNet - Wszelkie prawa do Bebecha zastrzeżone.",
-            friendsTitle: "👥 ZNAJOMI (ROBLOX STYLE)",
-            friendsBtn: "Dodaj",
-            friendsPlace: "Wpisz nick..."
-        },
-        en: {
-            cookiesTitle: "COOKIES & PRIVACY",
-            cookiesDesc: "Our site uses cookies to make OrkaNet even better. By accepting, you agree to the collection of visit data for Bebech statistics 🍪",
-            cookiesAccept: "ACCEPT",
-            cookiesReject: "REJECT",
-            cookiesPay: "PRIVACY COSTS MONEY",
-            cookiesPayBtn: "OK, I PAY (JUST KIDDING, ENTER)",
-            statReg: "USERS: ",
-            statOn: "ONLINE: ",
-            statVisit: "👀 VISITS: ",
-            account: "Your account: ",
-            guest: "Guest",
-            logoutConfirm: "Are you leaving OrkaNet?",
-            btnLogout: "Logout 🚪",
-            btnRandom: "🎲 Random Page",
-            btnMusic: "🎵 Music",
-            btnPause: "⏸️ Pause",
-            vipText: "SUPER GUY 🔥",
-            footerText: "© 2026 OrkaNet - All rights to Bebech reserved.",
-            friendsTitle: "👥 FRIENDS (ROBLOX STYLE)",
-            friendsBtn: "Add",
-            friendsPlace: "Enter username..."
+    window.removeFriend = async function(targetName) {
+        if(!confirm(`Czy na pewno chcesz usunąć uzytkownika ${targetName} ze znajomych?`)) return;
+
+        const myRef = doc(db, "friends_lists", myUser);
+        const mySnap = await getDoc(myRef);
+        if(mySnap.exists()) {
+            let myArr = mySnap.data().friendsList || [];
+            myArr = myArr.filter(f => f !== targetName);
+            await updateDoc(myRef, { friendsList: myArr });
+        }
+
+        const hisRef = doc(db, "friends_lists", targetName);
+        const hisSnap = await getDoc(hisRef);
+        if(hisSnap.exists()) {
+            let hisArr = hisSnap.data().friendsList || [];
+            hisArr = hisArr.filter(f => f !== myUser);
+            await updateDoc(hisRef, { friendsList: hisArr });
         }
     };
 
-    let currentLang = localStorage.getItem('lang') || 'pl';
+    // Obsługa wiadomości prywatnych (DMs)
+    function getChatId(user1, user2) {
+        return [user1, user2].sort().join("_");
+    }
 
-    function applyLanguage(lang) {
-        const t = translations[lang];
+    window.openDM = function(targetUser) {
+        activeDMTarget = targetUser;
+        document.getElementById('dm-title').innerText = "Czat z: " + targetUser;
+        document.getElementById('dm-modal').style.display = 'flex';
         
-        document.getElementById('cookie-title').textContent = t.cookiesTitle;
-        document.getElementById('cookie-desc').textContent = t.cookiesDesc;
-        document.getElementById('cookie-btn-acc').textContent = t.cookiesAccept;
-        document.getElementById('cookie-btn-rej').textContent = t.cookiesReject;
-        document.getElementById('pay-title').textContent = t.cookiesPay;
-        document.getElementById('pay-btn').textContent = t.cookiesPayBtn;
+        const chatId = getChatId(myUser, targetUser);
+        const qDM = query(collection(db, "direct_messages", chatId, "messages"), orderBy("timestamp", "asc"));
 
-        const rc = document.getElementById('reg-count').textContent;
-        const oc = document.getElementById('on-count').textContent;
-        const vc = document.getElementById('visit-counter').textContent;
-        
-        document.getElementById('stat-reg-label').innerHTML = t.statReg + '<span id="reg-count" class="stat-val">' + rc + '</span>';
-        document.getElementById('stat-on-label').innerHTML = t.statOn + '<span id="on-count" class="stat-val" style="color: #00ff00;">' + oc + '</span>';
-        document.getElementById('stat-visit-label').innerHTML = t.statVisit + '<span id="visit-counter" class="stat-val" style="color:#ff006e;">' + vc + '</span>';
+        if (unsubscribeDM) unsubscribeDM();
 
-        const savedUser = localStorage.getItem('loggedUser');
-        const loggedUser = savedUser || (lang === 'pl' ? translations.pl.guest : translations.en.guest);
-        document.getElementById('username').textContent = t.account + loggedUser;
-        
-        const v = document.getElementById('vip-label');
-        if (v && v.className === "vip-tag") {
-            v.innerHTML = t.vipText;
-        }
-
-        document.getElementById('logout-btn').textContent = t.btnLogout;
-        document.getElementById('random-btn').textContent = t.btnRandom;
-        document.getElementById('music-btn').textContent = musicPlaying ? t.btnPause : t.btnMusic;
-
-        // Tłumaczenie panelu znajomych
-        document.getElementById('friends-title').textContent = t.friendsTitle;
-        document.getElementById('btn-add-friend').textContent = t.friendsBtn;
-        document.getElementById('friend-search-input').placeholder = t.friendsPlace;
-
-        document.querySelectorAll('.tile').forEach(tile => {
-            if(lang === 'pl') {
-                tile.textContent = tile.getAttribute('data-pl');
-            } else {
-                tile.textContent = tile.getAttribute('data-en');
-            }
+        unsubscribeDM = onSnapshot(qDM, (snap) => {
+            const container = document.getElementById('dm-messages');
+            container.innerHTML = '';
+            snap.forEach(docSnap => {
+                const msg = docSnap.data();
+                const div = document.createElement('div');
+                div.className = `dm-msg ${msg.from === myUser ? 'me' : 'them'}`;
+                div.innerText = msg.text;
+                container.appendChild(div);
+            });
+            container.scrollTop = container.scrollHeight;
         });
-        
-        document.getElementById('orkanet-footer').textContent = t.footerText;
-        applyTheme(themes[currentThemeIndex]);
-    }
+    };
 
-    function toggleLang() {
-        currentLang = currentLang === 'pl' ? 'en' : 'pl';
-        localStorage.setItem('lang', currentLang);
-        applyLanguage(currentLang);
-    }
+    window.closeDM = function() {
+        document.getElementById('dm-modal').style.display = 'none';
+        if (unsubscribeDM) unsubscribeDM();
+        activeDMTarget = null;
+    };
 
-    // --- SYSTEM MOTYWÓW ---
+    window.sendDM = async function() {
+        const input = document.getElementById('dm-input');
+        const text = input.value.trim();
+        if(!text || !activeDMTarget) return;
+
+        const chatId = getChatId(myUser, activeDMTarget);
+        input.value = '';
+
+        await addDoc(collection(db, "direct_messages", chatId, "messages"), {
+            from: myUser,
+            to: activeDMTarget,
+            text: text,
+            timestamp: serverTimestamp()
+        });
+    };
+</script>
+
+<script>
     const themes = ['standard', 'premium', 'terminal', 'windows', 'cyberpunk'];
     let currentThemeIndex = themes.indexOf(localStorage.getItem('theme') || 'standard');
     if (currentThemeIndex === -1) currentThemeIndex = 0;
@@ -595,7 +629,6 @@
 
     function toggleTheme() {
         currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-        const nextTheme = themes[themes[currentThemeIndex]];
         applyTheme(themes[currentThemeIndex]);
         localStorage.setItem('theme', themes[currentThemeIndex]);
     }
@@ -608,28 +641,28 @@
         const fInput = document.getElementById('friend-search-input');
 
         if (theme === 'standard') {
-            btn.textContent = currentLang === 'pl' ? "✨ TRYB STANDARD ✨" : "✨ STANDARD MODE ✨";
+            btn.textContent = "✨ TRYB STANDARD ✨";
             btn.style.background = "#ffcc00"; btn.style.color = "#000";
             if(fInput) { fInput.style.borderColor = "#00ffff"; fInput.style.background = "#000"; fInput.style.color = "#fff"; }
         } else if (theme === 'premium') {
-            btn.textContent = currentLang === 'pl' ? "💎 TRYB PREMIUM 💎" : "💎 PREMIUM MODE 💎";
+            btn.textContent = "💎 TRYB PREMIUM 💎";
             btn.style.background = "#2563eb"; btn.style.color = "#fff";
             if(fInput) { fInput.style.borderColor = "#ddd"; fInput.style.background = "#fff"; fInput.style.color = "#000"; }
         } else if (theme === 'terminal') {
-            btn.textContent = currentLang === 'pl' ? "🐧 TRYB TERMINAL 🐧" : "🐧 TERMINAL MODE 🐧";
+            btn.textContent = "🐧 TRYB TERMINAL 🐧";
             btn.style.background = "#00ff00"; btn.style.color = "#000";
             if(fInput) { fInput.style.borderColor = "#00ff00"; fInput.style.background = "#000"; fInput.style.color = "#00ff00"; }
         } else if (theme === 'windows') {
-            btn.textContent = currentLang === 'pl' ? "💻 TRYB WINDOWS 💻" : "💻 WINDOWS MODE 💻";
+            btn.textContent = "💻 TRYB WINDOWS 💻";
             btn.style.background = "#ece9d8"; btn.style.color = "#000";
             if(fInput) { fInput.style.borderColor = "#707070"; fInput.style.background = "#fff"; fInput.style.color = "#000"; }
         } else if (theme === 'cyberpunk') {
-            btn.textContent = currentLang === 'pl' ? "🤖 TRYB CYBERPUNK 🤖" : "🤖 CYBERPUNK MODE 🤖";
+            btn.textContent = "🤖 TRYB CYBERPUNK 🤖";
             btn.style.background = "#ff006e"; btn.style.color = "#fff";
             if(fInput) { fInput.style.borderColor = "#00d9ff"; fInput.style.background = "#1a1a2e"; fInput.style.color = "#e0e0e0"; }
         }
     }
-
+    
     let visits = localStorage.getItem("orkanetVisits") || 0;
     visits++;
     localStorage.setItem("orkanetVisits", visits);
@@ -644,23 +677,24 @@
         document.getElementById('cookie-overlay').style.display = 'none';
     }
 
-    style="display:none;"
     function rejectCookies() {
         document.getElementById('cookie-initial').style.display = 'none';
         document.getElementById('pay-screen').style.display = 'block';
     }
 
     const checkUser = localStorage.getItem('loggedUser') || "Gość";
+    document.getElementById('username').textContent = "Twoje konto: " + checkUser;
+
     if (["admin", "kris", "krys", "szym", "sim"].some(n => checkUser.toLowerCase().includes(n))) {
         const v = document.getElementById('vip-label');
-        if(v) { v.className = "vip-tag"; }
+        if(v) { 
+            v.className = "vip-tag"; 
+            v.textContent = "SUPER GOŚCIU 🔥";
+        }
     }
-
-    applyLanguage(currentLang);
     
     function logout() { 
-        const confirmMsg = translations[currentLang].logoutConfirm;
-        if(confirm(confirmMsg)) { 
+        if(confirm("Opuszczasz OrkaNet?")) { 
             localStorage.removeItem('loggedUser'); 
             window.location.reload(); 
         } 
@@ -681,10 +715,10 @@
         const mBtn = document.getElementById('music-btn');
         if(musicPlaying){
             normalMusic.pause();
-            mBtn.textContent = translations[currentLang].btnMusic;
+            mBtn.textContent = "🎵 Muzyka";
         } else {
             normalMusic.play();
-            mBtn.textContent = translations[currentLang].btnPause;
+            mBtn.textContent = "⏸️ Pauza";
         }
         musicPlaying = !musicPlaying;
     }
