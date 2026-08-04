@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sklep Bebzuna 🛒</title>
+    <style>
+        @font-face { 
+            font-family: 'MojaCzcionka'; 
+            src: url('ok.ttf?v=1') format('truetype');
+            font-display: swap;
+        }
+
+        body { 
+            background: #000; color: #00ff00; 
+            font-family: 'MojaCzcionka', sans-serif; 
+            margin: 0; padding: 20px;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        h1 { color: #ffcc00; text-shadow: 0 0 10px #ffcc00; margin-bottom: 5px; cursor: pointer; user-select: none; }
+        .coins-display { font-size: 1.2rem; color: #00ffff; margin-bottom: 20px; font-weight: bold; }
+
+        .shop-container {
+            width: 100%; max-width: 400px;
+            display: flex; flex-direction: column; gap: 15px;
+        }
+
+        .item-card {
+            background: #111; border: 2px solid #00ff00; border-radius: 12px;
+            padding: 15px; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+        }
+
+        .item-info { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+        .item-title { font-weight: bold; font-size: 1.1rem; }
+        .item-desc { font-size: 0.75rem; color: #aaa; text-align: left; }
+        .item-price { font-size: 0.9rem; color: #ffcc00; font-weight: bold; }
+
+        .btn-buy {
+            background: #00ff00; color: #000; border: none; padding: 10px 15px;
+            border-radius: 8px; font-weight: bold; cursor: pointer; font-family: inherit;
+            transition: 0.2s;
+        }
+        .btn-buy:disabled { background: #444; color: #888; cursor: not-allowed; }
+        .btn-buy.active { background: #ff00ff; color: #fff; }
+
+        .btn-back { 
+            background: #ffcc00; color: #000; border: none; padding: 12px 25px; 
+            border-radius: 10px; cursor: pointer; margin-top: 25px; font-weight: bold;
+            font-family: inherit; width: 100%; max-width: 400px;
+        }
+
+        /* Styl ukrytego przedmiotu */
+        #secret-item { display: none; border-color: #ef4444; box-shadow: 0 0 15px #ef4444; }
+    </style>
+</head>
+<body>
+
+    <h1 id="shop-logo">🛒 SKLEP BEBZUNA</h1>
+    <div class="coins-display">🪙 Twoje OrkaCoiny: <span id="user-coins">0</span></div>
+
+    <div class="shop-container">
+
+        <!-- RANGI -->
+        <div class="item-card">
+            <div class="item-info">
+                <span class="item-title" style="color:#06b6d4;">Ranga CHATTER</span>
+                <span class="item-desc">Ranga na czacie!</span>
+                <span class="item-price">🪙 25 Coins</span>
+            </div>
+            <button class="btn-buy" id="btn-chatter" onclick="buyRole('CHATTER', 25)">KUP</button>
+        </div>
+
+        <div class="item-card">
+            <div class="item-info">
+                <span class="item-title" style="color:#3b82f6;">Ranga PRO</span>
+                <span class="item-desc">Ranga na czacie!</span>
+                <span class="item-price">🪙 50 Coins</span>
+            </div>
+            <button class="btn-buy" id="btn-pro" onclick="buyRole('PRO', 50)">KUP</button>
+        </div>
+
+        <div class="item-card">
+            <div class="item-info">
+                <span class="item-title" style="color:#a855f7;">Ranga EPIC</span>
+                <span class="item-desc">Ranga na czacie!</span>
+                <span class="item-price">🪙 100 Coins</span>
+            </div>
+            <button class="btn-buy" id="btn-epic" onclick="buyRole('EPIC', 100)">KUP</button>
+        </div>
+
+        <div class="item-card">
+            <div class="item-info">
+                <span class="item-title" style="color:#eab308;">Ranga VIP</span>
+                <span class="item-desc">Ranga na czacie!</span>
+                <span class="item-price">🪙 200 Coins</span>
+            </div>
+            <button class="btn-buy" id="btn-vip" onclick="buyRole('VIP', 200)">KUP</button>
+        </div>
+
+        <!-- UKRYTA RANGA MODERATOR -->
+        <div class="item-card" id="secret-item">
+            <div class="item-info">
+                <span class="item-title" style="color:#ef4444;">🛡️ MODERATOR</span>
+                <span class="item-desc">Tajna ranga odblokowana!</span>
+                <span class="item-price">🪙 5 Coins</span>
+            </div>
+            <button class="btn-buy" id="btn-moderator" onclick="buyRole('MODERATOR', 5)">KUP</button>
+        </div>
+
+        <!-- SKIN DO FLAPPY -->
+        <div class="item-card" style="border-color: #ff00ff;">
+            <div class="item-info">
+                <span class="item-title" style="color:#ff00ff;">Skin Bebech</span>
+                <span class="item-desc">Graj jako brzuchgrubiutki.png we Flappy Bebzun</span>
+                <span class="item-price">🪙 50 Coins</span>
+            </div>
+            <button class="btn-buy" id="btn-skin-bebech" onclick="buyOrEquipSkin()">KUP</button>
+        </div>
+
+    </div>
+
+  <p>niedługo więcej pro itemków</p>
+  
+    <button class="btn-back" onclick="window.location.href='super.html'">POWRÓT DO MENU</button>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDPvjNjR6nTHQuWdhQGAGk9iJgvPKDQTXA",
+            authDomain: "bebechchat.firebaseapp.com",
+            projectId: "bebechchat",
+            storageBucket: "bebechchat.firebasestorage.app",
+            messagingSenderId: "738356779230",
+            appId: "1:738356779230:web:2c41e46431284e3fb78a4f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const loggedUser = localStorage.getItem('loggedUser') || "Anonim";
+
+        let currentCoins = 0;
+        let currentRole = "";
+        let hasSkinBebech = false;
+        let activeSkin = "default";
+        let secretClicks = 0;
+
+        async function loadUserData() {
+            if (loggedUser === "Anonim") {
+                alert("Musisz być zalogowany, aby korzystać ze sklepu!");
+                return;
+            }
+
+            try {
+                const userRef = doc(db, "users", loggedUser);
+                const snap = await getDoc(userRef);
+                if (snap.exists()) {
+                    const data = snap.data();
+                    currentCoins = data.coins || 0;
+                    currentRole = data.role || "";
+                    hasSkinBebech = data.hasSkinBebech || false;
+                    activeSkin = data.activeSkin || "default";
+
+                    document.getElementById('user-coins').innerText = currentCoins;
+                    updateUI();
+                }
+            } catch (e) {
+                console.error("Błąd ładowania danych użytkownika:", e);
+            }
+        }
+
+        function updateUI() {
+            // Aktualizacja rang
+            ['CHATTER', 'PRO', 'EPIC', 'VIP', 'MODERATOR'].forEach(role => {
+                const btn = document.getElementById(`btn-${role.toLowerCase()}`);
+                if (btn) {
+                    if (currentRole === role) {
+                        btn.innerText = "POSIADANE";
+                        btn.disabled = true;
+                        btn.className = "btn-buy active";
+                    } else {
+                        btn.innerText = "KUP";
+                        btn.disabled = false;
+                        btn.className = "btn-buy";
+                    }
+                }
+            });
+
+            // Aktualizacja skina
+            const skinBtn = document.getElementById('btn-skin-bebech');
+            if (hasSkinBebech) {
+                if (activeSkin === 'bebech') {
+                    skinBtn.innerText = "UŻYWANE";
+                    skinBtn.className = "btn-buy active";
+                } else {
+                    skinBtn.innerText = "ZAŁÓŻ";
+                    skinBtn.className = "btn-buy";
+                }
+            }
+        }
+
+        window.buyRole = async function(roleName, price) {
+            if (currentCoins < price) {
+                alert("Nie masz wystarczającej liczby OrkaCoinów!");
+                return;
+            }
+
+            if (confirm(`Czy na pewno chcesz kupić rangę ${roleName} za ${price} coinów? (Zastąpi ona Twoją obecną rangę)`)) {
+                try {
+                    const userRef = doc(db, "users", loggedUser);
+                    await updateDoc(userRef, {
+                        coins: increment(-price),
+                        role: roleName
+                    });
+
+                    currentCoins -= price;
+                    currentRole = roleName;
+                    document.getElementById('user-coins').innerText = currentCoins;
+                    updateUI();
+                    alert(`Pomyślnie zakupiono rangę ${roleName}!`);
+                } catch (e) {
+                    alert("Wystąpił błąd podczas zakupu.");
+                    console.error(e);
+                }
+            }
+        };
+
+        window.buyOrEquipSkin = async function() {
+            const userRef = doc(db, "users", loggedUser);
+
+            if (!hasSkinBebech) {
+                if (currentCoins < 50) {
+                    alert("Nie masz wystarczającej liczby OrkaCoinów!");
+                    return;
+                }
+                if (confirm("Kupić skin Bebech za 50 coinów?")) {
+                    await updateDoc(userRef, {
+                        coins: increment(-50),
+                        hasSkinBebech: true,
+                        activeSkin: 'bebech'
+                    });
+                    currentCoins -= 50;
+                    hasSkinBebech = true;
+                    activeSkin = 'bebech';
+                    document.getElementById('user-coins').innerText = currentCoins;
+                    updateUI();
+                    alert("Zakupiono skin Bebech!");
+                }
+            } else {
+                // Przełączanie skina
+                const newSkin = activeSkin === 'bebech' ? 'default' : 'bebech';
+                await updateDoc(userRef, { activeSkin: newSkin });
+                activeSkin = newSkin;
+                updateUI();
+            }
+        };
+
+        // UKRYTY MECHANIZM 67 KLIKNIĘĆ
+        document.getElementById('shop-logo').onclick = () => {
+            secretClicks++;
+            if (secretClicks === 67) {
+                document.getElementById('secret-item').style.display = 'flex';
+                alert("🔓 ODLOKOWANO TAJEMNĄ RANGĘ MODERATOR!");
+            }
+        };
+
+        loadUserData();
+    </script>
+</body>
+</html>

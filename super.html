@@ -18,7 +18,7 @@
         }
         body.theme-standard header { padding: 30px 0 10px 0; font-size: 3.5em; text-shadow: 0 0 10px #00ffff; }
         body.theme-standard .vip-tag { font-size: 0.4em; color: #ffcc00; display: block; text-shadow: 0 0 10px #ffcc00; letter-spacing: 2px; }
-        body.theme-standard .stats-bar { background: rgba(0,0,0,0.7); border-top: 1px solid #00ffff; border-bottom: 1px solid #00ffff; padding: 10px; margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; font-size: 0.8em; }
+        body.theme-standard .stats-bar { background: rgba(0,0,0,0.7); border-top: 1px solid #00ffff; border-bottom: 1px solid #00ffff; padding: 10px; margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; font-size: 0.8em; flex-wrap: wrap; }
         body.theme-standard .stat-val { color: #ffcc00; }
         body.theme-standard #username { font-size: 1.2em; margin-bottom: 20px; background: rgba(0,0,0,0.5); padding: 5px; border-bottom: 1px solid #00ffff; }
         
@@ -42,7 +42,7 @@
 
         body.theme-premium { --primary: #2563eb; --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b; --accent: #ffcc00; margin: 0; background: var(--bg); font-family: 'Bungee', cursive; color: var(--text); text-align: center; }
         body.theme-premium header { background: var(--card-bg); padding: 40px 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 2.5em; color: var(--primary); text-shadow: none; }
-        body.theme-premium .stats-bar { background: #fff; border: 1px solid #ddd; color: #555; padding: 10px; margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; font-size: 0.8em;}
+        body.theme-premium .stats-bar { background: #fff; border: 1px solid #ddd; color: #555; padding: 10px; margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; font-size: 0.8em; flex-wrap: wrap;}
         body.theme-premium .vip-tag { font-size: 0.3em; background: var(--accent); color: #000; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-top: 10px; letter-spacing: 0; text-shadow: none; }
         body.theme-premium #username { color: #64748b; background: none; border: none; font-size: 1.2em; margin-bottom: 20px; padding: 5px; }
         body.theme-premium .tile { background: var(--card-bg); color: var(--text); border-radius: 16px; padding: 25px 15px; animation: none; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: auto; min-width: 130px; text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center;}
@@ -51,7 +51,7 @@
         body.theme-terminal header { font-size: 2.5em; text-align: center; font-family: 'Courier Prime', monospace; text-shadow: 0 0 5px #00ff00; margin-bottom: 10px; }
         body.theme-terminal header::before { content: "root@orkanet:~# "; font-size: 0.5em; color: #888; }
         body.theme-terminal .vip-tag { font-size: 0.5em; color: #ff00ff; display: block; text-shadow: none; }
-        body.theme-terminal .stats-bar { background: #111; border: 1px dashed #00ff00; padding: 10px; margin-bottom: 20px; display: flex; justify-content: flex-start; gap: 40px; font-size: 0.9em; }
+        body.theme-terminal .stats-bar { background: #111; border: 1px dashed #00ff00; padding: 10px; margin-bottom: 20px; display: flex; justify-content: flex-start; gap: 40px; font-size: 0.9em; flex-wrap: wrap; }
         body.theme-terminal .stat-val { color: #fff; font-weight: bold; }
         body.theme-terminal #username { font-size: 1.1em; margin-bottom: 20px; background: none; border: none; border-left: 3px solid #00ff00; padding-left: 10px; }
         body.theme-terminal .tile { background: #000; color: #00ff00; border: 1px solid #00ff00; border-radius: 0px; width: 44%; min-width: 130px; padding: 10px 5px; text-decoration: none; text-align: center; font-family: 'Courier Prime', monospace; display: flex; align-items: center; justify-content: center;}
@@ -61,7 +61,7 @@
         body.theme-windows { margin: 0; background: #3b6ea5; font-family: 'Tahoma', 'Inter', sans-serif; color: #000; text-align: center; }
         body.theme-windows header { background: linear-gradient(to right, #0058e6, #3a95ff); color: white; padding: 15px; font-size: 2em; text-shadow: 1px 1px 2px #000; text-align: left; border-bottom: 2px solid #ffffff; box-shadow: 0 4px 5px rgba(0,0,0,0.3); }
         body.theme-windows .vip-tag { font-size: 0.4em; color: #ffcc00; display: inline-block; margin-left: 20px; }
-        body.theme-windows .stats-bar { background: #f1f1f1; border: 2px outset #fff; color: #000; padding: 5px; margin: 10px; display: flex; justify-content: space-around; font-size: 0.8em; box-shadow: inset 1px 1px 1px #808080; }
+        body.theme-windows .stats-bar { background: #f1f1f1; border: 2px outset #fff; color: #000; padding: 5px; margin: 10px; display: flex; justify-content: space-around; font-size: 0.8em; box-shadow: inset 1px 1px 1px #808080; flex-wrap: wrap; }
         body.theme-windows .stat-val { color: blue; font-weight: bold; }
         body.theme-windows #username { background: #fff; border: 2px inset #fff; margin: 10px auto; width: 90%; padding: 5px; font-weight: bold; text-align: left; color: #333; }
         body.theme-windows .tile { background: #ece9d8; color: #000; border-top: 2px solid #fff; border-left: 2px solid #fff; border-right: 2px solid #707070; border-bottom: 2px solid #707070; border-radius: 3px; width: 44%; min-width: 130px; padding: 15px 5px; text-decoration: none; font-family: sans-serif; font-weight: bold; box-shadow: 1px 1px 3px rgba(0,0,0,0.2); text-align: center; display: flex; align-items: center; justify-content: center;}
@@ -74,7 +74,7 @@
         }
         body.theme-cyberpunk header { background: linear-gradient(135deg, var(--cyber-accent), var(--cyber-accent2)); padding: 20px; box-shadow: 0 4px 20px rgba(0, 217, 255, 0.3); font-size: 3rem; font-weight: 900; letter-spacing: 4px; color: #fff; text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
         body.theme-cyberpunk .vip-tag { font-size: 1rem; color: #ffcc00; margin-top: 5px; font-weight: bold; text-shadow: 0 0 10px #ffcc00; display: block; }
-        body.theme-cyberpunk .stats-bar { background: var(--cyber-card); border-bottom: 1px solid rgba(0, 217, 255, 0.2); padding: 15px; display: flex; justify-content: center; gap: 40px; font-size: 0.9rem; color: var(--cyber-text-dim); }
+        body.theme-cyberpunk .stats-bar { background: var(--cyber-card); border-bottom: 1px solid rgba(0, 217, 255, 0.2); padding: 15px; display: flex; justify-content: center; gap: 40px; font-size: 0.9rem; color: var(--cyber-text-dim); flex-wrap: wrap; }
         body.theme-cyberpunk .stat-val { color: var(--cyber-accent); font-weight: bold; }
         body.theme-cyberpunk #username { color: var(--cyber-accent); font-weight: bold; margin: 10px 0; font-size: 1.1rem; background: none; border: none; }
         body.theme-cyberpunk .tile { background: var(--cyber-card); color: var(--cyber-text); border-radius: 12px; border: 2px solid transparent; padding: 20px 15px; text-decoration: none; font-weight: 600; position: relative; overflow: hidden; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; text-align: center;}
@@ -203,6 +203,30 @@
         body.theme-terminal .invite-box { background: #000; border: 1px dashed #00ff00; color: #00ff00; border-radius: 0; }
         body.theme-windows .invite-box { background: #fff; border: 2px inset #fff; color: #000; }
 
+        /* Wyszukiwarka Użytkowników */
+        .user-search-results {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .user-search-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0,0,0,0.4);
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            font-size: 0.85em;
+        }
+        body.theme-premium .user-search-item { background: #f1f5f9; border-color: #cbd5e1; }
+        body.theme-terminal .user-search-item { background: #111; border-color: #00ff00; }
+        body.theme-windows .user-search-item { background: #fff; border-color: #707070; }
+        body.theme-cyberpunk .user-search-item { background: #0f0f1a; border-color: #00d9ff; }
+
         /* Modal DMs */
         #dm-modal {
             display: none;
@@ -311,6 +335,7 @@
     <div id="stat-reg-label">UŻYTKOWNICY: <span id="reg-count" class="stat-val">...</span></div>
     <div id="stat-on-label">ONLINE: <span id="on-count" class="stat-val" style="color: #00ff00;">...</span></div>
     <div id="stat-visit-label">👀 ODWIEDZINY: <span id="visit-counter" class="stat-val" style="color:#ff006e;">0</span></div>
+    <div id="stat-coins-label">🪙 OrkaCoiny: <span id="coins-counter" class="stat-val" style="color:#00ffff;">0</span></div>
 </div>
 
 <div id="username">Weryfikacja profilu...</div>
@@ -320,12 +345,21 @@
     
     <div id="incoming-invites"></div>
 
-    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px;">
+    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 10px;">
         <input type="text" id="friend-search-input" placeholder="Wpisz nick..." style="padding: 5px 10px; border-radius: 5px; border: 1px solid #00ffff; background: #000; color: #fff; font-family: inherit; font-size: 0.8em; max-width: 180px;">
         <button class="btn-small" id="btn-add-friend" onclick="sendFriendRequest()" style="padding: 5px 10px; font-size: 0.8em;">Dodaj</button>
     </div>
-    
-    <div class="friends-list" id="friends-display-list">
+
+    <!-- Moduł wyszukiwania wszystkich kont -->
+    <div style="margin-top: 15px; border-top: 1px dashed rgba(0, 255, 255, 0.3); padding-top: 10px;">
+        <div style="font-size: 0.9em; margin-bottom: 8px;">🔍 SZUKAJ GRACZY W BAZIE</div>
+        <input type="text" id="all-users-search" placeholder="Filtruj graczy..." oninput="filterAllUsers()" style="padding: 5px 10px; border-radius: 5px; border: 1px solid #00ffff; background: #000; color: #fff; font-family: inherit; font-size: 0.8em; width: 90%; max-width: 250px;">
+        <div class="user-search-results" id="user-search-list">
+            <span style="font-size:0.75em; opacity:0.6;">Ładowanie listy graczy...</span>
+        </div>
+    </div>
+
+    <div class="friends-list" id="friends-display-list" style="margin-top: 20px; border-top: 1px solid rgba(0, 255, 255, 0.3); padding-top: 15px;">
     </div>
 </div>
 
@@ -367,7 +401,7 @@
     <a class="tile" href="kalkulator.html">Kalkulator 🔢</a>
     <a class="tile" href="ppogoda.html">Pogoda ☁️</a>
     <a class="tile" href="aparacik.html">Aparat 📸</a>
-    <a class="tile" href="getoverit.html">MiniKraftia ⛏️</a>
+    <a class="tile" href="sklep.html">Sklep</a>
     <a class="tile" href="aixd.html">AI GEMIBOT 🤖</a>
     <a class="tile" href="oldsuper.html">stary orkanet 💾</a>
     <a class="tile" href="flapibebzun.html">Flappy Bebech 🕊️</a>
@@ -388,7 +422,7 @@
     <a class="tile" href="jackbrowser.html">JackBrowser (podróba Chrome) 🌐</a>
     <a class="tile" href="robox.html">Zepsuty Roblox Okropnie O Ja 💥</a>
     <a class="tile" href="wouldyoustasiekcode.html">Testuj swój Kod 💻</a>
-    <a class="tile" href="leceprzezoknoskirskirskir.html">OrkaVid 🎬</a>
+    <a class="tile" href="zmien_nick.html">Zmień Nick ✏️</a>
     <a class="tile" href="dajmikase.html">Przelicznik walut 💱</a>
     <a class="tile" href="supramariusz.html">Mario 🍄</a>
     <a class="tile" href="https://krispolaris.github.io/Glupie-AI">ai very smart 🧠</a>
@@ -403,7 +437,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, collection, query, where, orderBy, onSnapshot, getCountFromServer, doc, updateDoc, setDoc, getDoc, addDoc, serverTimestamp, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getFirestore, collection, query, where, orderBy, onSnapshot, getCountFromServer, doc, updateDoc, setDoc, getDoc, addDoc, serverTimestamp, deleteDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDPvjNjR6nTHQuWdhQGAGk9iJgvPKDQTXA", 
@@ -420,6 +454,7 @@
     const myUser = localStorage.getItem('loggedUser') || "Gość";
     let activeDMTarget = null;
     let unsubscribeDM = null;
+    let cachedAllUsers = [];
 
     if (myUser) {
         const userRef = doc(db, "users", myUser);
@@ -427,7 +462,45 @@
             username: myUser, 
             lastActive: serverTimestamp() 
         }, { merge: true }).catch(() => {});
+
+        // Nasłuchiwanie monet gracza w czasie rzeczywistym
+        onSnapshot(userRef, (docSnap) => {
+            if (docSnap.exists()) {
+                const coins = docSnap.data().coins || 0;
+                const coinsEl = document.getElementById("coins-counter");
+                if (coinsEl) coinsEl.textContent = coins;
+            }
+        });
     }
+
+    // --- SYSTEM ODWIEDZIN I DODAWANIA COINÓW CO 5 STRON ---
+    async function handleVisitsAndCoins() {
+        let visits = parseInt(localStorage.getItem("orkanetVisits") || "0", 10);
+        visits++;
+        localStorage.setItem("orkanetVisits", visits);
+        
+        const visitEl = document.getElementById("visit-counter");
+        if (visitEl) visitEl.textContent = visits;
+
+        // Jeśli osiągnięto wielokrotność 5 odwiedzin i użytkownik nie jest Gościem
+        if (visits % 5 === 0 && myUser && myUser !== "Gość") {
+            try {
+                const userRef = doc(db, "users", myUser);
+                await updateDoc(userRef, {
+                    coins: increment(1)
+                });
+            } catch (e) {
+                // Jeśli dokument użytkownika nie istniał, utwórz go
+                try {
+                    const userRef = doc(db, "users", myUser);
+                    await setDoc(userRef, { coins: 1 }, { merge: true });
+                } catch(err) {
+                    console.error("Błąd naliczania monet:", err);
+                }
+            }
+        }
+    }
+    handleVisitsAndCoins();
 
     async function loadStats() {
         try {
@@ -444,6 +517,54 @@
         } catch(e) {}
     }
     loadStats();
+
+    // Pobieranie wszystkich użytkowników z pominięciem "Gość"
+    function listenToAllUsers() {
+        const coll = collection(db, "users");
+        onSnapshot(coll, (snap) => {
+            cachedAllUsers = [];
+            snap.forEach(docSnap => {
+                const uName = docSnap.id || docSnap.data().username;
+                if(uName) {
+                    // Filtrowanie nazw zawierających "gość" (w dowolnej wielkości liter)
+                    if(!uName.toLowerCase().includes("gość") && !uName.toLowerCase().includes("gosc")) {
+                        cachedAllUsers.push(uName);
+                    }
+                }
+            });
+            window.filterAllUsers();
+        });
+    }
+    listenToAllUsers();
+
+    window.filterAllUsers = function() {
+        const input = document.getElementById('all-users-search');
+        const filterVal = input ? input.value.trim().toLowerCase() : "";
+        const listContainer = document.getElementById('user-search-list');
+        listContainer.innerHTML = '';
+
+        const filtered = cachedAllUsers.filter(u => u.toLowerCase().includes(filterVal) && u !== myUser);
+
+        if(filtered.length === 0) {
+            listContainer.innerHTML = '<span style="font-size:0.75em; opacity:0.6;">Brak użytkowników do wyświetlenia</span>';
+            return;
+        }
+
+        filtered.forEach(uName => {
+            const item = document.createElement('div');
+            item.className = 'user-search-item';
+            item.innerHTML = `
+                <span>👤 ${uName}</span>
+                <button class="btn-small" style="padding:2px 6px; font-size:0.75em;" onclick="quickInvite('${uName}')">+ Zaproś</button>
+            `;
+            listContainer.appendChild(item);
+        });
+    };
+
+    window.quickInvite = async function(targetName) {
+        document.getElementById('friend-search-input').value = targetName;
+        await window.sendFriendRequest();
+    };
 
     const niceColors = ["#ff006e", "#00d9ff", "#00ff00", "#ffcc00", "#9b5de5", "#f15bb5", "#00f5d4"];
     function getDeterministicColor(name) {
@@ -639,34 +760,35 @@
 
         const btn = document.getElementById('theme-toggle');
         const fInput = document.getElementById('friend-search-input');
+        const uInput = document.getElementById('all-users-search');
 
         if (theme === 'standard') {
             btn.textContent = "✨ TRYB STANDARD ✨";
             btn.style.background = "#ffcc00"; btn.style.color = "#000";
             if(fInput) { fInput.style.borderColor = "#00ffff"; fInput.style.background = "#000"; fInput.style.color = "#fff"; }
+            if(uInput) { uInput.style.borderColor = "#00ffff"; uInput.style.background = "#000"; uInput.style.color = "#fff"; }
         } else if (theme === 'premium') {
             btn.textContent = "💎 TRYB PREMIUM 💎";
             btn.style.background = "#2563eb"; btn.style.color = "#fff";
             if(fInput) { fInput.style.borderColor = "#ddd"; fInput.style.background = "#fff"; fInput.style.color = "#000"; }
+            if(uInput) { uInput.style.borderColor = "#ddd"; uInput.style.background = "#fff"; uInput.style.color = "#000"; }
         } else if (theme === 'terminal') {
             btn.textContent = "🐧 TRYB TERMINAL 🐧";
             btn.style.background = "#00ff00"; btn.style.color = "#000";
             if(fInput) { fInput.style.borderColor = "#00ff00"; fInput.style.background = "#000"; fInput.style.color = "#00ff00"; }
+            if(uInput) { uInput.style.borderColor = "#00ff00"; uInput.style.background = "#000"; uInput.style.color = "#00ff00"; }
         } else if (theme === 'windows') {
             btn.textContent = "💻 TRYB WINDOWS 💻";
             btn.style.background = "#ece9d8"; btn.style.color = "#000";
             if(fInput) { fInput.style.borderColor = "#707070"; fInput.style.background = "#fff"; fInput.style.color = "#000"; }
+            if(uInput) { uInput.style.borderColor = "#707070"; uInput.style.background = "#fff"; uInput.style.color = "#000"; }
         } else if (theme === 'cyberpunk') {
             btn.textContent = "🤖 TRYB CYBERPUNK 🤖";
             btn.style.background = "#ff006e"; btn.style.color = "#fff";
             if(fInput) { fInput.style.borderColor = "#00d9ff"; fInput.style.background = "#1a1a2e"; fInput.style.color = "#e0e0e0"; }
+            if(uInput) { uInput.style.borderColor = "#00d9ff"; uInput.style.background = "#1a1a2e"; uInput.style.color = "#e0e0e0"; }
         }
     }
-    
-    let visits = localStorage.getItem("orkanetVisits") || 0;
-    visits++;
-    localStorage.setItem("orkanetVisits", visits);
-    document.getElementById("visit-counter").textContent = visits;
 
     if (localStorage.getItem('cookiesAccepted') === 'true') {
         document.getElementById('cookie-overlay').style.display = 'none';

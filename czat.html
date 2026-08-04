@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>BebechChat 💬</title>
 <style>
     @font-face { 
@@ -14,13 +14,23 @@
         font-display: swap;
     }
 
+    * {
+        box-sizing: border-box;
+    }
+
+    html {
+        height: 100%;
+    }
+
     body { 
         background: #000; color: #00ff00; 
         font-family: 'MojaCzcionka', Arial, sans-serif;
         display: flex; flex-direction: column; 
         height: 100vh;
+        height: 100dvh; /* Obsługa dynamicznej wysokości dla urządzeń mobilnych */
         margin: 0; 
         overflow: hidden;
+        position: relative;
     }
     
     input, button, .room-btn, h2 {
@@ -31,6 +41,7 @@
         display: flex; align-items: center; justify-content: space-between;
         padding: 10px 15px; background: #0a0a0a; border-bottom: 2px solid #00ff00;
         flex-shrink: 0;
+        z-index: 10;
     }
 
     .header-left {
@@ -44,10 +55,11 @@
     }
 
     .chat-selector {
-        display: flex; justify-content: center; gap: 8px;
+        display: flex; justify-content: flex-start; gap: 8px;
         padding: 10px; background: #111;
         flex-shrink: 0;
         overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     .room-btn {
@@ -66,6 +78,7 @@
         overflow-y: auto; padding: 15px; 
         display: flex; flex-direction: column;
         scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
     }
 
     .msg { 
@@ -79,7 +92,28 @@
     .msg-bot { border: 1px solid #ffcc00 !important; box-shadow: 0 0 5px #ffcc00; }
     .msg-dm { border: 1px solid #ff00ff !important; box-shadow: 0 0 8px #ff00ff; }
 
-    .user { font-size: 0.7rem; font-weight: bold; margin-bottom: 4px; color: #00ff00; display: flex; align-items: center; gap: 5px; }
+    .user { font-size: 0.75rem; font-weight: bold; margin-bottom: 4px; color: #00ff00; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+
+    /* Stylik dla Rang (Badges) */
+    .role-badge {
+        font-size: 0.65rem;
+        padding: 2px 6px;
+        border-radius: 6px;
+        font-weight: bold;
+        text-shadow: none;
+        display: inline-block;
+        letter-spacing: 0.5px;
+    }
+    .role-pro { background: #3b82f6; color: #ffffff; border: 1px solid #60a5fa; }
+    .role-vip { background: #eab308; color: #000000; border: 1px solid #fde047; font-weight: 900; }
+    .role-epic { background: #a855f7; color: #ffffff; border: 1px solid #c084fc; box-shadow: 0 0 5px #a855f7; }
+    .role-chatter { background: #06b6d4; color: #000000; border: 1px solid #22d3ee; }
+    .role-moderator { background: #ef4444; color: #ffffff; border: 1px solid #f87171; box-shadow: 0 0 8px #ef4444; animation: modGlow 1.5s infinite alternate; }
+
+    @keyframes modGlow {
+        from { box-shadow: 0 0 3px #ef4444; }
+        to { box-shadow: 0 0 10px #ef4444; }
+    }
 
     .emoji { width: 24px; height: 24px; vertical-align: middle; margin: 0 2px; border-radius: 4px; }
     .chat-img { max-width: 100%; border-radius: 10px; margin-top: 8px; border: 1px solid #00ff00; display: block; cursor: pointer; }
@@ -88,18 +122,25 @@
         position: absolute; right: -8px; top: -8px; 
         background: #ff0000; color: #fff; border: none; 
         border-radius: 50%; width: 20px; height: 20px; cursor: pointer;
-        font-size: 10px; display: flex; align-items: center; justify-content: justify-content: center;
+        font-size: 10px; display: flex; align-items: center; justify-content: center;
     }
 
+    /* POPRAWIONY PASEK WEJŚCIOWY DLA KOMÓREK */
     .input-area { 
         padding: 10px; background: #111; display: flex; gap: 6px; 
         border-top: 2px solid #00ff00; align-items: center;
         flex-shrink: 0;
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding-bottom: max(10px, env(safe-area-inset-bottom));
     }
 
-    input { background: #222; border: 1px solid #00ff00; color: #fff; padding: 10px; border-radius: 8px; outline: none; flex: 1; min-width: 0; }
+    input { background: #222; border: 1px solid #00ff00; color: #fff; padding: 10px; border-radius: 8px; outline: none; flex: 1; min-width: 0; font-size: 14px; }
     
-    button { background: #00ff00; color: #000; border: none; padding: 10px; font-weight: bold; border-radius: 8px; cursor: pointer; white-space: nowrap; }
+    button { background: #00ff00; color: #000; border: none; padding: 10px 12px; font-weight: bold; border-radius: 8px; cursor: pointer; white-space: nowrap; }
 
     /* Lista Znajomych - Podgląd w nagłówku */
     .friends-dropdown-btn {
@@ -161,7 +202,62 @@
         const loggedUser = localStorage.getItem('loggedUser') || "Gość";
         let currentRoom = 'global';
 
-        // Wyznacz unikalne ID pokoju prywatnego dla 2 użytkowników
+        // dynamiczna obsługa wysuwania klawiatury na telefonach
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', () => {
+                document.body.style.height = `${window.visualViewport.height}px`;
+                const win = document.getElementById('chat-window');
+                if (win) win.scrollTop = win.scrollHeight;
+            });
+        }
+
+        const userRolesCache = {};
+        const MOD_LIST = ["krispolaris", "admin", "kris", "szym", "sim"];
+
+        function getRoleBadgeHTML(userName, roleFromDb) {
+            let role = (roleFromDb || "").toUpperCase();
+
+            if (MOD_LIST.includes(userName.toLowerCase())) {
+                role = "MODERATOR";
+            }
+
+            if (!role || role === "DEFAULT" || role === "NONE") return "";
+
+            switch (role) {
+                case "PRO":
+                    return `<span class="role-badge role-pro">PRO</span>`;
+                case "VIP":
+                    return `<span class="role-badge role-vip">⭐ VIP</span>`;
+                case "EPIC":
+                    return `<span class="role-badge role-epic">🔥 EPIC</span>`;
+                case "CHATTER":
+                    return `<span class="role-badge role-chatter">💬 CHATTER</span>`;
+                case "MODERATOR":
+                    return `<span class="role-badge role-moderator">🛡️ MOD</span>`;
+                default:
+                    return `<span class="role-badge role-pro">${role}</span>`;
+            }
+        }
+
+        async function getUserRole(userName) {
+            if (userRolesCache[userName] !== undefined) {
+                return userRolesCache[userName];
+            }
+            try {
+                const userDoc = await getDoc(doc(db, "users", userName));
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    const role = data.role || data.rank || "";
+                    userRolesCache[userName] = role;
+                    return role;
+                }
+            } catch (e) {
+                console.error("Błąd pobierania rangi:", e);
+            }
+            userRolesCache[userName] = "";
+            return "";
+        }
+
         function getDMChannelId(user1, user2) {
             return "dm_" + [user1, user2].sort().join("_");
         }
@@ -217,7 +313,6 @@
             if (val || imgData) {
                 let targetRoom = currentRoom;
                 
-                // Wykrywanie wzmianki @username -> DM
                 const dmMatch = val.match(/^@([a-zA-Z0-9_]+)\s*(.*)/);
                 if (dmMatch) {
                     const targetUser = dmMatch[1];
@@ -229,9 +324,8 @@
                     }
 
                     targetRoom = getDMChannelId(loggedUser, targetUser);
-                    val = cleanText; // Usuwamy prefiks @username z wiadomości
+                    val = cleanText;
 
-                    // Otwieramy pokój DM jeśli użytkownik pisał z ogólnego
                     if(!currentRoom.startsWith('dm_')) {
                         openDMRoom(targetUser);
                     }
@@ -266,26 +360,38 @@
             if(confirm("Usunąć wiadomość?")) await deleteDoc(doc(db, "messages", id)); 
         };
 
+    // no smores? :(
+    
         let unsubscribe;
         function listenToMessages() {
             if (unsubscribe) unsubscribe();
             const q = query(collection(db, "messages"), orderBy("timestamp", "asc"));
-            unsubscribe = onSnapshot(q, (snap) => {
+            unsubscribe = onSnapshot(q, async (snap) => {
                 const win = document.getElementById('chat-window');
                 win.innerHTML = "";
-                snap.forEach(d => {
+
+                for (const d of snap.docs) {
                     const data = d.data();
                     if (data.room === currentRoom) {
                         const isMe = data.user === loggedUser;
                         const isBot = data.user === "Bebzun 🤖";
                         const isDM = data.room.startsWith('dm_');
+
+                        let roleBadge = "";
+                        if (!isBot) {
+                            const uRole = await getUserRole(data.user);
+                            roleBadge = getRoleBadgeHTML(data.user, uRole);
+                        }
+
                         const div = document.createElement('div');
                         div.className = `msg ${isMe ? 'msg-right' : 'msg-left'} ${isBot ? 'msg-bot' : ''} ${isDM ? 'msg-dm' : ''}`;
                         
                         div.innerHTML = `
                             <span class="user" ${isBot ? 'style="color:#ffcc00"' : ''}>
                                 ${isBot ? `<img src="Bebe.jpg" style="width:18px;height:18px;border-radius:50%">` : ''}
-                                ${data.user} ${isDM ? '<span class="dm-badge">DM</span>' : ''}
+                                <span>${data.user}</span>
+                                ${roleBadge}
+                                ${isDM ? '<span class="dm-badge">DM</span>' : ''}
                             </span>
                             <span class="text">${parseEmotes(data.text)}</span>
                             ${data.image ? `<img src="${data.image}" class="chat-img" onclick="window.open(this.src)">` : ""}
@@ -293,12 +399,11 @@
                         `;
                         win.appendChild(div);
                     }
-                });
+                }
                 win.scrollTop = win.scrollHeight;
             });
         }
 
-        // Ładowanie listy znajomych
         window.toggleFriendsMenu = function() {
             const menu = document.getElementById('friends-menu');
             menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
@@ -331,7 +436,6 @@
             const dmRoomId = getDMChannelId(loggedUser, targetUser);
             let btn = document.getElementById(`btn-${dmRoomId}`);
             
-            // Jeśli przycisk zakłady DM nie istnieje, dodaj go do paska
             if(!btn) {
                 const roomsBar = document.getElementById('rooms-bar');
                 btn = document.createElement('button');
@@ -342,7 +446,6 @@
                 roomsBar.appendChild(btn);
             }
             
-            // Ustaw zapytanie DM do pola wpisywania dla wygody
             const input = document.getElementById('message');
             if(!input.value.startsWith(`@${targetUser}`)) {
                 input.value = `@${targetUser} `;

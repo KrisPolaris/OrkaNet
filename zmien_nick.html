@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zmiana Nicku - Cyberpunk</title>
+    <style>
+        :root {
+            --bg-color: #08070c;
+            --card-bg: rgba(16, 12, 28, 0.7);
+            --neon-blue: #00f0ff;
+            --neon-purple: #9d00ff;
+            --neon-pink: #ff007f;
+            --text-color: #e0e6ed;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(0, 240, 255, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(255, 0, 127, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(157, 0, 255, 0.1) 0%, transparent 60%);
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        /* Grid lines overlay */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            padding: 40px 30px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 30px rgba(157, 0, 255, 0.2),
+                        inset 0 0 15px rgba(0, 240, 255, 0.1);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(157, 0, 255, 0.5);
+        }
+
+        .current-user {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: var(--neon-blue);
+            letter-spacing: 1px;
+        }
+
+        .current-user span {
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .cyber-input {
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1.1rem;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+            letter-spacing: 1.5px;
+        }
+
+        .cyber-input:focus {
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+            background: rgba(16, 12, 28, 0.9);
+        }
+
+        .cyber-input::placeholder {
+            color: rgba(224, 230, 237, 0.4);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .cyber-button {
+            position: relative;
+            display: block;
+            width: 100%;
+            padding: 16px 24px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.6);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+        }
+
+        .cyber-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 8px;
+            padding: 2px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-pink));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .cyber-button:hover {
+            transform: translateY(-3px);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4),
+                        0 0 40px rgba(255, 0, 127, 0.2);
+            background: rgba(16, 12, 28, 0.9);
+        }
+
+        .cyber-button:hover::before {
+            opacity: 1;
+        }
+
+        .cyber-button:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-cancel::before {
+            background: linear-gradient(90deg, #ff0055, #ff5500);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Zmiana Nicku</h1>
+        <div class="current-user">Obecny nick: <span id="oldNickDisplay">...</span></div>
+
+        <input type="text" id="newNickInput" class="cyber-input" placeholder="Wpisz nowy nick..." autocomplete="off">
+
+        <div class="form-group">
+            <button type="button" id="changeBtn" class="cyber-button">Zapisz Zmiany</button>
+            <button type="button" class="cyber-button btn-cancel" onclick="window.location.href='super.html'">Anuluj</button>
+        </div>
+    </div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDPvjNjR6nTHQuWdhQGAGk9iJgvPKDQTXA",
+        authDomain: "bebechchat.firebaseapp.com",
+        projectId: "bebechchat",
+        storageBucket: "bebechchat.appspot.com", 
+        messagingSenderId: "738356779230",
+        appId: "1:738356779230:web:2c41e46431284e3fb78a4f"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const currentNick = localStorage.getItem('loggedUser');
+
+    if (!currentNick) {
+        alert("Nie jesteś zalogowany!");
+        window.location.href = "index.html";
+    } else {
+        document.getElementById('oldNickDisplay').innerText = currentNick;
+    }
+
+    document.getElementById('changeBtn').addEventListener('click', async () => {
+        const newNick = document.getElementById('newNickInput').value.trim();
+
+        if (!newNick) {
+            return alert("Wpisz nowy nick!");
+        }
+
+        if (newNick === currentNick) {
+            return alert("Nowy nick jest taki sam jak obecny!");
+        }
+
+        try {
+            const newDocRef = doc(db, "users", newNick);
+            const newDocSnap = await getDoc(newDocRef);
+
+            if (newDocSnap.exists()) {
+                return alert("Ten nick jest już zajęty! Wybierz inny.");
+            }
+
+            const oldDocRef = doc(db, "users", currentNick);
+            const oldDocSnap = await getDoc(oldDocRef);
+
+            let oldData = {};
+            if (oldDocSnap.exists()) {
+                oldData = oldDocSnap.data();
+            }
+
+            await setDoc(newDocRef, {
+                ...oldData,
+                username: newNick,
+                updatedAt: new Date()
+            });
+
+            if (oldDocSnap.exists()) {
+                await deleteDoc(oldDocRef);
+            }
+
+            localStorage.setItem('loggedUser', newNick);
+            alert("Nick został pomyślnie zmieniony na: " + newNick);
+            window.location.href = "super.html?username=" + encodeURIComponent(newNick);
+
+        } catch (error) {
+            alert("Błąd podczas zmiany nicku: " + error.message);
+        }
+    });
+</script>
+
+</body>
+</html>

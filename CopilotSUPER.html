@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8" />
+    <title>OrkaNet - Strona Główna</title>
+
+    <!-- Czcionka Bebas Neue -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Bebas Neue", sans-serif;
+            background: url("123.jpg") center center / cover no-repeat fixed;
+            color: cyan;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .page-wrapper {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            border: 3px solid cyan;
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        header h1 {
+            font-size: 48px;
+            letter-spacing: 3px;
+        }
+
+        #main-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .tile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 12px;
+            min-height: 70px;
+            text-decoration: none;
+            color: cyan;
+            border: 2px solid cyan;
+            background-color: rgba(0, 0, 0, 0.75);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+            font-size: 20px;
+            letter-spacing: 1px;
+        }
+
+        .tile:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 12px cyan;
+            background-color: rgba(0, 30, 30, 0.9);
+        }
+
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            color: cyan;
+            font-size: 16px;
+            border: 2px solid cyan;
+            padding: 6px 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <header>
+            <h1>OrkaNet</h1>
+        </header>
+
+        <div class="grid" id="main-grid">
+            <a class="tile" href="czat.html">BebzunChat 💬</a>
+            <a class="tile" href="bebzunit.html">MINECRAFT</a>
+            <a class="tile" href="clicker.html">Creeper Clicker 💰</a>
+            <a class="tile" href="burga.html">Burger 🍔</a>
+            <a class="tile" href="boxes!.html">Pudełka</a>
+            <a class="tile" href="GeometryDash.html">Geometry Dash 🟦</a>
+            <a class="tile" href="spotifa.html">Spotifa 🎵</a>
+            <a class="tile" href="Windows XP.html">Windows XP 💻</a>
+            <a class="tile" href="skarbonka.html">Skarbonka</a>
+            <a class="tile" href="rysowniczek.html">Paint 🎨</a>
+            <a class="tile" href="bebzun.html">Poznaj Bebzuna! 🤰</a>
+            <a class="tile" href="kolorowanki.html">Kolorowanki</a>
+            <a class="tile" href="kalkulator.html">Kalkulator 🔢</a>
+            <a class="tile" href="ppogoda.html">Pogoda ☁️</a>
+            <a class="tile" href="aparacik.html">Aparat 📸</a>
+            <a class="tile" href="getoverit.html">MiniKraftia</a>
+            <a class="tile" href="aixd.html">AI GEMIBOT</a>
+            <a class="tile" href="oldsuper.html">stary orkanet</a>
+            <a class="tile" href="flapibebzun.html">Flappy Bebech</a>
+            <a class="tile" href="diktafon.html">Dyktafon</a>
+            <a class="tile" href="czas.html">Zegar</a>
+            <a class="tile" href="kalendar.html">Kalendarz</a>
+            <a class="tile" href="tts.html">Głos</a>
+            <a class="tile" href="tudududu.html">Dźwięki</a>
+            <a class="tile" href="yuh.html">Android</a>
+            <a class="tile" href="Car..html">Autko</a>
+            <a class="tile" href="Chicken.html">Kurka</a>
+            <a class="tile" href="rubik.html">Kostka Rubika</a>
+            <a class="tile" href="ShortenMe.html">Skracacz Linków</a>
+            <a class="tile" href="robluxy.html">Free Robux (100% Legitne!)</a>
+            <a class="tile" href="orkadio.html">Ptasie Radyjo</a>
+            <a class="tile" href="tybzunku.html">Nie pytaj.</a>
+            <a class="tile" href=" "> </a>
+            <a class="tile" href="thissitehasnolitteralsens.html">moja pierwsza strona</a>
+            <a class="tile" href="jackbrowser.html">JackBrowser (podróba Chrome)</a>
+            <a class="tile" href="robox.html">Zepsuty Roblox Okropnie O Ja</a>
+            <a class="tile" href="wouldyoustasiekcode.html">Testuj swój Kod</a>
+            <a class="tile" href="leceprzezoknoskirskirskir.html">OrkaVid</a>
+            <a class="tile" href="https://krispolaris.github.io/Glupie-AI">ai very smart</a>
+        </div>
+
+        <footer>
+            © OrkaNet
+        </footer>
+    </div>
+</body>
+</html>

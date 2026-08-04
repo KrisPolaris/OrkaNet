@@ -1,0 +1,64 @@
+<html>
+<head>
+   <title>Google! Search Engine</title>
+</head>
+<body bgcolor="#FFFFFF">
+ 
+<form id="googleForm" method="GET" action="https://www.google.com/search">
+<center>
+    <img src="https://web.archive.org/web/19981205085322im_/http://google.stanford.edu/google.jpg" width="351" height="113"><br>
+<table border="0" cellspacing="0" cellpadding="5" width="70%">
+<tr><td bgcolor="#EEEEEE">
+<center>
+Search the web using Google!<br>
+<input type="text" id="searchQuery" name="q" value="" size="40"><br>
+<select name="num">
+<option value="10" selected>10 results</option>
+<option value="30">30 results</option>
+<option value="100">100 results</option>
+</select>
+<input type="submit" value="Google Search">
+<input type="button" value="I'm feeling lucky" onclick="feelingLucky()"><br>
+<i>Index contains ~25 million pages (soon to be much bigger)</i>
+</center>
+</td></tr>
+</form>
+
+<tr><td>
+<center>
+<h2><a href="https://about.google/">About Google!</a></h2>
+<a href="https://www.stanford.edu/">Stanford Search</a> <a href="https://www.linux.org/">Linux Search</a>
+</center>
+</td></tr>
+<tr align="LEFT">
+<td valign="CENTER" bgcolor="#EEEEEE" width="100%">
+<center>Get Google! updates monthly!</center>
+</td>
+</tr>
+
+<form method="GET" action="#">
+<tr align="LEFT">
+<td bgcolor="#EEEEEE">
+<center><input type="text" name="emailaddr" value="your e-mail" size="18">
+<input type="submit" value="Subscribe" onclick="alert('Findmail z 1998 roku już nie działa pod tym adresem ;)'); return false;"><font size="-1">&nbsp;&nbsp;<a href="#">Archive</a></font></center>
+</td>
+</tr>
+</form>
+</table>
+</center>
+
+<center><font size="-1">Copyright &copy;1997-8 Stanford University</font></center>
+
+<script>
+function feelingLucky() {
+    const query = document.getElementById('searchQuery').value;
+    if (query.trim() === "") {
+        window.location.href = "https://www.google.com";
+    } else {
+        window.location.href = "https://www.google.com/search?q=" + encodeURIComponent(query) + "&btnI=1";
+    }
+}
+</script>
+
+</body>
+</html>

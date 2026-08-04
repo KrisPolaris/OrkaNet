@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OrkaNet - Mega Logowanie 🔐</title>
     
+    <!-- SZYBKIE PRZEKIEROWANIE JEŚLI JUŻ ZALOGOWANY -->
+    <script>
+        const savedUser = localStorage.getItem('loggedUser');
+        if (savedUser) {
+            window.location.href = "super.html?username=" + encodeURIComponent(savedUser);
+        }
+    </script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     
     <style>
@@ -68,7 +76,6 @@
             border-color: #fff;
         }
 
-        /* Stylizacja placeholderów, żeby pasowały do reszty */
         input::placeholder {
             color: rgba(0, 255, 255, 0.4);
         }
@@ -197,7 +204,6 @@
 <div class="login-box">
     <h1 id="title">LOGOWANIE</h1>
     
-    <!-- NOWE POLE NICKU (Zaczyna ukryte, pojawia się przy rejestracji) -->
     <input type="text" id="usernameInput" placeholder="TWÓJ NICK (USERNAME)" style="display: none;">
     
     <input type="text" id="user" placeholder="USERNAME / EMAIL" autocomplete="username">
@@ -220,7 +226,7 @@
     <button type="button" id="anonPrefBtn" class="btn-pref">WEJDŹ JAKO GOŚĆ (100% działające)</button>
     <button type="button" id="anonFbBtn" class="btn-fb">WEJDŹ JAKO GOŚĆ</button>
 
-    <div class="section-title">INNE METEDY</div>
+    <div class="section-title">INNE METODY</div>
     <button type="button" id="googleBtn" class="google-btn">
         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="Google">
         KONTO GOOGLE
@@ -229,7 +235,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, signInAnonymously, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
     const firebaseConfig = {
@@ -289,10 +295,27 @@
     document.getElementById('googleBtn').addEventListener('click', async () => {
         try {
             const result = await signInWithPopup(auth, provider);
-            const name = result.user.displayName || "Użytkownik Google";
-            localStorage.setItem('loggedUser', name);
-            alert("Siema: " + name + "!");
-            window.location.href = "super.html?username=" + encodeURIComponent(name);
+            const email = result.user.email;
+            
+            const q = query(collection(db, "users"), where("email", "==", email));
+            const querySnapshot = await getDocs(q);
+            
+            let finalName = "";
+            if (!querySnapshot.empty) {
+                finalName = querySnapshot.docs[0].id;
+            } else {
+                let chosenNick = prompt("Zalogowano przez Google! Nie masz jeszcze unikalnego nicku. Wpisz swój PrOfFeSiOnAl Nick:");
+                if(!chosenNick) chosenNick = "GoogleUser_" + Math.floor(Math.random() * 9000 + 1000);
+                chosenNick = chosenNick.trim();
+
+                const userRef = doc(db, "users", chosenNick);
+                await setDoc(userRef, { username: chosenNick, email: email, createdAt: new Date() });
+                finalName = chosenNick;
+            }
+
+            localStorage.setItem('loggedUser', finalName);
+            alert("Siema: " + finalName + "!");
+            window.location.href = "super.html?username=" + encodeURIComponent(finalName);
         } catch (error) {
             alert("Błąd Google Auth: " + error.message);
         }
@@ -307,8 +330,6 @@
         document.getElementById('actionBtn').innerText = isRegister ? "REJESTRACJA PREFEROWANA (BEZ MAILA)" : "ZALOGUJ (STARY SYSTEM)";
         document.getElementById('emailLoginBtn').style.display = isRegister ? "none" : "block";
         document.getElementById('emailRegBtn').style.display = isRegister ? "block" : "none";
-        
-        // Dynamiczne pokazywanie/ukrywanie pola na wpisanie Nicku przy rejestracji
         document.getElementById('usernameInput').style.display = isRegister ? "block" : "none";
     });
 
@@ -337,7 +358,7 @@
         }
     });
 
-    // --- REJESTRACJA FIREBASE (Z USTAWIANIEM USERNAME) ---
+    // --- REJESTRACJA FIREBASE ---
     document.getElementById('emailRegBtn').addEventListener('click', async () => {
         const email = document.getElementById('user').value.trim();
         const password = document.getElementById('pass').value.trim();
@@ -348,15 +369,12 @@
         if(!username) return alert("Wpisz swój unikalny nick (username)!");
 
         try {
-            // 1. Sprawdź w Firestore, czy nick nie jest już przez kogoś zajęty
             const userRef = doc(db, "users", username);
             const snap = await getDoc(userRef);
             if(snap.exists()) return alert("Ten nick jest już zajęty przez innego użytkownika!");
 
-            // 2. Stwórz konto mailowe w Firebase Auth
             await createUserWithEmailAndPassword(auth, email, password);
             
-            // 3. Zapisz powiązanie nicku z mailem w bazie Firestore, żeby system znajomych działał stabilnie
             await setDoc(userRef, { 
                 username: username,
                 email: email, 
@@ -373,12 +391,43 @@
         const email = document.getElementById('user').value.trim();
         const password = document.getElementById('pass').value.trim();
         if(!email.includes("@")) return alert("Wpisz email z @!");
+        
         try {
             await signInWithEmailAndPassword(auth, email, password);
             
-            // Domyślnie zapisujemy email, dopóki nie pobierzesz dopasowanego nicku z bazy
-            localStorage.setItem('loggedUser', email);
-            window.location.href = "super.html?username=" + encodeURIComponent(email);
+            const q = query(collection(db, "users"), where("email", "==", email));
+            const querySnapshot = await getDocs(q);
+            
+            let finalUsername = "";
+            
+            if (!querySnapshot.empty) {
+                finalUsername = querySnapshot.docs[0].id;
+            } else {
+                let newNick = prompt("Wykryto stare konto bez przypisanego Nicku! Wpisz swój unikalny Nick dla OrkaNet:");
+                if (!newNick) {
+                    newNick = "User_" + Math.floor(Math.random() * 9000 + 1000);
+                }
+                newNick = newNick.trim();
+                
+                const checkRef = doc(doc(db, "users", newNick));
+                const checkSnap = await getDoc(checkRef);
+                if(checkSnap.exists()) {
+                    alert("Ten nick jest już zajęty! System przydzieli Ci losowy wariant.");
+                    newNick = newNick + Math.floor(Math.random() * 900);
+                }
+                
+                await setDoc(doc(db, "users", newNick), {
+                    username: newNick,
+                    email: email,
+                    createdAt: new Date()
+                });
+                
+                finalUsername = newNick;
+            }
+            
+            localStorage.setItem('loggedUser', finalUsername);
+            window.location.href = "super.html?username=" + encodeURIComponent(finalUsername);
+            
         } catch (error) { alert("Błąd logowania: " + error.message); }
     });
 </script>
