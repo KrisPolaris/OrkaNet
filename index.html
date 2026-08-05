@@ -7,9 +7,25 @@
     
     <!-- SZYBKIE PRZEKIEROWANIE JEŚLI JUŻ ZALOGOWANY -->
     <script>
+        function getRandomTarget() {
+            const rand = Math.random() * 100; // Liczba od 0 do 100
+            if (rand < 50.0) {
+                return "super.html";      // 50%
+            } else if (rand < 99.99) {
+                return "orkanet.html";    // 49.99%
+            } else {
+                return "oldsuper.html";   // 0.01%
+            }
+        }
+
+        function redirectUser(username) {
+            const page = getRandomTarget();
+            window.location.href = page + "?username=" + encodeURIComponent(username);
+        }
+
         const savedUser = localStorage.getItem('loggedUser');
         if (savedUser) {
-            window.location.href = "super.html?username=" + encodeURIComponent(savedUser);
+            redirectUser(savedUser);
         }
     </script>
     
@@ -275,7 +291,7 @@
         const anonName = "Gość_" + Math.floor(Math.random() * 9000 + 1000);
         localStorage.setItem('loggedUser', anonName);
         alert("Wbijasz ekspresowo jako: " + anonName);
-        window.location.href = "super.html?username=" + encodeURIComponent(anonName);
+        redirectUser(anonName);
     });
 
     // --- GOŚĆ FIREBASE ---
@@ -285,7 +301,7 @@
             const anonName = "Gość_FB_" + Math.floor(Math.random() * 9000 + 1000);
             localStorage.setItem('loggedUser', anonName);
             alert("Zalogowano w Firebase jako: " + anonName);
-            window.location.href = "super.html?username=" + encodeURIComponent(anonName);
+            redirectUser(anonName);
         } catch (error) {
             alert("Błąd gościa Firebase: " + error.message);
         }
@@ -315,7 +331,7 @@
 
             localStorage.setItem('loggedUser', finalName);
             alert("Siema: " + finalName + "!");
-            window.location.href = "super.html?username=" + encodeURIComponent(finalName);
+            redirectUser(finalName);
         } catch (error) {
             alert("Błąd Google Auth: " + error.message);
         }
@@ -352,7 +368,7 @@
                 const snap = await getDoc(userRef);
                 if(snap.exists() && snap.data().password === password) {
                     localStorage.setItem('loggedUser', username);
-                    window.location.href = "super.html?username=" + encodeURIComponent(username);
+                    redirectUser(username);
                 } else { alert("Błędne dane w starym systemie"); }
             } catch (e) { alert("Błąd: " + e.message); }
         }
@@ -426,7 +442,7 @@
             }
             
             localStorage.setItem('loggedUser', finalUsername);
-            window.location.href = "super.html?username=" + encodeURIComponent(finalUsername);
+            redirectUser(finalUsername);
             
         } catch (error) { alert("Błąd logowania: " + error.message); }
     });

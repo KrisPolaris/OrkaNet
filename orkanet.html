@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OrkaNet</title>
     <link rel="icon" type="image/png" href="Pou.png">
-    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Inter:wght@300;400;600&family=Montserrat:wght@700&family=Courier+Prime&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Bungee&family=Inter:wght@300;400;600&family=Montserrat:wght@700&family=Courier+Prime&family=Bebas+Neue&display=swap" rel="stylesheet">
     
     <style>
         body.theme-standard { 
@@ -41,6 +41,135 @@
         }
         @keyframes neonPulse { 0%, 100% { box-shadow: 0 0 5px #00ffff; } 50% { box-shadow: 0 0 20px #00ffff; } }
 
+        /* ========================================================
+           NOWY, EPICKI TRYB CYBERPUNK (Z TŁEM NIGHT CIYU)
+           ======================================================== */
+        body.theme-cyberpunk {
+            margin: 0;
+            background: #05050d url('NightCity.png') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Orbitron', system-ui, sans-serif;
+            color: #00ffff;
+            text-align: center;
+            min-height: 100vh;
+        }
+
+        body.theme-cyberpunk header {
+            padding: 25px 0 10px 0;
+            font-size: 3em;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: #00ffff;
+            text-shadow: 0 0 12px #00ffff, 0 0 25px rgba(0, 255, 255, 0.8);
+        }
+
+        body.theme-cyberpunk .vip-tag {
+            font-size: 0.4em;
+            color: #ff0055;
+            display: block;
+            text-shadow: 0 0 10px #ff0055;
+            letter-spacing: 2px;
+        }
+
+        body.theme-cyberpunk .stats-bar {
+            background: rgba(10, 5, 20, 0.65);
+            backdrop-filter: blur(8px);
+            border-top: 1px solid rgba(0, 255, 255, 0.6);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.6);
+            padding: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            font-size: 0.8em;
+            letter-spacing: 1px;
+            flex-wrap: wrap;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+
+        body.theme-cyberpunk .stat-val { color: #ff007f; text-shadow: 0 0 8px #ff007f; }
+
+        body.theme-cyberpunk #username {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            background: rgba(20, 5, 35, 0.7);
+            backdrop-filter: blur(5px);
+            padding: 8px 16px;
+            border: 1px solid #00ffff;
+            display: inline-block;
+            cursor: pointer;
+            letter-spacing: 1.5px;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+        }
+
+        body.theme-cyberpunk #username:hover {
+            color: #fff;
+            text-shadow: 0 0 12px #00ffff;
+            border-color: #ff007f;
+        }
+
+        /* Mniejsze kafelki pod styl CYBERFUNKY.WEBP */
+        body.theme-cyberpunk .tile {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #00ffff;
+            background: 
+              linear-gradient(135deg, rgba(20, 5, 35, 0.45), rgba(10, 0, 20, 0.45)),
+              url('cyberfunky.webp') center/cover no-repeat;
+            
+            padding: 12px 16px;
+            border: 1px solid rgba(0, 255, 255, 0.5);
+            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+            
+            box-shadow: 
+              inset 0 0 10px rgba(0, 255, 255, 0.15),
+              0 0 10px rgba(0, 255, 255, 0.3),
+              0 0 20px rgba(138, 43, 226, 0.2);
+              
+            text-shadow: 0 0 6px #00ffff;
+            transition: all 0.3s ease;
+            position: relative;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            /* WSZYSTKIE GUZIKI PULSUJĄ NA CZERWONO CO 5s */
+            animation: redGlowPulse 5s infinite;
+        }
+
+        body.theme-cyberpunk .tile:hover {
+            color: #ffffff;
+            background: 
+              linear-gradient(135deg, rgba(40, 10, 60, 0.55), rgba(20, 0, 40, 0.55)),
+              url('cyberfunky.webp') center/cover no-repeat;
+            border-color: #00ffff;
+            box-shadow: 
+              inset 0 0 15px rgba(0, 255, 255, 0.4),
+              0 0 20px #00ffff,
+              0 0 40px #8a2be2;
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+            transform: scale(1.04);
+        }
+
+        @keyframes redGlowPulse {
+            0%, 80%, 100% {
+                border-color: rgba(0, 255, 255, 0.5);
+                box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.15), 0 0 10px rgba(0, 255, 255, 0.3), 0 0 20px rgba(138, 43, 226, 0.2);
+            }
+            85%, 95% {
+                border-color: #ff0055;
+                box-shadow: inset 0 0 15px rgba(255, 0, 85, 0.5), 0 0 25px #ff0055, 0 0 45px rgba(255, 0, 85, 0.8);
+                color: #fff;
+                text-shadow: 0 0 8px #ff0055;
+            }
+        }
+
         body.theme-premium { --primary: #2563eb; --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b; --accent: #ffcc00; margin: 0; background: var(--bg); font-family: 'Bungee', cursive; color: var(--text); text-align: center; }
         body.theme-premium header { background: var(--card-bg); padding: 40px 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 2.5em; color: var(--primary); text-shadow: none; }
         body.theme-premium .stats-bar { background: #fff; border: 1px solid #ddd; color: #555; padding: 10px; margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; font-size: 0.8em; flex-wrap: wrap;}
@@ -48,55 +177,64 @@
         body.theme-premium #username { color: #2563eb; background: none; border: none; font-size: 1.2em; margin-bottom: 5px; padding: 5px; cursor: pointer; }
         body.theme-premium .tile { background: var(--card-bg); color: var(--text); border-radius: 16px; padding: 25px 15px; animation: none; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: auto; min-width: 130px; text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center;}
 
-        body.theme-terminal { margin: 0; background: #050505; font-family: 'Courier Prime', monospace; color: #00ff00; text-align: left; padding: 20px; }
-        body.theme-terminal header { font-size: 2.5em; text-align: center; font-family: 'Courier Prime', monospace; text-shadow: 0 0 5px #00ff00; margin-bottom: 10px; }
-        body.theme-terminal header::before { content: "root@orkanet:~# "; font-size: 0.5em; color: #888; }
-        body.theme-terminal .vip-tag { font-size: 0.5em; color: #ff00ff; display: block; text-shadow: none; }
-        body.theme-terminal .stats-bar { background: #111; border: 1px dashed #00ff00; padding: 10px; margin-bottom: 20px; display: flex; justify-content: flex-start; gap: 40px; font-size: 0.9em; flex-wrap: wrap; }
-        body.theme-terminal .stat-val { color: #fff; font-weight: bold; }
-        body.theme-terminal #username { font-size: 1.1em; margin-bottom: 5px; background: none; border: none; border-left: 3px solid #00ff00; padding-left: 10px; cursor: pointer; }
-        body.theme-terminal .tile { background: #000; color: #00ff00; border: 1px solid #00ff00; border-radius: 0px; width: 44%; min-width: 130px; padding: 10px 5px; text-decoration: none; text-align: center; font-family: 'Courier Prime', monospace; display: flex; align-items: center; justify-content: center;}
-        body.theme-terminal .tile::before { content: "./"; color: #888; }
-        body.theme-terminal .tile:hover { background: #00ff00; color: #000; }
+        body.theme-dark { margin: 0; background: #121212; font-family: 'Inter', sans-serif; color: #e0e0e0; text-align: center; }
+        body.theme-dark header { background: #1f1f1f; padding: 30px; font-size: 2.5em; color: #ffffff; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        body.theme-dark .stats-bar { background: #1e1e1e; border: 1px solid #333; color: #aaa; padding: 10px; margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; font-size: 0.8em; flex-wrap: wrap; }
+        body.theme-dark .stat-val { color: #bb86fc; font-weight: bold; }
+        body.theme-dark #username { color: #bb86fc; background: none; border: none; font-size: 1.2em; cursor: pointer; }
+        body.theme-dark .tile { background: #1e1e1e; color: #ffffff; border: 1px solid #333; border-radius: 8px; padding: 20px; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        body.theme-dark .tile:hover { background: #2d2d2d; border-color: #bb86fc; }
 
-        body.theme-windows { margin: 0; background: #3b6ea5; font-family: 'Tahoma', 'Inter', sans-serif; color: #000; text-align: center; }
-        body.theme-windows header { background: linear-gradient(to right, #0058e6, #3a95ff); color: white; padding: 15px; font-size: 2em; text-shadow: 1px 1px 2px #000; text-align: left; border-bottom: 2px solid #ffffff; box-shadow: 0 4px 5px rgba(0,0,0,0.3); }
-        body.theme-windows .vip-tag { font-size: 0.4em; color: #ffcc00; display: inline-block; margin-left: 20px; }
-        body.theme-windows .stats-bar { background: #f1f1f1; border: 2px outset #fff; color: #000; padding: 5px; margin: 10px; display: flex; justify-content: space-around; font-size: 0.8em; box-shadow: inset 1px 1px 1px #808080; flex-wrap: wrap; }
-        body.theme-windows .stat-val { color: blue; font-weight: bold; }
-        body.theme-windows #username { background: #fff; border: 2px inset #fff; margin: 5px auto; width: fit-content; padding: 5px 15px; font-weight: bold; text-align: left; color: #333; cursor: pointer; }
-        body.theme-windows .tile { background: #ece9d8; color: #000; border-top: 2px solid #fff; border-left: 2px solid #fff; border-right: 2px solid #707070; border-bottom: 2px solid #707070; border-radius: 3px; width: 44%; min-width: 130px; padding: 15px 5px; text-decoration: none; font-family: sans-serif; font-weight: bold; box-shadow: 1px 1px 3px rgba(0,0,0,0.2); text-align: center; display: flex; align-items: center; justify-content: center;}
-        body.theme-windows .tile:active { border-top: 2px solid #707070; border-left: 2px solid #707070; border-right: 2px solid #fff; border-bottom: 2px solid #fff; }
-
-        body.theme-cyberpunk { 
+        body.theme-cyberpunk-legacy { 
             --cyber-bg: #0f0f1a; --cyber-card: #1a1a2e; --cyber-accent: #00d9ff; --cyber-accent2: #ff006e; --cyber-text: #e0e0e0; --cyber-text-dim: #8d8daa;
             margin: 0; background: var(--cyber-bg); font-family: 'Segoe UI', sans-serif; color: var(--cyber-text); text-align: center; min-height: 100vh;
             background-image: radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(255, 0, 110, 0.1) 0%, transparent 50%);
         }
-        body.theme-cyberpunk header { background: linear-gradient(135deg, var(--cyber-accent), var(--cyber-accent2)); padding: 20px; box-shadow: 0 4px 20px rgba(0, 217, 255, 0.3); font-size: 3rem; font-weight: 900; letter-spacing: 4px; color: #fff; text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
-        body.theme-cyberpunk .vip-tag { font-size: 1rem; color: #ffcc00; margin-top: 5px; font-weight: bold; text-shadow: 0 0 10px #ffcc00; display: block; }
-        body.theme-cyberpunk .stats-bar { background: var(--cyber-card); border-bottom: 1px solid rgba(0, 217, 255, 0.2); padding: 15px; display: flex; justify-content: center; gap: 40px; font-size: 0.9rem; color: var(--cyber-text-dim); flex-wrap: wrap; }
-        body.theme-cyberpunk .stat-val { color: var(--cyber-accent); font-weight: bold; }
-        body.theme-cyberpunk #username { color: var(--cyber-accent); font-weight: bold; margin: 5px 0; font-size: 1.1rem; background: none; border: none; cursor: pointer; }
-        body.theme-cyberpunk .tile { background: var(--cyber-card); color: var(--cyber-text); border-radius: 12px; border: 2px solid transparent; padding: 20px 15px; text-decoration: none; font-weight: 600; position: relative; overflow: hidden; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; text-align: center;}
-        body.theme-cyberpunk .tile::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(0, 217, 255, 0.2), transparent); transition: left 0.5s ease; }
-        body.theme-cyberpunk .tile:hover::before { left: 100%; }
-        body.theme-cyberpunk .tile:hover { border-color: var(--cyber-accent); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0, 217, 255, 0.3); color: var(--cyber-accent); }
+        body.theme-cyberpunk-legacy header { background: linear-gradient(135deg, var(--cyber-accent), var(--cyber-accent2)); padding: 20px; box-shadow: 0 4px 20px rgba(0, 217, 255, 0.3); font-size: 3rem; font-weight: 900; letter-spacing: 4px; color: #fff; text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
+        body.theme-cyberpunk-legacy .vip-tag { font-size: 1rem; color: #ffcc00; margin-top: 5px; font-weight: bold; text-shadow: 0 0 10px #ffcc00; display: block; }
+        body.theme-cyberpunk-legacy .stats-bar { background: var(--cyber-card); border-bottom: 1px solid rgba(0, 217, 255, 0.2); padding: 15px; display: flex; justify-content: center; gap: 40px; font-size: 0.9rem; color: var(--cyber-text-dim); flex-wrap: wrap; }
+        body.theme-cyberpunk-legacy .stat-val { color: var(--cyber-accent); font-weight: bold; }
+        body.theme-cyberpunk-legacy #username { color: var(--cyber-accent); font-weight: bold; margin: 5px 0; font-size: 1.1rem; background: none; border: none; cursor: pointer; }
+        body.theme-cyberpunk-legacy .tile { background: var(--cyber-card); color: var(--cyber-text); border-radius: 12px; border: 2px solid transparent; padding: 20px 15px; text-decoration: none; font-weight: 600; position: relative; overflow: hidden; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; text-align: center;}
+        body.theme-cyberpunk-legacy .tile:hover { border-color: var(--cyber-accent); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0, 217, 255, 0.3); color: var(--cyber-accent); }
 
         .desktop-only { display: none; font-size: 0.3em; color: #ffcc00; vertical-align: middle; margin-left: 10px; text-shadow: 0 0 5px #ffcc00; }
         @media (min-width: 800px) { .desktop-only { display: inline-block; } }
         
         .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 20px 10px; }
-        body.theme-premium .grid, body.theme-cyberpunk .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; padding: 40px; max-width: 1200px; margin: 0 auto; }
-        @media(min-width: 600px) { .tile { width: 22% !important; } body.theme-premium .tile, body.theme-cyberpunk .tile { width: auto !important; } }
+        body.theme-premium .grid, body.theme-cyberpunk-legacy .grid, body.theme-dark .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; padding: 40px; max-width: 1200px; margin: 0 auto; }
+        body.theme-cyberpunk .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; padding: 30px; max-width: 1200px; margin: 0 auto; }
+
+        @media(min-width: 600px) { 
+            .tile { width: 22% !important; } 
+            body.theme-premium .tile, body.theme-cyberpunk-legacy .tile, body.theme-dark .tile, body.theme-cyberpunk .tile { width: auto !important; } 
+        }
         
         .controls { margin: 10px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 10px; }
         .btn-small { background: rgba(0,255,255,0.2); border: 1px solid #00ffff; color: #00ffff; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-family: inherit; font-weight: bold;}
         
         body.theme-premium .btn-small { background: var(--primary); border: none; color: white; padding: 12px 25px; border-radius: 8px; }
-        body.theme-terminal .btn-small { background: #000; border: 1px solid #00ff00; color: #00ff00; border-radius: 0; }
-        body.theme-windows .btn-small { background: #ece9d8; border-top: 2px solid #fff; border-left: 2px solid #fff; border-right: 2px solid #707070; border-bottom: 2px solid #707070; color: #000; border-radius: 3px; }
-        body.theme-cyberpunk .btn-small { background: #1a1a2e; border: 1px solid #00d9ff; color: #e0e0e0; padding: 10px 20px; border-radius: 8px; }
+        body.theme-dark .btn-small { background: #2d2d2d; border: 1px solid #bb86fc; color: #bb86fc; padding: 10px 20px; border-radius: 6px; }
+        body.theme-cyberpunk-legacy .btn-small { background: #1a1a2e; border: 1px solid #00d9ff; color: #e0e0e0; padding: 10px 20px; border-radius: 8px; }
+        
+        body.theme-cyberpunk .btn-small { 
+            background: linear-gradient(135deg, rgba(20, 5, 35, 0.5), rgba(10, 0, 20, 0.5));
+            border: 1px solid #00ffff; 
+            color: #00ffff; 
+            padding: 8px 16px; 
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75em;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+            cursor: pointer;
+            clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+            transition: all 0.2s ease;
+        }
+        body.theme-cyberpunk .btn-small:hover {
+            border-color: #ff007f;
+            box-shadow: 0 0 15px #ff007f;
+            color: #fff;
+        }
 
         #cookie-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
         #cookie-box { background: #111; border: 3px solid #00ffff; padding: 30px; border-radius: 15px; max-width: 400px; width: 100%; text-align: center; color: #00ffff; }
@@ -107,9 +245,9 @@
         #orkanet-footer { margin-top: 30px; padding: 15px; text-align: center; font-size: 0.9em; opacity: 0.8; }
         body.theme-standard #orkanet-footer { color: #00ffff; border-top: 1px solid #00ffff; }
         body.theme-premium #orkanet-footer { color: #2563eb; border-top: 1px solid #ddd; }
-        body.theme-terminal #orkanet-footer { color: #00ff00; border-top: 1px dashed #00ff00; }
-        body.theme-windows #orkanet-footer { color: #fff; border-top: 2px outset #fff; }
-        body.theme-cyberpunk #orkanet-footer { color: #8d8daa; border-top: 1px solid rgba(0, 217, 255, 0.2); background: #1a1a2e;}
+        body.theme-dark #orkanet-footer { color: #888; border-top: 1px solid #333; }
+        body.theme-cyberpunk-legacy #orkanet-footer { color: #8d8daa; border-top: 1px solid rgba(0, 217, 255, 0.2); background: #1a1a2e;}
+        body.theme-cyberpunk #orkanet-footer { color: #00ffff; border-top: 1px solid #00ffff; background: rgba(10, 5, 20, 0.7); font-family: 'Orbitron', sans-serif;}
 
         @keyframes rainbowGlow {
             0% { filter: hue-rotate(0deg); }
@@ -129,9 +267,18 @@
             font-family: inherit;
         }
         body.theme-premium .friends-panel { background: #fff; border: 1px solid #ddd; color: #1e293b; }
-        body.theme-terminal .friends-panel { background: #000; border: 1px dashed #00ff00; color: #00ff00; border-radius: 0; text-align: left; }
-        body.theme-windows .friends-panel { background: #ece9d8; border: 2px outset #fff; color: #000; border-radius: 3px; }
-        body.theme-cyberpunk .friends-panel { background: #1a1a2e; border: 2px solid #00d9ff; color: #e0e0e0; box-shadow: 0 0 15px rgba(0, 217, 255, 0.2); }
+        body.theme-dark .friends-panel { background: #1e1e1e; border: 1px solid #333; color: #fff; }
+        body.theme-cyberpunk-legacy .friends-panel { background: #1a1a2e; border: 2px solid #00d9ff; color: #e0e0e0; box-shadow: 0 0 15px rgba(0, 217, 255, 0.2); }
+        body.theme-cyberpunk .friends-panel { 
+            background: rgba(20, 5, 35, 0.65); 
+            backdrop-filter: blur(8px);
+            border: 1px solid #00ffff; 
+            color: #00ffff; 
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3); 
+            font-family: 'Orbitron', sans-serif;
+            border-radius: 0;
+            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+        }
 
         .friends-list {
             display: flex;
@@ -140,7 +287,6 @@
             justify-content: center;
             margin-top: 15px;
         }
-        body.theme-terminal .friends-list { justify-content: flex-start; }
 
         .roblox-avatar {
             width: 50px;
@@ -158,8 +304,8 @@
             position: relative;
         }
         body.theme-standard .roblox-avatar { border-color: #00ffff; }
-        body.theme-terminal .roblox-avatar { border-radius: 0; border-color: #00ff00; font-family: monospace; }
-        body.theme-cyberpunk .roblox-avatar { border-color: #ff006e; }
+        body.theme-cyberpunk-legacy .roblox-avatar { border-color: #ff006e; }
+        body.theme-cyberpunk .roblox-avatar { border-color: #00ffff; box-shadow: 0 0 10px #00ffff; }
 
         .status-dot {
             width: 12px;
@@ -233,8 +379,7 @@
             gap: 10px;
             font-size: 0.9em;
         }
-        body.theme-terminal .invite-box { background: #000; border: 1px dashed #00ff00; color: #00ff00; border-radius: 0; }
-        body.theme-windows .invite-box { background: #fff; border: 2px inset #fff; color: #000; }
+        body.theme-cyberpunk .invite-box { background: rgba(0, 255, 255, 0.1); border-color: #00ffff; }
 
         .user-search-results {
             max-height: 200px;
@@ -255,9 +400,9 @@
             font-size: 0.85em;
         }
         body.theme-premium .user-search-item { background: #f1f5f9; border-color: #cbd5e1; }
-        body.theme-terminal .user-search-item { background: #111; border-color: #00ff00; }
-        body.theme-windows .user-search-item { background: #fff; border-color: #707070; }
-        body.theme-cyberpunk .user-search-item { background: #0f0f1a; border-color: #00d9ff; }
+        body.theme-dark .user-search-item { background: #252525; border-color: #444; }
+        body.theme-cyberpunk-legacy .user-search-item { background: #0f0f1a; border-color: #00d9ff; }
+        body.theme-cyberpunk .user-search-item { background: rgba(10, 5, 20, 0.8); border-color: #00ffff; }
 
         #dm-modal {
             display: none;
@@ -335,7 +480,6 @@
             font-family: inherit;
         }
 
-        /* SHOUTBOX */
         .shoutbox-panel {
             max-width: 600px;
             margin: 30px auto 10px auto;
@@ -346,8 +490,16 @@
             font-family: inherit;
             box-shadow: 0 0 10px rgba(255,0,217,0.2);
         }
-        body.theme-terminal .shoutbox-panel { background: #000; border: 1px dashed #00ff00; }
-        body.theme-windows .shoutbox-panel { background: #ece9d8; border: 2px outset #fff; }
+        body.theme-dark .shoutbox-panel { background: #1e1e1e; border: 1px solid #333; }
+        body.theme-cyberpunk .shoutbox-panel { 
+            background: rgba(20, 5, 35, 0.65); 
+            backdrop-filter: blur(8px);
+            border: 1px solid #ff007f; 
+            box-shadow: 0 0 15px rgba(255,0,127,0.3);
+            font-family: 'Orbitron', sans-serif;
+            border-radius: 0;
+            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+        }
         
         #shoutbox-messages {
             height: 150px;
@@ -365,9 +517,7 @@
         }
         .shout-msg { word-break: break-word; }
         .shout-user { font-weight: bold; color: #ff00d9; cursor: pointer; }
-        body.theme-terminal .shout-user { color: #00ff00; }
 
-        /* PROFIL */
         .profile-card {
             display: flex;
             align-items: center;
@@ -385,7 +535,6 @@
         }
         .bio-text { font-family: sans-serif; font-size: 0.8em; opacity: 0.8; font-style: italic; max-width: 250px; }
 
-        /* ZWĘŻONY SEARCH BAR DLA TELEFONÓW */
         .search-container {
             margin: 15px auto 10px auto;
             width: 85%;
@@ -403,6 +552,13 @@
             box-shadow: 0 0 10px rgba(0,255,255,0.3);
             outline: none;
             box-sizing: border-box;
+        }
+        body.theme-cyberpunk #tile-search-input {
+            border-radius: 0;
+            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+            background: rgba(20, 5, 35, 0.6);
+            border-color: #00ffff;
+            font-family: 'Orbitron', sans-serif;
         }
     </style>
 </head>
@@ -439,7 +595,6 @@
     <div id="stat-coins-label">🪙 OrkaCoiny: <span id="coins-counter" class="stat-val" style="color:#00ffff;">0</span></div>
 </div>
 
-<!-- PROFIL - EDYCJA AKTYWOWANA DZIĘKI KLIKNIĘCIU W NICK -->
 <div class="profile-card">
     <div class="avatar-display" id="my-avatar">😎</div>
     <div>
@@ -454,78 +609,8 @@
     <button class="btn-small" id="logout-btn" style="background:#ff4444; color:white; border:none;" onclick="logout()">Wyloguj 🚪</button>
     <button class="btn-small" id="random-btn" onclick="showRandomPage()">🎲 Losowa Strona</button>
     <button class="btn-small" id="music-btn" onclick="toggleMusic()">🎵 Muzyka</button>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;900&display=swap');
-
-  .cyber-box {
-    display: inline-block;
-    padding: 2px;
-    background: linear-gradient(135deg, #00ffff, #ff007f);
-    /* Kanciaste, cyberpunkowe docięcie narożnika */
-    clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
-    margin: 15px 0;
-  }
-
-  .cyber-link {
-    display: block;
-    font-family: 'Orbitron', system-ui, sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: #00ffff;
-    
-    /* Zmieniono wartości alfa z 0.88/0.95 na 0.45, aby fiolet stanowił 45%, a Night City 55% */
-    background: 
-      linear-gradient(135deg, rgba(20, 5, 35, 0.45), rgba(10, 0, 20, 0.45)),
-      url('NightCity.png') center/cover no-repeat;
-    
-    padding: 16px 24px;
-    border: 1px solid rgba(0, 255, 255, 0.5);
-    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
-    
-    /* Cyjanowy i fioletowy glow */
-    box-shadow: 
-      inset 0 0 15px rgba(0, 255, 255, 0.15),
-      0 0 15px rgba(0, 255, 255, 0.4),
-      0 0 30px rgba(138, 43, 226, 0.3);
-      
-    text-shadow: 0 0 8px #00ffff, 0 0 15px rgba(0, 255, 255, 0.6);
-    transition: all 0.3s ease;
-    position: relative;
-  }
-
-  /* Efekt po najechaniu myszką */
-  .cyber-link:hover {
-    color: #ffffff;
-    /* Dodano tło z obrazkiem również na hover, żeby obrazek nie znikał po najechaniu */
-    background: 
-      linear-gradient(135deg, rgba(40, 10, 60, 0.45), rgba(20, 0, 40, 0.45)),
-      url('NightCity.png') center/cover no-repeat;
-    border-color: #00ffff;
-    box-shadow: 
-      inset 0 0 20px rgba(0, 255, 255, 0.3),
-      0 0 25px #00ffff,
-      0 0 50px #8a2be2;
-    text-shadow: 0 0 12px #00ffff, 0 0 25px #00ffff;
-    transform: scale(1.02);
-  }
-
-  /* Mały ostrzegawczy akcent na końcu */
-  .cyber-warning {
-    color: #ff0055;
-    text-shadow: 0 0 8px #ff0055;
-  }
-</style>
-
-<div class="cyber-box">
-  <a href="orkanet.html" class="cyber-link">
-    ⚡ Przejdź na nowszą wersję OrkaNetu. <span class="cyber-warning">[Ta wersja nie będzie aktualizowana]</span>
-  </a>
 </div>
-</div>
-<!-- ZWĘŻONY SEARCH BAR DLA TELEFONÓW -->
+
 <div class="search-container">
     <input type="text" id="tile-search-input" placeholder="🔍 Szukaj gry..." oninput="filterTiles()">
 </div>
@@ -540,7 +625,6 @@
         <button class="btn-small" id="btn-add-friend" onclick="sendFriendRequest()" style="padding: 5px 10px; font-size: 0.8em;">Dodaj</button>
     </div>
 
-    <!-- Szukanie graczy w bazie -->
     <div style="margin-top: 15px; border-top: 1px dashed rgba(0, 255, 255, 0.3); padding-top: 10px;">
         <div style="font-size: 0.9em; margin-bottom: 8px;">🔍 SZUKAJ GRACZY W BAZIE</div>
         <input type="text" id="all-users-search" placeholder="Filtruj graczy..." oninput="filterAllUsers()" style="padding: 5px 10px; border-radius: 5px; border: 1px solid #00ffff; background: #000; color: #fff; font-family: inherit; font-size: 0.8em; width: 90%; max-width: 250px;">
@@ -553,7 +637,6 @@
     </div>
 </div>
 
-<!-- Modal DM -->
 <div id="dm-modal">
     <div id="dm-box">
         <div id="dm-header">
@@ -597,23 +680,22 @@
     <a class="tile" href="Chicken.html">Kurka 🐔</a>
     <a class="tile" href="rubik.html">Kostka Rubika 🎲</a>
     <a class="tile" href="ShortenMe.html">Skracacz Linków 🔗</a>
-    <a class="tile" href="robluxy.html">Free Robux (100% Legitne!) 💰</a>
+    <a class="tile" href="robluxy.html">Free Robux 💰</a>
     <a class="tile" href="orkadio.html">Ptasie Radyjo 📻</a>
     <a class="tile" href="tybzunku.html">Nie pytaj. 🤫</a>
-    <a class="tile" href="thissitehasnolitteralsens.html">moja pierwsza strona 📄</a>
-    <a class="tile" href="jackbrowser.html">JackBrowser (podróba Chrome) 🌐</a>
-    <a class="tile" href="robox.html">Zepsuty Roblox Okropnie O Ja 💥</a>
+    <a class="tile" href="thissitehasnolitteralsens.html">moja 1 strona 📄</a>
+    <a class="tile" href="jackbrowser.html">JackBrowser 🌐</a>
+    <a class="tile" href="robox.html">Zepsuty Roblox 💥</a>
     <a class="tile" href="wouldyoustasiekcode.html">Testuj swój Kod 💻</a>
     <a class="tile" href="zmien_nick.html">Zmień Nick ✏️</a>
     <a class="tile" href="dajmikase.html">Przelicznik walut 💱</a>
     <a class="tile" href="supramariusz.html">Mario 🍄</a>
     <a class="tile" href="https://krispolaris.github.io/Glupie-AI">ai very smart 🧠</a>
-    <a class="tile" href="https://krispolaris.github.io/SafeCraft">Minecraft za darmo 🧱</a>
-    <a class="tile" href="areualover.html">tester miłości ale dziwny</a>
+    <a class="tile" href="https://krispolaris.github.io/SafeCraft">Minecraft darmowy 🧱</a>
+    <a class="tile" href="areualover.html">tester miłości</a>
     <a class="tile" href="https://krispolaris.github.io/SafeCraft/ezul.html">eŻul</a>
 </main>
 
-<!-- SHOUTBOX NA DÓŁ STRONY -->
 <div class="shoutbox-panel">
     <div style="font-size: 1.1em; margin-bottom: 8px; font-weight: bold; color:#ff00d9;">📢 SHOUTBOX (Czat na Żywo)</div>
     <div id="shoutbox-messages">Ładowanie wiadomości...</div>
@@ -650,7 +732,50 @@
     let onlineUsersMap = {};
     let unreadDMs = {};
 
+    async function checkDailyReward() {
+        const today = new Date().toDateString();
+        const lastClaim = localStorage.getItem('lastDailyReward');
+
+        if (lastClaim !== today) {
+            alert("🎁 ODEBRAŁEŚ DZIENNĄ NAGRODĘ! Otrzymujesz +5 OrkaCoinów!");
+            localStorage.setItem('lastDailyReward', today);
+            
+            if (myUser && myUser !== "Gość") {
+                try {
+                    await updateDoc(doc(db, "users", myUser), { coins: increment(5) });
+                } catch(e) {
+                    await setDoc(doc(db, "users", myUser), { coins: 5 }, { merge: true });
+                }
+            } else {
+                let localCoins = parseInt(localStorage.getItem('guestCoins') || "0", 10);
+                localStorage.setItem('guestCoins', localCoins + 5);
+                const coinsEl = document.getElementById("coins-counter");
+                if (coinsEl) coinsEl.textContent = localCoins + 5;
+            }
+        }
+    }
+
+    function checkGuestNotice() {
+        if (myUser.toLowerCase().includes("gość") || myUser.toLowerCase().includes("gosc")) {
+            const lastNotice = localStorage.getItem('lastGuestNotice');
+            const now = Date.now();
+            const threeHours = 3 * 60 * 60 * 1000;
+
+            if (!lastNotice || (now - parseInt(lastNotice, 10)) > threeHours) {
+                setTimeout(() => {
+                    if (confirm("Proszę, zrób konto, aby zapisać swoje postępy i znajomych! Czy chcesz zmienić nick/założyć konto teraz?")) {
+                        window.location.href = "zmien_nick.html";
+                    }
+                    localStorage.setItem('lastGuestNotice', now.toString());
+                }, 1500);
+            }
+        }
+    }
+
     if (myUser) {
+        checkDailyReward();
+        checkGuestNotice();
+
         const userRef = doc(db, "users", myUser);
         
         const updateActivity = () => {
@@ -674,7 +799,6 @@
         });
     }
 
-    // MENU EDYCYJNE AKTYWOWANE NAZWY
     window.openProfileMenu = async function() {
         if(myUser === "Gość") {
             alert("Zaloguj się, aby edytować profil!");
@@ -1054,9 +1178,10 @@
         });
     }
 
-    const themes = ['standard', 'premium', 'terminal', 'windows', 'cyberpunk'];
-    let currentThemeIndex = themes.indexOf(localStorage.getItem('theme') || 'standard');
-    if (currentThemeIndex === -1) currentThemeIndex = 0;
+    // LISTA MOTYWÓW: 1. STANDARD, 2. CYBERPUNK (DRUGI W KOLEJNOŚCI!), 3. PREMIUM, 4. DARK, 5. CYBERPUNK LEGACY
+    const themes = ['standard', 'cyberpunk', 'premium', 'dark', 'cyberpunk-legacy'];
+    let currentThemeIndex = themes.indexOf(localStorage.getItem('theme') || 'cyberpunk');
+    if (currentThemeIndex === -1) currentThemeIndex = 1;
 
     applyTheme(themes[currentThemeIndex]);
 
@@ -1079,23 +1204,23 @@
             btn.style.background = "#ffcc00"; btn.style.color = "#000";
             if(fInput) { fInput.style.borderColor = "#00ffff"; fInput.style.background = "#000"; fInput.style.color = "#fff"; }
             if(uInput) { uInput.style.borderColor = "#00ffff"; uInput.style.background = "#000"; uInput.style.color = "#fff"; }
+        } else if (theme === 'cyberpunk') {
+            btn.textContent = "⚡ TRYB CYBERPUNK ⚡";
+            btn.style.background = "linear-gradient(90deg, #00ffff, #ff007f)"; btn.style.color = "#000";
+            if(fInput) { fInput.style.borderColor = "#00ffff"; fInput.style.background = "rgba(10,5,20,0.8)"; fInput.style.color = "#00ffff"; }
+            if(uInput) { uInput.style.borderColor = "#00ffff"; uInput.style.background = "rgba(10,5,20,0.8)"; uInput.style.color = "#00ffff"; }
         } else if (theme === 'premium') {
             btn.textContent = "💎 TRYB PREMIUM 💎";
             btn.style.background = "#2563eb"; btn.style.color = "#fff";
             if(fInput) { fInput.style.borderColor = "#ddd"; fInput.style.background = "#fff"; fInput.style.color = "#000"; }
             if(uInput) { uInput.style.borderColor = "#ddd"; uInput.style.background = "#fff"; uInput.style.color = "#000"; }
-        } else if (theme === 'terminal') {
-            btn.textContent = "🐧 TRYB TERMINAL 🐧";
-            btn.style.background = "#00ff00"; btn.style.color = "#000";
-            if(fInput) { fInput.style.borderColor = "#00ff00"; fInput.style.background = "#000"; fInput.style.color = "#00ff00"; }
-            if(uInput) { uInput.style.borderColor = "#00ff00"; uInput.style.background = "#000"; uInput.style.color = "#00ff00"; }
-        } else if (theme === 'windows') {
-            btn.textContent = "💻 TRYB WINDOWS 💻";
-            btn.style.background = "#ece9d8"; btn.style.color = "#000";
-            if(fInput) { fInput.style.borderColor = "#707070"; fInput.style.background = "#fff"; fInput.style.color = "#000"; }
-            if(uInput) { uInput.style.borderColor = "#707070"; uInput.style.background = "#fff"; uInput.style.color = "#000"; }
-        } else if (theme === 'cyberpunk') {
-            btn.textContent = "🤖 TRYB CYBERPUNK 🤖";
+        } else if (theme === 'dark') {
+            btn.textContent = "🌙 TRYB CIEMNY 🌙";
+            btn.style.background = "#bb86fc"; btn.style.color = "#000";
+            if(fInput) { fInput.style.borderColor = "#444"; fInput.style.background = "#252525"; fInput.style.color = "#fff"; }
+            if(uInput) { uInput.style.borderColor = "#444"; uInput.style.background = "#252525"; uInput.style.color = "#fff"; }
+        } else if (theme === 'cyberpunk-legacy') {
+            btn.textContent = "⚙️ CYBERPUNK LEGACY ⚙️";
             btn.style.background = "#ff006e"; btn.style.color = "#fff";
             if(fInput) { fInput.style.borderColor = "#00d9ff"; fInput.style.background = "#1a1a2e"; fInput.style.color = "#e0e0e0"; }
             if(uInput) { uInput.style.borderColor = "#00d9ff"; uInput.style.background = "#1a1a2e"; uInput.style.color = "#e0e0e0"; }

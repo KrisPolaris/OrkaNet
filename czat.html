@@ -93,6 +93,7 @@
     .msg-dm { border: 1px solid #ff00ff !important; box-shadow: 0 0 8px #ff00ff; }
 
     .user { font-size: 0.75rem; font-weight: bold; margin-bottom: 4px; color: #00ff00; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .user-avatar { font-size: 1.1rem; vertical-align: middle; display: inline-block; line-height: 1; }
 
     /* Stylik dla Rang (Badges) */
     .role-badge {
@@ -212,6 +213,7 @@
         }
 
         const userRolesCache = {};
+        const userAvatarsCache = {}; // Cache dla profilówek / emotek
         const MOD_LIST = ["krispolaris", "admin", "kris", "szym", "sim"];
 
         function getRoleBadgeHTML(userName, roleFromDb) {
@@ -256,6 +258,26 @@
             }
             userRolesCache[userName] = "";
             return "";
+        }
+
+        // Pobieranie Profilówki / Emoji Użytkownika (z opcją domyślną 😁)
+        async function getUserAvatar(userName) {
+            if (userAvatarsCache[userName] !== undefined) {
+                return userAvatarsCache[userName];
+            }
+            try {
+                const userDoc = await getDoc(doc(db, "users", userName));
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    const avatar = data.avatar || "😁";
+                    userAvatarsCache[userName] = avatar;
+                    return avatar;
+                }
+            } catch (e) {
+                console.error("Błąd pobierania avatara:", e);
+            }
+            userAvatarsCache[userName] = "😁";
+            return "😁";
         }
 
         function getDMChannelId(user1, user2) {
@@ -359,8 +381,6 @@
         window.removeMsg = async (id) => { 
             if(confirm("Usunąć wiadomość?")) await deleteDoc(doc(db, "messages", id)); 
         };
-
-    // no smores? :(
     
         let unsubscribe;
         function listenToMessages() {
@@ -378,9 +398,15 @@
                         const isDM = data.room.startsWith('dm_');
 
                         let roleBadge = "";
+                        let userAvatarHtml = `<span class="user-avatar">😁</span>`;
+
                         if (!isBot) {
                             const uRole = await getUserRole(data.user);
                             roleBadge = getRoleBadgeHTML(data.user, uRole);
+                            const uAvatar = await getUserAvatar(data.user);
+                            userAvatarHtml = `<span class="user-avatar">${uAvatar}</span>`;
+                        } else {
+                            userAvatarHtml = `<img src="Bebe.jpg" style="width:18px;height:18px;border-radius:50%">`;
                         }
 
                         const div = document.createElement('div');
@@ -388,7 +414,7 @@
                         
                         div.innerHTML = `
                             <span class="user" ${isBot ? 'style="color:#ffcc00"' : ''}>
-                                ${isBot ? `<img src="Bebe.jpg" style="width:18px;height:18px;border-radius:50%">` : ''}
+                                ${userAvatarHtml}
                                 <span>${data.user}</span>
                                 ${roleBadge}
                                 ${isDM ? '<span class="dm-badge">DM</span>' : ''}
