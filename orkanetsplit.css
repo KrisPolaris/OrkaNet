@@ -1,0 +1,553 @@
+
+body.theme-standard { 
+    margin: 0; 
+    background: #000 url('456.jpg') no-repeat center center fixed; 
+    background-size: cover; 
+    font-family: 'Bungee', cursive; 
+    color: #00ffff; 
+    text-align: center; 
+}
+body.theme-standard header { padding: 30px 0 10px 0; font-size: 3.5em; text-shadow: 0 0 10px #00ffff; }
+body.theme-standard .vip-tag { font-size: 0.4em; color: #ffcc00; display: block; text-shadow: 0 0 10px #ffcc00; letter-spacing: 2px; }
+body.theme-standard .stats-bar { background: rgba(0,0,0,0.7); border-top: 1px solid #00ffff; border-bottom: 1px solid #00ffff; padding: 10px; margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; font-size: 0.8em; flex-wrap: wrap; }
+body.theme-standard .stat-val { color: #ffcc00; }
+body.theme-standard #username { font-size: 1.2em; margin-bottom: 5px; background: rgba(0,0,0,0.5); padding: 5px 10px; border-bottom: 1px solid #00ffff; display: inline-block; cursor: pointer; }
+body.theme-standard #username:hover { color: #fff; text-shadow: 0 0 8px #00ffff; }
+
+body.theme-standard .tile { 
+    background: rgba(17,17,17,0.85); 
+    color: #00ffff; 
+    border: 2px solid #00ffff; 
+    border-radius: 12px; 
+    width: 44%; 
+    min-width: 130px; 
+    padding: 15px 5px; 
+    text-decoration: none; 
+    animation: neonPulse 2s infinite ease-in-out; 
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+@keyframes neonPulse { 0%, 100% { box-shadow: 0 0 5px #00ffff; } 50% { box-shadow: 0 0 20px #00ffff; } }
+
+/* ========================================================
+   NOWY, EPICKI TRYB CYBERPUNK (Z TŁEM NIGHT CIYU)
+   ======================================================== */
+body.theme-cyberpunk {
+    margin: 0;
+    background: #05050d url('NightCity.png') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Orbitron', system-ui, sans-serif;
+    color: #00ffff;
+    text-align: center;
+    min-height: 100vh;
+}
+
+body.theme-cyberpunk header {
+    padding: 25px 0 10px 0;
+    font-size: 3em;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: #00ffff;
+    text-shadow: 0 0 12px #00ffff, 0 0 25px rgba(0, 255, 255, 0.8);
+}
+
+body.theme-cyberpunk .vip-tag {
+    font-size: 0.4em;
+    color: #ff0055;
+    display: block;
+    text-shadow: 0 0 10px #ff0055;
+    letter-spacing: 2px;
+}
+
+body.theme-cyberpunk .stats-bar {
+    background: rgba(10, 5, 20, 0.65);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid rgba(0, 255, 255, 0.6);
+    border-bottom: 1px solid rgba(0, 255, 255, 0.6);
+    padding: 12px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    font-size: 0.8em;
+    letter-spacing: 1px;
+    flex-wrap: wrap;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+}
+
+body.theme-cyberpunk .stat-val { color: #ff007f; text-shadow: 0 0 8px #ff007f; }
+
+body.theme-cyberpunk #username {
+    font-size: 1.1em;
+    margin-bottom: 5px;
+    background: rgba(20, 5, 35, 0.7);
+    backdrop-filter: blur(5px);
+    padding: 8px 16px;
+    border: 1px solid #00ffff;
+    display: inline-block;
+    cursor: pointer;
+    letter-spacing: 1.5px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+
+body.theme-cyberpunk #username:hover {
+    color: #fff;
+    text-shadow: 0 0 12px #00ffff;
+    border-color: #ff007f;
+}
+
+/* Mniejsze kafelki pod styl CYBERFUNKY.WEBP */
+body.theme-cyberpunk .tile {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #00ffff;
+    background: 
+      linear-gradient(135deg, rgba(20, 5, 35, 0.45), rgba(10, 0, 20, 0.45)),
+      url('cyberfunky.webp') center/cover no-repeat;
+    
+    padding: 12px 16px;
+    border: 1px solid rgba(0, 255, 255, 0.5);
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    
+    box-shadow: 
+      inset 0 0 10px rgba(0, 255, 255, 0.15),
+      0 0 10px rgba(0, 255, 255, 0.3),
+      0 0 20px rgba(138, 43, 226, 0.2);
+      
+    text-shadow: 0 0 6px #00ffff;
+    transition: all 0.3s ease;
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* WSZYSTKIE GUZIKI PULSUJĄ NA CZERWONO CO 5s */
+    animation: redGlowPulse 5s infinite;
+}
+
+body.theme-cyberpunk .tile:hover {
+    color: #ffffff;
+    background: 
+      linear-gradient(135deg, rgba(40, 10, 60, 0.55), rgba(20, 0, 40, 0.55)),
+      url('cyberfunky.webp') center/cover no-repeat;
+    border-color: #00ffff;
+    box-shadow: 
+      inset 0 0 15px rgba(0, 255, 255, 0.4),
+      0 0 20px #00ffff,
+      0 0 40px #8a2be2;
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+    transform: scale(1.04);
+}
+
+@keyframes redGlowPulse {
+    0%, 80%, 100% {
+        border-color: rgba(0, 255, 255, 0.5);
+        box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.15), 0 0 10px rgba(0, 255, 255, 0.3), 0 0 20px rgba(138, 43, 226, 0.2);
+    }
+    85%, 95% {
+        border-color: #ff0055;
+        box-shadow: inset 0 0 15px rgba(255, 0, 85, 0.5), 0 0 25px #ff0055, 0 0 45px rgba(255, 0, 85, 0.8);
+        color: #fff;
+        text-shadow: 0 0 8px #ff0055;
+    }
+}
+
+body.theme-premium { --primary: #2563eb; --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b; --accent: #ffcc00; margin: 0; background: var(--bg); font-family: 'Bungee', cursive; color: var(--text); text-align: center; }
+body.theme-premium header { background: var(--card-bg); padding: 40px 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 2.5em; color: var(--primary); text-shadow: none; }
+body.theme-premium .stats-bar { background: #fff; border: 1px solid #ddd; color: #555; padding: 10px; margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; font-size: 0.8em; flex-wrap: wrap;}
+body.theme-premium .vip-tag { font-size: 0.3em; background: var(--accent); color: #000; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-top: 10px; letter-spacing: 0; text-shadow: none; }
+body.theme-premium #username { color: #2563eb; background: none; border: none; font-size: 1.2em; margin-bottom: 5px; padding: 5px; cursor: pointer; }
+body.theme-premium .tile { background: var(--card-bg); color: var(--text); border-radius: 16px; padding: 25px 15px; animation: none; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: auto; min-width: 130px; text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center;}
+
+body.theme-dark { margin: 0; background: #121212; font-family: 'Inter', sans-serif; color: #e0e0e0; text-align: center; }
+body.theme-dark header { background: #1f1f1f; padding: 30px; font-size: 2.5em; color: #ffffff; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+body.theme-dark .stats-bar { background: #1e1e1e; border: 1px solid #333; color: #aaa; padding: 10px; margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; font-size: 0.8em; flex-wrap: wrap; }
+body.theme-dark .stat-val { color: #bb86fc; font-weight: bold; }
+body.theme-dark #username { color: #bb86fc; background: none; border: none; font-size: 1.2em; cursor: pointer; }
+body.theme-dark .tile { background: #1e1e1e; color: #ffffff; border: 1px solid #333; border-radius: 8px; padding: 20px; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+body.theme-dark .tile:hover { background: #2d2d2d; border-color: #bb86fc; }
+
+body.theme-cyberpunk-legacy { 
+    --cyber-bg: #0f0f1a; --cyber-card: #1a1a2e; --cyber-accent: #00d9ff; --cyber-accent2: #ff006e; --cyber-text: #e0e0e0; --cyber-text-dim: #8d8daa;
+    margin: 0; background: var(--cyber-bg); font-family: 'Segoe UI', sans-serif; color: var(--cyber-text); text-align: center; min-height: 100vh;
+    background-image: radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(255, 0, 110, 0.1) 0%, transparent 50%);
+}
+body.theme-cyberpunk-legacy header { background: linear-gradient(135deg, var(--cyber-accent), var(--cyber-accent2)); padding: 20px; box-shadow: 0 4px 20px rgba(0, 217, 255, 0.3); font-size: 3rem; font-weight: 900; letter-spacing: 4px; color: #fff; text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
+body.theme-cyberpunk-legacy .vip-tag { font-size: 1rem; color: #ffcc00; margin-top: 5px; font-weight: bold; text-shadow: 0 0 10px #ffcc00; display: block; }
+body.theme-cyberpunk-legacy .stats-bar { background: var(--cyber-card); border-bottom: 1px solid rgba(0, 217, 255, 0.2); padding: 15px; display: flex; justify-content: center; gap: 40px; font-size: 0.9rem; color: var(--cyber-text-dim); flex-wrap: wrap; }
+body.theme-cyberpunk-legacy .stat-val { color: var(--cyber-accent); font-weight: bold; }
+body.theme-cyberpunk-legacy #username { color: var(--cyber-accent); font-weight: bold; margin: 5px 0; font-size: 1.1rem; background: none; border: none; cursor: pointer; }
+body.theme-cyberpunk-legacy .tile { background: var(--cyber-card); color: var(--cyber-text); border-radius: 12px; border: 2px solid transparent; padding: 20px 15px; text-decoration: none; font-weight: 600; position: relative; overflow: hidden; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; text-align: center;}
+body.theme-cyberpunk-legacy .tile:hover { border-color: var(--cyber-accent); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0, 217, 255, 0.3); color: var(--cyber-accent); }
+
+.desktop-only { display: none; font-size: 0.3em; color: #ffcc00; vertical-align: middle; margin-left: 10px; text-shadow: 0 0 5px #ffcc00; }
+@media (min-width: 800px) { .desktop-only { display: inline-block; } }
+
+.grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 20px 10px; }
+body.theme-premium .grid, body.theme-cyberpunk-legacy .grid, body.theme-dark .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; padding: 40px; max-width: 1200px; margin: 0 auto; }
+body.theme-cyberpunk .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; padding: 30px; max-width: 1200px; margin: 0 auto; }
+
+@media(min-width: 600px) { 
+    .tile { width: 22% !important; } 
+    body.theme-premium .tile, body.theme-cyberpunk-legacy .tile, body.theme-dark .tile, body.theme-cyberpunk .tile { width: auto !important; } 
+}
+
+.controls { margin: 10px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 10px; }
+.btn-small { background: rgba(0,255,255,0.2); border: 1px solid #00ffff; color: #00ffff; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-family: inherit; font-weight: bold;}
+
+body.theme-premium .btn-small { background: var(--primary); border: none; color: white; padding: 12px 25px; border-radius: 8px; }
+body.theme-dark .btn-small { background: #2d2d2d; border: 1px solid #bb86fc; color: #bb86fc; padding: 10px 20px; border-radius: 6px; }
+body.theme-cyberpunk-legacy .btn-small { background: #1a1a2e; border: 1px solid #00d9ff; color: #e0e0e0; padding: 10px 20px; border-radius: 8px; }
+
+body.theme-cyberpunk .btn-small { 
+    background: linear-gradient(135deg, rgba(20, 5, 35, 0.5), rgba(10, 0, 20, 0.5));
+    border: 1px solid #00ffff; 
+    color: #00ffff; 
+    padding: 8px 16px; 
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.75em;
+    letter-spacing: 1px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    cursor: pointer;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    transition: all 0.2s ease;
+}
+body.theme-cyberpunk .btn-small:hover {
+    border-color: #ff007f;
+    box-shadow: 0 0 15px #ff007f;
+    color: #fff;
+}
+
+#cookie-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
+#cookie-box { background: #111; border: 3px solid #00ffff; padding: 30px; border-radius: 15px; max-width: 400px; width: 100%; text-align: center; color: #00ffff; }
+.cookie-btn { font-family: inherit; font-size: 1.5em; cursor: pointer; border-radius: 5px; padding: 12px; border: none; width: 100%; }
+.btn-accept { background: #00ffff; color: #000; }
+.btn-reject { background: transparent; border: 1px solid #ff4444; color: #ff4444; margin-top: 10px; }
+
+#orkanet-footer { margin-top: 30px; padding: 15px; text-align: center; font-size: 0.9em; opacity: 0.8; }
+body.theme-standard #orkanet-footer { color: #00ffff; border-top: 1px solid #00ffff; }
+body.theme-premium #orkanet-footer { color: #2563eb; border-top: 1px solid #ddd; }
+body.theme-dark #orkanet-footer { color: #888; border-top: 1px solid #333; }
+body.theme-cyberpunk-legacy #orkanet-footer { color: #8d8daa; border-top: 1px solid rgba(0, 217, 255, 0.2); background: #1a1a2e;}
+body.theme-cyberpunk #orkanet-footer { color: #00ffff; border-top: 1px solid #00ffff; background: rgba(10, 5, 20, 0.7); font-family: 'Orbitron', sans-serif;}
+
+@keyframes rainbowGlow {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+}
+.rainbow-active, .rainbow-active #main-header {
+    animation: rainbowGlow 3s ease-in-out;
+}
+
+.friends-panel {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 15px;
+    background: rgba(17,17,17,0.85);
+    border: 2px solid #00ffff;
+    border-radius: 15px;
+    font-family: inherit;
+}
+body.theme-premium .friends-panel { background: #fff; border: 1px solid #ddd; color: #1e293b; }
+body.theme-dark .friends-panel { background: #1e1e1e; border: 1px solid #333; color: #fff; }
+body.theme-cyberpunk-legacy .friends-panel { background: #1a1a2e; border: 2px solid #00d9ff; color: #e0e0e0; box-shadow: 0 0 15px rgba(0, 217, 255, 0.2); }
+body.theme-cyberpunk .friends-panel { 
+    background: rgba(20, 5, 35, 0.65); 
+    backdrop-filter: blur(8px);
+    border: 1px solid #00ffff; 
+    color: #00ffff; 
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3); 
+    font-family: 'Orbitron', sans-serif;
+    border-radius: 0;
+    clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+}
+
+.friends-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.roblox-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    border: 2px solid transparent;
+    cursor: pointer;
+    position: relative;
+}
+body.theme-standard .roblox-avatar { border-color: #00ffff; }
+body.theme-cyberpunk-legacy .roblox-avatar { border-color: #ff006e; }
+body.theme-cyberpunk .roblox-avatar { border-color: #00ffff; box-shadow: 0 0 10px #00ffff; }
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border: 2px solid #000;
+}
+.status-online { background: #00ff00; box-shadow: 0 0 5px #00ff00; }
+.status-offline { background: #888888; }
+
+.dm-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ff0055;
+    color: #fff;
+    font-size: 0.7em;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    box-shadow: 0 0 8px #ff0055;
+    animation: pulse 1s infinite alternate;
+}
+@keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.2); } }
+
+.friend-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.8rem;
+    width: 75px;
+    text-align: center;
+    position: relative;
+}
+.friend-name {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.remove-friend-btn {
+    background: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 2px 5px;
+    font-size: 0.65rem;
+    cursor: pointer;
+    margin-top: 2px;
+}
+
+.invite-box {
+    background: rgba(255, 204, 0, 0.2);
+    border: 1px solid #ffcc00;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 0.9em;
+}
+body.theme-cyberpunk .invite-box { background: rgba(0, 255, 255, 0.1); border-color: #00ffff; }
+
+.user-search-results {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.user-search-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(0,0,0,0.4);
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    font-size: 0.85em;
+}
+body.theme-premium .user-search-item { background: #f1f5f9; border-color: #cbd5e1; }
+body.theme-dark .user-search-item { background: #252525; border-color: #444; }
+body.theme-cyberpunk-legacy .user-search-item { background: #0f0f1a; border-color: #00d9ff; }
+body.theme-cyberpunk .user-search-item { background: rgba(10, 5, 20, 0.8); border-color: #00ffff; }
+
+#dm-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+}
+#dm-box {
+    background: #111;
+    border: 2px solid #00ffff;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 450px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0,255,255,0.3);
+    color: #fff;
+}
+#dm-header {
+    background: rgba(0,255,255,0.1);
+    padding: 12px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #00ffff;
+}
+#dm-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.dm-msg {
+    max-width: 75%;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 0.9em;
+    word-break: break-word;
+    text-align: left;
+    font-family: sans-serif;
+}
+.dm-msg.me {
+    align-self: flex-end;
+    background: #00ffff;
+    color: #000;
+}
+.dm-msg.them {
+    align-self: flex-start;
+    background: #222;
+    color: #fff;
+    border: 1px solid #444;
+}
+#dm-input-area {
+    display: flex;
+    padding: 10px;
+    gap: 8px;
+    border-top: 1px solid #333;
+    background: #000;
+}
+#dm-input {
+    flex: 1;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #00ffff;
+    background: #111;
+    color: #fff;
+    font-family: inherit;
+}
+
+.shoutbox-panel {
+    max-width: 600px;
+    margin: 30px auto 10px auto;
+    padding: 15px;
+    background: rgba(17,17,17,0.85);
+    border: 2px solid #ff00d9;
+    border-radius: 15px;
+    font-family: inherit;
+    box-shadow: 0 0 10px rgba(255,0,217,0.2);
+}
+body.theme-dark .shoutbox-panel { background: #1e1e1e; border: 1px solid #333; }
+body.theme-cyberpunk .shoutbox-panel { 
+    background: rgba(20, 5, 35, 0.65); 
+    backdrop-filter: blur(8px);
+    border: 1px solid #ff007f; 
+    box-shadow: 0 0 15px rgba(255,0,127,0.3);
+    font-family: 'Orbitron', sans-serif;
+    border-radius: 0;
+    clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+}
+
+#shoutbox-messages {
+    height: 150px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+    font-family: sans-serif;
+    font-size: 0.85em;
+    padding: 8px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+.shout-msg { word-break: break-word; }
+.shout-user { font-weight: bold; color: #ff00d9; cursor: pointer; }
+
+.profile-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+.avatar-display {
+    font-size: 2em;
+    background: rgba(255,255,255,0.1);
+    padding: 10px;
+    border-radius: 50%;
+    border: 2px dashed #00ffff;
+}
+.bio-text { font-family: sans-serif; font-size: 0.8em; opacity: 0.8; font-style: italic; max-width: 250px; }
+
+.search-container {
+    margin: 15px auto 10px auto;
+    width: 85%;
+    max-width: 280px;
+}
+#tile-search-input {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 2px solid #00ffff;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.85em;
+    box-shadow: 0 0 10px rgba(0,255,255,0.3);
+    outline: none;
+    box-sizing: border-box;
+}
+body.theme-cyberpunk #tile-search-input {
+    border-radius: 0;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    background: rgba(20, 5, 35, 0.6);
+    border-color: #00ffff;
+    font-family: 'Orbitron', sans-serif;
+}

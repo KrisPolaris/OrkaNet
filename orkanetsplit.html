@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrkaNet</title>
+    <link rel="icon" type="image/png" href="Pou.png">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Bungee&family=Inter:wght@300;400;600&family=Montserrat:wght@700&family=Courier+Prime&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="orkanetsplit.css">
+</head>
+<body class="theme-standard">
+
+<header id="main-header">
+    <h1 id="header-text" style="display:inline-block; margin:0; font-family:inherit; font-size:inherit; color:inherit; text-shadow:inherit; font-weight:inherit; cursor:pointer;">ORKANET</h1>
+    <span id="vip-label"></span>
+    <span class="desktop-only"></span>
+</header>
+
+<div class="stats-bar">
+    <div id="stat-reg-label">UŻYTKOWNICY: <span id="reg-count" class="stat-val">...</span></div>
+    <div id="stat-on-label">ONLINE: <span id="on-count" class="stat-val" style="color: #00ff00;">...</span></div>
+    <div id="stat-visit-label">👀 ODWIEDZINY: <span id="visit-counter" class="stat-val" style="color:#ff006e;">0</span></div>
+    <div id="stat-coins-label">🪙 OrkaCoiny: <span id="coins-counter" class="stat-val" style="color:#00ffff;">0</span></div>
+</div>
+
+<div class="profile-card">
+    <div class="avatar-display" id="my-avatar">😎</div>
+    <div>
+        <div id="username" onclick="openProfileMenu()" title="Kliknij swój nick, aby edytować profil!">Weryfikacja profilu... ✏️</div>
+        <div class="bio-text" id="my-bio">"Ładowanie opisu..."</div>
+    </div>
+</div>
+
+<div class="controls">
+    <button class="btn-small" id="theme-toggle" onclick="toggleTheme()">✨ ZMIEŃ TRYB ✨</button>
+    <a href="https://whatsapp.com/channel/0029Vb7o86m65yDC9fzCYk0m" class="btn-small" style="background:#25D366; color:white; text-decoration:none; border:none; display:inline-flex; align-items:center;">WhatsApp 📱</a>
+    <button class="btn-small" id="logout-btn" style="background:#ff4444; color:white; border:none;" onclick="logout()">Wyloguj 🚪</button>
+    <button class="btn-small" id="random-btn" onclick="showRandomPage()">🎲 Losowa Strona</button>
+    <button class="btn-small" id="music-btn" onclick="toggleMusic()">🎵 Muzyka</button>
+</div>
+
+<div class="search-container">
+    <input type="text" id="tile-search-input" placeholder="🔍 Szukaj gry..." oninput="filterTiles()">
+</div>
+
+<div class="friends-panel">
+    <div id="friends-title" style="font-size: 1.1em; margin-bottom: 10px; font-weight: bold;">👥 ZNAJOMI</div>
+    
+    <div id="incoming-invites"></div>
+
+    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 10px;">
+        <input type="text" id="friend-search-input" placeholder="Wpisz nick..." style="padding: 5px 10px; border-radius: 5px; border: 1px solid #00ffff; background: #000; color: #fff; font-family: inherit; font-size: 0.8em; max-width: 180px;">
+        <button class="btn-small" id="btn-add-friend" onclick="sendFriendRequest()" style="padding: 5px 10px; font-size: 0.8em;">Dodaj</button>
+    </div>
+
+    <div style="margin-top: 15px; border-top: 1px dashed rgba(0, 255, 255, 0.3); padding-top: 10px;">
+        <div style="font-size: 0.9em; margin-bottom: 8px;">🔍 SZUKAJ GRACZY W BAZIE</div>
+        <input type="text" id="all-users-search" placeholder="Filtruj graczy..." oninput="filterAllUsers()" style="padding: 5px 10px; border-radius: 5px; border: 1px solid #00ffff; background: #000; color: #fff; font-family: inherit; font-size: 0.8em; width: 90%; max-width: 250px;">
+        <div class="user-search-results" id="user-search-list">
+            <span style="font-size:0.75em; opacity:0.6;">Ładowanie listy graczy...</span>
+        </div>
+    </div>
+
+    <div class="friends-list" id="friends-display-list" style="margin-top: 20px; border-top: 1px solid rgba(0, 255, 255, 0.3); padding-top: 15px;">
+    </div>
+</div>
+
+<div id="dm-modal">
+    <div id="dm-box">
+        <div id="dm-header">
+            <span id="dm-title">Czat z: -</span>
+            <button onclick="closeDM()" style="background:none; border:none; color:#ff4444; font-size:1.2em; cursor:pointer;">✖</button>
+        </div>
+        <div id="dm-messages"></div>
+        <div id="dm-input-area">
+            <input type="text" id="dm-input" placeholder="Napisz wiadomość..." onkeypress="if(event.key==='Enter') sendDM()">
+            <button class="btn-small" onclick="sendDM()">Wyślij</button>
+        </div>
+    </div>
+</div>
+
+<main class="grid" id="main-grid">
+    <a class="tile" href="czat.html">BebzunChat 💬</a>
+    <a class="tile" href="clicker.html">Creeper Clicker 💰</a>
+    <a class="tile" href="burga.html">Burger 🍔</a>
+    <a class="tile" href="boxes!.html">Pudełka 📦</a>
+    <a class="tile" href="GeometryDash.html">Geometry Dash 🟦</a>
+    <a class="tile" href="spotifa.html">Spotifa 🎵</a>
+    <a class="tile" href="Windows XP.html">Windows XP 💻</a>
+    <a class="tile" href="skarbonka.html">Skarbonka 🐷</a>
+    <a class="tile" href="rysowniczek.html">Paint 🎨</a>
+    <a class="tile" href="bebzun.html">Poznaj Bebzuna! 🤰</a>
+    <a class="tile" href="kolorowanki.html">Kolorowanki 🖍️</a>
+    <a class="tile" href="kalkulator.html">Kalkulator 🔢</a>
+    <a class="tile" href="ppogoda.html">Pogoda ☁️</a>
+    <a class="tile" href="aparacik.html">Aparat 📸</a>
+    <a class="tile" href="sklep.html">Sklep</a>
+    <a class="tile" href="aixd.html">AI GEMIBOT 🤖</a>
+    <a class="tile" href="oldsuper.html">stary orkanet 💾</a>
+    <a class="tile" href="flapibebzun.html">Flappy Bebech 🕊️</a>
+    <a class="tile" href="diktafon.html">Dyktafon 🎙️</a>
+    <a class="tile" href="czas.html">Zegar ⏰</a>
+    <a class="tile" href="kalendar.html">Kalendarz 📅</a>
+    <a class="tile" href="tts.html">Głos 🗣️</a>
+    <a class="tile" href="tudududu.html">Dźwięki 🔊</a>
+    <a class="tile" href="yuh.html">Android 🤖</a>
+    <a class="tile" href="Car..html">Autko 🚗</a>
+    <a class="tile" href="Chicken.html">Kurka 🐔</a>
+    <a class="tile" href="rubik.html">Kostka Rubika 🎲</a>
+    <a class="tile" href="ShortenMe.html">Skracacz Linków 🔗</a>
+    <a class="tile" href="robluxy.html">Free Robux (100% Legitne!) 💰</a>
+    <a class="tile" href="orkadio.html">Ptasie Radyjo 📻</a>
+    <a class="tile" href="tybzunku.html">Nie pytaj. 🤫</a>
+    <a class="tile" href="thissitehasnolitteralsens.html">moja pierwsza strona 📄</a>
+    <a class="tile" href="jackbrowser.html">JackBrowser (podróba Chrome) 🌐</a>
+    <a class="tile" href="robox.html">Zepsuty Roblox Okropnie O Ja 💥</a>
+    <a class="tile" href="wouldyoustasiekcode.html">Testuj swój Kod 💻</a>
+    <a class="tile" href="zmien_nick.html">Zmień Nick ✏️</a>
+    <a class="tile" href="dajmikase.html">Przelicznik walut 💱</a>
+    <a class="tile" href="supramariusz.html">Mario 🍄</a>
+    <a class="tile" href="https://krispolaris.github.io/Glupie-AI">ai very smart 🧠</a>
+    <a class="tile" href="https://krispolaris.github.io/SafeCraft">Minecraft za darmo 🧱</a>
+    <a class="tile" href="areualover.html">tester miłości ale dziwny</a>
+    <a class="tile" href="https://krispolaris.github.io/SafeCraft/ezul.html">eŻul</a>
+</main>
+
+<div class="shoutbox-panel">
+    <div style="font-size: 1.1em; margin-bottom: 8px; font-weight: bold; color:#ff00d9;">📢 SHOUTBOX (Czat na Żywo)</div>
+    <div id="shoutbox-messages">Ładowanie wiadomości...</div>
+    <div style="display: flex; gap: 8px;">
+        <input type="text" id="shoutbox-input" placeholder="Napisz coś..." onkeypress="if(event.key==='Enter') sendShout()" style="flex: 1; padding: 6px; border-radius: 5px; border: 1px solid #ff00d9; background: #000; color: #fff; font-family: inherit;">
+        <button class="btn-small" onclick="sendShout()" style="border-color:#ff00d9; color:#ff00d9;">Wyślij</button>
+    </div>
+</div>
+
+<footer id="orkanet-footer">
+    © 2026 OrkaNet - Wszelkie prawa do Bebecha zastrzeżone.
+</footer>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>
