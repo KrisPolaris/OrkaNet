@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kasyno OrkaCoin 🎰</title>
+    <style>
+        @font-face { 
+            font-family: 'MojaCzcionka'; 
+            src: url('ok.ttf?v=1') format('truetype');
+            font-display: swap;
+        }
+
+        body { 
+            background: #000; color: #00ff00; 
+            font-family: 'MojaCzcionka', Arial, sans-serif; 
+            margin: 0; padding: 20px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .casino-card {
+            background: #111; border: 2px solid #ff00ff; border-radius: 16px;
+            padding: 25px; width: 100%; max-width: 400px;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+            display: flex; flex-direction: column; gap: 15px;
+        }
+
+        h1 { color: #ff00ff; text-shadow: 0 0 10px #ff00ff; margin: 0; font-size: 1.8rem; }
+        .coins-display { font-size: 1.2rem; color: #ffcc00; font-weight: bold; }
+
+        .rules-box {
+            background: #222; border: 1px dashed #00e6ff; padding: 10px; border-radius: 8px;
+            font-size: 0.85rem; color: #00e6ff; line-height: 1.4;
+        }
+
+        .bet-input-group {
+            display: flex; flex-direction: column; gap: 8px; text-align: left;
+        }
+
+        label { font-size: 0.9rem; color: #aaa; }
+
+        input[type="number"] {
+            background: #222; border: 1px solid #ff00ff; color: #fff;
+            padding: 12px; border-radius: 8px; font-size: 1rem; outline: none;
+            width: 100%; box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .quick-bets {
+            display: flex; gap: 5px; justify-content: space-between;
+        }
+
+        .btn-quick {
+            background: #222; color: #00ff00; border: 1px solid #00ff00;
+            padding: 6px 10px; border-radius: 6px; font-size: 0.8rem; cursor: pointer;
+            flex: 1; font-family: inherit;
+        }
+
+        .btn-bet {
+            background: #ff00ff; color: #fff; border: none; padding: 15px;
+            border-radius: 10px; font-weight: bold; font-size: 1.1rem; cursor: pointer;
+            box-shadow: 0 0 10px #ff00ff; font-family: inherit; transition: 0.1s;
+        }
+        .btn-bet:active { transform: scale(0.98); }
+        .btn-bet:disabled { background: #444; color: #888; box-shadow: none; cursor: not-allowed; }
+
+        .result-box {
+            min-height: 50px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; font-weight: bold; border-radius: 8px; padding: 10px;
+        }
+        .win { background: rgba(0, 255, 0, 0.15); color: #00ff00; border: 1px solid #00ff00; }
+        .lose { background: rgba(255, 0, 0, 0.15); color: #ff4444; border: 1px solid #ff4444; }
+
+        .btn-back {
+            background: #ffcc00; color: #000; border: none; padding: 12px 25px;
+            border-radius: 10px; cursor: pointer; margin-top: 15px; font-weight: bold;
+            font-family: inherit; width: 100%; max-width: 400px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="casino-card">
+        <h1>🎰 KASYNO BEBZUNA</h1>
+        <div class="coins-display">🪙 Twoje OrkaCoiny: <span id="user-coins">0</span></div>
+
+        <div class="rules-box">
+            🎲 <b>Zasady:</b><br>
+            • 50% szans na podwojenie stawki! 🎉<br>
+            • 50% szans na zgubienie wydanych coinów! 💸
+        </div>
+
+        <div class="bet-input-group">
+            <label for="bet-amount">Stawka coinów:</label>
+            <input type="number" id="bet-amount" min="1" placeholder="Wpisz ilość coinów...">
+            <div class="quick-bets">
+                <button class="btn-quick" onclick="setBet(5)">5</button>
+                <button class="btn-quick" onclick="setBet(25)">25</button>
+                <button class="btn-quick" onclick="setBet(50)">50</button>
+                <button class="btn-quick" onclick="setBet('ALL')">ALL IN 🔥</button>
+            </div>
+        </div>
+
+        <button class="btn-bet" id="btn-play" onclick="playCasino()">ZAGRAJ! 🎲</button>
+
+        <div id="result" class="result-box" style="display: none;"></div>
+    </div>
+
+    <button class="btn-back" onclick="window.location.href='super.html'">POWRÓT DO MENU</button>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDPvjNjR6nTHQuWdhQGAGk9iJgvPKDQTXA",
+            authDomain: "bebechchat.firebaseapp.com",
+            projectId: "bebechchat",
+            storageBucket: "bebechchat.firebasestorage.app",
+            messagingSenderId: "738356779230",
+            appId: "1:738356779230:web:2c41e46431284e3fb78a4f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const loggedUser = localStorage.getItem('loggedUser') || "Anonim";
+
+        let currentCoins = 0;
+
+        async function loadUserData() {
+            if (loggedUser === "Anonim") {
+                alert("Musisz być zalogowany, aby grać w kasynie!");
+                window.location.href = 'index.html';
+                return;
+            }
+
+            try {
+                const userRef = doc(db, "users", loggedUser);
+                const snap = await getDoc(userRef);
+                if (snap.exists()) {
+                    currentCoins = snap.data().coins || 0;
+                    document.getElementById('user-coins').innerText = currentCoins;
+                }
+            } catch (e) {
+                console.error("Błąd pobierania danych:", e);
+            }
+        }
+
+        window.setBet = function(amount) {
+            const input = document.getElementById('bet-amount');
+            if (amount === 'ALL') {
+                input.value = currentCoins;
+            } else {
+                input.value = amount;
+            }
+        };
+
+        window.playCasino = async function() {
+            const betInput = document.getElementById('bet-amount');
+            const bet = parseInt(betInput.value);
+            const resultDiv = document.getElementById('result');
+            const playBtn = document.getElementById('btn-play');
+
+            if (isNaN(bet) || bet <= 0) {
+                alert("Wpisz poprawną stawkę!");
+                return;
+            }
+
+            if (bet > currentCoins) {
+                alert("Nie masz tyle OrkaCoinów!");
+                return;
+            }
+
+            playBtn.disabled = true;
+            resultDiv.style.display = "flex";
+            resultDiv.className = "result-box";
+            resultDiv.innerHTML = "🎰 Losowanie...";
+
+            setTimeout(async () => {
+                // 50% szansy (0 = wygrana, 1 = przegrana)
+                const isWin = Math.random() < 0.5;
+                const userRef = doc(db, "users", loggedUser);
+
+                if (isWin) {
+                    // Wygrana: gracz dostaje równowartość stawki jako zysk
+                    await updateDoc(userRef, { coins: increment(bet) });
+                    currentCoins += bet;
+                    resultDiv.className = "result-box win";
+                    resultDiv.innerHTML = `🎉 WYGRANA! Zyskujesz +${bet} OrkaCoinów!`;
+                } else {
+                    // Przegrana: gracz traci postawione coiny
+                    await updateDoc(userRef, { coins: increment(-bet) });
+                    currentCoins -= bet;
+                    resultDiv.className = "result-box lose";
+                    resultDiv.innerHTML = `💸 PRZEGRANA! Zgubiłeś ${bet} OrkaCoinów...`;
+                }
+
+                document.getElementById('user-coins').innerText = currentCoins;
+                playBtn.disabled = false;
+            }, 800);
+        };
+
+        loadUserData();
+    </script>
+</body>
+</html>
