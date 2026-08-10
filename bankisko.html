@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OrkaBank 🏦</title>
+    <style>
+        @font-face { 
+            font-family: 'MojaCzcionka'; 
+            src: url('ok.ttf?v=1') format('truetype');
+            font-display: swap;
+        }
+
+        body { 
+            background: #000; color: #00ff00; 
+            font-family: 'MojaCzcionka', Arial, sans-serif; 
+            margin: 0; padding: 20px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .bank-card {
+            background: #111; border: 2px solid #00e6ff; border-radius: 16px;
+            padding: 25px; width: 100%; max-width: 400px;
+            box-shadow: 0 0 20px rgba(0, 230, 255, 0.3);
+            display: flex; flex-direction: column; gap: 15px;
+        }
+
+        h1 { color: #00e6ff; text-shadow: 0 0 10px #00e6ff; margin: 0; font-size: 1.8rem; }
+        .coins-display { font-size: 1.2rem; color: #ffcc00; font-weight: bold; }
+
+        .input-group {
+            display: flex; flex-direction: column; gap: 6px; text-align: left;
+        }
+
+        label { font-size: 0.85rem; color: #aaa; }
+
+        input[type="text"], input[type="number"] {
+            background: #222; border: 1px solid #00e6ff; color: #fff;
+            padding: 12px; border-radius: 8px; font-size: 1rem; outline: none;
+            width: 100%; box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .btn-transfer {
+            background: #00e6ff; color: #000; border: none; padding: 15px;
+            border-radius: 10px; font-weight: bold; font-size: 1.1rem; cursor: pointer;
+            box-shadow: 0 0 10px #00e6ff; font-family: inherit; transition: 0.1s;
+            margin-top: 5px;
+        }
+        .btn-transfer:active { transform: scale(0.98); }
+        .btn-transfer:disabled { background: #444; color: #888; box-shadow: none; cursor: not-allowed; }
+
+        .result-box {
+            min-height: 45px; display: flex; align-items: center; justify-content: center;
+            font-size: 0.95rem; font-weight: bold; border-radius: 8px; padding: 10px;
+            word-break: break-word;
+        }
+        .success { background: rgba(0, 255, 0, 0.15); color: #00ff00; border: 1px solid #00ff00; }
+        .error { background: rgba(255, 0, 0, 0.15); color: #ff4444; border: 1px solid #ff4444; }
+
+        .btn-back {
+            background: #ffcc00; color: #000; border: none; padding: 12px 25px;
+            border-radius: 10px; cursor: pointer; margin-top: 15px; font-weight: bold;
+            font-family: inherit; width: 100%; max-width: 400px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bank-card">
+        <h1>🏦 ORKABANK</h1>
+        <div class="coins-display">🪙 Twoje OrkaCoiny: <span id="user-coins">0</span></div>
+
+        <div class="input-group">
+            <label for="recipient">Odbiorca (nazwa użytkownika):</label>
+            <input type="text" id="recipient" placeholder="Wpisz nick odbiorcy...">
+        </div>
+
+        <div class="input-group">
+            <label for="amount">Kwota OrkaCoinów:</label>
+            <input type="number" id="amount" min="1" placeholder="Wpisz ilość coinów...">
+        </div>
+
+        <button class="btn-transfer" id="btn-send" onclick="sendCoins()">WYŚLIJ PRZELEW 💸</button>
+
+        <div id="result" class="result-box" style="display: none;"></div>
+    </div>
+
+    <button class="btn-back" onclick="window.location.href='super.html'">POWRÓT DO MENU</button>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDPvjNjR6nTHQuWdhQGAGk9iJgvPKDQTXA",
+            authDomain: "bebechchat.firebaseapp.com",
+            projectId: "bebechchat",
+            storageBucket: "bebechchat.firebasestorage.app",
+            messagingSenderId: "738356779230",
+            appId: "1:738356779230:web:2c41e46431284e3fb78a4f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const loggedUser = localStorage.getItem('loggedUser') || "Anonim";
+
+        let currentCoins = 0;
+
+        async function loadUserData() {
+            if (loggedUser === "Anonim") {
+                alert("Musisz być zalogowany, aby korzystać z banku!");
+                window.location.href = 'index.html';
+                return;
+            }
+
+            try {
+                const userRef = doc(docDB(), "users", loggedUser);
+                const snap = await getDoc(userRef);
+                if (snap.exists()) {
+                    currentCoins = snap.data().coins || 0;
+                    document.getElementById('user-coins').innerText = currentCoins;
+                }
+            } catch (e) {
+                console.error("Błąd pobierania danych:", e);
+            }
+        }
+
+        function docDB() {
+            return db;
+        }
+
+        window.sendCoins = async function() {
+            const recipientInput = document.getElementById('recipient');
+            const amountInput = document.getElementById('amount');
+            const resultDiv = document.getElementById('result');
+            const sendBtn = document.getElementById('btn-send');
+
+            const recipient = recipientInput.value.trim();
+            const amount = parseInt(amountInput.value);
+
+            resultDiv.style.display = "none";
+
+            if (!recipient) {
+                showResult("Wpisz nazwę odbiorcy!", "error");
+                return;
+            }
+
+            if (recipient.toLowerCase() === loggedUser.toLowerCase()) {
+                showResult("Nie możesz wysłać przelewu do samego siebie!", "error");
+                return;
+            }
+
+            if (isNaN(amount) || amount <= 0) {
+                showResult("Wpisz poprawną kwotę!", "error");
+                return;
+            }
+
+            if (amount > currentCoins) {
+                showResult("Nie masz tylu OrkaCoinów!", "error");
+                return;
+            }
+
+            sendBtn.disabled = true;
+            showResult("⏳ Przetwarzanie przelewu...", "success");
+
+            try {
+                const recipientRef = doc(db, "users", recipient);
+                const recipientSnap = await getDoc(recipientRef);
+
+                if (!recipientSnap.exists()) {
+                    showResult(`Użytkownik "${recipient}" nie istnieje!`, "error");
+                    sendBtn.disabled = false;
+                    return;
+                }
+
+                // Odejmij nadawcy
+                const senderRef = doc(db, "users", loggedUser);
+                await updateDoc(senderRef, { coins: increment(-amount) });
+
+                // Dodaj odbiorcy
+                await updateDoc(recipientRef, { coins: increment(amount) });
+
+                currentCoins -= amount;
+                document.getElementById('user-coins').innerText = currentCoins;
+
+                showResult(`✅ Wysyłano 🪙 ${amount} OrkaCoinów do gracza ${recipient}!`, "success");
+                recipientInput.value = "";
+                amountInput.value = "";
+            } catch (e) {
+                console.error("Błąd podczas przelewu:", e);
+                showResult("Wystąpił błąd podczas przelewu!", "error");
+            } finally {
+                sendBtn.disabled = false;
+            }
+        };
+
+        function showResult(msg, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = "flex";
+            resultDiv.className = `result-box ${type}`;
+            resultDiv.innerText = msg;
+        }
+
+        loadUserData();
+    </script>
+</body>
+</html>
