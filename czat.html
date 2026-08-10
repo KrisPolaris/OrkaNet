@@ -14,23 +14,15 @@
         font-display: swap;
     }
 
-    * {
-        box-sizing: border-box;
-    }
-
-    html {
-        height: 100%;
-    }
+    * { box-sizing: border-box; }
+    html { height: 100%; }
 
     body { 
         background: #000; color: #00ff00; 
         font-family: 'MojaCzcionka', Arial, sans-serif;
         display: flex; flex-direction: column; 
-        height: 100vh;
-        height: 100dvh; /* Obsługa dynamicznej wysokości dla urządzeń mobilnych */
-        margin: 0; 
-        overflow: hidden;
-        position: relative;
+        height: 100vh; height: 100dvh;
+        margin: 0; overflow: hidden; position: relative;
     }
     
     input, button, .room-btn, h2 {
@@ -40,13 +32,10 @@
     .chat-header {
         display: flex; align-items: center; justify-content: space-between;
         padding: 10px 15px; background: #0a0a0a; border-bottom: 2px solid #00ff00;
-        flex-shrink: 0;
-        z-index: 10;
+        flex-shrink: 0; z-index: 10;
     }
 
-    .header-left {
-        display: flex; align-items: center;
-    }
+    .header-left { display: flex; align-items: center; }
 
     #header-logo {
         width: 45px; height: 45px; border-radius: 50%;
@@ -56,10 +45,8 @@
 
     .chat-selector {
         display: flex; justify-content: flex-start; gap: 8px;
-        padding: 10px; background: #111;
-        flex-shrink: 0;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+        padding: 10px; background: #111; flex-shrink: 0;
+        overflow-x: auto; -webkit-overflow-scrolling: touch;
     }
 
     .room-btn {
@@ -73,11 +60,8 @@
     }
 
     #chat-window { 
-        flex: 1; 
-        min-height: 0;
-        overflow-y: auto; padding: 15px; 
-        display: flex; flex-direction: column;
-        scroll-behavior: smooth;
+        flex: 1; min-height: 0; overflow-y: auto; padding: 15px; 
+        display: flex; flex-direction: column; scroll-behavior: smooth;
         -webkit-overflow-scrolling: touch;
     }
 
@@ -95,15 +79,9 @@
     .user { font-size: 0.75rem; font-weight: bold; margin-bottom: 4px; color: #00ff00; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
     .user-avatar { font-size: 1.1rem; vertical-align: middle; display: inline-block; line-height: 1; }
 
-    /* Stylik dla Rang (Badges) */
     .role-badge {
-        font-size: 0.65rem;
-        padding: 2px 6px;
-        border-radius: 6px;
-        font-weight: bold;
-        text-shadow: none;
-        display: inline-block;
-        letter-spacing: 0.5px;
+        font-size: 0.65rem; padding: 2px 6px; border-radius: 6px;
+        font-weight: bold; text-shadow: none; display: inline-block; letter-spacing: 0.5px;
     }
     .role-pro { background: #3b82f6; color: #ffffff; border: 1px solid #60a5fa; }
     .role-vip { background: #eab308; color: #000000; border: 1px solid #fde047; font-weight: 900; }
@@ -125,34 +103,26 @@
         border-radius: 50%; width: 20px; height: 20px; cursor: pointer;
         font-size: 10px; display: flex; align-items: center; justify-content: center;
     }
+    .ban-btn {
+        position: absolute; right: 16px; top: -8px; 
+        background: #ff0055; color: #fff; border: none; 
+        border-radius: 50%; width: 20px; height: 20px; cursor: pointer;
+        font-size: 10px; display: flex; align-items: center; justify-content: center;
+    }
 
-    /* POPRAWIONY PASEK WEJŚCIOWY DLA KOMÓREK */
     .input-area { 
         padding: 10px; background: #111; display: flex; gap: 6px; 
-        border-top: 2px solid #00ff00; align-items: center;
-        flex-shrink: 0;
-        position: sticky;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 100;
+        border-top: 2px solid #00ff00; align-items: center; flex-shrink: 0;
+        position: sticky; bottom: 0; left: 0; right: 0; z-index: 100;
         padding-bottom: max(10px, env(safe-area-inset-bottom));
     }
 
     input { background: #222; border: 1px solid #00ff00; color: #fff; padding: 10px; border-radius: 8px; outline: none; flex: 1; min-width: 0; font-size: 14px; }
-    
     button { background: #00ff00; color: #000; border: none; padding: 10px 12px; font-weight: bold; border-radius: 8px; cursor: pointer; white-space: nowrap; }
 
-    /* Lista Znajomych - Podgląd w nagłówku */
-    .friends-dropdown-btn {
-        background: #111; color: #ff00ff; border: 1px solid #ff00ff; padding: 5px 10px; border-radius: 12px; font-size: 0.8rem; cursor: pointer;
-    }
-    #friends-menu {
-        display: none; position: absolute; top: 60px; right: 15px; background: #000; border: 2px solid #ff00ff; padding: 10px; border-radius: 10px; z-index: 100; max-height: 200px; overflow-y: auto; width: 180px;
-    }
-    .friend-item {
-        padding: 5px; color: #fff; font-size: 0.8rem; cursor: pointer; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center;
-    }
+    .friends-dropdown-btn { background: #111; color: #ff00ff; border: 1px solid #ff00ff; padding: 5px 10px; border-radius: 12px; font-size: 0.8rem; cursor: pointer; }
+    #friends-menu { display: none; position: absolute; top: 60px; right: 15px; background: #000; border: 2px solid #ff00ff; padding: 10px; border-radius: 10px; z-index: 100; max-height: 200px; overflow-y: auto; width: 180px; }
+    .friend-item { padding: 5px; color: #fff; font-size: 0.8rem; cursor: pointer; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; }
     .friend-item:hover { background: #111; color: #00ff00; }
     .dm-badge { background: #ff00ff; color: #fff; border-radius: 10px; padding: 2px 6px; font-size: 0.6rem; margin-left: 5px; }
 </style>
@@ -187,7 +157,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, deleteDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, deleteDoc, doc, getDoc, updateDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDPvjNjR6nTHQuWdhQGAGk9iJgvPKDQTXA",
@@ -203,7 +173,41 @@
         const loggedUser = localStorage.getItem('loggedUser') || "Gość";
         let currentRoom = 'global';
 
-        // dynamiczna obsługa wysuwania klawiatury na telefonach
+        // Zmienne Anty-Spam
+        let lastMessageTime = 0;
+
+        // Lista przykładowych słów zakazanych
+        const BAD_WORDS = ["kurwa", "chuj", "pizda", "jebać", "debil", "skurwysyn", "skur", "fuck"];
+
+        // Sprawdzanie czy użytkownik ma bana
+        async function checkUserBanStatus() {
+            if (!loggedUser || loggedUser === "Gość") return;
+            const userRef = doc(db, "users", loggedUser);
+            const snap = await getDoc(userRef);
+            if (snap.exists() && snap.data().isBanned) {
+                alert("Twój profil został zbanowany! Przekierowanie...");
+                window.location.href = "super.html";
+            }
+        }
+        checkUserBanStatus();
+
+        async function banUserInDb(targetUser, reason) {
+            try {
+                const userRef = doc(db, "users", targetUser);
+                await setDoc(userRef, {
+                    isBanned: true,
+                    banReason: reason
+                }, { merge: true });
+                
+                alert(`Użytkownik ${targetUser} został zbanowany za: ${reason}`);
+                if (targetUser === loggedUser) {
+                    window.location.href = "super.html";
+                }
+            } catch (e) {
+                console.error("Błąd podczas banowania:", e);
+            }
+        }
+
         if (window.visualViewport) {
             window.visualViewport.addEventListener('resize', () => {
                 document.body.style.height = `${window.visualViewport.height}px`;
@@ -213,38 +217,26 @@
         }
 
         const userRolesCache = {};
-        const userAvatarsCache = {}; // Cache dla profilówek / emotek
+        const userAvatarsCache = {}; 
         const MOD_LIST = ["krispolaris", "admin", "kris", "szym", "sim"];
 
         function getRoleBadgeHTML(userName, roleFromDb) {
             let role = (roleFromDb || "").toUpperCase();
-
-            if (MOD_LIST.includes(userName.toLowerCase())) {
-                role = "MODERATOR";
-            }
-
+            if (MOD_LIST.includes(userName.toLowerCase())) role = "MODERATOR";
             if (!role || role === "DEFAULT" || role === "NONE") return "";
 
             switch (role) {
-                case "PRO":
-                    return `<span class="role-badge role-pro">PRO</span>`;
-                case "VIP":
-                    return `<span class="role-badge role-vip">⭐ VIP</span>`;
-                case "EPIC":
-                    return `<span class="role-badge role-epic">🔥 EPIC</span>`;
-                case "CHATTER":
-                    return `<span class="role-badge role-chatter">💬 CHATTER</span>`;
-                case "MODERATOR":
-                    return `<span class="role-badge role-moderator">🛡️ MOD</span>`;
-                default:
-                    return `<span class="role-badge role-pro">${role}</span>`;
+                case "PRO": return `<span class="role-badge role-pro">PRO</span>`;
+                case "VIP": return `<span class="role-badge role-vip">⭐ VIP</span>`;
+                case "EPIC": return `<span class="role-badge role-epic">🔥 EPIC</span>`;
+                case "CHATTER": return `<span class="role-badge role-chatter">💬 CHATTER</span>`;
+                case "MODERATOR": return `<span class="role-badge role-moderator">🛡️ MOD</span>`;
+                default: return `<span class="role-badge role-pro">${role}</span>`;
             }
         }
 
         async function getUserRole(userName) {
-            if (userRolesCache[userName] !== undefined) {
-                return userRolesCache[userName];
-            }
+            if (userRolesCache[userName] !== undefined) return userRolesCache[userName];
             try {
                 const userDoc = await getDoc(doc(db, "users", userName));
                 if (userDoc.exists()) {
@@ -253,18 +245,13 @@
                     userRolesCache[userName] = role;
                     return role;
                 }
-            } catch (e) {
-                console.error("Błąd pobierania rangi:", e);
-            }
+            } catch (e) { console.error("Błąd pobierania rangi:", e); }
             userRolesCache[userName] = "";
             return "";
         }
 
-        // Pobieranie Profilówki / Emoji Użytkownika (z opcją domyślną 😁)
         async function getUserAvatar(userName) {
-            if (userAvatarsCache[userName] !== undefined) {
-                return userAvatarsCache[userName];
-            }
+            if (userAvatarsCache[userName] !== undefined) return userAvatarsCache[userName];
             try {
                 const userDoc = await getDoc(doc(db, "users", userName));
                 if (userDoc.exists()) {
@@ -273,9 +260,7 @@
                     userAvatarsCache[userName] = avatar;
                     return avatar;
                 }
-            } catch (e) {
-                console.error("Błąd pobierania avatara:", e);
-            }
+            } catch (e) { console.error("Błąd pobierania avatara:", e); }
             userAvatarsCache[userName] = "😁";
             return "😁";
         }
@@ -323,6 +308,31 @@
             const file = fileInp.files[0];
             let imgData = null;
             let val = msgInp.value.trim();
+
+            const now = Date.now();
+
+            // 1. SYSTEM WERYFIKACJI BANÓW DLA SYSTEMU BEBZUNCHAT
+            // A. Limit znaków > 2000
+            if (val.length > 2000) {
+                await banUserInDb(loggedUser, "Napisanie wiadomości mającej więcej niż 2000 znaków.");
+                return;
+            }
+
+            // B. Anty-Spam (szybciej niż 1.5 sekundy)
+            if (now - lastMessageTime < 1500 && lastMessageTime !== 0) {
+                await banUserInDb(loggedUser, "Spamowanie na czacie.");
+                return;
+            }
+
+            // C. Przekleństwa
+            const lowerVal = val.toLowerCase();
+            const containsBadWord = BAD_WORDS.some(word => lowerVal.includes(word));
+            if (containsBadWord) {
+                await banUserInDb(loggedUser, `Użycie niedozwolonych słów/przekleństw w wiadomości.`);
+                return;
+            }
+
+            lastMessageTime = now;
 
             if (file) {
                 const reader = new FileReader();
@@ -381,6 +391,12 @@
         window.removeMsg = async (id) => { 
             if(confirm("Usunąć wiadomość?")) await deleteDoc(doc(db, "messages", id)); 
         };
+
+        window.banForBeingUnnice = async (userToBan) => {
+            if (confirm(`Czy na pewno chcesz zbanować gracza ${userToBan} za bycie niemiłym?`)) {
+                await banUserInDb(userToBan, "Bycie niemiłym na czacie.");
+            }
+        };
     
         let unsubscribe;
         function listenToMessages() {
@@ -389,6 +405,8 @@
             unsubscribe = onSnapshot(q, async (snap) => {
                 const win = document.getElementById('chat-window');
                 win.innerHTML = "";
+
+                const isMeMod = MOD_LIST.includes(loggedUser.toLowerCase());
 
                 for (const d of snap.docs) {
                     const data = d.data();
@@ -422,6 +440,7 @@
                             <span class="text">${parseEmotes(data.text)}</span>
                             ${data.image ? `<img src="${data.image}" class="chat-img" onclick="window.open(this.src)">` : ""}
                             ${isMe ? `<button class="del-btn" onclick="removeMsg('${d.id}')">X</button>` : ""}
+                            ${(!isMe && isMeMod && !isBot) ? `<button class="ban-btn" title="Zbanuj gracza" onclick="banForBeingUnnice('${data.user}')">🔨</button>` : ""}
                         `;
                         win.appendChild(div);
                     }

@@ -28,6 +28,12 @@
             display: flex; flex-direction: column; gap: 15px;
         }
 
+        .section-title {
+            color: #ff00ff; font-size: 1.2rem; font-weight: bold;
+            margin-top: 10px; margin-bottom: -5px; text-align: left;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
         .item-card {
             background: #111; border: 2px solid #00ff00; border-radius: 12px;
             padding: 15px; display: flex; justify-content: space-between; align-items: center;
@@ -64,7 +70,39 @@
 
     <div class="shop-container">
 
+        <!-- IMMUNITETY -->
+        <div class="section-title">🛡️ IMMUNITETY</div>
+
+        <div class="item-card" style="border-color: #3b82f6;">
+            <div class="item-info">
+                <span class="item-title" style="color:#3b82f6;">Zwykły Immunitet</span>
+                <span class="item-desc">75% szans na wygraną w kasynie!</span>
+                <span class="item-price">🪙 10 000 Coins</span>
+            </div>
+            <button class="btn-buy" id="btn-imm-standard" onclick="buyImmunity('standardim', 10000)">KUP</button>
+        </div>
+
+        <div class="item-card" style="border-color: #eab308;">
+            <div class="item-info">
+                <span class="item-title" style="color:#eab308;">Królewski Immunitet</span>
+                <span class="item-desc">85% szans na wygraną w kasynie!</span>
+                <span class="item-price">🪙 100 000 Coins</span>
+            </div>
+            <button class="btn-buy" id="btn-imm-krolewski" onclick="buyImmunity('krolewskiim', 100000)">KUP</button>
+        </div>
+
+        <div class="item-card" style="border-color: #ff00ff; box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);">
+            <div class="item-info">
+                <span class="item-title" style="color:#ff00ff;">Królewski+ Immunitet</span>
+                <span class="item-desc">99.67% szans na wygraną w kasynie! 🔥</span>
+                <span class="item-price">🪙 1 000 000 Coins</span>
+            </div>
+            <button class="btn-buy" id="btn-imm-krolplus" onclick="buyImmunity('krolplusim', 1000000)">KUP</button>
+        </div>
+
         <!-- RANGI -->
+        <div class="section-title">🏷️ RANGI</div>
+
         <div class="item-card">
             <div class="item-info">
                 <span class="item-title" style="color:#06b6d4;">Ranga CHATTER</span>
@@ -112,6 +150,8 @@
         </div>
 
         <!-- SKIN DO FLAPPY -->
+        <div class="section-title">🎨 SKINY</div>
+
         <div class="item-card" style="border-color: #ff00ff;">
             <div class="item-info">
                 <span class="item-title" style="color:#ff00ff;">Skin Bebech</span>
@@ -123,7 +163,7 @@
 
     </div>
 
-  <p>niedługo więcej pro itemków</p>
+    <p style="font-size: 0.8rem; color: #888; margin-top: 20px;">niedługo więcej pro itemków</p>
   
     <button class="btn-back" onclick="window.location.href='super.html'">POWRÓT DO MENU</button>
 
@@ -150,6 +190,11 @@
         let activeSkin = "default";
         let secretClicks = 0;
 
+        // Stan immunitetów
+        let hasStandardIm = 0;
+        let hasKrolewskiIm = 0;
+        let hasKrolPlusIm = 0;
+
         async function loadUserData() {
             if (loggedUser === "Anonim") {
                 alert("Musisz być zalogowany, aby korzystać ze sklepu!");
@@ -165,6 +210,11 @@
                     currentRole = data.role || "";
                     hasSkinBebech = data.hasSkinBebech || false;
                     activeSkin = data.activeSkin || "default";
+
+                    // Pobieranie immunitetów z bazy
+                    hasStandardIm = data.standardim || 0;
+                    hasKrolewskiIm = data.krolewskiim || 0;
+                    hasKrolPlusIm = data.krolplusim || 0;
 
                     document.getElementById('user-coins').innerText = currentCoins;
                     updateUI();
@@ -202,7 +252,60 @@
                     skinBtn.className = "btn-buy";
                 }
             }
+
+            // Aktualizacja Immunitetów
+            updateImmunityButton('btn-imm-standard', hasStandardIm);
+            updateImmunityButton('btn-imm-krolewski', hasKrolewskiIm);
+            updateImmunityButton('btn-imm-krolplus', hasKrolPlusIm);
         }
+
+        function updateImmunityButton(btnId, hasImmunity) {
+            const btn = document.getElementById(btnId);
+            if (btn) {
+                if (hasImmunity === 1) {
+                    btn.innerText = "POSIADANE";
+                    btn.disabled = true;
+                    btn.className = "btn-buy active";
+                } else {
+                    btn.innerText = "KUP";
+                    btn.disabled = false;
+                    btn.className = "btn-buy";
+                }
+            }
+        }
+
+        window.buyImmunity = async function(fieldKey, price) {
+            if (currentCoins < price) {
+                alert("Nie masz wystarczającej liczby OrkaCoinów!");
+                return;
+            }
+
+            if (confirm(`Czy na pewno chcesz kupić ten immunitet za ${price} coinów?`)) {
+                try {
+                    const userRef = doc(db, "users", loggedUser);
+                    
+                    // Dynamiczny obiekt do aktualizacji pola w Firestore
+                    const updateData = {
+                        coins: increment(-price)
+                    };
+                    updateData[fieldKey] = 1;
+
+                    await updateDoc(userRef, updateData);
+
+                    currentCoins -= price;
+                    if (fieldKey === 'standardim') hasStandardIm = 1;
+                    if (fieldKey === 'krolewskiim') hasKrolewskiIm = 1;
+                    if (fieldKey === 'krolplusim') hasKrolPlusIm = 1;
+
+                    document.getElementById('user-coins').innerText = currentCoins;
+                    updateUI();
+                    alert("Pomyślnie zakupiono immunitet!");
+                } catch (e) {
+                    alert("Wystąpił błąd podczas zakupu.");
+                    console.error(e);
+                }
+            }
+        };
 
         window.buyRole = async function(roleName, price) {
             if (currentCoins < price) {
@@ -252,7 +355,6 @@
                     alert("Zakupiono skin Bebech!");
                 }
             } else {
-                // Przełączanie skina
                 const newSkin = activeSkin === 'bebech' ? 'default' : 'bebech';
                 await updateDoc(userRef, { activeSkin: newSkin });
                 activeSkin = newSkin;

@@ -16,6 +16,18 @@ body {
   height: 100vh;
 }
 
+#apiKeyArea {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #00ccff;
+  background: #000d10;
+}
+
+#apiKeyArea input {
+  flex: 1;
+}
+
 #chat {
   flex: 1;
   overflow-y: auto;
@@ -76,7 +88,6 @@ body {
 }
 
 input {
-  flex: 1;
   padding: 10px;
   background: black;
   border: 1px solid #00ccff;
@@ -84,21 +95,32 @@ input {
   outline: none;
 }
 
+#userInput {
+  flex: 1;
+}
+
 button {
-  margin-left: 10px;
   padding: 10px;
   background: black;
   border: 1px solid #00ccff;
   color: #00ccff;
   cursor: pointer;
 }
+
+button:hover {
+  background: #001a1f;
+}
 </style>
 </head>
 
 <body>
   
-  
-  <h1>‎ ‎‎ ‎‎ ‎‎ ‎‎ ‎‎ ‎‎ ‎‎ ‎‎ ‎‎‎ ‎ ‎‎ ‎‎ ‎‎ ‎‎ ‎‎ ‎Gemibot</h1>
+  <div id="apiKeyArea">
+    <input type="password" id="apiKeyInput" placeholder="Wklej swój API Key Gemini..." />
+    <button onclick="saveApiKey()">Zapisz Key</button>
+  </div>
+
+  <h1 style="text-align: center; margin: 10px 0;">Gemibot</h1>
 
 <div id="chat"></div>
 
@@ -110,13 +132,29 @@ button {
 <script>
 const chat = document.getElementById("chat");
 const input = document.getElementById("userInput");
+const apiKeyInput = document.getElementById("apiKeyInput");
 
 let conversationHistory = JSON.parse(localStorage.getItem("chatHistory") || "[]");
 
-// render historii
+// render historii i wczytanie api keya
 window.onload = () => {
+  const savedKey = localStorage.getItem("gemini_api_key");
+  if (savedKey) {
+    apiKeyInput.value = savedKey;
+  }
   refreshChat();
 };
+
+function saveApiKey() {
+  const key = apiKeyInput.value.trim();
+  if (key) {
+    localStorage.setItem("gemini_api_key", key);
+    alert("API Key został zapisany!");
+  } else {
+    localStorage.removeItem("gemini_api_key");
+    alert("Usunięto API Key.");
+  }
+}
 
 // render pojedynczej wiadomości
 function renderMessage(role, text, index) {
@@ -175,6 +213,13 @@ function saveHistory() {
 
 // wysyłanie
 async function askAI() {
+  const apiKey = localStorage.getItem("gemini_api_key") || apiKeyInput.value.trim();
+
+  if (!apiKey) {
+    alert("Najpierw wklej i zapisz swój API Key na samej górze!");
+    return;
+  }
+
   const text = input.value.trim();
   if (!text) return;
 
@@ -184,34 +229,37 @@ async function askAI() {
   conversationHistory.push({ role: "user", text });
   saveHistory();
 
-  const res = await fetch(
-    "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyBUQIXOnLe6soa8DE-5s4GGIR4t3Ga3-Q4",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        contents: conversationHistory.map(msg => ({
-          role: msg.role === "user" ? "user" : "model",
-          parts: [{ text: msg.text }]
-        }))
-      })
+  try {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          contents: conversationHistory.map(msg => ({
+            role: msg.role === "user" ? "user" : "model",
+            parts: [{ text: msg.text }]
+          }))
+        })
+      }
+    );
+
+    const data = await res.json();
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (reply) {
+      renderMessage("bot", reply, conversationHistory.length);
+      conversationHistory.push({ role: "model", text: reply });
+      saveHistory();
+    } else {
+      renderMessage("bot", "coś sie zbebeszyło sorry", conversationHistory.length);
+      console.log(data);
     }
-  );
-
-  const data = await res.json();
-
-  const reply =
-    data.candidates?.[0]?.content?.parts?.[0]?.text;
-
-  if (reply) {
-    renderMessage("bot", reply, conversationHistory.length);
-    conversationHistory.push({ role: "model", text: reply });
-    saveHistory();
-  } else {
-    renderMessage("bot", "coś sie zbebeszyło sorry", conversationHistory.length);
-    console.log(data);
+  } catch (err) {
+    renderMessage("bot", "Błąd połączenia / niepoprawny API Key", conversationHistory.length);
+    console.error(err);
   }
 }
 

@@ -30,6 +30,12 @@
 
         h1 { color: #ff00ff; text-shadow: 0 0 10px #ff00ff; margin: 0; font-size: 1.8rem; }
         .coins-display { font-size: 1.2rem; color: #ffcc00; font-weight: bold; }
+        
+        .immunity-badge {
+            font-size: 0.9rem; color: #00ff00; font-weight: bold;
+            background: #1a1a1a; padding: 6px 12px; border-radius: 20px;
+            border: 1px solid #00ff00; display: inline-block; margin-top: -5px;
+        }
 
         .rules-box {
             background: #222; border: 1px dashed #00e6ff; padding: 10px; border-radius: 8px;
@@ -86,8 +92,9 @@
     <div class="casino-card">
         <h1>🎰 KASYNO BEBZUNA</h1>
         <div class="coins-display">🪙 Twoje OrkaCoiny: <span id="user-coins">0</span></div>
+        <div id="immunity-status" class="immunity-badge">🛡️ Immunitet: Brak</div>
 
-        <div class="rules-box">
+        <div class="rules-box" id="rules-display">
             🎲 <b>Zasady:</b><br>
             • 50% szans na podwojenie stawki! 🎉<br>
             • 50% szans na zgubienie wydanych coinów! 💸
@@ -129,6 +136,7 @@
         const loggedUser = localStorage.getItem('loggedUser') || "Anonim";
 
         let currentCoins = 0;
+        let winChance = 0.50; // Domyślna szansa (50%)
 
         async function loadUserData() {
             if (loggedUser === "Anonim") {
@@ -141,8 +149,36 @@
                 const userRef = doc(db, "users", loggedUser);
                 const snap = await getDoc(userRef);
                 if (snap.exists()) {
-                    currentCoins = snap.data().coins || 0;
+                    const data = snap.data();
+                    currentCoins = data.coins || 0;
                     document.getElementById('user-coins').innerText = currentCoins;
+
+                    // Wyliczanie szansy na podstawie posiadanych immunitetów (od najwyższego)
+                    const statusBadge = document.getElementById('immunity-status');
+                    const rulesDisplay = document.getElementById('rules-display');
+
+                    if (data.krolplusim === 1) {
+                        winChance = 0.9967;
+                        statusBadge.innerText = "🛡️ Immunitet: Królewski+ (99.67%)";
+                        statusBadge.style.color = "#ff00ff";
+                        statusBadge.style.borderColor = "#ff00ff";
+                        rulesDisplay.innerHTML = "🎲 <b>Zasady (Królewski+):</b><br>• <b>99.67%</b> szans na wygraną! 🎉<br>• Czyste bogactwo bez ryzyka! 🤑";
+                    } else if (data.krolewskiim === 1) {
+                        winChance = 0.85;
+                        statusBadge.innerText = "🛡️ Immunitet: Królewski (85%)";
+                        statusBadge.style.color = "#eab308";
+                        statusBadge.style.borderColor = "#eab308";
+                        rulesDisplay.innerHTML = "🎲 <b>Zasady (Królewski):</b><br>• <b>85%</b> szans na wygraną! 🎉<br>• Tylko 15% szans na wpadkę! 💸";
+                    } else if (data.standardim === 1) {
+                        winChance = 0.75;
+                        statusBadge.innerText = "🛡️ Immunitet: Zwykły (75%)";
+                        statusBadge.style.color = "#3b82f6";
+                        statusBadge.style.borderColor = "#3b82f6";
+                        rulesDisplay.innerHTML = "🎲 <b>Zasady (Zwykły):</b><br>• <b>75%</b> szans na wygraną! 🎉<br>• 25% szans na wpadkę! 💸";
+                    } else {
+                        winChance = 0.50;
+                        statusBadge.innerText = "🛡️ Immunitet: Brak (50%)";
+                    }
                 }
             } catch (e) {
                 console.error("Błąd pobierania danych:", e);
@@ -180,18 +216,16 @@
             resultDiv.innerHTML = "🎰 Losowanie...";
 
             setTimeout(async () => {
-                // 50% szansy (0 = wygrana, 1 = przegrana)
-                const isWin = Math.random() < 0.5;
+                // Losowanie uzależnione od posiadanego immunitetu
+                const isWin = Math.random() < winChance;
                 const userRef = doc(db, "users", loggedUser);
 
                 if (isWin) {
-                    // Wygrana: gracz dostaje równowartość stawki jako zysk
                     await updateDoc(userRef, { coins: increment(bet) });
                     currentCoins += bet;
                     resultDiv.className = "result-box win";
                     resultDiv.innerHTML = `🎉 WYGRANA! Zyskujesz +${bet} OrkaCoinów!`;
                 } else {
-                    // Przegrana: gracz traci postawione coiny
                     await updateDoc(userRef, { coins: increment(-bet) });
                     currentCoins -= bet;
                     resultDiv.className = "result-box lose";

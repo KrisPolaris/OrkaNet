@@ -7,12 +7,12 @@
 <style>
     *{margin:0;padding:0;box-sizing:border-box;font-family: 'Segoe UI', sans-serif;}
     body{ background:#0a0a0a; color:#fff; display:flex; justify-content:center; align-items:center; min-height:100vh; flex-direction:column; text-align:center; padding: 20px; }
-    .game-container { background: #151515; padding: 20px; border-radius: 30px; border: 3px solid #00e6ff; box-shadow: 0 0 30px rgba(0, 230, 255, 0.2); width: 100%; max-width: 400px; }
+    .game-container { background: #151515; padding: 20px; border-radius: 30px; border: 3px solid #00e6ff; box-shadow: 0 0 30px rgba(0, 230, 255, 0.2); width: 100%; max-width: 420px; }
     #money-display{ font-size:45px; color: #00e6ff; margin: 5px 0; text-shadow: 0 0 10px #00e6ff; }
     #coins-display{ font-size:20px; color: #ffcc00; margin-bottom: 10px; font-weight: bold; text-shadow: 0 0 5px #ffcc00; }
     #creeper { width:180px; height:180px; border-radius:20px; cursor:pointer; transition:0.1s; user-select:none; margin: 10px 0; }
     #creeper:active { transform:scale(0.92); }
-    .shop { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 20px; max-height: 300px; overflow-y: auto; padding-right: 5px; }
+    .shop { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 20px; max-height: 320px; overflow-y: auto; padding-right: 5px; }
     .upgrade-card { background: #222; padding: 10px; border-radius: 15px; border: 1px solid #333; display: flex; align-items: center; justify-content: space-between; text-align: left; }
     .upgrade-img { width: 50px; height: 50px; border-radius: 5px; margin-right: 10px; object-fit: cover; }
     button { padding: 8px 15px; border: none; border-radius: 8px; background: #00e6ff; font-weight: bold; cursor: pointer; color: #000; }
@@ -27,17 +27,8 @@
     <div id="money-display">$0</div>
     <div id="coins-display">🪙 0 OrkaCoinów</div>
     <img id="creeper" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbWLXpQ-2QwcAdNBVy6jnnT1F22MQwsuy9nQ&usqp=CAU">
+    
     <div class="shop">
-        <div class="upgrade-card">
-            <img src="palec.png" class="upgrade-img" alt="Palec" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2312/2312894.png'">
-            <div><b>Palec Moc</b> ($100)<br><small>Mnożnik kliku x5</small></div>
-            <button id="buy-palec" disabled>KUP</button>
-        </div>
-        <div class="upgrade-card">
-            <img src="pou.png" class="upgrade-img" alt="Pou" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1004/1004664.png'">
-            <div><b>Pou</b> ($75)<br><small>+3 do każdego kliku</small></div>
-            <button id="buy-pou" disabled>KUP</button>
-        </div>
         <div class="upgrade-card">
             <img src="Stiw.png" class="upgrade-img" alt="Steve">
             <div><b>Steve</b> ($10)<br><small>+$5 co 7s</small></div>
@@ -53,7 +44,50 @@
             <div><b>Bebzun</b> ($50)<br><small>+$10 co 10s</small></div>
             <button id="buy-bebzun" disabled>KUP</button>
         </div>
+        <div class="upgrade-card">
+            <img src="pou.png" class="upgrade-img" alt="Pou" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1004/1004664.png'">
+            <div><b>Pou</b> ($75)<br><small>+3 do każdego kliku</small></div>
+            <button id="buy-pou" disabled>KUP</button>
+        </div>
+        <div class="upgrade-card">
+            <img src="palec.png" class="upgrade-img" alt="Palec" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2312/2312894.png'">
+            <div><b>Palec Moc</b> ($100)<br><small>Mnożnik kliku x5</small></div>
+            <button id="buy-palec" disabled>KUP</button>
+        </div>
+
+        <!-- NOWE WIEŻE I ULEPSZENIA -->
+        <div class="upgrade-card">
+            <img src="dashie.jpg" class="upgrade-img" alt="Kostka">
+            <div><b>Kostka</b> ($200)<br><small>+$10/s</small></div>
+            <button id="buy-dashie" disabled>KUP</button>
+        </div>
+        <div class="upgrade-card">
+            <img src="images.jpeg" class="upgrade-img" alt="Ludź">
+            <div><b>Ludź</b> ($500)<br><small>+$50/s</small></div>
+            <button id="buy-ludz" disabled>KUP</button>
+        </div>
+        <div class="upgrade-card">
+            <img src="kolorowanka3.png" class="upgrade-img" alt="Villager">
+            <div><b>Villager</b> ($1,000)<br><small>Mnożnik kliku x100</small></div>
+            <button id="buy-villager" disabled>KUP</button>
+        </div>
+        <div class="upgrade-card" style="border-color: #3b82f6;">
+            <img src="Chest.jpg" class="upgrade-img" alt="Standard Im">
+            <div><b>Prezent Standard</b> ($2,500)<br><small>Mnożnik x20 | +$20/s | Immunitet</small></div>
+            <button id="buy-im-std" disabled>KUP</button>
+        </div>
+        <div class="upgrade-card" style="border-color: #eab308;">
+            <img src="Chest.jpg" class="upgrade-img" alt="Królewski Im">
+            <div><b>Prezent Królewski</b> ($10,000)<br><small>Mnożnik x200 | +$500/s | Immunitet</small></div>
+            <button id="buy-im-krol" disabled>KUP</button>
+        </div>
+        <div class="upgrade-card" style="border-color: #ff00ff;">
+            <img src="Chest.jpg" class="upgrade-img" alt="Królewski+ Im">
+            <div><b>Prezent Królewski+</b> ($50,000)<br><small>Mnożnik x500 | +$2000/s | Immunitet</small></div>
+            <button id="buy-im-krolplus" disabled>KUP</button>
+        </div>
     </div>
+
     <div class="nav-btns">
         <button id="leaderboard-btn" style="background: #008cff; color: white;">🏆 Ranking</button>
         <button id="logout-btn" style="background: #ff4444; color: white;">Wyloguj</button>
@@ -86,7 +120,10 @@
     let money = 0;
     let coins = 0;
     let claimedMilestones = { m1k: 0, m10k: 0, m100k: 0, m1m: 0 };
-    let upgrades = { steve: 0, skeleton: 0, bebzun: 0, palec: 0, pou: 0 };
+    let upgrades = { 
+        steve: 0, skeleton: 0, bebzun: 0, palec: 0, pou: 0,
+        dashie: 0, ludz: 0, villager: 0, imStd: 0, imKrol: 0, imKrolPlus: 0
+    };
     let started = false;
 
     async function loadData() {
@@ -101,11 +138,25 @@
                 skeleton: data.upgrades?.skeleton || 0, 
                 bebzun: data.upgrades?.bebzun || 0,
                 palec: data.upgrades?.palec || 0,
-                pou: data.upgrades?.pou || 0 
+                pou: data.upgrades?.pou || 0,
+                dashie: data.upgrades?.dashie || 0,
+                ludz: data.upgrades?.ludz || 0,
+                villager: data.upgrades?.villager || 0,
+                imStd: data.upgrades?.imStd || 0,
+                imKrol: data.upgrades?.imKrol || 0,
+                imKrolPlus: data.upgrades?.imKrolPlus || 0
             };
+
+            // Interwały bierne (pasywne dochody)
             for(let i=0; i<upgrades.steve; i++) setInterval(() => earn(5), 7000);
             for(let i=0; i<upgrades.skeleton; i++) setInterval(() => earn(5), 5000);
             for(let i=0; i<upgrades.bebzun; i++) setInterval(() => earn(10), 10000);
+            for(let i=0; i<upgrades.dashie; i++) setInterval(() => earn(10), 1000);
+            for(let i=0; i<upgrades.ludz; i++) setInterval(() => earn(50), 1000);
+            for(let i=0; i<upgrades.imStd; i++) setInterval(() => earn(20), 1000);
+            for(let i=0; i<upgrades.imKrol; i++) setInterval(() => earn(500), 1000);
+            for(let i=0; i<upgrades.imKrolPlus; i++) setInterval(() => earn(2000), 1000);
+
             updateUI();
         }
     }
@@ -121,7 +172,6 @@
     }
 
     function checkMilestones() {
-        // Próg 1k (5 coinów za każde 1000$)
         let current1k = Math.floor(money / 1000);
         if (current1k > claimedMilestones.m1k) {
             let diff = current1k - claimedMilestones.m1k;
@@ -130,7 +180,6 @@
             alert(`🎉 WBIŁEŚ PROG $1,000! Dostałeś +${diff * 5} OrkaCoinów! 🪙`);
         }
 
-        // Próg 10k (10 coinów za każde 10 000$)
         let current10k = Math.floor(money / 10000);
         if (current10k > claimedMilestones.m10k) {
             let diff = current10k - claimedMilestones.m10k;
@@ -139,7 +188,6 @@
             alert(`🔥 WBIŁEŚ PROG $10,000! Dostałeś +${diff * 10} OrkaCoinów! 🪙`);
         }
 
-        // Próg 100k (25 coinów za każde 100 000$)
         let current100k = Math.floor(money / 100000);
         if (current100k > claimedMilestones.m100k) {
             let diff = current100k - claimedMilestones.m100k;
@@ -148,7 +196,6 @@
             alert(`💎 WBIŁEŚ PROG $100,000! Dostałeś +${diff * 25} OrkaCoinów! 🪙`);
         }
 
-        // Próg 1M (50 coinów za każdy 1 000 000$)
         let current1m = Math.floor(money / 1000000);
         if (current1m > claimedMilestones.m1m) {
             let diff = current1m - claimedMilestones.m1m;
@@ -164,8 +211,14 @@
         document.getElementById("buy-steve").disabled = money < 10;
         document.getElementById("buy-skeleton").disabled = money < 20;
         document.getElementById("buy-bebzun").disabled = money < 50;
-        document.getElementById("buy-palec").disabled = money < 100;
         document.getElementById("buy-pou").disabled = money < 75;
+        document.getElementById("buy-palec").disabled = money < 100;
+        document.getElementById("buy-dashie").disabled = money < 200;
+        document.getElementById("buy-ludz").disabled = money < 500;
+        document.getElementById("buy-villager").disabled = money < 1000;
+        document.getElementById("buy-im-std").disabled = money < 2500;
+        document.getElementById("buy-im-krol").disabled = money < 10000;
+        document.getElementById("buy-im-krolplus").disabled = money < 50000;
     }
 
     function earn(amount) {
@@ -179,23 +232,27 @@
     document.getElementById("creeper").onclick = () => {
         let baseClick = 1;
         baseClick += (upgrades.pou * 3);
-        let multiplier = upgrades.palec > 0 ? (upgrades.palec * 5) : 1;
+
+        // Wyliczanie całkowitego mnożnika z zakupionych przedmiotów
+        let multiplier = 1;
+        if (upgrades.palec > 0) multiplier *= (upgrades.palec * 5);
+        if (upgrades.villager > 0) multiplier *= (upgrades.villager * 100);
+        if (upgrades.imStd > 0) multiplier *= (upgrades.imStd * 20);
+        if (upgrades.imKrol > 0) multiplier *= (upgrades.imKrol * 200);
+        if (upgrades.imKrolPlus > 0) multiplier *= (upgrades.imKrolPlus * 500);
+
         let finalEarn = baseClick * multiplier;
         money += finalEarn;
         checkMilestones();
         updateUI();
         saveData();
+
         if(money === 67) alert("SIX SEVEN!!!");
         if(money % 100 === 0 && money > 0) alert("ajć creeper sie zbebeszył o " + money + " razy za mocno");
         if(!started) { document.getElementById("music").play().catch(()=>{}); started = true; }
     };
 
-    document.getElementById("buy-palec").onclick = () => {
-        if(money >= 100) { money -= 100; upgrades.palec++; updateUI(); saveData(); alert("MOCNY PALEC KUPIONY! 🖐️⚡"); }
-    };
-    document.getElementById("buy-pou").onclick = () => {
-        if(money >= 75) { money -= 75; upgrades.pou++; updateUI(); saveData(); alert("POU DOŁĄCZYŁ DO EKIPY! 🥔"); }
-    };
+    // PRZYCISKI SKLEPU
     document.getElementById("buy-steve").onclick = () => {
         if(money >= 10) { money -= 10; upgrades.steve++; updateUI(); setInterval(() => earn(5), 7000); saveData(); alert("Stachu!!!"); }
     };
@@ -204,6 +261,47 @@
     };
     document.getElementById("buy-bebzun").onclick = () => {
         if(money >= 50) { money -= 50; upgrades.bebzun++; updateUI(); setInterval(() => earn(10), 10000); saveData(); alert("O MUJ BEBZUN"); }
+    };
+    document.getElementById("buy-pou").onclick = () => {
+        if(money >= 75) { money -= 75; upgrades.pou++; updateUI(); saveData(); alert("POU DOŁĄCZYŁ DO EKIPY! 🥔"); }
+    };
+    document.getElementById("buy-palec").onclick = () => {
+        if(money >= 100) { money -= 100; upgrades.palec++; updateUI(); saveData(); alert("MOCNY PALEC KUPIONY! 🖐️⚡"); }
+    };
+
+    // NOWE PRZYCISKI
+    document.getElementById("buy-dashie").onclick = () => {
+        if(money >= 200) { money -= 200; upgrades.dashie++; updateUI(); setInterval(() => earn(10), 1000); saveData(); alert("KOSTKA LATA CO SEKUNDĘ! 🟥"); }
+    };
+    document.getElementById("buy-ludz").onclick = () => {
+        if(money >= 500) { money -= 500; upgrades.ludz++; updateUI(); setInterval(() => earn(50), 1000); saveData(); alert("LUDŹ PRACUJE DLA CIEBIE! 🚶‍♂️"); }
+    };
+    document.getElementById("buy-villager").onclick = () => {
+        if(money >= 1000) { money -= 1000; upgrades.villager++; updateUI(); saveData(); alert("VILLAGER DAJE MNOŻNIK x100! 🌾"); }
+    };
+    document.getElementById("buy-im-std").onclick = async () => {
+        if(money >= 2500) { 
+            money -= 2500; upgrades.imStd++; updateUI(); 
+            setInterval(() => earn(20), 1000); 
+            await updateDoc(doc(db, "users", userNick), { standardim: 1 });
+            saveData(); alert("PREZENT STANDARD KUPIONY! 🛡️ Dostałeś Immunitet Zwykły!"); 
+        }
+    };
+    document.getElementById("buy-im-krol").onclick = async () => {
+        if(money >= 10000) { 
+            money -= 10000; upgrades.imKrol++; updateUI(); 
+            setInterval(() => earn(500), 1000); 
+            await updateDoc(doc(db, "users", userNick), { krolewskiim: 1 });
+            saveData(); alert("PREZENT KRÓLEWSKI KUPIONY! 👑 Dostałeś Immunitet Królewski!"); 
+        }
+    };
+    document.getElementById("buy-im-krolplus").onclick = async () => {
+        if(money >= 50000) { 
+            money -= 50000; upgrades.imKrolPlus++; updateUI(); 
+            setInterval(() => earn(2000), 1000); 
+            await updateDoc(doc(db, "users", userNick), { krolplusim: 1 });
+            saveData(); alert("PREZENT KRÓLEWSKI+ KUPIONY! 🔮 ZEPSUŁEŚ EKONOMIĘ! Dostałeś Immunitet Królewski+!"); 
+        }
     };
 
     document.getElementById("logout-btn").onclick = () => {
@@ -224,7 +322,10 @@
     document.getElementById("reset-btn").onclick = async () => {
         if(confirm("UWAGA! Czy na pewno chcesz wyczyścić postępy?")) {
             if(confirm("OSTATNIA SZANSA: Serio chcesz to zrobić?")) {
-                upgrades = { steve: 0, skeleton: 0, bebzun: 0, palec: 0, pou: 0 };
+                upgrades = { 
+                    steve: 0, skeleton: 0, bebzun: 0, palec: 0, pou: 0,
+                    dashie: 0, ludz: 0, villager: 0, imStd: 0, imKrol: 0, imKrolPlus: 0 
+                };
                 money = 0;
                 coins = 0;
                 claimedMilestones = { m1k: 0, m10k: 0, m100k: 0, m1m: 0 };

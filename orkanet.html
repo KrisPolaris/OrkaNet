@@ -38,12 +38,11 @@
             align-items: center;
             justify-content: center;
             box-sizing: border-box;
+            cursor: pointer;
         }
         @keyframes neonPulse { 0%, 100% { box-shadow: 0 0 5px #00ffff; } 50% { box-shadow: 0 0 20px #00ffff; } }
 
-        /* ========================================================
-           NOWY, EPICKI TRYB CYBERPUNK (Z TŁEM NIGHT CIYU)
-           ======================================================== */
+        /* CYBERPUNK */
         body.theme-cyberpunk {
             margin: 0;
             background: #05050d url('NightCity.png') no-repeat center center fixed;
@@ -109,7 +108,6 @@
             border-color: #ff007f;
         }
 
-        /* Mniejsze kafelki pod styl CYBERFUNKY.WEBP */
         body.theme-cyberpunk .tile {
             font-family: 'Orbitron', sans-serif;
             font-size: 11px;
@@ -138,8 +136,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-
-            /* WSZYSTKIE GUZIKI PULSUJĄ NA CZERWONO CO 5s */
             animation: redGlowPulse 5s infinite;
         }
 
@@ -202,7 +198,7 @@
         @media (min-width: 800px) { .desktop-only { display: inline-block; } }
         
         .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 20px 10px; }
-        body.theme-premium .grid, body.theme-cyberpunk-legacy .grid, body.theme-dark .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; padding: 40px; max-width: 1200px; margin: 0 auto; }
+        body.theme-premium .grid, body.theme-dark .grid, body.theme-cyberpunk-legacy .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; padding: 40px; max-width: 1200px; margin: 0 auto; }
         body.theme-cyberpunk .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; padding: 30px; max-width: 1200px; margin: 0 auto; }
 
         @media(min-width: 600px) { 
@@ -535,6 +531,41 @@
         }
         .bio-text { font-family: sans-serif; font-size: 0.8em; opacity: 0.8; font-style: italic; max-width: 250px; }
 
+        /* SEKCJA IMUNITETÓW */
+        .immunity-box {
+            display: none;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px auto;
+            flex-wrap: wrap;
+            max-width: 600px;
+        }
+        .immunity-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 0 10px rgba(0,255,255,0.4);
+            border: 1px solid #00ffff;
+            background: rgba(0, 255, 255, 0.15);
+            color: #00ffff;
+        }
+        .immunity-badge.king {
+            border-color: #ffcc00;
+            color: #ffcc00;
+            background: rgba(255, 204, 0, 0.15);
+            box-shadow: 0 0 10px rgba(255,204,0,0.4);
+        }
+        .immunity-badge.king-plus {
+            border-color: #ff007f;
+            color: #ff007f;
+            background: rgba(255, 0, 127, 0.15);
+            box-shadow: 0 0 10px rgba(255,0,127,0.4);
+        }
+
         .search-container {
             margin: 15px auto 10px auto;
             width: 85%;
@@ -555,14 +586,198 @@
         }
         body.theme-cyberpunk #tile-search-input {
             border-radius: 0;
-            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 15px 100%, 0 calc(100% - 10px));
             background: rgba(20, 5, 35, 0.6);
             border-color: #00ffff;
             font-family: 'Orbitron', sans-serif;
         }
+
+        /* OVERLAY BANA */
+        #ban-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000; color: #ff0000;
+            z-index: 999999;
+            flex-direction: column; align-items: center; justify-content: center;
+            font-family: Arial, sans-serif; text-align: center;
+            padding: 20px; box-sizing: border-box;
+        }
+        #ban-screen h1 { font-size: 2.5rem; margin-bottom: 10px; color: #ff0000; text-shadow: 0 0 15px #ff0000; }
+        .ban-box { background: #111; border: 2px solid #ff0000; padding: 15px 25px; border-radius: 10px; max-width: 500px; width: 100%; margin-bottom: 30px; box-shadow: 0 0 15px rgba(255, 0, 0, 0.4); }
+        .ban-btn-appeal { background: #ff0000; color: #fff; text-decoration: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; font-size: 1rem; margin-bottom: 15px; display: inline-block; box-shadow: 0 0 10px #ff0000; }
+        .ban-btn-game { background: #00ff00; color: #000; border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 0 10px #00ff00; }
+
+        /* ==========================================
+           KEYPAD / MODAL TELEFONU (DZWOŃ & REZERWUJ)
+           ========================================== */
+        #phone-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10001;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+        .phone-container {
+            background: #111;
+            border: 2px solid #00ffff;
+            border-radius: 20px;
+            width: 310px;
+            padding: 20px;
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #00ffff;
+            position: relative;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .phone-screen {
+            width: 100%;
+            background: #000;
+            border: 1px solid #00ffff;
+            border-radius: 10px;
+            padding: 15px 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            text-align: right;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .phone-status {
+            font-size: 0.7em;
+            color: #ff007f;
+            text-align: left;
+            min-height: 16px;
+            word-break: break-word;
+        }
+        .phone-display {
+            font-size: 1.6em;
+            letter-spacing: 2px;
+            color: #00ffff;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        .keypad-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        .key-btn {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            font-size: 1.3em;
+            font-weight: bold;
+            padding: 12px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.15s;
+            font-family: inherit;
+        }
+        .key-btn:active {
+            background: #00ffff;
+            color: #000;
+            transform: scale(0.95);
+        }
+        .phone-actions {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+        .btn-call {
+            flex: 2;
+            background: #00ff66;
+            color: #000;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1em;
+            cursor: pointer;
+            font-family: inherit;
+            box-shadow: 0 0 10px #00ff66;
+        }
+        .btn-reserve {
+            flex: 2;
+            background: #ffcc00;
+            color: #000;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.85em;
+            cursor: pointer;
+            font-family: inherit;
+            box-shadow: 0 0 10px #ffcc00;
+        }
+        .phone-close {
+            position: absolute;
+            top: 10px; right: 15px;
+            background: none; border: none;
+            color: #ff0055; font-size: 1.2em;
+            cursor: pointer; font-weight: bold;
+        }
     </style>
 </head>
 <body class="theme-standard">
+
+<!-- EKRAN BANA -->
+<div id="ban-screen">
+    <h1>⚠️ Masz Bana 🚨</h1>
+    <p style="font-size: 1.3rem; color: #fff; margin-bottom: 25px; font-weight: bold;">Nigdy więcej nie próbuj</p>
+    
+    <div class="ban-box">
+        <p style="font-size: 1.1rem; color: #ff8888; margin: 0;">
+            <b>Powód bana:</b> <span id="ban-reason-text" style="color: #fff;">-</span>
+        </p>
+    </div>
+
+    <a id="appeal-btn" href="mailto:mekoramabuilder17@gmail.com?subject=Odwołanie%20od%20bana" class="ban-btn-appeal">Odwołaj się od bana</a>
+    
+    <button onclick="window.location.href='flapibebzun.html'" class="ban-btn-game">Zagraj w flappy bebech</button>
+</div>
+
+<!-- KEYPAD / TELEFON MODAL -->
+<div id="phone-modal">
+    <div class="phone-container">
+        <button class="phone-close" onclick="closePhone()">✖</button>
+        <div style="font-size:0.9em; margin-bottom:10px; font-weight:bold;">📱 ORKA-PHONE</div>
+        
+        <div class="phone-screen">
+            <div id="phone-status" class="phone-status">Gotowy...</div>
+            <div id="phone-display" class="phone-display"></div>
+        </div>
+
+        <div class="keypad-grid">
+            <button class="key-btn" onclick="pressKey('1')">1</button>
+            <button class="key-btn" onclick="pressKey('2')">2</button>
+            <button class="key-btn" onclick="pressKey('3')">3</button>
+            <button class="key-btn" onclick="pressKey('4')">4</button>
+            <button class="key-btn" onclick="pressKey('5')">5</button>
+            <button class="key-btn" onclick="pressKey('6')">6</button>
+            <button class="key-btn" onclick="pressKey('7')">7</button>
+            <button class="key-btn" onclick="pressKey('8')">8</button>
+            <button class="key-btn" onclick="pressKey('9')">9</button>
+            <button class="key-btn" onclick="pressKey('*')">*</button>
+            <button class="key-btn" onclick="pressKey('0')">0</button>
+            <button class="key-btn" onclick="pressKey('#')">#</button>
+        </div>
+
+        <div class="phone-actions">
+            <button class="key-btn" style="flex:1; background:rgba(255,0,0,0.3); border-color:#ff4444; color:#ff4444;" onclick="clearKey()">C</button>
+            <button class="btn-call" onclick="makeCall()">📞 Dzwoń</button>
+            <button class="btn-reserve" onclick="reserveNumber()">⭐ Zarezerwuj</button>
+        </div>
+    </div>
+</div>
 
 <div id="cookie-overlay">
     <div id="cookie-box">
@@ -594,6 +809,9 @@
     <div id="stat-visit-label">👀 ODWIEDZINY: <span id="visit-counter" class="stat-val" style="color:#ff006e;">0</span></div>
     <div id="stat-coins-label">🪙 OrkaCoiny: <span id="coins-counter" class="stat-val" style="color:#00ffff;">0</span></div>
 </div>
+
+<!-- DEDYKOWANY WIDOK IMUNITETU (POJAWIA SIĘ TYLKO GDY JE POSIADACZ) -->
+<div id="immunity-box" class="immunity-box"></div>
 
 <div class="profile-card">
     <div class="avatar-display" id="my-avatar">😎</div>
@@ -652,6 +870,9 @@
 </div>
 
 <main class="grid" id="main-grid">
+    <!-- NOWY KAFEL DO DZWONIENIA -->
+    <div class="tile" onclick="openPhone()">Zadzwoń 📞</div>
+
     <a class="tile" href="czat.html">BebzunChat 💬</a>
     <a class="tile" href="clicker.html">Creeper Clicker 💰</a>
     <a class="tile" href="burga.html">Burger 🍔</a>
@@ -697,6 +918,7 @@
     <a class="tile" href="kasynko.html">Kasynko</a>
     <a class="tile" href="bankisko.html">Przelew w bankisku</a>
 </main>
+
 <div class="shoutbox-panel">
     <div style="font-size: 1.1em; margin-bottom: 8px; font-weight: bold; color:#ff00d9;">📢 SHOUTBOX (Czat na Żywo)</div>
     <div id="shoutbox-messages">Ładowanie wiadomości...</div>
@@ -732,6 +954,126 @@
     let cachedAllUsers = [];
     let onlineUsersMap = {};
     let unreadDMs = {};
+
+    // SYSTEM PHONE & REZERWACJI NUMERÓW W FIREBASE
+    window.openPhone = function() {
+        document.getElementById('phone-modal').style.display = 'flex';
+        document.getElementById('phone-display').innerText = '';
+        document.getElementById('phone-status').innerText = 'Gotowy...';
+    };
+
+    window.closePhone = function() {
+        document.getElementById('phone-modal').style.display = 'none';
+    };
+
+    window.pressKey = function(digit) {
+        const display = document.getElementById('phone-display');
+        if(display.innerText.length < 12) {
+            display.innerText += digit;
+        }
+    };
+
+    window.clearKey = function() {
+        const display = document.getElementById('phone-display');
+        display.innerText = display.innerText.slice(0, -1);
+    };
+
+    window.makeCall = async function() {
+        const num = document.getElementById('phone-display').innerText.trim();
+        const status = document.getElementById('phone-status');
+
+        if(!num) {
+            status.innerText = '❌ Wpisz numer!';
+            return;
+        }
+
+        status.innerText = '📞 Łączenie...';
+
+        try {
+            const resSnap = await getDoc(doc(db, "reserved_numbers", num));
+            if(resSnap.exists()) {
+                const data = resSnap.data();
+                status.innerText = `📲 Połączono z: ${data.owner}!`;
+                
+                if(num === "112" || num === "997") {
+                    alert("🚨 Dodzwoniłeś się do Służb Ratunkowych OrkaNet! Bebzun jest bezpieczny!");
+                } else if(num === "420") {
+                    alert("🌿 Dodzwoniłeś się do Gastro-Orka! Twoja pizza jest w drodze!");
+                } else if(num === "1337") {
+                    alert("💻 Dodzwoniłeś się do Klubu Hakerów!");
+                } else {
+                    alert(`📞 Rozmawiasz z użytkownikiem: ${data.owner}`);
+                }
+
+            } else {
+                status.innerText = '⚠️ Numer nieistniejący lub wolny!';
+            }
+        } catch(e) {
+            console.error(e);
+            status.innerText = '❌ Błąd połączenia';
+        }
+    };
+
+    window.reserveNumber = async function() {
+        const num = document.getElementById('phone-display').innerText.trim();
+        const status = document.getElementById('phone-status');
+
+        if(!num) {
+            status.innerText = '❌ Wpisz numer!';
+            return;
+        }
+
+        if(myUser === "Gość") {
+            alert("Tylko zalogowani użytkownicy mogą rezerwować numery!");
+            return;
+        }
+
+        status.innerText = '⏳ Sprawdzanie...';
+
+        try {
+            const resRef = doc(db, "reserved_numbers", num);
+            const resSnap = await getDoc(resRef);
+
+            if(resSnap.exists()) {
+                const owner = resSnap.data().owner;
+                if(owner === myUser) {
+                    status.innerText = 'ℹ️ Ten numer należy do Ciebie!';
+                } else {
+                    status.innerText = `❌ Numer należy do: ${owner}`;
+                }
+            } else {
+                await setDoc(resRef, {
+                    owner: myUser,
+                    reservedAt: serverTimestamp()
+                });
+                status.innerText = `✅ Zarezerwowano numer ${num}!`;
+                alert(`🎉 Gratulacje! Numer ${num} należy teraz do ciebie (${myUser})!`);
+            }
+        } catch(e) {
+            console.error(e);
+            status.innerText = '❌ Błąd rezerwacji!';
+        }
+    };
+
+    // WERYFIKACJA STATUSU BANA
+    async function checkUserBanStatus() {
+        if (!myUser || myUser === "Gość") return;
+        try {
+            const userSnap = await getDoc(doc(db, "users", myUser));
+            if (userSnap.exists()) {
+                const userData = userSnap.data();
+                if (userData.isBanned) {
+                    const banScreen = document.getElementById("ban-screen");
+                    const reasonText = document.getElementById("ban-reason-text");
+                    reasonText.innerText = userData.banReason || "Naruszenie regulaminu OrkaNet";
+                    banScreen.style.display = "flex";
+                }
+            }
+        } catch (err) {
+            console.error("Błąd weryfikacji bana:", err);
+        }
+    }
+    checkUserBanStatus();
 
     async function checkDailyReward() {
         const today = new Date().toDateString();
@@ -1179,7 +1521,6 @@
         });
     }
 
-    // LISTA MOTYWÓW: 1. STANDARD, 2. CYBERPUNK (DRUGI W KOLEJNOŚCI!), 3. PREMIUM, 4. DARK, 5. CYBERPUNK LEGACY
     const themes = ['standard', 'cyberpunk', 'premium', 'dark', 'cyberpunk-legacy'];
     let currentThemeIndex = themes.indexOf(localStorage.getItem('theme') || 'cyberpunk');
     if (currentThemeIndex === -1) currentThemeIndex = 1;
@@ -1265,11 +1606,14 @@
         const random = pages[Math.floor(Math.random() * pages.length)];
         if(random.href && random.href.trim() !== "") {
             location.href = random.href;
+        } else if(random.onclick) {
+            random.onclick();
         }
     }
 
     let musicPlaying = false;
     let normalMusic = new Audio("music.mp3");
+    normalMusic.loop = true;
 
     function toggleMusic() {
         const mBtn = document.getElementById('music-btn');
