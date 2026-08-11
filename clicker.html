@@ -55,7 +55,7 @@
             <button id="buy-palec" disabled>KUP</button>
         </div>
 
-        <!-- NOWE WIEŻE I ULEPSZENIA -->
+        <!-- WIEŻE I ULEPSZENIA -->
         <div class="upgrade-card">
             <img src="dashie.jpg" class="upgrade-img" alt="Kostka">
             <div><b>Kostka</b> ($200)<br><small>+$10/s</small></div>
@@ -73,17 +73,17 @@
         </div>
         <div class="upgrade-card" style="border-color: #3b82f6;">
             <img src="Chest.jpg" class="upgrade-img" alt="Standard Im">
-            <div><b>Prezent Standard</b> ($2,500)<br><small>Mnożnik x20 | +$20/s | Immunitet</small></div>
+            <div><b>Prezent Standard</b> ($2,500)<br><small>Mnożnik x20 | +$20/s | Wymaga Standard Immunitet</small></div>
             <button id="buy-im-std" disabled>KUP</button>
         </div>
         <div class="upgrade-card" style="border-color: #eab308;">
             <img src="Chest.jpg" class="upgrade-img" alt="Królewski Im">
-            <div><b>Prezent Królewski</b> ($10,000)<br><small>Mnożnik x200 | +$500/s | Immunitet</small></div>
+            <div><b>Prezent Królewski</b> ($10,000)<br><small>Mnożnik x200 | +$500/s | Wymaga Królewski Immunitet</small></div>
             <button id="buy-im-krol" disabled>KUP</button>
         </div>
         <div class="upgrade-card" style="border-color: #ff00ff;">
             <img src="Chest.jpg" class="upgrade-img" alt="Królewski+ Im">
-            <div><b>Prezent Królewski+</b> ($50,000)<br><small>Mnożnik x500 | +$2000/s | Immunitet</small></div>
+            <div><b>Prezent Królewski+</b> ($50,000)<br><small>Mnożnik x500 | +$2000/s | Wymaga Królewski+ Immunitet</small></div>
             <button id="buy-im-krolplus" disabled>KUP</button>
         </div>
     </div>
@@ -124,6 +124,14 @@
         steve: 0, skeleton: 0, bebzun: 0, palec: 0, pou: 0,
         dashie: 0, ludz: 0, villager: 0, imStd: 0, imKrol: 0, imKrolPlus: 0
     };
+    
+    // Tagi immunitetów z Firebase
+    let userImmunities = {
+        standardim: 0,
+        krolewskiim: 0,
+        krolplusim: 0
+    };
+
     let started = false;
 
     async function loadData() {
@@ -133,6 +141,12 @@
             money = data.money || 0;
             coins = data.coins || 0;
             claimedMilestones = data.claimedMilestones || { m1k: 0, m10k: 0, m100k: 0, m1m: 0 };
+            
+            // Wczytanie immunitetów z konta
+            userImmunities.standardim = data.standardim || 0;
+            userImmunities.krolewskiim = data.krolewskiim || 0;
+            userImmunities.krolplusim = data.krolplusim || 0;
+
             upgrades = { 
                 steve: data.upgrades?.steve || 0, 
                 skeleton: data.upgrades?.skeleton || 0, 
@@ -147,16 +161,6 @@
                 imKrolPlus: data.upgrades?.imKrolPlus || 0
             };
 
-            // Interwały bierne (pasywne dochody)
-            for(let i=0; i<upgrades.steve; i++) setInterval(() => earn(5), 7000);
-            for(let i=0; i<upgrades.skeleton; i++) setInterval(() => earn(5), 5000);
-            for(let i=0; i<upgrades.bebzun; i++) setInterval(() => earn(10), 10000);
-            for(let i=0; i<upgrades.dashie; i++) setInterval(() => earn(10), 1000);
-            for(let i=0; i<upgrades.ludz; i++) setInterval(() => earn(50), 1000);
-            for(let i=0; i<upgrades.imStd; i++) setInterval(() => earn(20), 1000);
-            for(let i=0; i<upgrades.imKrol; i++) setInterval(() => earn(500), 1000);
-            for(let i=0; i<upgrades.imKrolPlus; i++) setInterval(() => earn(2000), 1000);
-
             updateUI();
         }
     }
@@ -170,6 +174,29 @@
             lastSeen: Date.now()
         }, { merge: true });
     }
+
+    // Główna pętla pasywnego dochodu uruchamiana raz na sekundę
+    let passiveTick = 0;
+    setInterval(() => {
+        passiveTick++;
+        let passiveIncome = 0;
+
+        // Licznik sekundowy dla items co X sekund
+        if (passiveTick % 7 === 0) passiveIncome += (upgrades.steve * 5);
+        if (passiveTick % 5 === 0) passiveIncome += (upgrades.skeleton * 5);
+        if (passiveTick % 10 === 0) passiveIncome += (upgrades.bebzun * 10);
+
+        // Licznik co 1 sekundę
+        passiveIncome += (upgrades.dashie * 10);
+        passiveIncome += (upgrades.ludz * 50);
+        passiveIncome += (upgrades.imStd * 20);
+        passiveIncome += (upgrades.imKrol * 500);
+        passiveIncome += (upgrades.imKrolPlus * 2000);
+
+        if (passiveIncome > 0) {
+            earn(passiveIncome);
+        }
+    }, 1000);
 
     function checkMilestones() {
         let current1k = Math.floor(money / 1000);
@@ -208,6 +235,7 @@
     function updateUI() {
         document.getElementById("money-display").textContent = "$" + money;
         document.getElementById("coins-display").textContent = "🪙 " + coins + " OrkaCoinów";
+        
         document.getElementById("buy-steve").disabled = money < 10;
         document.getElementById("buy-skeleton").disabled = money < 20;
         document.getElementById("buy-bebzun").disabled = money < 50;
@@ -216,9 +244,11 @@
         document.getElementById("buy-dashie").disabled = money < 200;
         document.getElementById("buy-ludz").disabled = money < 500;
         document.getElementById("buy-villager").disabled = money < 1000;
-        document.getElementById("buy-im-std").disabled = money < 2500;
-        document.getElementById("buy-im-krol").disabled = money < 10000;
-        document.getElementById("buy-im-krolplus").disabled = money < 50000;
+        
+        // Przyciski prezentów wymagają kasy ORAZ odpowiedniego immunitetu
+        document.getElementById("buy-im-std").disabled = (money < 2500 || userImmunities.standardim !== 1);
+        document.getElementById("buy-im-krol").disabled = (money < 10000 || userImmunities.krolewskiim !== 1);
+        document.getElementById("buy-im-krolplus").disabled = (money < 50000 || userImmunities.krolplusim !== 1);
     }
 
     function earn(amount) {
@@ -230,19 +260,19 @@
     }
 
     document.getElementById("creeper").onclick = () => {
-        let baseClick = 1;
-        baseClick += (upgrades.pou * 3);
+        let baseClick = 1 + (upgrades.pou * 3);
 
-        // Wyliczanie całkowitego mnożnika z zakupionych przedmiotów
+        // Prawidłowe sumowanie mnożników
         let multiplier = 1;
-        if (upgrades.palec > 0) multiplier *= (upgrades.palec * 5);
-        if (upgrades.villager > 0) multiplier *= (upgrades.villager * 100);
-        if (upgrades.imStd > 0) multiplier *= (upgrades.imStd * 20);
-        if (upgrades.imKrol > 0) multiplier *= (upgrades.imKrol * 200);
-        if (upgrades.imKrolPlus > 0) multiplier *= (upgrades.imKrolPlus * 500);
+        multiplier += (upgrades.palec * 5);
+        multiplier += (upgrades.villager * 100);
+        multiplier += (upgrades.imStd * 20);
+        multiplier += (upgrades.imKrol * 200);
+        multiplier += (upgrades.imKrolPlus * 500);
 
         let finalEarn = baseClick * multiplier;
         money += finalEarn;
+        
         checkMilestones();
         updateUI();
         saveData();
@@ -254,13 +284,13 @@
 
     // PRZYCISKI SKLEPU
     document.getElementById("buy-steve").onclick = () => {
-        if(money >= 10) { money -= 10; upgrades.steve++; updateUI(); setInterval(() => earn(5), 7000); saveData(); alert("Stachu!!!"); }
+        if(money >= 10) { money -= 10; upgrades.steve++; updateUI(); saveData(); alert("Stachu!!!"); }
     };
     document.getElementById("buy-skeleton").onclick = () => {
-        if(money >= 20) { money -= 20; upgrades.skeleton++; updateUI(); setInterval(() => earn(5), 5000); saveData(); alert("SZKARLATYNA"); }
+        if(money >= 20) { money -= 20; upgrades.skeleton++; updateUI(); saveData(); alert("SZKARLATYNA"); }
     };
     document.getElementById("buy-bebzun").onclick = () => {
-        if(money >= 50) { money -= 50; upgrades.bebzun++; updateUI(); setInterval(() => earn(10), 10000); saveData(); alert("O MUJ BEBZUN"); }
+        if(money >= 50) { money -= 50; upgrades.bebzun++; updateUI(); saveData(); alert("O MUJ BEBZUN"); }
     };
     document.getElementById("buy-pou").onclick = () => {
         if(money >= 75) { money -= 75; upgrades.pou++; updateUI(); saveData(); alert("POU DOŁĄCZYŁ DO EKIPY! 🥔"); }
@@ -268,39 +298,56 @@
     document.getElementById("buy-palec").onclick = () => {
         if(money >= 100) { money -= 100; upgrades.palec++; updateUI(); saveData(); alert("MOCNY PALEC KUPIONY! 🖐️⚡"); }
     };
-
-    // NOWE PRZYCISKI
     document.getElementById("buy-dashie").onclick = () => {
-        if(money >= 200) { money -= 200; upgrades.dashie++; updateUI(); setInterval(() => earn(10), 1000); saveData(); alert("KOSTKA LATA CO SEKUNDĘ! 🟥"); }
+        if(money >= 200) { money -= 200; upgrades.dashie++; updateUI(); saveData(); alert("KOSTKA LATA CO SEKUNDĘ! 🟥"); }
     };
     document.getElementById("buy-ludz").onclick = () => {
-        if(money >= 500) { money -= 500; upgrades.ludz++; updateUI(); setInterval(() => earn(50), 1000); saveData(); alert("LUDŹ PRACUJE DLA CIEBIE! 🚶‍♂️"); }
+        if(money >= 500) { money -= 500; upgrades.ludz++; updateUI(); saveData(); alert("LUDŹ PRACUJE DLA CIEBIE! 🚶‍♂️"); }
     };
     document.getElementById("buy-villager").onclick = () => {
         if(money >= 1000) { money -= 1000; upgrades.villager++; updateUI(); saveData(); alert("VILLAGER DAJE MNOŻNIK x100! 🌾"); }
     };
-    document.getElementById("buy-im-std").onclick = async () => {
+
+    // PREZENTY Z WERYFIKACJĄ IMMUNITETU
+    document.getElementById("buy-im-std").onclick = () => {
+        if (userImmunities.standardim !== 1) {
+            alert("❌ BŁĄD! Musisz najpierw posiadać Standard Immunitet!");
+            return;
+        }
         if(money >= 2500) { 
-            money -= 2500; upgrades.imStd++; updateUI(); 
-            setInterval(() => earn(20), 1000); 
-            await updateDoc(doc(db, "users", userNick), { standardim: 1 });
-            saveData(); alert("PREZENT STANDARD KUPIONY! 🛡️ Dostałeś Immunitet Zwykły!"); 
+            money -= 2500; 
+            upgrades.imStd++; 
+            updateUI(); 
+            saveData(); 
+            alert("PREZENT STANDARD KUPIONY! 🛡️ Wykorzystano Twój Immunitet Zwykły!"); 
         }
     };
-    document.getElementById("buy-im-krol").onclick = async () => {
+
+    document.getElementById("buy-im-krol").onclick = () => {
+        if (userImmunities.krolewskiim !== 1) {
+            alert("❌ BŁĄD! Musisz najpierw posiadać Królewski Immunitet!");
+            return;
+        }
         if(money >= 10000) { 
-            money -= 10000; upgrades.imKrol++; updateUI(); 
-            setInterval(() => earn(500), 1000); 
-            await updateDoc(doc(db, "users", userNick), { krolewskiim: 1 });
-            saveData(); alert("PREZENT KRÓLEWSKI KUPIONY! 👑 Dostałeś Immunitet Królewski!"); 
+            money -= 10000; 
+            upgrades.imKrol++; 
+            updateUI(); 
+            saveData(); 
+            alert("PREZENT KRÓLEWSKI KUPIONY! 👑 Wykorzystano Twój Immunitet Królewski!"); 
         }
     };
-    document.getElementById("buy-im-krolplus").onclick = async () => {
+
+    document.getElementById("buy-im-krolplus").onclick = () => {
+        if (userImmunities.krolplusim !== 1) {
+            alert("❌ BŁĄD! Musisz najpierw posiadać Królewski+ Immunitet!");
+            return;
+        }
         if(money >= 50000) { 
-            money -= 50000; upgrades.imKrolPlus++; updateUI(); 
-            setInterval(() => earn(2000), 1000); 
-            await updateDoc(doc(db, "users", userNick), { krolplusim: 1 });
-            saveData(); alert("PREZENT KRÓLEWSKI+ KUPIONY! 🔮 ZEPSUŁEŚ EKONOMIĘ! Dostałeś Immunitet Królewski+!"); 
+            money -= 50000; 
+            upgrades.imKrolPlus++; 
+            updateUI(); 
+            saveData(); 
+            alert("PREZENT KRÓLEWSKI+ KUPIONY! 🔮 ZEPSUŁEŚ EKONOMIĘ! Wykorzystano Immunitet Królewski+!"); 
         }
     };
 
@@ -340,6 +387,7 @@
             }
         }
     };
+    
     loadData();
 </script>
 </body>
