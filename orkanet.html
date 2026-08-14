@@ -18,11 +18,32 @@
         }
         body.theme-standard header { padding: 30px 0 10px 0; font-size: 3.5em; text-shadow: 0 0 10px #00ffff; }
         body.theme-standard .vip-tag { font-size: 0.4em; color: #ffcc00; display: block; text-shadow: 0 0 10px #ffcc00; letter-spacing: 2px; }
-        body.theme-standard .stats-bar { background: rgba(0,0,0,0.7); border-top: 1px solid #00ffff; border-bottom: 1px solid #00ffff; padding: 10px; margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; font-size: 0.8em; flex-wrap: wrap; }
+        body.theme-standard .stats-bar { background: rgba(0,0,0,0.7); border-top: 1px solid #00ffff; border-bottom: 1px solid #00ffff; padding: 10px; margin-bottom: 10px; display: flex; justify-content: center; gap: 20px; font-size: 0.8em; flex-wrap: wrap; }
         body.theme-standard .stat-val { color: #ffcc00; }
         body.theme-standard #username { font-size: 1.2em; margin-bottom: 5px; background: rgba(0,0,0,0.5); padding: 5px 10px; border-bottom: 1px solid #00ffff; display: inline-block; cursor: pointer; }
         body.theme-standard #username:hover { color: #fff; text-shadow: 0 0 8px #00ffff; }
-        
+
+        /* MARQUEE BAR */
+        .marquee-container {
+            background: rgba(0, 0, 0, 0.85);
+            border-top: 1px solid #00ffff;
+            border-bottom: 1px solid #00ffff;
+            color: #00ffff;
+            padding: 8px 0;
+            font-size: 0.85em;
+            margin-bottom: 20px;
+            font-family: sans-serif;
+            letter-spacing: 1px;
+        }
+
+        body.theme-cyberpunk .marquee-container {
+            background: rgba(10, 5, 20, 0.85);
+            border-color: #ff007f;
+            color: #ff007f;
+            font-family: 'Orbitron', sans-serif;
+            box-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
+        }
+
         body.theme-standard .tile { 
             background: rgba(17,17,17,0.85); 
             color: #00ffff; 
@@ -76,7 +97,7 @@
             border-top: 1px solid rgba(0, 255, 255, 0.6);
             border-bottom: 1px solid rgba(0, 255, 255, 0.6);
             padding: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             display: flex;
             justify-content: center;
             gap: 25px;
@@ -168,14 +189,14 @@
 
         body.theme-premium { --primary: #2563eb; --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b; --accent: #ffcc00; margin: 0; background: var(--bg); font-family: 'Bungee', cursive; color: var(--text); text-align: center; }
         body.theme-premium header { background: var(--card-bg); padding: 40px 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 2.5em; color: var(--primary); text-shadow: none; }
-        body.theme-premium .stats-bar { background: #fff; border: 1px solid #ddd; color: #555; padding: 10px; margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; font-size: 0.8em; flex-wrap: wrap;}
+        body.theme-premium .stats-bar { background: #fff; border: 1px solid #ddd; color: #555; padding: 10px; margin-bottom: 10px; display: flex; justify-content: center; gap: 20px; font-size: 0.8em; flex-wrap: wrap;}
         body.theme-premium .vip-tag { font-size: 0.3em; background: var(--accent); color: #000; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-top: 10px; letter-spacing: 0; text-shadow: none; }
         body.theme-premium #username { color: #2563eb; background: none; border: none; font-size: 1.2em; margin-bottom: 5px; padding: 5px; cursor: pointer; }
         body.theme-premium .tile { background: var(--card-bg); color: var(--text); border-radius: 16px; padding: 25px 15px; animation: none; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: auto; min-width: 130px; text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center;}
 
         body.theme-dark { margin: 0; background: #121212; font-family: 'Inter', sans-serif; color: #e0e0e0; text-align: center; }
         body.theme-dark header { background: #1f1f1f; padding: 30px; font-size: 2.5em; color: #ffffff; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-        body.theme-dark .stats-bar { background: #1e1e1e; border: 1px solid #333; color: #aaa; padding: 10px; margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; font-size: 0.8em; flex-wrap: wrap; }
+        body.theme-dark .stats-bar { background: #1e1e1e; border: 1px solid #333; color: #aaa; padding: 10px; margin-bottom: 10px; display: flex; justify-content: center; gap: 20px; font-size: 0.8em; flex-wrap: wrap; }
         body.theme-dark .stat-val { color: #bb86fc; font-weight: bold; }
         body.theme-dark #username { color: #bb86fc; background: none; border: none; font-size: 1.2em; cursor: pointer; }
         body.theme-dark .tile { background: #1e1e1e; color: #ffffff; border: 1px solid #333; border-radius: 8px; padding: 20px; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
@@ -298,6 +319,7 @@
             border: 2px solid transparent;
             cursor: pointer;
             position: relative;
+            overflow: hidden;
         }
         body.theme-standard .roblox-avatar { border-color: #00ffff; }
         body.theme-cyberpunk-legacy .roblox-avatar { border-color: #ff006e; }
@@ -311,6 +333,7 @@
             bottom: 0;
             right: 0;
             border: 2px solid #000;
+            z-index: 2;
         }
         .status-online { background: #00ff00; box-shadow: 0 0 5px #00ff00; }
         .status-offline { background: #888888; }
@@ -331,6 +354,7 @@
             font-weight: bold;
             box-shadow: 0 0 8px #ff0055;
             animation: pulse 1s infinite alternate;
+            z-index: 3;
         }
         @keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.2); } }
 
@@ -498,7 +522,7 @@
         }
         
         #shoutbox-messages {
-            height: 150px;
+            height: 180px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -511,8 +535,9 @@
             border-radius: 8px;
             margin-bottom: 10px;
         }
-        .shout-msg { word-break: break-word; }
+        .shout-msg { word-break: break-word; display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
         .shout-user { font-weight: bold; color: #ff00d9; cursor: pointer; }
+        .shout-user:hover { text-decoration: underline; }
 
         .profile-card {
             display: flex;
@@ -523,13 +548,65 @@
             flex-wrap: wrap;
         }
         .avatar-display {
+            width: 60px;
+            height: 60px;
             font-size: 2em;
             background: rgba(255,255,255,0.1);
-            padding: 10px;
             border-radius: 50%;
             border: 2px dashed #00ffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .avatar-display img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         .bio-text { font-family: sans-serif; font-size: 0.8em; opacity: 0.8; font-style: italic; max-width: 250px; }
+
+        /* MODAL PROFILU INNEGO GRACZA */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 10002;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background: #111;
+            border: 2px solid #00ffff;
+            border-radius: 15px;
+            padding: 20px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            color: #fff;
+            position: relative;
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+            font-family: 'Orbitron', sans-serif;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px; right: 15px;
+            background: none; border: none;
+            color: #ff0055; font-size: 1.2em;
+            cursor: pointer; font-weight: bold;
+        }
+        .modal-avatar-circle {
+            margin: 10px auto;
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            border: 2px solid #00ffff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5em; overflow: hidden;
+            background: #222;
+        }
 
         /* SEKCJA IMUNITETÓW */
         .immunity-box {
@@ -552,18 +629,6 @@
             border: 1px solid #00ffff;
             background: rgba(0, 255, 255, 0.15);
             color: #00ffff;
-        }
-        .immunity-badge.king {
-            border-color: #ffcc00;
-            color: #ffcc00;
-            background: rgba(255, 204, 0, 0.15);
-            box-shadow: 0 0 10px rgba(255,204,0,0.4);
-        }
-        .immunity-badge.king-plus {
-            border-color: #ff007f;
-            color: #ff007f;
-            background: rgba(255, 0, 127, 0.15);
-            box-shadow: 0 0 10px rgba(255,0,127,0.4);
         }
 
         .search-container {
@@ -608,9 +673,7 @@
         .ban-btn-appeal { background: #ff0000; color: #fff; text-decoration: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; font-size: 1rem; margin-bottom: 15px; display: inline-block; box-shadow: 0 0 10px #ff0000; }
         .ban-btn-game { background: #00ff00; color: #000; border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 0 10px #00ff00; }
 
-        /* ==========================================
-           KEYPAD / MODAL TELEFONU (DZWOŃ & REZERWUJ)
-           ========================================== */
+        /* KEYPAD / TELEFON MODAL */
         #phone-modal {
             display: none;
             position: fixed;
@@ -779,6 +842,28 @@
     </div>
 </div>
 
+<!-- MODAL PODGLĄDU PROFILU GRACZA -->
+<div id="user-profile-modal" class="modal">
+    <div class="modal-content">
+        <button class="close-btn" onclick="closeUserProfileModal()">✖</button>
+        
+        <div class="modal-avatar-circle">
+            <span id="prof-modal-emoji">😎</span>
+            <img id="prof-modal-img" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
+        </div>
+
+        <h3 id="prof-modal-username" style="margin:5px 0; color:#00ffff;">-</h3>
+        <p id="prof-modal-bio" style="font-size:0.85em; font-style:italic; opacity:0.8;">"-"</p>
+        
+        <hr style="border-color:rgba(0,255,255,0.2); margin:15px 0;">
+        
+        <div style="text-align:left; font-size:0.85em; display:flex; flex-direction:column; gap:8px;">
+            <div>📅 <b>Dołączono:</b> <span id="prof-modal-joined" style="color:#ffcc00;">-</span></div>
+            <div>🪙 <b>OrkaCoiny:</b> <span id="prof-modal-coins" style="color:#00ffff;">0</span></div>
+        </div>
+    </div>
+</div>
+
 <div id="cookie-overlay">
     <div id="cookie-box">
         <div id="cookie-initial">
@@ -810,11 +895,21 @@
     <div id="stat-coins-label">🪙 OrkaCoiny: <span id="coins-counter" class="stat-val" style="color:#00ffff;">0</span></div>
 </div>
 
-<!-- DEDYKOWANY WIDOK IMUNITETU (POJAWIA SIĘ TYLKO GDY JE POSIADACZ) -->
+<!-- PRZEWIJANY PASEK (MARQUEE) -->
+<div class="marquee-container">
+    <marquee behavior="scroll" direction="left" scrollamount="6">
+        📢 <b>Przyszłe aktualizacje / Niedawno zrobione:</b> Dodano Kasyno, Przelewy, Immunitety i dużo więcej | Bebech Bebzunek Bebzunosław Bebzunkowo-Czekoladowy Bebeszek co ma bebeszki bebeszukujące co bebeszkują inne bebeszki 🍪✨
+    </marquee>
+</div>
+
+<!-- DEDYKOWANY WIDOK IMUNITETU -->
 <div id="immunity-box" class="immunity-box"></div>
 
 <div class="profile-card">
-    <div class="avatar-display" id="my-avatar">😎</div>
+    <div class="avatar-display" id="my-avatar" onclick="openProfileMenu()" title="Edytuj profil">
+        <span id="my-avatar-emoji">😎</span>
+        <img id="my-avatar-img" src="" style="display:none;">
+    </div>
     <div>
         <div id="username" onclick="openProfileMenu()" title="Kliknij swój nick, aby edytować profil!">Weryfikacja profilu... ✏️</div>
         <div class="bio-text" id="my-bio">"Ładowanie opisu..."</div>
@@ -870,9 +965,6 @@
 </div>
 
 <main class="grid" id="main-grid">
-    <!-- NOWY KAFEL DO DZWONIENIA -->
-    <div class="tile" onclick="openPhone()">Zadzwoń 📞</div>
-
     <a class="tile" href="czat.html">BebzunChat 💬</a>
     <a class="tile" href="clicker.html">Creeper Clicker 💰</a>
     <a class="tile" href="burga.html">Burger 🍔</a>
@@ -917,6 +1009,10 @@
     <a class="tile" href="https://krispolaris.github.io/SafeCraft/ezul.html">eŻul</a>
     <a class="tile" href="kasynko.html">Kasynko</a>
     <a class="tile" href="bankisko.html">Przelew w bankisku</a>
+    <a class="tile" href="kantmembert.html">Walnij Bebzunem w Kant</a>
+    <a class="tile" href="ghostpizza.html">Ghost Pizza</a>
+    <a class="tile" href="toperiti.html">Ranking OrkaCoinuf</a>
+    <a class="tile" href="bebzinipu.html">Bebzun i Pu</a>
 </main>
 
 <div class="shoutbox-panel">
@@ -924,6 +1020,7 @@
     <div id="shoutbox-messages">Ładowanie wiadomości...</div>
     <div style="display: flex; gap: 8px;">
         <input type="text" id="shoutbox-input" placeholder="Napisz coś..." onkeypress="if(event.key==='Enter') sendShout()" style="flex: 1; padding: 6px; border-radius: 5px; border: 1px solid #ff00d9; background: #000; color: #fff; font-family: inherit;">
+        <button class="btn-small" id="mic-btn" onclick="toggleVoiceRecord()" style="border-color:#ff00d9; color:#ff00d9;" title="Nagraj wiadomość głosową">🎙️</button>
         <button class="btn-small" onclick="sendShout()" style="border-color:#ff00d9; color:#ff00d9;">Wyślij</button>
     </div>
 </div>
@@ -955,7 +1052,7 @@
     let onlineUsersMap = {};
     let unreadDMs = {};
 
-    // SYSTEM PHONE & REZERWACJI NUMERÓW W FIREBASE
+    // SYSTEM TELEFONU
     window.openPhone = function() {
         document.getElementById('phone-modal').style.display = 'flex';
         document.getElementById('phone-display').innerText = '';
@@ -1055,7 +1152,50 @@
         }
     };
 
-    // WERYFIKACJA STATUSU BANA
+    // SYSTEM PROFILI I MODALI
+    window.openUserProfile = async function(targetUser) {
+        try {
+            const userSnap = await getDoc(doc(db, "users", targetUser));
+            if (userSnap.exists()) {
+                const data = userSnap.data();
+                
+                document.getElementById('prof-modal-username').innerText = targetUser;
+                document.getElementById('prof-modal-bio').innerText = data.bio ? `"${data.bio}"` : '"Brak opisu"';
+                document.getElementById('prof-modal-coins').innerText = data.coins || 0;
+                
+                if (data.joinedAt && data.joinedAt.toDate) {
+                    document.getElementById('prof-modal-joined').innerText = data.joinedAt.toDate().toLocaleDateString();
+                } else {
+                    document.getElementById('prof-modal-joined').innerText = "Brak danych";
+                }
+
+                const imgEl = document.getElementById('prof-modal-img');
+                const emojiEl = document.getElementById('prof-modal-emoji');
+
+                if (data.photoURL) {
+                    imgEl.src = data.photoURL;
+                    imgEl.style.display = 'block';
+                    emojiEl.style.display = 'none';
+                } else {
+                    emojiEl.innerText = data.avatar || '😎';
+                    emojiEl.style.display = 'inline';
+                    imgEl.style.display = 'none';
+                }
+
+                document.getElementById('user-profile-modal').style.display = 'flex';
+            } else {
+                alert("Gracz nie posiada jeszcze skonfigurowanego profilu.");
+            }
+        } catch(e) {
+            console.error(e);
+        }
+    };
+
+    window.closeUserProfileModal = function() {
+        document.getElementById('user-profile-modal').style.display = 'none';
+    };
+
+    // BANY
     async function checkUserBanStatus() {
         if (!myUser || myUser === "Gość") return;
         try {
@@ -1087,7 +1227,7 @@
                 try {
                     await updateDoc(doc(db, "users", myUser), { coins: increment(5) });
                 } catch(e) {
-                    await setDoc(doc(db, "users", myUser), { coins: 5 }, { merge: true });
+                    await setDoc(doc(db, "users", myUser), { coins: 5, joinedAt: serverTimestamp() }, { merge: true });
                 }
             } else {
                 let localCoins = parseInt(localStorage.getItem('guestCoins') || "0", 10);
@@ -1136,7 +1276,19 @@
                 const coinsEl = document.getElementById("coins-counter");
                 if (coinsEl) coinsEl.textContent = data.coins || 0;
                 
-                if (data.avatar) document.getElementById('my-avatar').innerText = data.avatar;
+                const imgEl = document.getElementById('my-avatar-img');
+                const emojiEl = document.getElementById('my-avatar-emoji');
+
+                if (data.photoURL) {
+                    imgEl.src = data.photoURL;
+                    imgEl.style.display = 'block';
+                    emojiEl.style.display = 'none';
+                } else {
+                    emojiEl.innerText = data.avatar || '😎';
+                    emojiEl.style.display = 'inline';
+                    imgEl.style.display = 'none';
+                }
+
                 if (data.bio) document.getElementById('my-bio').innerText = `"${data.bio}"`;
             }
         });
@@ -1148,20 +1300,23 @@
             return;
         }
 
-        const choice = prompt("CO CHCESZ EDYTOWAĆ?\n1. Wpisz '1' aby zmienić Emoji Profilowe\n2. Wpisz '2' aby zmienić Twój Opis (Bio)");
+        const choice = prompt("CO CHCESZ EDYTOWAĆ?\n1. Wpisz '1' aby zmienić Emoji Profilowe\n2. Wpisz '2' aby zmienić Opis (Bio)\n3. Wpisz '3' aby podać Link do Zdjęcia Profilowego (URL)");
         
         if (choice === "1") {
-            const newAv = prompt("Wybierz nowe emoji dla swojego profilu:", document.getElementById('my-avatar').innerText);
+            const newAv = prompt("Wybierz nowe emoji dla swojego profilu:", "😎");
             if(newAv) {
-                document.getElementById('my-avatar').innerText = newAv;
-                await setDoc(doc(db, "users", myUser), { avatar: newAv }, { merge: true });
+                await setDoc(doc(db, "users", myUser), { avatar: newAv, photoURL: "" }, { merge: true });
             }
         } else if (choice === "2") {
             const currentBio = document.getElementById('my-bio').innerText.replace(/"/g, '');
             const newBio = prompt("Wpisz swój opis profilu (Bio):", currentBio);
             if(newBio !== null) {
-                document.getElementById('my-bio').innerText = `"${newBio}"`;
                 await setDoc(doc(db, "users", myUser), { bio: newBio }, { merge: true });
+            }
+        } else if (choice === "3") {
+            const photoUrl = prompt("Wklej link (URL) do swojego zdjęcia profilowego:");
+            if(photoUrl !== null) {
+                await setDoc(doc(db, "users", myUser), { photoURL: photoUrl.trim() }, { merge: true });
             }
         }
     };
@@ -1194,6 +1349,50 @@
     }
     listenToUnreadDMs();
 
+    // SHOUTBOX & NAGRYWANIE GŁOSÓWEK
+    let mediaRecorder;
+    let audioChunks = [];
+    let isRecording = false;
+
+    window.toggleVoiceRecord = async function() {
+        const btn = document.getElementById('mic-btn');
+        
+        if (!isRecording) {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+
+                mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
+                mediaRecorder.onstop = async () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    const reader = new FileReader();
+                    reader.readAsDataURL(audioBlob);
+                    reader.onloadend = async () => {
+                        const base64Audio = reader.result;
+                        await addDoc(collection(db, "shoutbox"), {
+                            from: myUser,
+                            audio: base64Audio,
+                            timestamp: serverTimestamp()
+                        });
+                    };
+                };
+
+                mediaRecorder.start();
+                isRecording = true;
+                btn.innerText = "🛑";
+                btn.style.background = "#ff0055";
+            } catch(err) {
+                alert("Brak dostępu do mikrofonu!");
+            }
+        } else {
+            mediaRecorder.stop();
+            isRecording = false;
+            btn.innerText = "🎙️";
+            btn.style.background = "transparent";
+        }
+    };
+
     function listenToShoutbox() {
         const qShout = query(collection(db, "shoutbox"), orderBy("timestamp", "desc"), limit(20));
         onSnapshot(qShout, (snap) => {
@@ -1211,7 +1410,13 @@
             msgs.forEach(m => {
                 const div = document.createElement('div');
                 div.className = 'shout-msg';
-                div.innerHTML = `<span class="shout-user" onclick="quickInvite('${m.from}')">${m.from}</span>: ${m.text}`;
+
+                let content = m.text || '';
+                if (m.audio) {
+                    content = `<audio controls src="${m.audio}" style="height:30px; vertical-align:middle; width: 180px;"></audio>`;
+                }
+
+                div.innerHTML = `<span class="shout-user" onclick="openUserProfile('${m.from}')">${m.from}</span>: ${content}`;
                 box.appendChild(div);
             });
             box.scrollTop = box.scrollHeight;
@@ -1298,7 +1503,7 @@
             const item = document.createElement('div');
             item.className = 'user-search-item';
             item.innerHTML = `
-                <span>👤 ${uName}</span>
+                <span style="cursor:pointer;" onclick="openUserProfile('${uName}')">👤 ${uName}</span>
                 <button class="btn-small" style="padding:2px 6px; font-size:0.75em;" onclick="quickInvite('${uName}')">+ Zaproś</button>
             `;
             listContainer.appendChild(item);
@@ -1340,7 +1545,7 @@
                 const box = document.createElement('div');
                 box.className = 'invite-box';
                 box.innerHTML = `
-                    <span>👤 <b>${fromWho}</b> zaprasza Cię!</span>
+                    <span>👤 <b style="cursor:pointer;" onclick="openUserProfile('${fromWho}')">${fromWho}</b> zaprasza Cię!</span>
                     <div>
                         <button class="btn-small" style="background:#00ff00; color:#000; padding:3px 8px; font-size:0.8em; border:none;" id="acc-${reqId}">TAK</button>
                         <button class="btn-small" style="background:#ff4444; color:#fff; padding:3px 8px; font-size:0.8em; border:none;" id="rej-${reqId}">NIE</button>
@@ -1388,7 +1593,7 @@
             const card = document.createElement('div');
             card.className = 'friend-card';
             card.innerHTML = `
-                <div class="roblox-avatar" style="background: ${color}" onclick="openDM('${fName}')">
+                <div class="roblox-avatar" style="background: ${color}" onclick="openUserProfile('${fName}')">
                     ${firstLet}
                     <div class="status-dot ${isOnline ? 'status-online' : 'status-offline'}"></div>
                     ${unreadCount > 0 ? `<div class="dm-badge">${unreadCount}</div>` : ''}

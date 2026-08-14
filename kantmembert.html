@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Walnij Bebzunem w Kant!</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    html, body { width: 100%; height: 100%; overflow: hidden; }
+    body { background: #0a0a0a; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 5px; }
+    .game-container { background: #151515; padding: 10px; border-radius: 15px; border: 2px solid #ffcc00; text-align: center; width: 100%; max-width: 340px; box-shadow: 0 0 15px rgba(255, 204, 0, 0.2); }
+    h2 { color: #ffcc00; margin-bottom: 2px; font-size: 18px; }
+    #stats { display: flex; justify-content: space-around; font-size: 15px; font-weight: bold; margin-bottom: 5px; color: #00e6ff; }
+    canvas { background: #111; border: 1px solid #333; border-radius: 8px; display: block; margin: 0 auto; width: 300px; height: 260px; }
+    #msg-box { height: 24px; line-height: 24px; font-weight: bold; font-size: 13px; margin-top: 3px; color: #ff0055; text-shadow: 0 0 5px #ff0055; }
+    .nav-btns { margin-top: 6px; display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; }
+    button { padding: 6px 10px; border: none; border-radius: 6px; background: #ffcc00; color: #000; font-weight: bold; cursor: pointer; font-size: 12px; }
+    #leaderboard { margin-top: 6px; background: #000; padding: 6px; border-radius: 8px; border: 1px solid #ffcc00; font-size: 11px; display: none; text-align: left; }
+</style>
+</head>
+<body>
+
+<div class="game-container">
+    <h2>💥 Walnij Bebzunem!</h2>
+    <div id="stats">
+        <div>Wynik: <span id="score">0</span></div>
+        <div>🪙 <span id="coins">0</span></div>
+    </div>
+    
+    <canvas id="game" width="300" height="260"></canvas>
+    <div id="msg-box">Kliknij / Spacja = Skok!</div>
+
+    <div class="nav-btns">
+        <button id="lb-btn">🏆 Ranking</button>
+        <button onclick="window.location.href='super.html'">Menu</button>
+    </div>
+    
+    <div id="leaderboard"></div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, doc, setDoc, getDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDPvjNjR6nTHQuWdhQGAGk9iJgvPKDQTXA",
+        authDomain: "bebechchat.firebaseapp.com",
+        projectId: "bebechchat",
+        storageBucket: "bebechchat.firebasestorage.app",
+        messagingSenderId: "738356779230",
+        appId: "1:738356779230:web:2c41e46431284e3fb78a4f"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const userNick = localStorage.getItem('loggedUser') || "Anonim";
+
+    const canvas = document.getElementById("game");
+    const ctx = canvas.getContext("2d");
+    const msgBox = document.getElementById("msg-box");
+
+    // Grafiki
+    const bebzunImg = new Image();
+    bebzunImg.src = "Bebuch.png";
+    bebzunImg.onerror = () => { bebzunImg.src = "https://cdn-icons-png.flaticon.com/512/2312/2312894.png"; };
+
+    const pouImg = new Image();
+    pouImg.src = "Chest.jpg";
+    pouImg.onerror = () => { pouImg.src = "https://cdn-icons-png.flaticon.com/512/1004/1004664.png"; };
+
+    // Zmienne gry
+    let score = 0;
+    let coins = 0;
+    let gameOver = false;
+
+    // Bebzun (Gracz) - Dostosowany pod mniejszy ekran (300x260)
+    const bebzun = {
+        x: 40,
+        y: 100,
+        w: 32,
+        h: 32,
+        vy: 0,
+        gravity: 0.15,
+        jump: -4.8
+    };
+
+    // Przeszkoda (Dolna rura z Pou/Chest)
+    const pipe = {
+        x: 300,
+        w: 50,
+        h: 120,
+        speed: 2.2,
+        passed: false
+    };
+
+    // Wczytaj monety z Firebase
+    async function loadCoins() {
+        const snap = await getDoc(doc(db, "users", userNick));
+        if (snap.exists()) {
+            coins = snap.data().coins || 0;
+            document.getElementById("coins").textContent = coins;
+        }
+    }
+    loadCoins();
+
+    async function saveCoinsAndScore() {
+        await setDoc(doc(db, "users", userNick), {
+            coins: coins,
+            bebzuScore: score
+        }, { merge: true });
+    }
+
+    function jump() {
+        if (gameOver) {
+            resetGame();
+            return;
+        }
+        bebzun.vy = bebzun.jump;
+    }
+
+    window.addEventListener("keydown", (e) => { if (e.code === "Space") jump(); });
+    canvas.addEventListener("click", jump);
+
+    function resetGame() {
+        bebzun.y = 100;
+        bebzun.vy = 0;
+        pipe.x = 300;
+        pipe.passed = false;
+        score = 0;
+        gameOver = false;
+        msgBox.textContent = "Lecisz!";
+        document.getElementById("score").textContent = score;
+        
+        lastTime = performance.now();
+        requestAnimationFrame(loop);
+    }
+
+    function update() {
+        if (gameOver) return;
+
+        // Ruch Bebzuna
+        bebzun.vy += bebzun.gravity;
+        bebzun.y += bebzun.vy;
+
+        // Ruch Rury Pou
+        pipe.x -= pipe.speed;
+
+        // Respawn Rury
+        if (pipe.x + pipe.w < 0) {
+            pipe.x = 300;
+            pipe.h = Math.floor(Math.random() * 80) + 80;
+            pipe.passed = false;
+        }
+
+        // --- KOLIZJE ---
+        const pipeTopY = canvas.height - pipe.h;
+        const cornerMargin = 10;
+
+        // 1. Walnięcie w podłogę / sufit płaski rury (POSADZKA)
+        if (
+            bebzun.x + bebzun.w > pipe.x + cornerMargin &&
+            bebzun.x < pipe.x + pipe.w - cornerMargin &&
+            bebzun.y + bebzun.h >= pipeTopY &&
+            bebzun.y + bebzun.h <= pipeTopY + 12
+        ) {
+            coins += 2;
+            score += 1;
+            msgBox.textContent = "💥 POSADZKA! (+2 🪙)";
+            endRound();
+            return;
+        }
+
+        // 2. Walnięcie w KANT (Lewy górny róg rury)
+        const hitLeftCorner = Math.hypot((bebzun.x + bebzun.w) - pipe.x, (bebzun.y + bebzun.h) - pipeTopY);
+        if (hitLeftCorner < cornerMargin) {
+            coins += 5;
+            score += 3;
+            msgBox.textContent = "👑 BEBZUN PRZYPIERDZIELIŁ W KANT! (+5 🪙)";
+            endRound();
+            return;
+        }
+
+        // 3. Walnięcie w ścianę boczną rury (Nietrafienie w kant/posadzkę)
+        if (
+            bebzun.x + bebzun.w > pipe.x &&
+            bebzun.x < pipe.x &&
+            bebzun.y + bebzun.h > pipeTopY
+        ) {
+            coins = Math.max(0, coins - 1);
+            msgBox.textContent = "❌ NIE TRAFIŁEŚ! (-1 🪙)";
+            endRound();
+            return;
+        }
+
+        // 4. Upadek na sam dół ekranu (Poza rurą)
+        if (bebzun.y + bebzun.h >= canvas.height) {
+            msgBox.textContent = "💀 GLEBA! Nic nie dostałeś.";
+            endRound();
+            return;
+        }
+    }
+
+    function endRound() {
+        gameOver = true;
+        document.getElementById("coins").textContent = coins;
+        document.getElementById("score").textContent = score;
+        saveCoinsAndScore();
+    }
+
+    function draw() {
+        ctx.fillStyle = "#111";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        const pipeTopY = canvas.height - pipe.h;
+        ctx.drawImage(pouImg, pipe.x, pipeTopY, pipe.w, pipe.h);
+
+        ctx.fillStyle = "#ffcc00";
+        ctx.beginPath();
+        ctx.arc(pipe.x, pipeTopY, 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.drawImage(bebzunImg, bebzun.x, bebzun.y, bebzun.w, bebzun.h);
+    }
+
+    // GWARANCJA STABILNYCH 60 HZ / 60 FPS (Niezależnie od odświeżania monitora)
+    let lastTime = 0;
+    const fpsInterval = 1000 / 60; // Ok. 16.66ms na klatkę
+
+    function loop(timestamp) {
+        if (gameOver) return;
+
+        requestAnimationFrame(loop);
+
+        const elapsed = timestamp - lastTime;
+        if (elapsed > fpsInterval) {
+            lastTime = timestamp - (elapsed % fpsInterval);
+            update();
+            draw();
+        }
+    }
+
+    // Ranking
+    document.getElementById("lb-btn").onclick = async () => {
+        const lb = document.getElementById("leaderboard");
+        lb.style.display = lb.style.display === "none" ? "block" : "none";
+        if (lb.style.display === "block") {
+            const q = query(collection(db, "users"), orderBy("bebzuScore", "desc"), limit(5));
+            const snap = await getDocs(q);
+            let txt = "<b>TOP 5 MISTRZÓW KANTA:</b><br>";
+            snap.forEach(d => txt += `${d.id}: ${d.data().bebzuScore || 0} pkt (🪙${d.data().coins || 0})<br>`);
+            lb.innerHTML = txt;
+        }
+    };
+
+    lastTime = performance.now();
+    requestAnimationFrame(loop);
+</script>
+</body>
+</html>

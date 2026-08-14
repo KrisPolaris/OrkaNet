@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranking OrkaCoinów - OrkaNet</title>
+    <link rel="icon" type="image/png" href="Pou.png">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Bungee&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            margin: 0;
+            background: #05050d url('NightCity.png') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Orbitron', system-ui, sans-serif;
+            color: #00ffff;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 40px;
+        }
+
+        header {
+            padding: 30px 0 10px 0;
+            font-size: 2.2em;
+            font-weight: 900;
+            text-shadow: 0 0 15px #00ffff;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            color: #ff007f;
+            font-size: 0.9em;
+            margin-bottom: 25px;
+            text-shadow: 0 0 8px #ff007f;
+        }
+
+        .leaderboard-container {
+            background: rgba(10, 5, 20, 0.85);
+            backdrop-filter: blur(10px);
+            border: 2px solid #00ffff;
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.3);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .leaderboard-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .player-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            margin-bottom: 10px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .player-card:hover {
+            transform: scale(1.02);
+            border-color: #ff007f;
+        }
+
+        .rank {
+            font-size: 1.2em;
+            font-weight: bold;
+            width: 40px;
+            text-align: left;
+        }
+
+        .player-info {
+            flex-grow: 1;
+            text-align: left;
+            font-size: 1.05em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-right: 10px;
+        }
+
+        .coins {
+            font-weight: 900;
+            color: #ffd700;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+            font-size: 1.1em;
+        }
+
+        /* Top 3 Style */
+        .rank-1 {
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), rgba(10, 5, 20, 0.8));
+            border: 1px solid #ffd700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+        .rank-2 {
+            background: linear-gradient(90deg, rgba(192, 192, 192, 0.2), rgba(10, 5, 20, 0.8));
+            border: 1px solid #c0c0c0;
+        }
+        .rank-3 {
+            background: linear-gradient(90deg, rgba(205, 127, 50, 0.2), rgba(10, 5, 20, 0.8));
+            border: 1px solid #cd7f32;
+        }
+
+        .loader {
+            font-size: 1.2em;
+            color: #00ffff;
+            padding: 20px;
+        }
+
+        .back-link {
+            margin-top: 25px;
+            color: #ff007f;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .back-link:hover {
+            text-shadow: 0 0 10px #ff007f;
+        }
+    </style>
+</head>
+<body>
+
+<header>🏆 TOPKA ORKACOINÓW</header>
+<div class="subtitle">Najwięksi Bogacze?</div>
+
+<div class="leaderboard-container">
+    <div id="loader" class="loader">Ładowanie listy bogaczy... 🪙</div>
+    <ul class="leaderboard-list" id="leaderboard"></ul>
+</div>
+
+<a href="index.html" class="back-link">⬅ Wróć do OrkaNetu</a>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDPvjNjR6nTHQuWdhQGAGk9iJgvPKDQTXA", 
+        authDomain: "bebechchat.firebaseapp.com",
+        projectId: "bebechchat",
+        storageBucket: "bebechchat.firebasestorage.app",
+        messagingSenderId: "738356779230",
+        appId: "1:738356779230:web:2c41e46431284e3fb78a4f"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadLeaderboard() {
+        const leaderboardEl = document.getElementById('leaderboard');
+        const loaderEl = document.getElementById('loader');
+
+        try {
+            // Pobieranie top 20 graczy posortowanych po liczbie coinów
+            const usersRef = collection(db, "users");
+            const q = query(usersRef, orderBy("coins", "desc"), limit(20));
+            const querySnapshot = await getDocs(q);
+
+            loaderEl.style.display = 'none';
+            leaderboardEl.innerHTML = '';
+
+            let rank = 1;
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const username = doc.id;
+                const coins = data.coins || 0;
+
+                let rankBadge = `#${rank}`;
+                let rankClass = '';
+
+                if (rank === 1) { rankBadge = '🥇'; rankClass = 'rank-1'; }
+                else if (rank === 2) { rankBadge = '🥈'; rankClass = 'rank-2'; }
+                else if (rank === 3) { rankBadge = '🥉'; rankClass = 'rank-3'; }
+
+                const li = document.createElement('li');
+                li.className = `player-card ${rankClass}`;
+                li.innerHTML = `
+                    <span class="rank">${rankBadge}</span>
+                    <span class="player-info">${username}</span>
+                    <span class="coins">${coins.toLocaleString()} 🪙</span>
+                `;
+
+                leaderboardEl.appendChild(li);
+                rank++;
+            });
+
+            if (rank === 1) {
+                leaderboardEl.innerHTML = '<p style="color:#fff;">Brak graczy w bazie!</p>';
+            }
+
+        } catch (error) {
+            console.error("Błąd pobierania danych:", error);
+            loaderEl.innerText = "Nie udało się załadować rankingu (sprawdź bazę Firebase).";
+        }
+    }
+
+    loadLeaderboard();
+</script>
+
+</body>
+</html>
