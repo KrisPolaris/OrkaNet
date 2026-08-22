@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BEBECHCHAT // DEBUG PANEL</title>
+    <!-- Firebase SDK (v8) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #050508;
+            --card-bg: rgba(15, 15, 25, 0.9);
+            --neon-green: #00ff66;
+            --neon-cyan: #00f3ff;
+            --neon-red: #ff0055;
+            --text-color: #e0e0ff;
+            --border-glow: 0 0 15px rgba(0, 243, 255, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(0, 243, 255, 0.05) 0%, transparent 80%),
+                linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 4px;
+        }
+
+        .debug-container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--border-glow);
+            backdrop-filter: blur(10px);
+        }
+
+        .debug-header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 1px dashed var(--neon-cyan);
+            padding-bottom: 15px;
+        }
+
+        .debug-header h1 {
+            color: var(--neon-cyan);
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px var(--neon-cyan);
+        }
+
+        .debug-header span {
+            font-size: 0.8rem;
+            color: var(--neon-green);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--neon-cyan);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(0, 243, 255, 0.4);
+            color: #fff;
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
+        }
+
+        .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: transform 0.1s, box-shadow 0.2s;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .btn-add {
+            background: var(--neon-green);
+            color: #000;
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
+        }
+
+        .btn-add:hover {
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.8);
+        }
+
+        .btn-remove {
+            background: var(--neon-red);
+            color: #fff;
+            box-shadow: 0 0 10px rgba(255, 0, 85, 0.4);
+        }
+
+        .btn-remove:hover {
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.8);
+        }
+
+        .log-box {
+            margin-top: 20px;
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 0.8rem;
+            height: 120px;
+            overflow-y: auto;
+            color: var(--neon-green);
+        }
+
+        .log-box::-webkit-scrollbar {
+            width: 5px;
+        }
+        .log-box::-webkit-scrollbar-thumb {
+            background: var(--neon-cyan);
+        }
+    </style>
+</head>
+<body>
+
+<div class="debug-container">
+    <div class="debug-header">
+        <h1>⚙️ Debug Console</h1>
+        <span>[ BEBECHCHAT ECONOMY OVERRIDE ]</span>
+    </div>
+
+    <!-- Wybór z listy pobranych graczy LUB wpisanie ręcznie -->
+    <div class="form-group">
+        <label for="user-select">Wybierz Gracza (Username):</label>
+        <select id="user-select">
+            <option value="">-- Ładowanie graczy... --</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="user-manual">LUB Wpisz Username Ręcznie:</label>
+        <input type="text" id="user-manual" placeholder="np. Janusz123">
+    </div>
+
+    <div class="form-group">
+        <label for="currency-type">Wybierz walutę:</label>
+        <select id="currency-type">
+            <option value="coins">OrkaCoiny (coins)</option>
+            <option value="money">Creeper Clicker (money)</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="amount">Ilość:</label>
+        <input type="number" id="amount" placeholder="np. 500" value="100">
+    </div>
+
+    <div class="btn-grid">
+        <button class="btn-add" onclick="modifyCurrency(true)">+ Dodaj</button>
+        <button class="btn-remove" onclick="modifyCurrency(false)">- Odejmij</button>
+    </div>
+
+    <div class="log-box" id="logs">
+        > Inicjalizacja konsoli...<br>
+    </div>
+</div>
+
+<script>
+    // 1. KONFIGURACJA FIREBASE BEBECHCHAT
+    // Wklej tu swoje dokładne dane z projektu Firebase
+    const firebaseConfig = {
+        apiKey: "TWOJE_API_KEY",
+        authDomain: "bebechchat.firebaseapp.com",
+        projectId: "bebechchat",
+        storageBucket: "bebechchat.appspot.com",
+        messagingSenderId: "TWOJE_SENDER_ID",
+        appId: "TWOJE_APP_ID"
+    };
+
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+
+    function log(message, isError = false) {
+        const logBox = document.getElementById('logs');
+        const color = isError ? '#ff0055' : '#00ff66';
+        const time = new Date().toLocaleTimeString();
+        logBox.innerHTML += `<span style="color: ${color}">[${time}] ${message}</span><br>`;
+        logBox.scrollTop = logBox.scrollHeight;
+    }
+
+    // Automatyczne pobieranie listy użytkowników do listy rozwijanej
+    async function loadUsers() {
+        try {
+            const snapshot = await db.collection('users').get();
+            const select = document.getElementById('user-select');
+            select.innerHTML = '<option value="">-- Wybierz z listy --</option>';
+
+            snapshot.forEach(doc => {
+                const username = doc.id; // Dokument nazywa się tak jak username
+                const option = document.createElement('option');
+                option.value = username;
+                option.textContent = username;
+                select.appendChild(option);
+            });
+
+            log("Pomyślnie załadowano listę użytkowników.");
+        } catch (error) {
+            console.error(error);
+            log(`Błąd ładowania użytkowników: ${error.message}`, true);
+        }
+    }
+
+    // Załaduj użytkowników po otwarciu strony
+    loadUsers();
+
+    // 2. LOGIKA MODYFIKACJI WALUTY
+    async function modifyCurrency(isAdding) {
+        // Najpierw sprawdza wpisany ręcznie username, a jeśli puste — bierze ten z listy
+        const manualName = document.getElementById('user-manual').value.trim();
+        const selectedName = document.getElementById('user-select').value;
+        const username = manualName !== "" ? manualName : selectedName;
+
+        const field = document.getElementById('currency-type').value; // 'coins' lub 'money'
+        let amount = parseInt(document.getElementById('amount').value);
+
+        if (!username) {
+            log("BŁĄD: Wybierz gracza z listy lub wpisz go ręcznie!", true);
+            return;
+        }
+
+        if (isNaN(amount) || amount <= 0) {
+            log("BŁĄD: Wprowadź poprawną kwotę!", true);
+            return;
+        }
+
+        const changeValue = isAdding ? amount : -amount;
+
+        try {
+            // Ścieżka /users/USERNAME
+            const userRef = db.collection('users').doc(username);
+            
+            // Zmiana wartości pola 'coins' lub 'money'
+            const updatePayload = {};
+            updatePayload[field] = firebase.firestore.FieldValue.increment(changeValue);
+
+            await userRef.update(updatePayload);
+
+            const opName = isAdding ? "Dodano" : "Usunięto";
+            const fieldName = field === 'coins' ? 'OrkaCoiny' : 'Money (Creeper)';
+            
+            log(`SUKCES: ${opName} ${amount} ${fieldName} dla: ${username}`);
+
+        } catch (error) {
+            console.error(error);
+            log(`BŁĄD: ${error.message}`, true);
+        }
+    }
+</script>
+
+</body>
+</html>

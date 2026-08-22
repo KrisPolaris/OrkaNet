@@ -204,7 +204,7 @@
             let diff = current1k - claimedMilestones.m1k;
             coins += diff * 5;
             claimedMilestones.m1k = current1k;
-            alert(`🎉 WBIŁEŚ PROG $1,000! Dostałeś +${diff * 5} OrkaCoinów! 🪙`);
+            alert(`jej masz 1000 a teraz wyłącz alerty bo będe spamił btw masz {diff * 5} OrkaCoinów! 🪙`);
         }
 
         let current10k = Math.floor(money / 10000);
@@ -212,7 +212,7 @@
             let diff = current10k - claimedMilestones.m10k;
             coins += diff * 10;
             claimedMilestones.m10k = current10k;
-            alert(`🔥 WBIŁEŚ PROG $10,000! Dostałeś +${diff * 10} OrkaCoinów! 🪙`);
+            alert(`masz 10 tysiów więc teraz masz {diff * 10} OrkaCoinów! 🪙 i btw wyłączaj powiadomienia`);
         }
 
         let current100k = Math.floor(money / 100000);
@@ -220,7 +220,7 @@
             let diff = current100k - claimedMilestones.m100k;
             coins += diff * 25;
             claimedMilestones.m100k = current100k;
-            alert(`💎 WBIŁEŚ PROG $100,000! Dostałeś +${diff * 25} OrkaCoinów! 🪙`);
+            alert(`MASZ 100000 TERAZ MASZ ${diff * 25} ORKACOINÓW`);
         }
 
         let current1m = Math.floor(money / 1000000);
@@ -299,13 +299,13 @@
         if(money >= 100) { money -= 100; upgrades.palec++; updateUI(); saveData(); alert("MOCNY PALEC KUPIONY! 🖐️⚡"); }
     };
     document.getElementById("buy-dashie").onclick = () => {
-        if(money >= 200) { money -= 200; upgrades.dashie++; updateUI(); saveData(); alert("KOSTKA LATA CO SEKUNDĘ! 🟥"); }
+        if(money >= 200) { money -= 200; upgrades.dashie++; updateUI(); saveData(); alert("boing"); }
     };
     document.getElementById("buy-ludz").onclick = () => {
-        if(money >= 500) { money -= 500; upgrades.ludz++; updateUI(); saveData(); alert("LUDŹ PRACUJE DLA CIEBIE! 🚶‍♂️"); }
+        if(money >= 500) { money -= 500; upgrades.ludz++; updateUI(); saveData(); alert("jak sie nazywa liczba pojedyńcza słowa ludzie?"); }
     };
     document.getElementById("buy-villager").onclick = () => {
-        if(money >= 1000) { money -= 1000; upgrades.villager++; updateUI(); saveData(); alert("VILLAGER DAJE MNOŻNIK x100! 🌾"); }
+        if(money >= 1000) { money -= 1000; upgrades.villager++; updateUI(); saveData(); alert("hę hę"); }
     };
 
     // PREZENTY Z WERYFIKACJĄ IMMUNITETU

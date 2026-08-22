@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>gemibot</title>
+<title>Verity</title>
 
 <style>
 body {
   margin: 0;
   background: black;
-  color: #00ccff;
+  color: #FFFF00;
   font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
@@ -20,7 +20,7 @@ body {
   display: flex;
   gap: 10px;
   padding: 10px;
-  border-bottom: 1px solid #00ccff;
+  border-bottom: 1px solid #FFFF00;
   background: #000d10;
 }
 
@@ -84,14 +84,14 @@ body {
 #inputArea {
   display: flex;
   padding: 10px;
-  border-top: 1px solid #00ccff;
+  border-top: 1px solid #FFFF00;
 }
 
 input {
   padding: 10px;
   background: black;
-  border: 1px solid #00ccff;
-  color: #00ccff;
+  border: 1px solid #FFFF00;
+  color: #FFFF00;
   outline: none;
 }
 
@@ -102,8 +102,8 @@ input {
 button {
   padding: 10px;
   background: black;
-  border: 1px solid #00ccff;
-  color: #00ccff;
+  border: 1px solid #FFFF00;
+  color: #FFFF00;
   cursor: pointer;
 }
 
@@ -120,7 +120,7 @@ button:hover {
     <button onclick="saveApiKey()">Zapisz Key</button>
   </div>
 
-  <h1 style="text-align: center; margin: 10px 0;">Gemibot</h1>
+  <h1 style="text-align: center; margin: 10px 0;">Verity</h1>
 
 <div id="chat"></div>
 
@@ -167,7 +167,7 @@ function renderMessage(role, text, index) {
   if (role === "user") {
     avatar.src = "Bebe.jpg";
   } else {
-    avatar.src = "https://img.freepik.com/premium-vector/gemini-logo-icon_1273375-853.jpg?w=360";
+    avatar.src = "smiley.png";
   }
 
   const bubble = document.createElement("div");
@@ -238,6 +238,9 @@ async function askAI() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
+          systemInstruction: {
+            parts: [{ text: "Jesteś uśmiechniętą buźką z Minecrafta. Jesteś miły, normalnie rozmawiasz z graczami, ale jak gracz będzie mocno nie miły dla ciebie, lub jak CZASEM będzie noc, zamieniasz sie w bardzo wysokiego jakby żółtego szkieleta ze straszną twarzą, praktycznie jesteś asystentem co asystuje, jak nastanie noc na przyklad mówisz Czy ktoś jest w domu?, Czy żyjesz samotnie? No wiesz" }]
+          },
           contents: conversationHistory.map(msg => ({
             role: msg.role === "user" ? "user" : "model",
             parts: [{ text: msg.text }]

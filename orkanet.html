@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
@@ -8,6 +8,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Bungee&family=Inter:wght@300;400;600&family=Montserrat:wght@700&family=Courier+Prime&family=Bebas+Neue&display=swap" rel="stylesheet">
     
     <style>
+        /* CUSTOM CURSOR */
+        * {
+            cursor: url('kurkur.png'), auto !important;
+        }
+
         body.theme-standard { 
             margin: 0; 
             background: #000 url('456.jpg') no-repeat center center fixed; 
@@ -539,6 +544,48 @@
         .shout-user { font-weight: bold; color: #ff00d9; cursor: pointer; }
         .shout-user:hover { text-decoration: underline; }
 
+        /* KSIĘGA GOŚCI STYLE */
+        .guestbook-panel {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 15px;
+            background: rgba(17,17,17,0.85);
+            border: 2px solid #00ff66;
+            border-radius: 15px;
+            font-family: inherit;
+            box-shadow: 0 0 10px rgba(0,255,102,0.2);
+        }
+        body.theme-dark .guestbook-panel { background: #1e1e1e; border-color: #00ff66; }
+        body.theme-cyberpunk .guestbook-panel { 
+            background: rgba(20, 5, 35, 0.65); 
+            backdrop-filter: blur(8px);
+            border: 1px solid #00ff66; 
+            box-shadow: 0 0 15px rgba(0,255,102,0.3);
+            font-family: 'Orbitron', sans-serif;
+            border-radius: 0;
+            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+        }
+        #guestbook-list {
+            max-height: 200px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: left;
+            font-family: sans-serif;
+            font-size: 0.85em;
+            padding: 8px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .guestbook-entry {
+            background: rgba(255,255,255,0.05);
+            padding: 6px 10px;
+            border-radius: 5px;
+            border-left: 3px solid #00ff66;
+        }
+
         .profile-card {
             display: flex;
             align-items: center;
@@ -897,7 +944,7 @@
 
 <!-- PRZEWIJANY PASEK (MARQUEE) -->
 <div class="marquee-container">
-    <marquee behavior="scroll" direction="left" scrollamount="6">
+    <marquee id="marquee-text" behavior="scroll" direction="left" scrollamount="6">
         📢 <b>Przyszłe aktualizacje / Niedawno zrobione:</b> Dodano Kasyno, Przelewy, Immunitety i dużo więcej | Bebech Bebzunek Bebzunosław Bebzunkowo-Czekoladowy Bebeszek co ma bebeszki bebeszukujące co bebeszkują inne bebeszki 🍪✨
     </marquee>
 </div>
@@ -933,9 +980,10 @@
     
     <div id="incoming-invites"></div>
 
-    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 10px;">
+    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 10px; flex-wrap:wrap;">
         <input type="text" id="friend-search-input" placeholder="Wpisz nick..." style="padding: 5px 10px; border-radius: 5px; border: 1px solid #00ffff; background: #000; color: #fff; font-family: inherit; font-size: 0.8em; max-width: 180px;">
         <button class="btn-small" id="btn-add-friend" onclick="sendFriendRequest()" style="padding: 5px 10px; font-size: 0.8em;">Dodaj</button>
+        <button class="btn-small" id="btn-random-user" onclick="openRandomUser()" style="padding: 5px 10px; font-size: 0.8em; background:#ff006e; color:#fff; border:none;">Losowy użytkownik 👍</button>
     </div>
 
     <div style="margin-top: 15px; border-top: 1px dashed rgba(0, 255, 255, 0.3); padding-top: 10px;">
@@ -980,7 +1028,7 @@
     <a class="tile" href="ppogoda.html">Pogoda ☁️</a>
     <a class="tile" href="aparacik.html">Aparat 📸</a>
     <a class="tile" href="sklep.html">Sklep</a>
-    <a class="tile" href="aixd.html">AI GEMIBOT 🤖</a>
+    <a class="tile" href="aixd.html">Verity </a>
     <a class="tile" href="oldsuper.html">stary orkanet 💾</a>
     <a class="tile" href="flapibebzun.html">Flappy Bebech 🕊️</a>
     <a class="tile" href="diktafon.html">Dyktafon 🎙️</a>
@@ -1012,7 +1060,8 @@
     <a class="tile" href="kantmembert.html">Walnij Bebzunem w Kant</a>
     <a class="tile" href="ghostpizza.html">Ghost Pizza</a>
     <a class="tile" href="toperiti.html">Ranking OrkaCoinuf</a>
-    <a class="tile" href="bebzinipu.html">Bebzun i Pu</a>
+    <a class="tile" href="bebzunipu.html">Bebzun i Pu</a>
+        <a class="tile" href="https://krispolaris.github.io/Profil/index.html">Profi</a>
 </main>
 
 <div class="shoutbox-panel">
@@ -1022,6 +1071,16 @@
         <input type="text" id="shoutbox-input" placeholder="Napisz coś..." onkeypress="if(event.key==='Enter') sendShout()" style="flex: 1; padding: 6px; border-radius: 5px; border: 1px solid #ff00d9; background: #000; color: #fff; font-family: inherit;">
         <button class="btn-small" id="mic-btn" onclick="toggleVoiceRecord()" style="border-color:#ff00d9; color:#ff00d9;" title="Nagraj wiadomość głosową">🎙️</button>
         <button class="btn-small" onclick="sendShout()" style="border-color:#ff00d9; color:#ff00d9;">Wyślij</button>
+    </div>
+</div>
+
+<!-- KSIĘGA GOŚCI -->
+<div class="guestbook-panel">
+    <div style="font-size: 1.1em; margin-bottom: 8px; font-weight: bold; color:#00ff66;">📖 KSIĘGA GOŚCI</div>
+    <div id="guestbook-list">Ładowanie wpisów...</div>
+    <div style="display: flex; gap: 8px;">
+        <input type="text" id="guestbook-input" placeholder="Zostaw ślad po sobie w Księdze Gości..." onkeypress="if(event.key==='Enter') addGuestbookEntry()" style="flex: 1; padding: 6px; border-radius: 5px; border: 1px solid #00ff66; background: #000; color: #fff; font-family: inherit;">
+        <button class="btn-small" onclick="addGuestbookEntry()" style="border-color:#00ff66; color:#00ff66;">Wpisz się ✍️</button>
     </div>
 </div>
 
@@ -1051,6 +1110,18 @@
     let cachedAllUsers = [];
     let onlineUsersMap = {};
     let unreadDMs = {};
+    let defaultMarqueeText = "📢 <b>Przyszłe aktualizacje / Niedawno zrobione:</b> Dodano Kasyno, Przelewy, Immunitety i dużo więcej | Bebech Bebzunek Bebzunosław Bebzunkowo-Czekoladowy Bebeszek co ma bebeszki bebeszukujące co bebeszkują inne bebeszki 🍪✨";
+
+    // LOSOWY UŻYTKOWNIK 👍
+    window.openRandomUser = function() {
+        if (cachedAllUsers.length === 0) {
+            alert("Brak dostępnych użytkowników!");
+            return;
+        }
+        const randomIndex = Math.floor(Math.random() * cachedAllUsers.length);
+        const randomUser = cachedAllUsers[randomIndex];
+        openUserProfile(randomUser);
+    };
 
     // SYSTEM TELEFONU
     window.openPhone = function() {
@@ -1255,6 +1326,20 @@
         }
     }
 
+    // NASŁUCHWANIE MILESTONE'ÓW MONET DO MARQUEE
+    function checkCoinsMilestone(username, coins) {
+        const marquee = document.getElementById('marquee-text');
+        if (!marquee) return;
+
+        if (coins >= 1000000) {
+            marquee.innerHTML = `🔥 <b>REKORD!</b> ${username} walnął AŻ ${coins} Money/OrkaCoinów! ABSOLUTNY LEGEND! 🔥 | ` + defaultMarqueeText;
+        } else if (coins >= 100000) {
+            marquee.innerHTML = `💰 <b>WOW!</b> Użytkownik <b>${username}</b> walnął ${coins} OrkaCoinów/Pieniędzy! 💰 | ` + defaultMarqueeText;
+        } else if (coins >= 10000) {
+            marquee.innerHTML = `✨ <b>GRATULACJE!</b> ${username} walnął ${coins} OrkaCoinów! ✨ | ` + defaultMarqueeText;
+        }
+    }
+
     if (myUser) {
         checkDailyReward();
         checkGuestNotice();
@@ -1274,8 +1359,11 @@
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 const coinsEl = document.getElementById("coins-counter");
-                if (coinsEl) coinsEl.textContent = data.coins || 0;
+                const currentCoins = data.coins || 0;
+                if (coinsEl) coinsEl.textContent = currentCoins;
                 
+                checkCoinsMilestone(myUser, currentCoins);
+
                 const imgEl = document.getElementById('my-avatar-img');
                 const emojiEl = document.getElementById('my-avatar-emoji');
 
@@ -1397,6 +1485,7 @@
         const qShout = query(collection(db, "shoutbox"), orderBy("timestamp", "desc"), limit(20));
         onSnapshot(qShout, (snap) => {
             const box = document.getElementById('shoutbox-messages');
+            const marquee = document.getElementById('marquee-text');
             box.innerHTML = '';
             let msgs = [];
             snap.forEach(d => msgs.push(d.data()));
@@ -1405,6 +1494,13 @@
             if(msgs.length === 0) {
                 box.innerHTML = '<span style="opacity:0.5;">Cisza na Shoutboxie... Napisz coś jako pierwszy!</span>';
                 return;
+            }
+
+            // Pokaż najnowszą wiadomość z shoutboxa na MARQUEE!
+            const latestMsg = msgs[msgs.length - 1];
+            if (latestMsg && marquee) {
+                let textShow = latestMsg.text ? latestMsg.text : "🎙️ [Wiadomość głosowa]";
+                marquee.innerHTML = `💬 <b>[SHOUTBOX] ${latestMsg.from}:</b> "${textShow}" | ` + defaultMarqueeText;
             }
 
             msgs.forEach(m => {
@@ -1431,6 +1527,43 @@
         input.value = '';
 
         await addDoc(collection(db, "shoutbox"), {
+            from: myUser,
+            text: txt,
+            timestamp: serverTimestamp()
+        });
+    };
+
+    // KSIĘGA GOŚCI LOGIKA
+    function listenToGuestbook() {
+        const qBook = query(collection(db, "guestbook"), orderBy("timestamp", "desc"), limit(15));
+        onSnapshot(qBook, (snap) => {
+            const box = document.getElementById('guestbook-list');
+            box.innerHTML = '';
+            let entries = [];
+            snap.forEach(d => entries.push(d.data()));
+
+            if(entries.length === 0) {
+                box.innerHTML = '<span style="opacity:0.5;">Brak wpisów w Księdze Gości... Zostaw swój podpis!</span>';
+                return;
+            }
+
+            entries.forEach(e => {
+                const div = document.createElement('div');
+                div.className = 'guestbook-entry';
+                div.innerHTML = `<b style="color:#00ff66; cursor:pointer;" onclick="openUserProfile('${e.from}')">${e.from}</b>: ${e.text}`;
+                box.appendChild(div);
+            });
+        });
+    }
+    listenToGuestbook();
+
+    window.addGuestbookEntry = async function() {
+        const input = document.getElementById('guestbook-input');
+        const txt = input.value.trim();
+        if(!txt) return;
+        input.value = '';
+
+        await addDoc(collection(db, "guestbook"), {
             from: myUser,
             text: txt,
             timestamp: serverTimestamp()
