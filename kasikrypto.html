@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrkaNet - Crypto Miner ⛏️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0d14;
+            --panel-bg: rgba(16, 20, 31, 0.85);
+            --accent-cyan: #00f0ff;
+            --accent-pink: #ff007f;
+            --accent-gold: #ffd700;
+            --text-color: #ffffff;
+            --border-glow: 0 0 12px rgba(0, 240, 255, 0.3);
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            background-image: radial-gradient(circle at 50% 0%, #1a0b2e 0%, #0b0d14 70%);
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        header { text-align: center; margin-bottom: 25px; }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 15px var(--accent-cyan);
+            margin: 0 0 10px 0;
+        }
+
+        .stats-card {
+            background: var(--panel-bg);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 16px;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto 25px auto;
+            box-shadow: var(--border-glow);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stat-box { text-align: center; }
+        .stat-label { font-size: 0.85rem; opacity: 0.8; margin-bottom: 5px; text-transform: uppercase; }
+        .stat-val { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 800; }
+
+        .val-bitty { color: var(--accent-gold); text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+        .val-speed { color: var(--accent-cyan); }
+        .val-rig { color: var(--accent-pink); }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .panel-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--accent-pink);
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed rgba(255, 0, 127, 0.4);
+            padding-bottom: 8px;
+        }
+
+        .shop-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-cyan); border-radius: 3px; }
+
+        .item-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-action {
+            background: linear-gradient(135deg, #00f0ff 0%, #7b2cbf 100%);
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-action:hover { opacity: 0.9; }
+        .btn-action:disabled { background: #333; color: #777; cursor: not-allowed; }
+
+        .btn-remove {
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        .item-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(0, 240, 255, 0.15);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            margin: 3px;
+        }
+
+        .inventory-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        /* Task Manager UI */
+        .monitor-frame {
+            background: #111;
+            border: 4px solid #333;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 0 20px rgba(0,240,255,0.2);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .tm-header {
+            background: #202020;
+            padding: 6px 10px;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #444;
+        }
+
+        .tm-tabs {
+            display: flex;
+            gap: 5px;
+            background: #181818;
+            padding: 5px;
+        }
+
+        .tm-tab {
+            padding: 5px 10px;
+            font-size: 0.75rem;
+            background: #252525;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .tm-tab.active {
+            background: var(--accent-cyan);
+            color: #000;
+            font-weight: bold;
+        }
+
+        .tm-content {
+            background: #1e1e1e;
+            padding: 12px;
+            min-height: 140px;
+            font-size: 0.85rem;
+        }
+
+        .nav-btn {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>⛏️ CRYPTO MINER & GAMING PC BUILDER</h1>
+        <a href="index.html" class="nav-btn">⬅ Powrót do OrkaNet</a>
+    </header>
+
+    <div class="stats-card">
+        <div class="stat-box">
+            <div class="stat-label">BittyCoiny</div>
+            <div class="stat-val val-bitty" id="bitty-display">0.000</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-label">Prędkość Wykopu</div>
+            <div class="stat-val val-speed" id="speed-display">0.000 /s</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-label">Złożone GPU</div>
+            <div class="stat-val val-rig" id="rig-display">0 / 0 GPU</div>
+        </div>
+    </div>
+
+    <!-- KANTOR / EXCHANGE -->
+    <div class="panel" style="max-width: 1400px; margin: 0 auto 20px auto; background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(16, 20, 31, 0.85) 100%); border-color: var(--accent-gold);">
+        <div class="panel-title" style="color: var(--accent-gold); border-bottom-color: rgba(255, 215, 0, 0.4);">
+            🔀 Kantor Bebzuna (Exchange)
+        </div>
+        <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+            <div>
+                <label style="font-size: 0.85rem; opacity: 0.8; display: block; margin-bottom: 5px;">BittyCoiny do wymiany:</label>
+                <input type="number" id="exchange-input" min="2.25" step="2.25" placeholder="2.25" oninput="updateExchangeCalc()" style="background: #000; border: 1px solid var(--accent-gold); color: #fff; padding: 8px 12px; border-radius: 6px; font-family: 'Orbitron', sans-serif;">
+            </div>
+            <div style="font-size: 1.2rem; font-weight: bold; color: var(--accent-gold);">➡️</div>
+            <div>
+                <label style="font-size: 0.85rem; opacity: 0.8; display: block; margin-bottom: 5px;">Otrzymasz OrkaCoinów:</label>
+                <div id="exchange-result" style="font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: #00ffff; font-weight: bold;">0 OC</div>
+            </div>
+            <button class="btn-action" style="background: linear-gradient(135deg, #ffd700 0%, #ff007f 100%); margin-left: auto; padding: 10px 20px;" onclick="exchangeCoins()">
+                Wymień na OrkaCoiny 🪙
+            </button>
+        </div>
+    </div>
+
+    <div class="main-container">
+
+        <!-- INTERAKTYWNY MONITOR / TASK MANAGER -->
+        <div class="panel" style="grid-column: 1 / -1;">
+            <div class="panel-title">🖥️ Menedżer Zadań (Task Manager)</div>
+            <div class="monitor-frame">
+                <div class="tm-header">
+                    <span id="tm-monitor-title">Monitor: Brak</span>
+                    <span>Menedżer Zadań Windows</span>
+                </div>
+                <div class="tm-tabs">
+                    <div class="tm-tab" onclick="switchTab('cpu')">CPU</div>
+                    <div class="tm-tab active" onclick="switchTab('ram')">Pamięć RAM</div>
+                    <div class="tm-tab" onclick="switchTab('ssd')">Dysk SSD</div>
+                    <div class="tm-tab" onclick="switchTab('gpu')">Karta Graficzna</div>
+                </div>
+                <div class="tm-content" id="tm-content-area">
+                    <!-- Dynamiczny podgląd ze skryptu -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- TWOJA KOPALNIA & MAGAZYN -->
+        <div class="panel">
+            <div class="panel-title">🎒 Ekwipunek / Magazyn</div>
+            <div class="inventory-list" id="inventory-list"></div>
+
+            <div class="panel-title">🏰 Gaming PC Cases (Obudowy)</div>
+            <div id="my-rigs-list"></div>
+        </div>
+
+        <!-- SKLEP GPU -->
+        <div class="panel">
+            <div class="panel-title">🛒 Sklep GPU</div>
+            <div class="shop-list" id="gpu-shop"></div>
+        </div>
+
+        <!-- SKLEP RAM -->
+        <div class="panel">
+            <div class="panel-title">🧠 Sklep RAM</div>
+            <div class="shop-list" id="ram-shop"></div>
+        </div>
+
+        <!-- SKLEP SSD SATA -->
+        <div class="panel">
+            <div class="panel-title">💾 Sklep SSD SATA</div>
+            <div class="shop-list" id="ssd-shop"></div>
+        </div>
+
+        <!-- SKLEP MONITORÓW -->
+        <div class="panel">
+            <div class="panel-title">🖥️ Sklep Monitorów</div>
+            <div class="shop-list" id="monitor-shop"></div>
+        </div>
+
+        <!-- SKLEP OBUDÓW -->
+        <div class="panel">
+            <div class="panel-title">📦 Sklep Obudów (Gaming PC Cases)</div>
+            <div class="shop-list" id="case-shop"></div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = { databaseURL: "https://bebechchat.firebase.app" };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // DATASETS
+        const GPU_DATA = [
+            { id: 'gt210', name: 'NVIDIA GT 210', speed: 0.0005, price: 1 },
+            { id: 'gt710', name: 'NVIDIA GT 710', speed: 0.002, price: 3.5 },
+            { id: 'gt1030', name: 'NVIDIA GT 1030', speed: 0.008, price: 12 },
+            { id: 'gtx1050ti', name: 'NVIDIA GTX 1050 Ti', speed: 0.0205, price: 30 },
+            { id: 'gtx1060', name: 'NVIDIA GTX 1060', speed: 0.045, price: 65 },
+            { id: 'gtx780ti', name: 'NVIDIA GTX 780 Ti', speed: 0.06, price: 85 },
+            { id: 'r9_290x', name: 'AMD R9 290X', speed: 0.075, price: 100 },
+            { id: 'rx5600xt', name: 'AMD RX 5600 XT', speed: 0.12, price: 160 },
+            { id: 'gtx980ti', name: 'NVIDIA GTX 980 Ti', speed: 0.15, price: 200 },
+            { id: 'rtx2060', name: 'NVIDIA RTX 2060', speed: 0.22, price: 280 },
+            { id: 'rtx3060', name: 'NVIDIA RTX 3060', speed: 0.35, price: 420 },
+            { id: 'gtx1080ti', name: 'NVIDIA GTX 1080 Ti', speed: 0.5, price: 580 },
+            { id: 'rtx4060', name: 'NVIDIA RTX 4060', speed: 0.75, price: 850 },
+            { id: 'rtx4070s', name: 'NVIDIA RTX 4070 Super', speed: 1.2, price: 1300 },
+            { id: 'rtx3080', name: 'NVIDIA RTX 3080', speed: 1.8, price: 1900 },
+            { id: 'rx7900xtx', name: 'AMD RX 7900 XTX', speed: 2.8, price: 2800 },
+            { id: 'rtx4080', name: 'NVIDIA RTX 4080', speed: 3.5, price: 3400 },
+            { id: 'rtx3090ti', name: 'NVIDIA RTX 3090 Ti', speed: 4.8, price: 4500 },
+            { id: 'rtx4090', name: 'NVIDIA RTX 4090', speed: 10.0, price: 9000 }
+        ];
+
+        const RAM_DATA = [
+            { id: 'ram_2_d3', name: '2GB DDR3 Single Stick', price: 5 },
+            { id: 'ram_4_d3', name: '4GB DDR3 Single Stick', price: 10 },
+            { id: 'ram_8_d3', name: '8GB DDR3 Single Stick', price: 18 },
+            { id: 'ram_16_d3', name: '16GB DDR3 Dual Stick', price: 30 },
+            { id: 'ram_4_d4', name: '4GB DDR4 Single Stick', price: 15 },
+            { id: 'ram_8_d4', name: '8GB DDR4 Single Stick', price: 25 },
+            { id: 'ram_16_d4', name: '16GB DDR4 Dual Stick', price: 45 },
+            { id: 'ram_24_d4', name: '24GB DDR4 Kit', price: 60 },
+            { id: 'ram_32_d4', name: '32GB DDR4 Kit', price: 80 },
+            { id: 'ram_8_d5', name: '8GB DDR5 Single Stick', price: 40 },
+            { id: 'ram_16_d5', name: '16GB DDR5 Single Stick', price: 70 },
+            { id: 'ram_24_d5', name: '24GB DDR5 Kit', price: 100 },
+            { id: 'ram_32_d5', name: '32GB DDR5 Dual Stick', price: 130 },
+            { id: 'ram_48_d5', name: '48GB DDR5 Kit', price: 180 },
+            { id: 'ram_64_d5', name: '64GB DDR5 Quad Stick', price: 240 }
+        ];
+
+        const SSD_DATA = [
+            { id: 'ssd_120', name: '120GB SSD SATA', price: 15 },
+            { id: 'ssd_128', name: '128GB SSD SATA', price: 18 },
+            { id: 'ssd_240', name: '240GB SSD SATA', price: 25 },
+            { id: 'ssd_256', name: '256GB SSD SATA', price: 30 },
+            { id: 'ssd_480', name: '480GB SSD SATA', price: 45 },
+            { id: 'ssd_512', name: '512GB SSD SATA', price: 55 },
+            { id: 'ssd_960', name: '960GB SSD SATA', price: 80 },
+            { id: 'ssd_1tb', name: '1TB SSD SATA', price: 95 }
+        ];
+
+        const RES = ['720p', '1080p', '1440p', '2160p'];
+        const HZ = [60, 120, 144, 165, 240];
+        const MONITOR_DATA = [];
+        RES.forEach((res, rIdx) => {
+            HZ.forEach((hz, hIdx) => {
+                MONITOR_DATA.push({
+                    id: `mon_${res}_${hz}`,
+                    name: `Monitor ${res} ${hz}Hz`,
+                    price: Math.round((rIdx + 1) * 20 + (hIdx + 1) * 15)
+                });
+            });
+        });
+
+        const CASE_DATA = [
+            { id: 'case_basic', name: 'Standard Office Case', slots: 4, price: 0 },
+            { id: 'case_rgb', name: 'Gaming RGB Mid-Tower', slots: 8, price: 120 },
+            { id: 'case_full', name: 'Ultra Gaming Full-Tower', slots: 16, price: 600 },
+            { id: 'case_custom', name: 'Custom Liquid Case', slots: 32, price: 2200 }
+        ];
+
+        let state = {
+            bittycoin: 0.0,
+            inventory: [],
+            equippedRam: null,
+            equippedSsd: null,
+            equippedMonitor: null,
+            currentTab: 'ram',
+            cases: [
+                { type: 'case_basic', gpus: ['gtx1050ti', 'gtx1050ti', 'gtx1050ti', 'gtx1050ti'] }
+            ]
+        };
+
+        // FIREBASE SYNC
+        const bittyRef = ref(db, 'users/bittycoin/bitty');
+        onValue(bittyRef, (snapshot) => {
+            const val = snapshot.val();
+            if (val !== null && state.bittycoin === 0) {
+                state.bittycoin = parseFloat(val);
+            }
+        }, { onlyOnce: true });
+
+        const savedState = localStorage.getItem('orkanet_miner_state');
+        if (savedState) {
+            const parsed = JSON.parse(savedState);
+            state.cases = parsed.cases || state.cases;
+            state.inventory = parsed.inventory || [];
+            state.equippedRam = parsed.equippedRam || null;
+            state.equippedSsd = parsed.equippedSsd || null;
+            state.equippedMonitor = parsed.equippedMonitor || null;
+            if (parsed.bittycoin) state.bittycoin = parsed.bittycoin;
+        }
+
+        function saveState() {
+            localStorage.setItem('orkanet_miner_state', JSON.stringify(state));
+            set(ref(db, 'users/bittycoin/bitty'), state.bittycoin.toFixed(4));
+        }
+
+        function getCapacity() {
+            let total = 0, used = 0;
+            state.cases.forEach(c => {
+                const def = CASE_DATA.find(x => x.id === c.type);
+                total += def ? def.slots : 0;
+                used += c.gpus.length;
+            });
+            return { total, used };
+        }
+
+        function getTotalSpeed() {
+            let speed = 0;
+            state.cases.forEach(c => {
+                c.gpus.forEach(gpuId => {
+                    const g = GPU_DATA.find(x => x.id === gpuId);
+                    if (g) speed += g.speed;
+                });
+            });
+            return speed;
+        }
+
+        function renderTM() {
+            const area = document.getElementById('tm-content-area');
+            const mon = MONITOR_DATA.find(m => m.id === state.equippedMonitor);
+            document.getElementById('tm-monitor-title').innerText = `Monitor: ${mon ? mon.name : 'Brak'}`;
+
+            if (state.currentTab === 'cpu') {
+                area.innerHTML = `<div style="text-align:center; padding-top:30px; font-size:1.4rem; color:var(--accent-pink);">🖥️ CPU: Coming soon...</div>`;
+            } else if (state.currentTab === 'ram') {
+                const ram = RAM_DATA.find(r => r.id === state.equippedRam);
+                area.innerHTML = `
+                    <b>Pamięć operacyjna RAM:</b> ${ram ? ram.name : 'Brak zamontowanej pamięci RAM'}<br>
+                    Status: OK | Zużycie: ${ram ? '28%' : '0%'}`;
+            } else if (state.currentTab === 'ssd') {
+                const ssd = SSD_DATA.find(s => s.id === state.equippedSsd);
+                area.innerHTML = `
+                    <b>Dysk systemowy SATA SSD:</b> ${ssd ? ssd.name : 'Brak dysku SSD!'}<br>
+                    Miejsce na dane (zapis BittyCoin): ${ssd ? 'Aktywny (Zapisuje stan)' : 'Brak'}`;
+            } else if (state.currentTab === 'gpu') {
+                const cap = getCapacity();
+                area.innerHTML = `
+                    <b>Liczba zamontowanych kart GPU:</b> ${cap.used} / ${cap.total}<br>
+                    Łączna moc obliczeniowa: ${getTotalSpeed().toFixed(4)} Bitty/s`;
+            }
+        }
+
+        function render() {
+            document.getElementById('bitty-display').innerText = state.bittycoin.toFixed(3);
+            document.getElementById('speed-display').innerText = getTotalSpeed().toFixed(4) + ' /s';
+            
+            const cap = getCapacity();
+            document.getElementById('rig-display').innerText = `${cap.used} / ${cap.total} GPU`;
+
+            renderTM();
+
+            // Render Magazynu
+            const invDiv = document.getElementById('inventory-list');
+            invDiv.innerHTML = state.inventory.length === 0 ? '<span style="opacity:0.5; font-size:0.8rem;">Ekwipunek jest pusty</span>' : '';
+            state.inventory.forEach((itemId, index) => {
+                const g = GPU_DATA.find(x => x.id === itemId);
+                const r = RAM_DATA.find(x => x.id === itemId);
+                const s = SSD_DATA.find(x => x.id === itemId);
+                const m = MONITOR_DATA.find(x => x.id === itemId);
+
+                let name = itemId;
+                let btnHtml = '';
+
+                if (g) {
+                    name = g.name;
+                    btnHtml = `<button class="btn-action" style="margin-left:8px; padding:2px 5px;" onclick="insertGPU(${index})">Włóż do Case 📥</button>`;
+                } else if (r) {
+                    name = r.name;
+                    btnHtml = `<button class="btn-action" style="margin-left:8px; padding:2px 5px;" onclick="equipRam('${r.id}', ${index})">Zamontuj RAM</button>`;
+                } else if (s) {
+                    name = s.name;
+                    btnHtml = `<button class="btn-action" style="margin-left:8px; padding:2px 5px;" onclick="equipSsd('${s.id}', ${index})">Zamontuj SSD</button>`;
+                } else if (m) {
+                    name = m.name;
+                    btnHtml = `<button class="btn-action" style="margin-left:8px; padding:2px 5px;" onclick="equipMonitor('${m.id}', ${index})">Podłącz Monitor</button>`;
+                }
+
+                const badge = document.createElement('div');
+                badge.className = 'item-badge';
+                badge.innerHTML = `${name} ${btnHtml}`;
+                invDiv.appendChild(badge);
+            });
+
+            // Render Obudów
+            const myRigsDiv = document.getElementById('my-rigs-list');
+            myRigsDiv.innerHTML = '';
+            state.cases.forEach((c, caseIdx) => {
+                const caseDef = CASE_DATA.find(r => r.id === c.type);
+                const card = document.createElement('div');
+                card.className = 'item-card';
+                card.style.flexDirection = 'column';
+                card.style.alignItems = 'flex-start';
+                card.style.marginBottom = '10px';
+
+                let gpusHTML = c.gpus.map((gId, gpuIdx) => {
+                    const g = GPU_DATA.find(x => x.id === gId);
+                    return `
+                        <span class="item-badge">
+                            ${g.name}
+                            <button class="btn-remove" onclick="removeGPU(${caseIdx}, ${gpuIdx})">✖ Wyjmij</button>
+                        </span>`;
+                }).join('');
+
+                card.innerHTML = `
+                    <div style="font-weight: bold; color: var(--accent-pink); margin-bottom: 5px;">
+                        #${caseIdx + 1} ${caseDef.name} (${c.gpus.length}/${caseDef.slots})
+                    </div>
+                    <div>${gpusHTML || '<span style="opacity:0.5; font-size:0.8rem;">Pusta Obudowa</span>'}</div>
+                `;
+                myRigsDiv.appendChild(card);
+            });
+
+            // Generic Shop Render Helper
+            const renderShop = (targetId, dataList, buyFunc) => {
+                const div = document.getElementById(targetId);
+                div.innerHTML = '';
+                dataList.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'item-card';
+                    const canAfford = state.bittycoin >= item.price;
+                    card.innerHTML = `
+                        <div>
+                            <div style="font-weight:600;">${item.name}</div>
+                            ${item.speed ? `<div style="font-size:0.75rem; opacity:0.7;">⚡ +${item.speed} Bitty/s</div>` : ''}
+                            ${item.slots ? `<div style="font-size:0.75rem; opacity:0.7;">📦 Slotów: ${item.slots} GPU</div>` : ''}
+                        </div>
+                        <button class="btn-action" ${!canAfford ? 'disabled' : ''} onclick="${buyFunc}('${item.id}')">
+                            Kup (${item.price} 🪙)
+                        </button>
+                    `;
+                    div.appendChild(card);
+                });
+            };
+
+            renderShop('gpu-shop', GPU_DATA, 'buyItem');
+            renderShop('ram-shop', RAM_DATA, 'buyItem');
+            renderShop('ssd-shop', SSD_DATA, 'buyItem');
+            renderShop('monitor-shop', MONITOR_DATA, 'buyItem');
+            renderShop('case-shop', CASE_DATA.filter(c => c.price > 0), 'buyCase');
+        }
+
+        // AKCJE APLIKACJI
+        window.switchTab = (tab) => {
+            state.currentTab = tab;
+            document.querySelectorAll('.tm-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            renderTM();
+        };
+
+        window.buyItem = (itemId) => {
+            let item = GPU_DATA.find(x => x.id === itemId) || 
+                       RAM_DATA.find(x => x.id === itemId) || 
+                       SSD_DATA.find(x => x.id === itemId) || 
+                       MONITOR_DATA.find(x => x.id === itemId);
+
+            if (!item || state.bittycoin < item.price) return;
+            state.bittycoin -= item.price;
+            state.inventory.push(itemId);
+            saveState();
+            render();
+        };
+
+        window.buyCase = (caseId) => {
+            const cDef = CASE_DATA.find(x => x.id === caseId);
+            if (!cDef || state.bittycoin < cDef.price) return;
+            state.bittycoin -= cDef.price;
+            state.cases.push({ type: caseId, gpus: [] });
+            saveState();
+            render();
+        };
+
+        window.equipRam = (ramId, invIndex) => {
+            if (state.equippedRam) state.inventory.push(state.equippedRam);
+            state.equippedRam = ramId;
+            state.inventory.splice(invIndex, 1);
+            saveState();
+            render();
+        };
+
+        window.equipSsd = (ssdId, invIndex) => {
+            if (state.equippedSsd) state.inventory.push(state.equippedSsd);
+            state.equippedSsd = ssdId;
+            state.inventory.splice(invIndex, 1);
+            saveState();
+            render();
+        };
+
+        window.equipMonitor = (monId, invIndex) => {
+            if (state.equippedMonitor) state.inventory.push(state.equippedMonitor);
+            state.equippedMonitor = monId;
+            state.inventory.splice(invIndex, 1);
+            saveState();
+            render();
+        };
+
+        window.insertGPU = (invIndex) => {
+            const gpuId = state.inventory[invIndex];
+            for (let c of state.cases) {
+                const cDef = CASE_DATA.find(x => x.id === c.type);
+                if (c.gpus.length < cDef.slots) {
+                    c.gpus.push(gpuId);
+                    state.inventory.splice(invIndex, 1);
+                    saveState();
+                    render();
+                    return;
+                }
+            }
+            alert("Brak wolnych miejsc w obudowach PC! Kup nową Obudowę.");
+        };
+
+        window.removeGPU = (caseIdx, gpuIdx) => {
+            const gpuId = state.cases[caseIdx].gpus[gpuIdx];
+            state.cases[caseIdx].gpus.splice(gpuIdx, 1);
+            state.inventory.push(gpuId);
+            saveState();
+            render();
+        };
+
+        // KANTOR ORKACOIN
+        window.updateExchangeCalc = () => {
+            const inputVal = parseFloat(document.getElementById('exchange-input').value) || 0;
+            const orkaCoins = Math.floor((inputVal / 2.25) * 100) / 100;
+            document.getElementById('exchange-result').innerText = `${orkaCoins.toFixed(2)} OC`;
+        };
+
+        window.exchangeCoins = () => {
+            const inputVal = parseFloat(document.getElementById('exchange-input').value);
+            if (isNaN(inputVal) || inputVal < 2.25) {
+                alert("Minimalna kwota wymiany to 2.25 BittyCoin!");
+                return;
+            }
+            if (state.bittycoin < inputVal) {
+                alert("Nie masz wystarczająco BittyCoinów!");
+                return;
+            }
+
+            const username = localStorage.getItem('username') || localStorage.getItem('orkanet_user') || 'Anonim';
+            if (username === 'Anonim') {
+                alert("Zaloguj się/ustaw nick na głównej stronie OrkaNet!");
+                return;
+            }
+
+            const coinsToAdd = Math.floor((inputVal / 2.25) * 100) / 100;
+
+            state.bittycoin -= inputVal;
+            saveState();
+            render();
+
+            const userCoinsRef = ref(db, `users/${username}/coins`);
+            runTransaction(userCoinsRef, (currentCoins) => {
+                return (currentCoins || 0) + coinsToAdd;
+            }).then(() => {
+                alert(`Pomyślnie dodano ${coinsToAdd} OrkaCoin(ów) dla ${username}!`);
+                document.getElementById('exchange-input').value = '';
+                window.updateExchangeCalc();
+            }).catch((err) => {
+                console.error("Błąd transakcji:", err);
+                state.bittycoin += inputVal;
+                saveState();
+                render();
+            });
+        };
+
+        // Pętla gry (Kopanie)
+        setInterval(() => {
+            state.bittycoin += getTotalSpeed();
+            if (Math.floor(Date.now() / 1000) % 5 === 0) saveState();
+            render();
+        }, 1000);
+
+        render();
+    </script>
+</body>
+</html>

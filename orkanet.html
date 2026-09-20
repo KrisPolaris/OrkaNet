@@ -136,7 +136,7 @@
     <a class="tile" href="ghostpizza.html">Ghost Pizza</a>
     <a class="tile" href="toperiti.html">Ranking OrkaCoinuf</a>
     <a class="tile" href="bebzunipu.html">Bebzun i Pu</a>
-    <a class="tile" href="https://krispolaris.github.io/Profil/index.html">Profi</a>
+    <a class="tile" href="profil.html">Profi</a>
 </main>
 
 <div class="shoutbox-panel">
@@ -268,6 +268,107 @@
     </a>
 </div>
 <!-- ==================== END EPIC BUTTON ==================== -->
+    
+    
+<a href="oldorkanet.html" class="old-orkanet-btn">
+    <span class="old-icon">⚡</span>
+    <span class="old-text">
+        <strong>Przejdź na Starszy OrkaNet</strong>
+        <small>Ma więcej funkcji</small>
+    </span>
+    <span class="old-arrow">➜</span>
+</a>
+
+<style>
+.old-orkanet-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: fit-content;
+    max-width: 100%;
+    padding: 16px 22px;
+    border: 1px solid #00e5ff;
+    border-radius: 16px;
+    background:
+        linear-gradient(135deg, #063c4b, #111d3d 55%, #1c1040);
+    color: white;
+    text-decoration: none;
+    font-family: 'Segoe UI', sans-serif;
+    box-shadow:
+        0 0 12px #00e5ff33,
+        0 0 35px #0077ff22,
+        inset 0 1px 0 #ffffff20;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.old-orkanet-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 70%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #ffffff15,
+        transparent
+    );
+    transform: skewX(-20deg);
+    transition: left 0.6s ease;
+}
+
+.old-orkanet-btn:hover {
+    transform: translateY(-4px) scale(1.02);
+    border-color: #7df9ff;
+    box-shadow:
+        0 0 20px #00e5ff66,
+        0 0 55px #0077ff44,
+        0 12px 30px #00000055;
+}
+
+.old-orkanet-btn:hover::before {
+    left: 150%;
+}
+
+.old-icon {
+    font-size: 27px;
+    filter: drop-shadow(0 0 8px #00e5ff);
+}
+
+.old-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.old-text strong {
+    font-size: 15px;
+    letter-spacing: 0.2px;
+}
+
+.old-text small {
+    color: #91e9ff;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+}
+
+.old-arrow {
+    margin-left: 8px;
+    font-size: 23px;
+    color: #7df9ff;
+    transition: transform 0.25s ease;
+}
+
+.old-orkanet-btn:hover .old-arrow {
+    transform: translateX(5px);
+}
+</style>
     
 <footer id="orkanet-footer">
     © 2026 OrkaNet - Wszelkie prawa do Bebecha zastrzeżone.

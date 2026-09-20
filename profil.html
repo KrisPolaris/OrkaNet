@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Gracza - OrkaNet</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bungee&family=Orbitron:wght@400;700;900&display=swap');
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            /* Mix 75% NightCity.png + 25% ciemny fiolet (#10002b) z nakładką gradientową */
+            background-image: 
+                linear-gradient(rgba(16, 0, 43, 0.85), rgba(0, 0, 0, 0.75)),
+                url('NightCity.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #ffffff;
+            font-family: 'Orbitron', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* Sci-Fi Cyberpunk Glassmorphism Card */
+        .profile-card {
+            background: rgba(10, 0, 20, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid #00ffff;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 480px;
+            padding: 30px 25px;
+            box-shadow: 
+                0 0 25px rgba(0, 255, 255, 0.4), 
+                0 0 50px rgba(123, 44, 191, 0.5), 
+                inset 0 0 20px rgba(0, 255, 255, 0.15);
+            text-align: center;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        /* Narożniki Sci-Fi Accent */
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            width: 20px;
+            height: 20px;
+            border-top: 4px solid #ff007f;
+            border-left: 4px solid #ff007f;
+            border-top-left-radius: 16px;
+        }
+
+        .profile-card::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 20px;
+            height: 20px;
+            border-bottom: 4px solid #ff007f;
+            border-right: 4px solid #ff007f;
+            border-bottom-right-radius: 16px;
+        }
+
+        .avatar-container {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid #ff007f;
+            margin: 0 auto 15px auto;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.8);
+            font-size: 3.5em;
+            box-shadow: 0 0 25px #ff007f, inset 0 0 10px #00ffff;
+        }
+
+        .avatar-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .username {
+            font-family: 'Bungee', cursive;
+            font-size: 2em;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+            margin: 5px 0;
+            word-break: break-all;
+            letter-spacing: 1px;
+        }
+
+        .role-badge {
+            display: inline-block;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4em;
+            color: #ffe600;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #ffe600;
+            padding: 2px 16px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            box-shadow: 0 0 12px #ffe600;
+        }
+
+        .bio-box {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9em;
+            color: #e0e0e0;
+            background: rgba(5, 0, 15, 0.85);
+            border: 1px solid #ff007f;
+            border-left: 5px solid #ff007f;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: left;
+            word-break: break-word;
+            box-shadow: inset 0 0 10px rgba(255, 0, 127, 0.3);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.75);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #00ffff;
+            box-shadow: 0 0 12px rgba(0, 255, 255, 0.25);
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .stat-item small {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1em;
+            letter-spacing: 1px;
+            color: #ff007f !important;
+            text-transform: uppercase;
+        }
+
+        .stat-item span {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .actions-box {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            font-family: 'Bungee', cursive;
+            flex: 1;
+            padding: 12px 10px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            font-size: 0.85em;
+            text-transform: uppercase;
+        }
+
+        .btn-dm {
+            background: #00ffff;
+            color: #000;
+            box-shadow: 0 0 15px #00ffff;
+        }
+
+        .btn-dm:hover {
+            background: #fff;
+            box-shadow: 0 0 25px #00ffff;
+            transform: scale(1.03);
+        }
+
+        .btn-invite {
+            background: #ff007f;
+            color: #fff;
+            box-shadow: 0 0 15px #ff007f;
+        }
+
+        .btn-invite:hover {
+            background: #ff3399;
+            box-shadow: 0 0 25px #ff007f;
+            transform: scale(1.03);
+        }
+
+        .btn-back {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3em;
+            letter-spacing: 1px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ffff;
+            margin-top: 15px;
+            width: 100%;
+            border: 2px solid #00ffff;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        .btn-back:hover {
+            background: #00ffff;
+            color: #000;
+            box-shadow: 0 0 20px #00ffff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="profile-card">
+        <div class="avatar-container">
+            <img id="pfp-img" src="" alt="Avatar" style="display: none;">
+            <span id="pfp-emoji">👤</span>
+        </div>
+
+        <div class="username" id="profile-username">Ładowanie...</div>
+        <div class="role-badge" id="profile-role">UŻYTKOWNIK</div>
+
+        <div class="bio-box" id="profile-bio">"Pobieranie opisu..."</div>
+
+        <div class="stats-grid">
+            <div class="stat-item">
+                <small>🪙 OrkaCoins</small>
+                <span id="profile-coins" style="color: #00ffff;">0</span>
+            </div>
+            <div class="stat-item">
+                <small>💰 Creeper Money</small>
+                <span id="profile-money" style="color: #00ff00;">0</span>
+            </div>
+            <div class="stat-item full-width">
+                <small>👁️ Ostatnio widziany/a</small>
+                <span id="profile-lastseen" style="color: #ff007f;">-</span>
+            </div>
+            <div class="stat-item full-width" id="joined-box" style="display: none;">
+                <small>📅 Data dołączenia</small>
+                <span id="profile-joined" style="color: #aaa;">-</span>
+            </div>
+        </div>
+
+        <div class="actions-box" id="action-buttons">
+            <button class="btn btn-dm" id="btn-dm">Napisz DM 💬</button>
+            <button class="btn btn-invite" id="btn-invite">Zaproś ➕</button>
+        </div>
+
+        <button class="btn btn-back" onclick="window.location.href='orkanet.html'">⬅️ Powrót do Strony Główniej</button>
+    </div>
+
+    <!-- Firebase JS SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDPvjNjR6nTHQuWdhQGAGk9iJgvPKDQTXA", 
+            authDomain: "bebechchat.firebaseapp.com",
+            projectId: "bebechchat",
+            storageBucket: "bebechchat.firebasestorage.app",
+            messagingSenderId: "738356779230",
+            appId: "1:738356779230:web:2c41e46431284e3fb78a4f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const myUser = localStorage.getItem('loggedUser') || "Gość";
+
+        const urlParams = new URLSearchParams(window.location.search);
+        let targetUser = urlParams.get('user');
+
+        if (!targetUser) {
+            targetUser = myUser;
+        }
+
+        async function loadProfile() {
+            document.getElementById('profile-username').textContent = targetUser;
+
+            if (targetUser === myUser || targetUser === "Gość") {
+                const actions = document.getElementById('action-buttons');
+                if (actions) actions.style.display = 'none';
+            }
+
+            try {
+                const userDocRef = doc(db, "users", targetUser);
+                const userSnap = await getDoc(userDocRef);
+
+                if (userSnap.exists()) {
+                    const data = userSnap.data();
+
+                    const avatarVal = data.avatar || data.photoURL || data.pfp;
+                    const pfpImg = document.getElementById('pfp-img');
+                    const pfpEmoji = document.getElementById('pfp-emoji');
+
+                    if (avatarVal) {
+                        const isUrl = avatarVal.startsWith('http://') || avatarVal.startsWith('https://') || avatarVal.startsWith('data:image/');
+                        if (isUrl) {
+                            pfpImg.src = avatarVal;
+                            pfpImg.style.display = 'block';
+                            pfpEmoji.style.display = 'none';
+                        } else {
+                            pfpEmoji.textContent = avatarVal;
+                        }
+                    }
+
+                    const roleEl = document.getElementById('profile-role');
+                    if (data.role) {
+                        roleEl.textContent = String(data.role).toUpperCase();
+                    } else if (["admin", "kris", "krys", "szym", "sim"].some(n => targetUser.toLowerCase().includes(n))) {
+                        roleEl.textContent = "SUPER GOŚCIU 🔥";
+                    } else {
+                        roleEl.textContent = "UŻYTKOWNIK";
+                    }
+
+                    document.getElementById('profile-bio').textContent = data.bio ? `"${data.bio}"` : '"Brak opisu profilu."';
+                    document.getElementById('profile-coins').textContent = data.coins || 0;
+                    document.getElementById('profile-money').textContent = data.money || 0;
+
+                    const lastVal = data.lastActive || data.lastseen;
+                    if (lastVal) {
+                        let dateObj;
+                        if (typeof lastVal === 'number') {
+                            dateObj = new Date(lastVal < 10000000000 ? lastVal * 1000 : lastVal);
+                        } else if (lastVal.toDate) {
+                            dateObj = lastVal.toDate();
+                        } else {
+                            dateObj = new Date(lastVal);
+                        }
+
+                        document.getElementById('profile-lastseen').textContent = dateObj.toLocaleString('pl-PL', {
+                            day: '2-digit', month: '2-digit', year: 'numeric',
+                            hour: '2-digit', minute: '2-digit'
+                        });
+                    } else {
+                        document.getElementById('profile-lastseen').textContent = "Brak danych";
+                    }
+
+                    if (data.joinedAt) {
+                        let joinedVal = data.joinedAt;
+                        let joinedDate;
+                        if (typeof joinedVal === 'number') {
+                            joinedDate = new Date(joinedVal < 10000000000 ? joinedVal * 1000 : joinedVal);
+                        } else if (joinedVal.toDate) {
+                            joinedDate = joinedVal.toDate();
+                        } else {
+                            joinedDate = new Date(joinedVal);
+                        }
+
+                        document.getElementById('joined-box').style.display = 'block';
+                        document.getElementById('profile-joined').textContent = joinedDate.toLocaleDateString('pl-PL');
+                    }
+
+                } else {
+                    document.getElementById('profile-bio').textContent = '"Nie znaleziono użytkownika w bazie OrkaNet."';
+                    document.getElementById('profile-lastseen').textContent = "Nieznany";
+                }
+            } catch (err) {
+                console.error("Błąd ładowania profilu:", err);
+            }
+        }
+
+        document.getElementById('btn-dm').onclick = () => {
+            window.location.href = `orkanet.html?openDM=${encodeURIComponent(targetUser)}`;
+        };
+
+        document.getElementById('btn-invite').onclick = async () => {
+            if (myUser === "Gość") {
+                alert("Zaloguj się, aby wysyłać zaproszenia!");
+                return;
+            }
+            try {
+                const reqId = myUser + "_" + targetUser;
+                await setDoc(doc(db, "friend_requests", reqId), {
+                    from: myUser,
+                    to: targetUser,
+                    timestamp: serverTimestamp()
+                });
+                alert("Zaproszenie do znajomych zostało wysłane!");
+            } catch (e) {
+                alert("Błąd podczas wysyłania zaproszenia: " + e.message);
+            }
+        };
+
+        loadProfile();
+    </script>
+</body>
+</html>

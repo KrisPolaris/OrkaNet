@@ -236,7 +236,7 @@ function listenToShoutbox() {
         msgs.forEach(m => {
             const div = document.createElement('div');
             div.className = 'shout-msg';
-            div.innerHTML = `<span class="shout-user" onclick="quickInvite('${m.from}')">${m.from}</span>: ${m.text}`;
+            div.innerHTML = `<span class="shout-user" style="cursor:pointer;" onclick="openUserProfile('${m.from}')">${m.from}</span>: ${m.text}`;
             box.appendChild(div);
         });
         box.scrollTop = box.scrollHeight;
@@ -326,9 +326,13 @@ window.filterAllUsers = function() {
     filtered.forEach(uName => {
         const item = document.createElement('div');
         item.className = 'user-search-item';
+        item.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 4px; border-bottom: 1px solid rgba(255,255,255,0.1);';
         item.innerHTML = `
-            <span>👤 ${uName}</span>
-            <button class="btn-small" style="padding:2px 6px; font-size:0.75em;" onclick="quickInvite('${uName}')">+ Zaproś</button>
+            <span style="cursor: pointer;" onclick="openUserProfile('${uName}')">👤 <b>${uName}</b></span>
+            <div style="display:flex; gap: 4px;">
+                <button class="btn-small" style="padding:2px 6px; font-size:0.75em;" onclick="openUserProfile('${uName}')">Profil</button>
+                <button class="btn-small" style="padding:2px 6px; font-size:0.75em;" onclick="quickInvite('${uName}')">+ Zaproś</button>
+            </div>
         `;
         listContainer.appendChild(item);
     });
@@ -371,7 +375,7 @@ if(myUser) {
             const box = document.createElement('div');
             box.className = 'invite-box';
             box.innerHTML = `
-                <span>👤 <b>${fromWho}</b> zaprasza Cię!</span>
+                <span>👤 <b style="cursor:pointer;" onclick="openUserProfile('${fromWho}')">${fromWho}</b> zaprasza Cię!</span>
                 <div>
                     <button class="btn-small" style="background:#00ff00; color:#000; padding:3px 8px; font-size:0.8em; border:none;" id="acc-${reqId}">TAK</button>
                     <button class="btn-small" style="background:#ff4444; color:#fff; padding:3px 8px; font-size:0.8em; border:none;" id="rej-${reqId}">NIE</button>
@@ -426,13 +430,16 @@ window.renderFriendsList = function() {
         const card = document.createElement('div');
         card.className = 'friend-card';
         card.innerHTML = `
-            <div class="roblox-avatar" style="background: ${color}" onclick="openDM('${fName}')">
+            <div class="roblox-avatar" style="background: ${color}; cursor: pointer;" onclick="openUserProfile('${fName}')">
                 ${firstLet}
                 <div class="status-dot ${isOnline ? 'status-online' : 'status-offline'}"></div>
                 ${unreadCount > 0 ? `<div class="dm-badge">${unreadCount}</div>` : ''}
             </div>
-            <div class="friend-name" onclick="openDM('${fName}')">${fName}</div>
-            <button class="remove-friend-btn" onclick="removeFriend('${fName}')">Usuń 🗑️</button>
+            <div class="friend-name" style="cursor: pointer;" onclick="openUserProfile('${fName}')">${fName}</div>
+            <div style="display:flex; gap:3px;">
+                <button class="btn-small" onclick="openDM('${fName}')" style="font-size:0.75em; padding:2px 5px;">DM</button>
+                <button class="remove-friend-btn" onclick="removeFriend('${fName}')">Usuń 🗑️</button>
+            </div>
         `;
         listDiv.appendChild(card);
     });
@@ -675,14 +682,160 @@ if (headerText) {
     });
 }
 
+// ==================== SYSTEM PODGLĄDU PROFILU INNEGO GRACZA ====================
+
+window.openUserProfile = async function(targetUsername) {
+    if (!targetUsername) return;
+
+    const modal = document.getElementById('profile-modal');
+    if (!modal) {
+        // Jeśli brak modala na nowej podstronie, przekieruj do profil.html
+        window.location.href = `profil.html?user=${encodeURIComponent(targetUsername)}`;
+        return;
+    }
+
+    // Resetowanie pól przed pociągnięciem danych z Firestore
+    document.getElementById('view-username').textContent = targetUsername;
+    document.getElementById('view-role').textContent = "GRACZ";
+    document.getElementById('view-bio').textContent = '"Ładowanie opisu..."';
+    document.getElementById('view-coins').textContent = "0";
+    document.getElementById('view-money').textContent = "0";
+    document.getElementById('view-lastseen').textContent = "Ładowanie...";
+    
+    const joinedBox = document.getElementById('view-joined-box');
+    if (joinedBox) joinedBox.style.display = 'none';
+
+    const pfpImg = document.getElementById('view-pfp-img');
+    const pfpEmoji = document.getElementById('view-pfp-emoji');
+    if (pfpImg) pfpImg.style.display = 'none';
+    if (pfpEmoji) {
+        pfpEmoji.style.display = 'inline';
+        pfpEmoji.textContent = '👤';
+    }
+
+    const dmBtn = document.getElementById('view-dm-btn');
+    const inviteBtn = document.getElementById('view-invite-btn');
+
+    if (dmBtn) {
+        dmBtn.onclick = () => {
+            closeUserProfile();
+            openDM(targetUsername);
+        };
+    }
+    if (inviteBtn) {
+        inviteBtn.onclick = () => {
+            quickInvite(targetUsername);
+        };
+    }
+
+    modal.style.display = 'flex';
+
+    try {
+        const userDocRef = doc(db, "users", targetUsername);
+        const userSnap = await getDoc(userDocRef);
+
+        if (userSnap.exists()) {
+            const data = userSnap.data();
+
+            // 1. Awatar
+            const avatarVal = data.avatar || data.photoURL || data.pfp;
+            if (avatarVal && pfpImg && pfpEmoji) {
+                const isUrl = avatarVal.startsWith('http://') || avatarVal.startsWith('https://') || avatarVal.startsWith('data:image/');
+                if (isUrl) {
+                    pfpImg.src = avatarVal;
+                    pfpImg.style.display = 'block';
+                    pfpEmoji.style.display = 'none';
+                } else {
+                    pfpEmoji.textContent = avatarVal;
+                }
+            }
+
+            // 2. Ranga
+            const roleEl = document.getElementById('view-role');
+            if (roleEl) {
+                if (data.role) {
+                    roleEl.textContent = String(data.role).toUpperCase();
+                } else if (["admin", "kris", "krys", "szym", "sim"].some(n => targetUsername.toLowerCase().includes(n))) {
+                    roleEl.textContent = "SUPER GOŚCIU 🔥";
+                } else {
+                    roleEl.textContent = "UŻYTKOWNIK";
+                }
+            }
+
+            // 3. Bio / Opis
+            const bioEl = document.getElementById('view-bio');
+            if (bioEl) {
+                bioEl.textContent = data.bio ? `"${data.bio}"` : '"Brak opisu profilu."';
+            }
+
+            // 4. Coins i Creeper Money
+            const coinsEl = document.getElementById('view-coins');
+            const moneyEl = document.getElementById('view-money');
+            if (coinsEl) coinsEl.textContent = data.coins || 0;
+            if (moneyEl) moneyEl.textContent = data.money || 0;
+
+            // 5. Ostatnia aktywność (lastActive / lastseen)
+            const lastSeenEl = document.getElementById('view-lastseen');
+            if (lastSeenEl) {
+                const lastVal = data.lastActive || data.lastseen;
+                if (lastVal) {
+                    let dateObj;
+                    if (typeof lastVal === 'number') {
+                        dateObj = new Date(lastVal < 10000000000 ? lastVal * 1000 : lastVal);
+                    } else if (lastVal.toDate) {
+                        dateObj = lastVal.toDate();
+                    } else {
+                        dateObj = new Date(lastVal);
+                    }
+                    lastSeenEl.textContent = dateObj.toLocaleString('pl-PL', {
+                        day: '2-digit', month: '2-digit', year: 'numeric',
+                        hour: '2-digit', minute: '2-digit'
+                    });
+                } else {
+                    lastSeenEl.textContent = "Brak danych";
+                }
+            }
+
+            // 6. Data rejestracji (joinedAt)
+            if (data.joinedAt) {
+                let joinedVal = data.joinedAt;
+                let joinedDate;
+                if (typeof joinedVal === 'number') {
+                    joinedDate = new Date(joinedVal < 10000000000 ? joinedVal * 1000 : joinedVal);
+                } else if (joinedVal.toDate) {
+                    joinedDate = joinedVal.toDate();
+                } else {
+                    joinedDate = new Date(joinedVal);
+                }
+
+                if (joinedBox) {
+                    joinedBox.style.display = 'block';
+                    const joinedEl = document.getElementById('view-joined');
+                    if (joinedEl) joinedEl.textContent = joinedDate.toLocaleDateString('pl-PL');
+                }
+            }
+        } else {
+            const bioEl = document.getElementById('view-bio');
+            if (bioEl) bioEl.textContent = '"Nie znaleziono profilu w bazie."';
+        }
+    } catch (err) {
+        console.error("Błąd ładowania profilu:", err);
+    }
+};
+
+window.closeUserProfile = function() {
+    const modal = document.getElementById('profile-modal');
+    if (modal) modal.style.display = 'none';
+};
+
+window.goToProfile = function(userName) {
+    if (!userName) return;
+    window.location.href = `profil.html?user=${encodeURIComponent(userName)}`;
+};
+
+// Rejestracja funkcji globalnych
 Object.assign(window, {
     acceptCookies, rejectCookies, logout, showRandomPage, toggleMusic, toggleTheme,
     openDM, closeDM, sendDM, sendFriendRequest, removeFriend, openProfileMenu,
     quickInvite, sendShout, filterTiles, filterAllUsers, handlePfpUpload
 });
-
-// Dopisane na dole działającego app.js - nie psuje starego kodu!
-window.goToProfile = function(userName) {
-    if (!userName) return;
-    window.location.href = `profil.html?user=${encodeURIComponent(userName)}`;
-};
