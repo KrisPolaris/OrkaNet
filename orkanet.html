@@ -6,13 +6,58 @@
     <title>OrkaNet</title>
     <link rel="icon" type="image/png" href="Pou.png">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Bungee&family=Inter:wght@300;400;600&family=Montserrat:wght@700&family=Courier+Prime&family=Bebas+Neue&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    
+    <!-- Awaryjny fallback CSS na przypadek braku style.css -->
+    <style id="fallback-css">
+        :root {
+            color-scheme: dark;
+        }
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #0d0f17 !important;
+            color: #00f0ff !important;
+            font-family: 'Segoe UI', system-ui, sans-serif !important;
+            max-width: 1000px;
+            margin-inline: auto;
+        }
+        a { color: #ff007f; }
+        input, button {
+            background: #141824;
+            color: #fff;
+            border: 1px solid #00f0ff;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .tile {
+            background: #1a1e2e;
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            border: 1px solid rgba(0,240,255,0.3);
+        }
+    </style>
+
+    <!-- Główny arkusz stylów - po załadowaniu usuwa fallback-css -->
+    <link rel="stylesheet" href="style.css" onload="document.getElementById('fallback-css')?.remove()">
 </head>
 <body class="theme-standard">
 
+<!-- Komunikat na przypadek wyłączonego JavaScriptu -->
+<noscript>
+    <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; color: #ff007f; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999999; text-align: center; padding: 20px; box-sizing: border-box; font-family: sans-serif;">
+        <img src="Bebuch.png" alt="Bebuch" style="max-width: 300px; height: auto; border-radius: 15px; border: 3px solid #00f0ff; box-shadow: 0 0 25px #00f0ff; margin-bottom: 20px;">
+        <h1 style="font-size: 2em; margin: 0; text-shadow: 0 0 10px #ff007f;">Chłopie, bebzun mówi: włączaj jot esa</h1>
+    </div>
+</noscript>
+
 <!-- Ukryty input do wyboru zdjęcia z urządzenia -->
 <input type="file" id="pfp-file-input" accept="image/*" style="display: none;" onchange="handlePfpUpload(event)">
-
 
 <header id="main-header">
     <h1 id="header-text" style="display:inline-block; margin:0; font-family:inherit; font-size:inherit; color:inherit; text-shadow:inherit; font-weight:inherit; cursor:pointer;">ORKANET</h1>
@@ -137,6 +182,8 @@
     <a class="tile" href="toperiti.html">Ranking OrkaCoinuf</a>
     <a class="tile" href="bebzunipu.html">Bebzun i Pu</a>
     <a class="tile" href="profil.html">Profi</a>
+    <a class="tile" href="yohohodunki.html">Flappy Dunk</a>
+    <a class="tile" href="youhaveballsforthis.html">Stickman Hook</a>
 </main>
 
 <div class="shoutbox-panel">
@@ -148,7 +195,7 @@
     </div>
 </div>
 
-    <!-- ==================== EPIC BETA ORKANET BUTTON ==================== -->
+<!-- ==================== EPIC BETA ORKANET BUTTON ==================== -->
 <style>
     .epic-beta-btn-container {
         display: flex;
@@ -181,7 +228,6 @@
                     inset 0 0 15px rgba(0, 240, 255, 0.2);
     }
 
-    /* Gradientowy i lśniący tekst */
     .epic-beta-btn span {
         position: relative;
         z-index: 2;
@@ -194,7 +240,6 @@
         text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
     }
 
-    /* Efekt błysku (Shine effect) */
     .epic-beta-btn::before {
         content: '';
         position: absolute;
@@ -213,7 +258,6 @@
         z-index: 1;
     }
 
-    /* Aura / Poświata pod przyciskiem */
     .epic-beta-btn::after {
         content: '';
         position: absolute;
@@ -227,7 +271,6 @@
         animation: epicGlow 6s linear infinite;
     }
 
-    /* HOVER - Po najechaniu myszką */
     .epic-beta-btn:hover {
         transform: translateY(-4px) scale(1.03);
         border-color: #ff007f;
@@ -249,7 +292,6 @@
         text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
     }
 
-    /* ACTIVE - Podczas kliknięcia */
     .epic-beta-btn:active {
         transform: translateY(1px) scale(0.98);
         box-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
@@ -269,31 +311,42 @@
 </div>
 <!-- ==================== END EPIC BUTTON ==================== -->
     
-    
-<a href="oldorkanet.html" class="old-orkanet-btn">
-    <span class="old-icon">⚡</span>
-    <span class="old-text">
-        <strong>Przejdź na Starszy OrkaNet</strong>
-        <small>Ma więcej funkcji</small>
-    </span>
-    <span class="old-arrow">➜</span>
-</a>
+<!-- ==================== OLD ORKANET BUTTON ==================== -->
+<div class="old-orkanet-btn-container">
+    <a href="oldorkanet.html" class="old-orkanet-btn">
+        <span class="old-icon">⚡</span>
+        <span class="old-text">
+            <strong>Przejdź na Starszy OrkaNet</strong>
+            <small>Ma więcej funkcji</small>
+        </span>
+        <span class="old-arrow">➜</span>
+    </a>
+</div>
 
 <style>
+.old-orkanet-btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    width: 100%;
+}
+
 .old-orkanet-btn {
     display: flex;
     align-items: center;
-    gap: 14px;
-    width: fit-content;
-    max-width: 100%;
-    padding: 16px 22px;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    max-width: 480px;
+    min-width: 280px;
+    padding: 16px 24px;
     border: 1px solid #00e5ff;
     border-radius: 16px;
-    background:
-        linear-gradient(135deg, #063c4b, #111d3d 55%, #1c1040);
+    background: linear-gradient(135deg, #063c4b, #111d3d 55%, #1c1040);
     color: white;
     text-decoration: none;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     box-shadow:
         0 0 12px #00e5ff33,
         0 0 35px #0077ff22,
@@ -304,6 +357,7 @@
         border-color 0.25s ease;
     position: relative;
     overflow: hidden;
+    box-sizing: border-box;
 }
 
 .old-orkanet-btn::before {
@@ -316,7 +370,7 @@
     background: linear-gradient(
         90deg,
         transparent,
-        #ffffff15,
+        rgba(255, 255, 255, 0.15),
         transparent
     );
     transform: skewX(-20deg);
@@ -329,7 +383,7 @@
     box-shadow:
         0 0 20px #00e5ff66,
         0 0 55px #0077ff44,
-        0 12px 30px #00000055;
+        0 12px 30px rgba(0, 0, 0, 0.35);
 }
 
 .old-orkanet-btn:hover::before {
@@ -337,39 +391,43 @@
 }
 
 .old-icon {
-    font-size: 27px;
+    font-size: 28px;
     filter: drop-shadow(0 0 8px #00e5ff);
+    flex-shrink: 0;
 }
 
 .old-text {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 3px;
+    text-align: left;
+    flex-grow: 1;
 }
 
 .old-text strong {
-    font-size: 15px;
-    letter-spacing: 0.2px;
+    font-size: 16px;
+    letter-spacing: 0.3px;
 }
 
 .old-text small {
     color: #91e9ff;
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 0.5px;
 }
 
 .old-arrow {
-    margin-left: 8px;
-    font-size: 23px;
+    font-size: 24px;
     color: #7df9ff;
     transition: transform 0.25s ease;
+    flex-shrink: 0;
 }
 
 .old-orkanet-btn:hover .old-arrow {
-    transform: translateX(5px);
+    transform: translateX(6px);
 }
 </style>
-    
+<!-- ==================== END OLD BUTTON ==================== -->
+
 <footer id="orkanet-footer">
     © 2026 OrkaNet - Wszelkie prawa do Bebecha zastrzeżone.
 </footer>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OrkaNet - Internet, Telewizja, Telefon | Panel Klienta</title>
+<style>
+:root{--blue:#0a54ff;--dark:#0f172a;--muted:#64748b;--bg:#f6f8ff;--ok:#10b981}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui}
+body{background:var(--bg);color:var(--dark)} a{color:inherit;text-decoration:none}
+header{position:sticky;top:0;z-index:20;background:#fff;display:flex;justify-content:space-between;align-items:center;padding:14px 5%;box-shadow:0 4px 30px rgba(0,0,0,.06)}
+.logo{font-weight:900;font-size:28px} .logo span{color:var(--blue)}
+nav{display:flex;gap:18px;align-items:center} nav .link{font-weight:600;opacity:.7} nav .link:hover{opacity:1}
+.btn{padding:12px 20px;border-radius:12px;background:var(--blue);color:#fff;font-weight:800;border:0;cursor:pointer}
+.btn.ghost{background:#eef2ff;color:var(--blue)}
+.page{display:none;padding:40px 5%} .page.active{display:block}
+.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center}
+.hero h1{font-size:54px;letter-spacing:-2px;line-height:.9} .hero h1 i{color:var(--blue);font-style:normal}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:30px}
+.card{background:#fff;border-radius:20px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.05);border:2px solid transparent}
+.card.best{border-color:var(--blue)}
+.price{font-size:40px;font-weight:900} .price s{font-size:16px;opacity:.5}
+.list{list-style:none;margin:14px 0} .list li{margin:6px 0} .list li::before{content:"✓ ";color:var(--blue);font-weight:900}
+.panel{display:grid;grid-template-columns:260px 1fr;gap:20px}
+.side{background:#fff;border-radius:20px;padding:18px;height:fit-content}
+.side a{display:block;padding:12px;border-radius:10px;font-weight:600} .side a.active,.side a:hover{background:#eef2ff;color:var(--blue)}
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.kpi{background:#fff;padding:18px;border-radius:16px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden} th,td{padding:12px 14px;text-align:left;border-bottom:1px solid #f1f5f9} th{background:#f8fafc;font-size:12px;letter-spacing:.5px}
+input,select{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:12px;margin:6px 0}
+.badge{display:inline-block;padding:4px 10px;border-radius:99px;background:#dcfce7;color:#166534;font-weight:700;font-size:12px}
+footer{background:var(--dark);color:#fff;padding:40px 5%;margin-top:50px;border-radius:30px 30px 0 0}
+@media(max-width:900px){.hero,.grid3,.panel,.stat{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo" onclick="go('home')">Orka<span>Net</span></div>
+  <nav>
+    <a class="link" onclick="go('home')">Oferta</a>
+    <a class="link" onclick="go('cennik')">Cennik</a>
+    <a class="link" onclick="go('regulamin')">Regulamin</a>
+    <a class="link" onclick="go('kontakt')">Kontakt</a>
+    <button class="btn ghost" onclick="go('panel')">Panel klienta</button>
+    <button class="btn" onclick="go('panel')">Moje Konto</button>
+  </nav>
+</header>
+
+<!-- HOME -->
+<div id="home" class="page active">
+  <div class="hero">
+    <div>
+      <h1>Internet <i>światłowodowy</i><br>bez kruczków jak w Netii.</h1>
+      <p style="color:var(--muted);margin:18px 0;font-size:18px">Do 1 Gb/s, umowa na czas nieokreślony, router WiFi 6 w cenie. Instalacja jutro. Łódź i cała woj. łódzkie.</p>
+      <div style="display:flex;gap:10px"><button class="btn" onclick="go('cennik')">Zobacz pakiety od 49 zł</button><button class="btn ghost" onclick="go('panel')">Sprawdź faktury</button></div>
+      <div style="margin-top:16px;font-size:13px;color:var(--muted)">✓ Bez limitu danych ✓ Publiczne IP ✓ Pomoc 24/7</div>
+    </div>
+    <div class="card">
+      <h3>Sprawdź dostępność</h3>
+      <input id="addr" placeholder="np. Piotrkowska 123, Łódź"><select><option>Internet 300</option><option>Internet 600</option><option>Internet 1000 + TV</option></select>
+      <button class="btn" style="width:100%;margin-top:8px" onclick="alert('Tak! Adres w zasięgu OrkaNet. Instalacja jutro!')">Sprawdź</button>
+      <div style="margin-top:12px;font-size:12px" class="badge">● Sieć działa stabilnie - awarii: 0</div>
+    </div>
+  </div>
+  <div class="grid3" style="margin-top:30px">
+    <div class="card"><h3>Internet</h3><p style="color:var(--muted)">300 / 600 / 1000 Mb/s, WiFi 6, stałe IP.</p></div>
+    <div class="card"><h3>Telewizja 4K</h3><p style="color:var(--muted)">140 kanałów, HBO Max, dekoder Android TV.</p></div>
+    <div class="card"><h3>Telefon VoIP</h3><p style="color:var(--muted)">Nielimitowane na stacjonarne za 9 zł.</p></div>
+  </div>
+</div>
+
+<!-- CENNIK jak Netia -->
+<div id="cennik" class="page">
+  <h1 style="font-size:40px">Cennik OrkaNet 2026</h1>
+  <div class="grid3">
+    <div class="card"><h3>START 300</h3><div class="price">49 zł <s>69 zł</s></div><ul class="list"><li>300/50 Mb/s</li><li>Router WiFi 6</li><li>Umowa na czas nieokreślony</li></ul><button class="btn ghost" style="width:100%">Zamawiam</button></div>
+    <div class="card best"><h3>GAMER 600 + TV</h3><div class="price">79 zł <s>109 zł</s></div><ul class="list"><li>600/100 Mb/s</li><li>TV 140 kanałów + HBO</li><li>IP publiczne, ping 2ms</li><li>0 zł aktywacja online</li></ul><button class="btn" style="width:100%">Najczęściej wybierany</button></div>
+    <div class="card"><h3>FIRMA 1000</h3><div class="price">99 zł</div><ul class="list"><li>1000/300 Mb/s symetryczny</li><li>SLA 99,9% + faktura VAT</li><li>Serwis do 4h</li></ul><button class="btn ghost" style="width:100%">Dla firm</button></div>
+  </div>
+</div>
+
+<!-- PANEL KLIENTA -->
+<div id="panel" class="page">
+  <div class="panel">
+    <div class="side">
+      <b>Panel Klienta</b>
+      <a class="active" onclick="showTab('konto')">🏠 Moje konto</a>
+      <a onclick="showTab('faktury')">📄 Faktury i płatności</a>
+      <a onclick="showTab('awarie')">🚨 Zgłoszenia</a>
+      <a onclick="showTab('ustawienia')">⚙️ Ustawienia WiFi</a>
+      <a onclick="alert('Wylogowano')">🚪 Wyloguj</a>
+    </div>
+    <div>
+      <div id="tab-konto">
+        <div class="stat">
+          <div class="kpi"><small>Twój pakiet</small><h2>GAMER 600 + TV</h2><span class="badge">Aktywny</span></div>
+          <div class="kpi"><small>Do zapłaty</small><h2>79,00 zł</h2><span style="color:var(--muted)">Termin: 15.10.2026</span></div>
+          <div class="kpi"><small>Zużycie dziś</small><h2>128 GB</h2><span style="color:var(--ok)">● Połączenie OK</span></div>
+        </div>
+        <table style="margin-top:20px"><tr><th>Usługa</th><th>Status</th><th>Adres</th></tr><tr><td>Internet światłowodowy</td><td><span class="badge">Online</span></td><td>Piotrkowska 123, Łódź</td></tr><tr><td>Telewizja OrkaTV</td><td><span class="badge">Online</span></td><td>3 urządzenia</td></tr></table>
+      </div>
+      <div id="tab-faktury" style="display:none">
+        <h2>Faktury</h2>
+        <table><tr><th>Nr</th><th>Data</th><th>Kwota</th><th>Płatność</th></tr><tr><td>FV/09/2026/112</td><td>01.09.2026</td><td>79 zł</td><td><button class="btn ghost" onclick="alert('Przekierowanie do PayU/Blik')">Zapłać BLIK</button></td></tr><tr><td>FV/08/2026/98</td><td>01.08.2026</td><td>79 zł</td><td>Opłacona ✓</td></tr></table>
+      </div>
+      <div id="tab-awarie" style="display:none">
+        <h2>Zgłoś awarię / problem</h2>
+        <input placeholder="Opisz problem..."><select><option>Brak internetu</option><option>Wolny internet</option><option>TV nie działa</option></select>
+        <button class="btn" onclick="alert('Zgłoszenie #4123 przyjęte. Technik oddzwoni w 30 min.')">Wyślij zgłoszenie</button>
+      </div>
+      <div id="tab-ustawienia" style="display:none">
+        <h2>WiFi</h2><input value="OrkaNet-5G-123"><input value="hasło: orka12345"><button class="btn">Zapisz + Restart routera</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REGULAMIN jak Netia -->
+<div id="regulamin" class="page">
+  <h1>Regulamin i dokumenty</h1>
+  <div class="card" style="margin-top:20px;line-height:1.6;color:var(--muted)">
+    <h3 style="color:var(--dark)">1. Regulamin świadczenia usług telekomunikacyjnych OrkaNet</h3>
+    <p>OrkaNet Sp. z o.o., NIP 725-123-45-67, KRS 0000123456, świadczy usługi dostępu do Internetu, TV i telefonii na podstawie Prawa Telekomunikacyjnego. Umowa na czas nieokreślony z 1-miesięcznym okresem wypowiedzenia. Prędkości zgodnie z Rozp. UE 2015/2120.</p>
+    <h3 style="color:var(--dark);margin-top:16px">2. Polityka prywatności RODO</h3>
+    <p>Dane przetwarzane w celu realizacji umowy, rozliczeń i marketingu za zgodą. Inspektor: iod@orkanet.pl. Prawa: dostęp, sprostowanie, usunięcie.</p>
+    <h3 style="color:var(--dark);margin-top:16px">3. Cennik i zwroty</h3>
+    <p>Opłata aktywacyjna 1 zł online, 99 zł stacjonarnie. Zwrot sprzętu w 14 dni. Reklamacje: bok@orkanet.pl, 42 123 45 67.</p>
+    <p style="margin-top:16px"><a href="#" class="btn ghost">Pobierz PDF - Regulamin</a> <a href="#" class="btn ghost">Pobierz - Cennik</a> <a href="#" class="btn ghost">RODO</a></p>
+  </div>
+</div>
+
+<div id="kontakt" class="page">
+  <h1>Kontakt - Biuro Obsługi Klienta</h1>
+  <div class="grid3"><div class="card"><b>Infolinia 24/7</b><br>42 123 45 67</div><div class="card"><b>Email</b><br>bok@orkanet.pl / faktury@orkanet.pl</div><div class="card"><b>Adres</b><br>ul. Piotrkowska 123, 90-001 Łódź</div></div>
+</div>
+
+<footer>© 2026 OrkaNet Sp. z o.o. | Wzór inspirowany Netia - panel, cennik, regulamin | Made for demo</footer>
+
+<script>
+function go(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0)}
+function showTab(id){document.querySelectorAll('[id^=tab-]').forEach(t=>t.style.display='none');document.getElementById('tab-'+id).style.display='block';document.querySelectorAll('.side a').forEach(a=>a.classList.remove('active'))}
+</script>
+</body>
+</html>

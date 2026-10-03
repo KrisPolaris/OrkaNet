@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pupurupu</title>
+    <link rel="icon" type="image/png" href="Pou.png">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #0d0f17;
+            color: #00f0ff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .game-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8em;
+            color: #00f0ff;
+            text-shadow: 0 0 10px #00f0ff, 0 0 20px #ff007f;
+            margin: 10px 0;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #141824;
+            color: #ff007f;
+            border: 1px solid #ff007f;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
+        }
+
+        .back-btn:hover {
+            background: #ff007f;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.8);
+            transform: scale(1.05);
+        }
+
+        .iframe-container {
+            border: 3px solid #00f0ff;
+            border-radius: 12px;
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.5), 0 0 50px rgba(255, 0, 127, 0.3);
+            overflow: hidden;
+            background: #000;
+            max-width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        iframe {
+            display: block;
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body class="theme-standard">
+
+    <div class="game-header">
+        <a href="index.html" class="back-btn">⬅ POWRÓT DO ORKANETU</a>
+        <h1 class="game-title">🥔 Pupurupu</h1>
+    </div>
+
+    <div class="iframe-container">
+        <iframe src="" frameborder="0" scrolling="no" width="506" height="635" allowfullscreen></iframe>
+    </div>
+
+</body>
+</html>
